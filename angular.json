@@ -24,10 +24,21 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/sn-common-lib/assets/fonts/",
+                "output": "assets/fonts/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/sn-branch-locator/src/assets/branchlocator",
+                "output": "assets/branchlocator/"
+              }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/sn-common-lib/styles/styles.scss"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -84,12 +95,23 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/sn-common-lib/styles/styles.scss"
             ],
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/sn-common-lib/assets/fonts/",
+                "output": "assets/fonts/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/sn-branch-locator/src/assets/branchlocator",
+                "output": "assets/branchlocator/"
+              }
             ]
           }
         },

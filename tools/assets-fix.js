@@ -2,9 +2,7 @@
 const PROJECT = require('../package.json');
 const DIST_FOLDER = 'dist/'+ PROJECT['modules-publish'][0] +'/';
 const FILE_TO_COPY=[
-    // {input:'libs/sn-common-lib/src/atoms/icon/assets',output:'assets'},
-    // {input:'libs/sn-common-lib/fonts',output:'assets/fonts'},
-    // {input:'libs/sn-common-lib/styles',output:'styles'}
+    {input:'libs/sn-branch-locator/src/assets/branchlocator',output:'assets'}
 ]
 
 const fs = require('fs-extra');
