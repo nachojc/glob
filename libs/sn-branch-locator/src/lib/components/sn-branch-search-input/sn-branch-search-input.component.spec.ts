@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { IconModule } from 'sn-common-lib';
 import { SnBranchSearchInputComponent } from './sn-branch-search-input.component';
 
 describe('SnBranchSearchInputComponent', () => {
@@ -8,7 +8,8 @@ describe('SnBranchSearchInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SnBranchSearchInputComponent ]
+      declarations: [ SnBranchSearchInputComponent ],
+      imports: [IconModule]
     })
     .compileComponents();
   }));

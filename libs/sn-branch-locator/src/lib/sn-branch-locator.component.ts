@@ -35,7 +35,7 @@ export class SnBranchLocatorComponent {
   showDrawer: boolean;
   showReCenter: boolean;
 
-  private selectedBranch: AgmMarker;
+  private selectedBranch: SnMarkerDirective;
   constructor(private service: BranchLocatorService) {
 
   }
@@ -56,8 +56,6 @@ export class SnBranchLocatorComponent {
             };
             this.map.api.panTo(selectedPos);
           });
-
-
         } else {
           marker.iconUrl = this.branchIcon as any;
           marker.markerManager.updateIcon(marker);
@@ -65,6 +63,7 @@ export class SnBranchLocatorComponent {
       }
     });
   }
+
 
 
   mapClick(event: MouseEvent): void {
@@ -98,10 +97,10 @@ export class SnBranchLocatorComponent {
   centerChange(mapCenter: LatLngLiteral): void {
 
     if (this.userPostion && this.userPostion.lng && this.userPostion.lat) {
-      this.showReCenter =
-      this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat)
-      &&
-      this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng);
+      // tslint:disable-next-line: max-line-length
+      this.showReCenter = ((this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng)) && (this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat)));
+    } else {
+      this.showReCenter = false;
     }
   }
 
