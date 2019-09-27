@@ -1,15 +1,26 @@
-import { Component, AfterViewInit, OnChanges, SimpleChanges, Input, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
-import { DrawerState } from './models/sn-drawer-state.model';
-
-import * as Hammer from 'hammerjs';
-
+import {
+  Component,
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  Renderer2,
+  HostListener
+} from '@angular/core';
+import {
+  DrawerState
+} from './models/sn-drawer-state.model';
+import { isNumber } from 'util';
 
 @Component({
   selector: 'sn-drawer',
   templateUrl: './sn-drawer.component.html',
   styleUrls: ['./sn-drawer.component.scss']
 })
-export class SnDrawerComponent implements AfterViewInit, OnChanges  {
+export class SnDrawerComponent implements AfterViewInit, OnChanges {
 
 
   @Input() dockedHeight = 50;
@@ -26,82 +37,70 @@ export class SnDrawerComponent implements AfterViewInit, OnChanges  {
 
   @Input() minimumHeight = 0;
 
-  @Output() stateChange: EventEmitter<DrawerState> = new EventEmitter<DrawerState>();
+  @Output() stateChange: EventEmitter < DrawerState > = new EventEmitter < DrawerState > ();
 
   private startPositionTop: number;
   private readonly _BOUNCE_DELTA = 30;
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
+
+  @HostListener('pan', ['$event']) drawerPan(event) {
+    this._handlePan(event);
+  }
+
+  @HostListener('panstart') drawerPanStart() {
+    this.handlePanStart();
+  }
+
+  @HostListener('panend', ['$event']) drawerPanEnd(event) {
+    this.handlePanEnd(event);
+  }
 
   ngAfterViewInit(): void {
 
     this.renderer.setStyle(this.elementRef.nativeElement.querySelector('.drawer-handle'),
       'touch-action', 'none');
-    this._setDrawerState(this.state);
-
-    const hammer = new Hammer(this.elementRef.nativeElement);
-    hammer.get('pan').set({ enable: true, direction: Hammer.DIRECTION_VERTICAL });
-    hammer.on('pan panstart panend', (ev: any) => {
-      if (this.disableDrag) {
-        return;
-      }
-
-      switch (ev.type) {
-        case 'panstart':
-          this._handlePanStart();
-          break;
-        case 'panend':
-          this._handlePanEnd(ev);
-          break;
-        default:
-          this._handlePan(ev);
-      }
-    });
+    this.setDrawerState(this.state);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.state) {
-      return;
-    }
-
-    this._setDrawerState(changes.state.currentValue);
+    this.setDrawerState(changes.state.currentValue );
   }
 
-  private _setDrawerState(state: DrawerState) {
-    this.renderer.setStyle(this.elementRef.nativeElement, 'transition', this.transition);
-    switch (state) {
-      case DrawerState.Bottom:
-        this._setTranslateY('calc(100vh - ' + this.minimumHeight + 'px)');
-        break;
-      case DrawerState.Docked:
-        this._setTranslateY((window.innerHeight - this.dockedHeight) + 'px');
-        break;
-      default:
-        this._setTranslateY(this.distanceTop + 'px');
+  setDrawerState(state: DrawerState) {
+      this.renderer.setStyle(this.elementRef.nativeElement, 'transition', this.transition);
+      switch (state) {
+        case DrawerState.Top:
+          this._setTranslateY(this.distanceTop + 'px');
+          break;
+        case DrawerState.Docked:
+          this._setTranslateY((window.innerHeight - this.dockedHeight) + 'px');
+          break;
+        default:
+          this._setTranslateY('calc(100vh - ' + this.minimumHeight + 'px)');
     }
   }
 
 
 
   private _setTranslateY(value) {
-      this.renderer.setStyle(this.elementRef.nativeElement, 'transform', 'translateY(' + value + ')');
+    this.renderer.setStyle(this.elementRef.nativeElement, 'transform', 'translateY(' + value + ')');
   }
 
-  private _handlePanStart() {
+  handlePanStart() {
     this.startPositionTop = this.elementRef.nativeElement.getBoundingClientRect().top;
   }
 
-  private _handlePanEnd(ev) {
+  handlePanEnd(ev) {
     if (this.shouldBounce && ev.isFinal) {
       this.renderer.setStyle(this.elementRef.nativeElement, 'transition', this.transition);
-
       switch (this.state) {
-        case DrawerState.Docked:
-          this._handleDockedPanEnd(ev);
-          break;
         case DrawerState.Top:
           this._handleTopPanEnd(ev);
+          break;
+        case DrawerState.Docked:
+          this.handleDockedPanEnd(ev);
           break;
         default:
           this._handleBottomPanEnd(ev);
@@ -110,7 +109,7 @@ export class SnDrawerComponent implements AfterViewInit, OnChanges  {
     this.stateChange.emit(this.state);
   }
 
-  private _handleDockedPanEnd(ev) {
+  handleDockedPanEnd(ev) {
     const absDeltaY = Math.abs(ev.deltaY);
     if (absDeltaY > this._BOUNCE_DELTA && ev.deltaY < 0) {
       this.state = DrawerState.Top;
@@ -156,7 +155,3 @@ export class SnDrawerComponent implements AfterViewInit, OnChanges  {
   }
 
 }
-
-
-
-
