@@ -1,27 +1,127 @@
 
-    <div class="branch-wrapper">
-    <h6 class="branch-title">Nearest result</h6>
-    <section class="branch-info">
-        <h6 class="branch-name">Santander - Tottenham Court Rd.</h6>
-        <div class="body-medium">Private</div>
-    </section>
-    <section class="branch-location">
-        <p class="branch-address">
-            164-167 Tottenham Court Rd, Bloomsbury, London, W1T 7JE
-        </p>
-        <div class="branch-directions">
-            <button>1.2 mi</button>
-        </div>
-    </section>
-    <section class="branch-schedule">
-        <div class="branch-hours">
-            <div>Branch</div>
-            <div>Today, 08:30 - 14:30h</div>
-        </div>
-        <div class="atm-hours">
-            <div>ATM</div>
-            <div>Free cash withdrawals</div>
-        </div>
-    </section>
-</div>
+<div class="branch-wrapper">
+    <div class="branch-summary-wrapper">
+        <h6 class="branch-title">Nearest result</h6>
+        <section class="branch-summary">
+            <h6 class="branch-name">Santander - Tottenham Court Rd.</h6>
+            <div class="body-medium">Private</div>
+        </section>
+        <section class="branch-location">
+            <p class="branch-address">
+                164-167 Tottenham Court Rd, Bloomsbury, London, W1T 7JE
+            </p>
+            <div class="branch-directions">
+                <button>1.2 mi</button>
+            </div>
+        </section>
+        <section class="branch-schedule">
+            <div class="branch-hours">
+                <div>Branch</div>
+                <div>Today, 08:30 - 14:30h</div>
+            </div>
+            <div class="atm-hours">
+                <div>ATM</div>
+                <div>Free cash withdrawals</div>
+            </div>
+        </section>
+    </div>
     <sn-tab-group></sn-tab-group>
+    <div class="branch-info-wrapper">
+        <sn-option-list>
+            <sn-option-item>
+                <div class="close-warning">
+                    <div class="Type-5_Light-Style">Closing in 30min</div>
+                    <div class="signal"></div>
+                </div>
+            </sn-option-item>
+            <sn-option-item>
+                <sn-icon color="primary" icon="sn-CHAN025"></sn-icon>
+                <div class="branch-info-contact">
+                    <div>
+                        <div class="Type-5_Regular-Style section-title">Contact number</div>
+                        <div class="Type-5_Regular-Style">07517 295 793</div>
+                    </div>
+                    <div class="button-wrapper">
+                        <button (click)="callBranch()">Call</button>
+                    </div>
+                </div>
+            </sn-option-item>
+            <sn-option-item>
+                <sn-icon color="primary" icon="sn-DOC022"></sn-icon>
+                <div class="Type-5_Regular-Style section-title">Opening hours</div>
+                <div class="Type-5_Regular-Style hours-wrapper">
+                    <div class="weekdays">
+                        <h1 class="title">Mon - Fri:</h1>
+                    </div>
+                    <div class="hours">
+                        08:30 - 14:00<br/>
+                        16:00 - 18:00
+                    </div>
+                </div>
+                <div class="Type-5_Regular-Style hours-wrapper">
+                    <div class="weekdays">
+                        <h1 class="title">Sat:</h1>
+                    </div>
+                    <div class="hours">
+                        08:30 - 15:00
+                    </div>
+                </div>
+                <div class="Type-5_Regular-Style section-title">Bill payments</div>
+                <div class="Type-5_Regular-Style hours-wrapper">
+                    <div class="weekdays">
+                        <h1 class="title">Tues - Thurs:</h1>
+                    </div>
+                    <div class="hours">
+                        08:30 - 10:00
+                    </div>
+                </div>
+            </sn-option-item>
+            <sn-option-item>
+                <sn-icon color="primary" icon="sn-SYS004"></sn-icon>
+                <div class="Type-5_Regular-Style section-title">Notices and news</div>
+                <div class="Type-5_Regular-Style">
+                    <h1 class="title">Tomorrow closed for works</h1>
+                    Due to improvements in the facilities we will keep the office closed tomorrow, Tuesday, August 6, 2018.
+                    <br/>
+                    <br/>
+                    Sorry for the inconvenience
+                </div>
+            </sn-option-item>
+            <sn-option-item>
+                <sn-icon color="primary" icon="sn-BAN089"></sn-icon>
+                <div class="Type-5_Regular-Style section-title">Additional services</div>
+                <div class="Type-5_Regular-Style">
+                    <h1 class="title">Financial</h1>
+                    <ul type="none">
+                        <li>Security box</li>
+                        <li>Instant card issuer</li>
+                        <li>Multichannel area</li>
+                        <li>Videoconferencing with managers</li>
+                        <li>Specialists in:
+                            <ul type="none">
+                                <li>- Investment</li>
+                                <li>- Mortgages</li>
+                                <li>- SME’s</li>
+                                <li>- Select</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h1 class="title">No Financial</h1>
+                    <ul type="none">
+                        <li>Wi-Fi</li>
+                        <li>Meeting rooms</li>
+                        <li>Spaces co-Working</li>
+                        <li>Own parking</li>
+                        <li>English spoken</li>
+                    </ul>
+                </div>
+            </sn-option-item>
+            <sn-option-item>
+                <sn-icon color="primary" icon="sn-FUNC094"></sn-icon>
+                <div class="Type-5_Regular-Style section-title">Accessibility</div>
+                <h1 class="title">Disabled access</h1>
+            </sn-option-item>
+            
+        </sn-option-list>
+    </div>
+</div>
