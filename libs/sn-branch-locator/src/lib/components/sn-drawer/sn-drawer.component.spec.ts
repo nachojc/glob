@@ -75,7 +75,7 @@ describe('SnDrawerComponent', () => {
     });
   });
 
-  
+
 
   it('Pan start Event', () => {
     fixture.detectChanges();
@@ -172,7 +172,7 @@ describe('SnDrawerComponent', () => {
     });
   });
 
-  
+
   it('Pan end Event isFinal false an stae is Docked', () => {
     component.state = DrawerState.Docked;
     fixture.detectChanges();
