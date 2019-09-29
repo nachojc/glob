@@ -10,9 +10,10 @@ import { SnDrawerModule } from './components/sn-drawer/sn-drawer.module';
 import { AgmCoreModule } from '@agm/core';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
 import { SnBranchSearchInputComponent } from './components/sn-branch-search-input/sn-branch-search-input.component';
+import { AutoCompleteComponent } from './components/auto-complete/auto-complete.component';
 
 @NgModule({
-  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective, SnBranchSearchInputComponent],
+  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective, SnBranchSearchInputComponent, AutoCompleteComponent],
   imports: [
     CommonModule,
     IconModule,
