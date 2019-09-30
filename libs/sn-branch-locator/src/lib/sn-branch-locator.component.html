@@ -2,7 +2,7 @@
     <sn-tab-group></sn-tab-group>
 </section>
 
-<section class="branch-locator-map-wrapper">
+<section class="branch-locator-map-wrapper" *ngIf="false">
     <div class="locator-content">
         <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
@@ -28,3 +28,26 @@
     </div>
 </section>
 
+<section class="branch-locator-list-wrapper">
+    <section class="locator-search">
+        <div class="locator-search-container">
+            <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
+        </div>
+    </section>
+
+    <section class="result-list-wrapper">
+        <sn-option-list>
+            <sn-option-item border *ngFor="let branch of branches">
+                <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
+                
+                <div class="Type-5_Regular-Style name">Santander - Tottenham Court Rd.</div>
+                <div class="Type-5_Light-Style address">164-167 Tottenham Court Rd, Bloomsbury, London, W1T 7JE</div>
+                <div right-text class="distance">
+                    0.2m
+                </div>
+            </sn-option-item>
+            
+        </sn-option-list>
+    </section>
+
+</section>
