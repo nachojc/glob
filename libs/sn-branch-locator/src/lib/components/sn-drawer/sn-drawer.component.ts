@@ -13,12 +13,25 @@ import {
 import {
   DrawerState
 } from './models/sn-drawer-state.model';
-import { isNumber } from 'util';
+
+import * as Hammer from 'hammerjs';
+
+import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+
+export class SliderCustomHammerConfig extends HammerGestureConfig {
+  overrides = {
+    pan: {
+      enable: true,
+      direction: Hammer.DIRECTION_VERTICAL
+    }
+  };
+}
 
 @Component({
   selector: 'sn-drawer',
   templateUrl: './sn-drawer.component.html',
-  styleUrls: ['./sn-drawer.component.scss']
+  styleUrls: ['./sn-drawer.component.scss'],
+  providers: [{provide: HAMMER_GESTURE_CONFIG, useClass: SliderCustomHammerConfig}]
 })
 export class SnDrawerComponent implements AfterViewInit, OnChanges {
 
@@ -42,19 +55,26 @@ export class SnDrawerComponent implements AfterViewInit, OnChanges {
   private startPositionTop: number;
   private readonly _BOUNCE_DELTA = 30;
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+  constructor(private elementRef: ElementRef<HTMLElement>, private renderer: Renderer2) {}
 
 
   @HostListener('pan', ['$event']) drawerPan(event) {
-    this._handlePan(event);
+    if (!this.disableDrag) {
+      this._handlePan(event);
+    }
   }
 
   @HostListener('panstart') drawerPanStart() {
-    this.handlePanStart();
+    if (!this.disableDrag) {
+      this.handlePanStart();
+    }
   }
 
   @HostListener('panend', ['$event']) drawerPanEnd(event) {
-    this.handlePanEnd(event);
+    if (!this.disableDrag) {
+      this.handlePanEnd(event);
+    }
+
   }
 
   ngAfterViewInit(): void {

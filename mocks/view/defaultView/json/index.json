@@ -1,0 +1,173 @@
+{
+    "id": "573073b22bb832bf76756d3e",
+    "name": "defaultView",
+    "logo": "santander.png",
+    "viewType": {
+        "title": true,
+        "logo": true,
+        "footer": false,
+        "language": false
+    },
+    "privacyURL": null,
+    "coords": [
+        40.3935415,
+        -3.8730216
+    ],
+    "initSearch": null,
+    "language": {
+        "defaultLanguage": "en",
+        "languageList": [
+            "en"
+        ]
+    },
+    "resultsConfig": {
+        "maxResults": 100,
+        "numElemPag": 10,
+        "maxRadius": 10000,
+        "minRadius": 0.5
+    },
+    "frontConfig": {
+        "maxLengthAddress": 0,
+        "maxResultsAttrib": 3,
+        "maxResultsAddress": 3,
+        "showDetails": {
+            "showCalltoAction": true,
+            "showBanner": true,
+            "showProducts": true,
+            "showLanguages": true
+        }
+    },
+    "literals": {
+        "es": {
+            "FILTEROPENSATS": "Abierto sábados"
+        },
+        "pt": {
+            "DETAILPAGELINK": "Mais informação",
+            "NORESULTSMSG": "Verifique se a sua pesquisa está correcta. Tente adicionar uma localidade ou código postal.",
+            "NORESULTS": "Sem resultados"
+        }
+    },
+    "filters": {
+        "tipoPOI": {
+            "BRANCH": {
+                "visible": true,
+                "active": false
+            },
+            "EMBASSY": {
+                "visible": true,
+                "active": false
+            },
+            "BANCAPRIVADA": {
+                "visible": false,
+                "active": false
+            },
+            "SELECT_EMBASSY": {
+                "visible": true,
+                "active": false
+            },
+            "PYME": {
+                "visible": false,
+                "active": false
+            },
+            "CORRESPONSALES": {
+                "visible": false,
+                "active": false
+            },
+            "AG_FINANCIEROS": {
+                "visible": false,
+                "active": false
+            },
+            "OXXO": {
+                "visible": false,
+                "active": false
+            },
+            "RESIDENTES": {
+                "visible": false,
+                "active": false
+            },
+            "UNIVERSIDADES": {
+                "visible": false,
+                "active": false
+            },
+            "CIRCLE_K": {
+                "visible": false,
+                "active": false
+            },
+            "SELECT": {
+                "visible": true,
+                "active": false
+            },
+            "WORKCAFE": {
+                "visible": true,
+                "active": false
+            },
+            "ELEVEN": {
+                "visible": false,
+                "active": false
+            },
+            "TIENDA_EXTRA": {
+                "visible": false,
+                "active": false
+            },
+            "EMPRESAS": {
+                "visible": false,
+                "active": false
+            },
+            "TIENDA_K": {
+                "visible": false,
+                "active": false
+            },
+            "CLIENTES_POPULAR": {
+                "visible": false,
+                "active": false
+            },
+            "GRANDES_SUPERFICIES": {
+                "visible": false,
+                "active": false
+            },
+            "CLIENTES_PASTOR": {
+                "visible": false,
+                "active": false
+            },
+            "AG_COLABORADORES": {
+                "visible": false,
+                "active": false
+            },
+            "ATM": {
+                "visible": true,
+                "active": false
+            },
+            "TELECOMM": {
+                "visible": false,
+                "active": false
+            },
+            "CLIENTES_BANEFE": {
+                "visible": false,
+                "active": false
+            }
+        },
+        "featurePOI": {
+            "OPEN_SATURDAY": {
+                "visible": true,
+                "active": false
+            },
+            "ACCESIBILITY": {
+                "visible": true,
+                "active": false
+            },
+            "APPOINTMENT": {
+                "visible": false,
+                "active": false
+            },
+            "PARKING": {
+                "visible": true,
+                "active": false
+            },
+            "WIFI": {
+                "visible": true,
+                "active": false
+            }
+        },
+        "idiomasPOI": null
+    }
+}

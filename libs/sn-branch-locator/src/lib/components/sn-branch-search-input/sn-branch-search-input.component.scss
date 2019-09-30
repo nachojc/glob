@@ -20,17 +20,25 @@
     }
 
     input[type=search] {
-        display: inline;
-        font-family: 'SantanderText';
+        -webkit-appearance: none;
+        display: inline-block;
+        font-family: inherit;
         text-align: left;
         font-weight: normal;
         font-size: 16px;
-        color: rgb(68, 68, 68);
+        color: currentColor;
         border: none;
         padding: 0;
-        background-color: transparent;
+        margin: 0;
+        width: 100%;
+        text-align: inherit;
+        vertical-align: bottom;
+        max-width: 100%;
+        background: 0 0;
         outline: none;
-        flex: 1 0 auto;
+        -webkit-rtl-ordering: logical;
+        -webkit-user-select: text;
+        cursor: auto;
 
         /* clears the 'X' from Internet Explorer */
         &::-ms-clear {

@@ -1,0 +1,9 @@
+https://branchlocator.santander.com:443/service/config.json
+https://back-weu.azurewebsites.net/branch-locator/view/defaultView/
+https://back-weu.azurewebsites.net/branch-locator/find/defaultView?config=%7B%22coords%22%3A%5B38.737626299999995%2C-9.16547%5D%7D
+https://back-weu.azurewebsites.net/branch-locator/find/defaultView?config=%7B%22coords%22%3A%5B38.737626299999995%2C-9.16547%5D%7D&northEast=38.82006059696285%2C-9.101096983642606&southWest=38.65509674677453%2C-9.22984301635745
+https://back-weu.azurewebsites.net/branch-locator/find/defaultView?config=%7B%22coords%22%3A%5B38.737626299999995%2C-9.16547%5D%7D
+
+
+
+"https://back-weu.azurewebsites.net/branch-locator/find/defaultView?config=%7B%22coords%22%3A%5B38.737626299999995%2C-9.16547%5D%7D&northEast=38.75928452100152%2C-9.146889885910696&southWest=38.718044154822316%2C-9.179076394089407"
