@@ -28,26 +28,24 @@
     <sn-tab-group></sn-tab-group>
     <div class="branch-info-wrapper">
         <sn-option-list>
-            <sn-option-item>
+            <sn-option-item border>
                 <div class="close-warning">
                     <div class="Type-5_Light-Style">Closing in 30min</div>
                     <div class="signal"></div>
                 </div>
             </sn-option-item>
-            <sn-option-item>
-                <sn-icon color="primary" icon="sn-CHAN025"></sn-icon>
-                <div class="branch-info-contact">
-                    <div>
-                        <div class="Type-5_Regular-Style section-title">Contact number</div>
-                        <div class="Type-5_Regular-Style">07517 295 793</div>
-                    </div>
-                    <div class="button-wrapper">
-                        <button (click)="callBranch()">Call</button>
-                    </div>
+            <sn-option-item border>
+                <sn-icon color="primary" icon="sn-CHAN025" start align-top></sn-icon>
+                <div>
+                    <div class="Type-5_Regular-Style section-title">Contact number</div>
+                    <div class="Type-5_Regular-Style">07517 295 793</div>
+                </div>
+                <div right-text>
+                    <button (click)="callBranch()" class="call-button">Call</button>
                 </div>
             </sn-option-item>
-            <sn-option-item>
-                <sn-icon color="primary" icon="sn-DOC022"></sn-icon>
+            <sn-option-item border>
+                <sn-icon color="primary" icon="sn-DOC022" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Opening hours</div>
                 <div class="Type-5_Regular-Style hours-wrapper">
                     <div class="weekdays">
@@ -76,8 +74,8 @@
                     </div>
                 </div>
             </sn-option-item>
-            <sn-option-item>
-                <sn-icon color="primary" icon="sn-SYS004"></sn-icon>
+            <sn-option-item border>
+                <sn-icon color="primary" icon="sn-SYS004" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Notices and news</div>
                 <div class="Type-5_Regular-Style">
                     <h1 class="title">Tomorrow closed for works</h1>
@@ -87,8 +85,8 @@
                     Sorry for the inconvenience
                 </div>
             </sn-option-item>
-            <sn-option-item>
-                <sn-icon color="primary" icon="sn-BAN089"></sn-icon>
+            <sn-option-item border>
+                <sn-icon color="primary" icon="sn-BAN089" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Additional services</div>
                 <div class="Type-5_Regular-Style">
                     <h1 class="title">Financial</h1>
@@ -117,7 +115,7 @@
                 </div>
             </sn-option-item>
             <sn-option-item>
-                <sn-icon color="primary" icon="sn-FUNC094"></sn-icon>
+                <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Accessibility</div>
                 <h1 class="title">Disabled access</h1>
             </sn-option-item>
