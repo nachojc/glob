@@ -59,7 +59,7 @@
         height: calc(100% - 48px);
 
         .result-list-wrapper {
-            height: calc(100% - 48px);
+            height: calc(100%);
             overflow: scroll;
 
             sn-option-item {
@@ -75,11 +75,13 @@
                 .address {
                     font-size: 1rem;
                     line-height: 1.075;
+                    font-weight: 300;
                     color: rgb(118, 118, 118);
                 }
 
                 .distance {
                     font-size: 1rem;
+                    font-weight: 300;
                     color: rgb(118, 118, 118);
                 }
 
