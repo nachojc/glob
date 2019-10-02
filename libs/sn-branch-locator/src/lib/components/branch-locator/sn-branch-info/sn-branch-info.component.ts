@@ -13,4 +13,7 @@ export class SnBranchInfoComponent implements OnInit {
 
   }
 
+  callBranch() {
+  }
+
 }

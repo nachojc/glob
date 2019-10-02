@@ -15,6 +15,7 @@ import { SnBranchSearchInputComponent } from './components/sn-branch-search-inpu
   declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective, SnBranchSearchInputComponent],
   imports: [
     CommonModule,
+    OptionListModule,
     IconModule,
     ButtonModule,
     HttpClientModule,
