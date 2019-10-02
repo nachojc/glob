@@ -1,0 +1,36 @@
+<span>
+  <input
+    #in
+    [attr.type]="type"
+    [attr.id]="inputId"
+    autocomplete="off"
+    [attr.required]="required"
+    [value]="inputFieldValue"
+    aria-autocomplete="list"
+    role="combobox"
+    [attr.aria-expanded]="overlayVisible"
+    aria-haspopup="true"
+    [attr.aria-activedescendant]="'sn-highlighted-option'"
+    (click)="onInputClick($event)"
+    (input)="onInput($event)">
+
+  
+    <div
+    #panel
+    *ngIf="overlayVisible"
+    [style.max-height]="scrollHeight"
+    [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}">
+      <ul role="listbox">
+        <li
+          role="option"
+          *ngFor="let option of suggestions; let idx = index"
+          (mouseenter)="highlightOption=option" 
+          (mouseleave)="highlightOption=null"
+          [id]="highlightOption == option ? 'sn-highlighted-option':''"
+          (click)="selectItem(option)">
+            <span>{{ resolveFieldData(option) }}</span>
+        </li>
+        
+      </ul>
+    </div>
+  </span>

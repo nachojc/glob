@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'BranchLocator';
+
+  suggestions;
+
+  completeMethod(event) {
+    const brands = ['Audi', 'BMW', 'Fiat', 'Ford', 'Honda', 'Jaguar', 'Mercedes', 'Renault', 'Volvo', 'VW'];
+
+    this.suggestions = brands.filter((item) => item.includes(event.query));
+    console.log(this.suggestions);
+  }
 }
