@@ -7,7 +7,7 @@ module.exports = function (req, params) {
     if (params.indexOf('southWest') !== -1){
         file =`json/index2.json`;
     }else{
-        file = `json/index2.json`;
+        file = `json/index.json`;
 
     }
     
