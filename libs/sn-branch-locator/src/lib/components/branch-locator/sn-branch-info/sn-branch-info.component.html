@@ -3,15 +3,15 @@
     <div class="branch-summary-wrapper">
         <h6 class="branch-title">Nearest result</h6>
         <section class="branch-summary">
-            <h6 class="branch-name">Santander - Tottenham Court Rd.</h6>
+            <h6 class="branch-name">{{branch.name}}</h6>
             <div class="body-medium">Private</div>
         </section>
         <section class="branch-location">
             <p class="branch-address">
-                164-167 Tottenham Court Rd, Bloomsbury, London, W1T 7JE
+                {{branch.location.address}}
             </p>
             <div class="branch-directions">
-                <button>1.2 mi</button>
+                <button>{{branch.distanceInMiles | number:'0.0-2'}} m</button>
             </div>
         </section>
         <section class="branch-schedule">

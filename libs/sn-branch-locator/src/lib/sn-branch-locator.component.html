@@ -9,8 +9,8 @@
             (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
             <agm-marker [agmFitBounds]="true" [latitude]="userPostion?.lat" [longitude]="userPostion?.lng"
                 [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
-            <agm-marker canChangeIcon *ngFor="let branch of branches" [agmFitBounds]="true" [latitude]="branch.lat"
-                [longitude]="branch.lng" [iconUrl]="branchIcon" (markerClick)="markerSelected($event)"
+            <agm-marker canChangeIcon *ngFor="let branch of branchesList" [agmFitBounds]="true" [latitude]="branch.location.geoCoords.latitude"
+                [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)"
                 [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
         </agm-map>
 
@@ -23,7 +23,7 @@
             </button>
         </section>
         <sn-drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
-                <sn-branch-info></sn-branch-info>
+                <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch"></sn-branch-info>
         </sn-drawer>
     </div>
 </section>

@@ -4,6 +4,8 @@ import { AgmMarker, LatLngLiteral } from '@agm/core';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
+import { Branch } from './models/branch.model';
+import { SnBranchLocatorService } from './sn-branch-locator.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -29,57 +31,71 @@ export class SnBranchLocatorComponent {
     scaledSize: { height: 90, width: 90 }
   };
   branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
-
+  branchesList: Branch[];
   userPostion: LatLngLiteral;
   zoom = 15;
   showDrawer: boolean;
   showReCenter: boolean;
 
-  private selectedBranch: SnMarkerDirective;
-  constructor(private service: BranchLocatorService) {
+  private selectedMarker: SnMarkerDirective;
+  selectedBranch: Branch;
 
+  constructor(
+    private service: BranchLocatorService,
+    private branchService: SnBranchLocatorService
+  ) {
+    this.getBranchesFromService();
+  }
+
+  // TODO: remove. Created for testing propose
+  getBranchesFromService() {
+    this.branchService.getBranches().subscribe(res => {
+      this.branchesList = res;
+    }, err => {
+      console.error(err);
+    });
   }
 
 
-  markerSelected(selected: SnMarkerDirective) {
-    this.branchMarkerList.forEach((marker) => {
-      if (marker.clickable) {
-        if (marker.id() === selected.id()) {
-          selected.iconUrl = this.branchSelectedIcon as any;
-          selected.markerManager.updateIcon(selected);
-          this.selectedBranch = selected;
-          this.showDrawer =  Boolean(this.selectedBranch);
-          selected.markerManager.getNativeMarker(selected).then((nativeMarker: any) => {
-            const selectedPos: LatLngLiteral = {
-              lat: nativeMarker.position.lat(),
-              lng:  nativeMarker.position.lng()
-            };
-            this.map.api.panTo(selectedPos);
-          });
-        } else {
-          marker.iconUrl = this.branchIcon as any;
-          marker.markerManager.updateIcon(marker);
-        }
-      }
+  markerSelected(selected: SnMarkerDirective, branch: Branch) {
+    if (this.selectedMarker) {
+      this.selectedMarker.iconUrl = this.branchIcon as any;
+      this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
+    }
+    selected.iconUrl = this.branchSelectedIcon as any;
+    selected.markerManager.updateIcon(selected);
+    this.selectedMarker = selected;
+    this.selectedBranch = branch;
+    this.showDrawer =  Boolean(this.selectedMarker);
+    selected.markerManager.getNativeMarker(selected).then((nativeMarker: any) => {
+      const selectedPos: LatLngLiteral = {
+        lat: nativeMarker.position.lat(),
+        lng:  nativeMarker.position.lng()
+      };
+      this.map.api.panTo(selectedPos);
     });
   }
 
 
 
   mapClick(event: MouseEvent): void {
-    if (this.selectedBranch) {
-      this.resetMarkers();
+    if (this.selectedMarker) {
+      this.selectedMarker.iconUrl = this.branchIcon as any;
+      this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
+      this.selectedMarker = undefined;
+      this.showDrawer =  Boolean(this.selectedMarker);
+      this.selectedBranch = undefined;
     }
   }
 
-  private resetMarkers() {
-    this.branchMarkerList.filter((marker) => marker.clickable).forEach((marker) => {
-      marker.iconUrl = this.branchIcon as any;
-      marker.markerManager.updateIcon(marker);
-    });
-    this.selectedBranch = undefined;
-    this.showDrawer =  Boolean(this.selectedBranch);
-  }
+  // private resetMarkers() {
+  //   this.branchMarkerList.filter((marker) => marker.clickable).forEach((marker) => {
+  //     marker.iconUrl = this.branchIcon as any;
+  //     marker.markerManager.updateIcon(marker);
+  //   });
+  //   this.selectedMarker = undefined;
+  //   this.showDrawer =  Boolean(this.selectedMarker);
+  // }
 
   mapReady(): void {
 
