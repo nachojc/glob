@@ -28,7 +28,7 @@ export class SnBranchLocatorComponent {
     url: 'assets/branchlocator/pinVoce.svg',
     scaledSize: { height: 90, width: 90 }
   };
-  branches: [LatLngLiteral] = [{ lat: 38.7396376, lng: -9.1694687 }];
+  branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
 
   userPostion: LatLngLiteral;
   zoom = 15;

@@ -3,7 +3,7 @@ import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral } from '@agm/core';
 import { SnTabModule } from './components/tabs/sn-tab.module';
 import { SnBranchSearchInputComponent } from './components/sn-branch-search-input/sn-branch-search-input.component';
-import { IconModule } from 'sn-common-lib';
+import { IconModule, OptionListModule } from 'sn-common-lib';
 import { SnDrawerComponent } from './components/sn-drawer/sn-drawer.component';
 import { SnBranchInfoComponent } from './components/branch-locator/sn-branch-info/sn-branch-info.component';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
@@ -27,6 +27,7 @@ describe('SnBranchLocatorComponent', () => {
       imports: [
         IconModule,
         SnTabModule,
+        OptionListModule,
         AgmCoreModule.forRoot({
           apiKey: 'AIzaSyCCOzVlRBrfWv06M6pHNtlkmcmuemXneAM'
         })

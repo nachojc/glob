@@ -1,78 +1,170 @@
+@import '../../../variables.scss';
+.branch-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;  
+}
 
-    .branch-wrapper {
-      padding: 16px;
+.branch-summary-wrapper {
+  padding: 16px;
 
-      h6 {
-        font-family: 'SantanderHeadline';
-        font-size: 18px;
+  h6 {
+    font-family: 'SantanderHeadline';
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .branch-title {
+    color: rgb(236, 0, 0);
+  }
+
+  .branch-summary {
+
+    .branch-name {
+      font-weight: bold;
+      color: rgb(118, 118, 118);
+      padding: 0;
+    }
+
+    .body-medium {
+      font-size: 16px;
+      font-weight: lighter;
+      color: rgb(118, 118, 118);
+    }
+  }
+
+  .branch-location {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+
+    .branch-address {
+      font-weight: normal;
+      font-size: 16px;
+      color: rgb(118, 118, 118);
+      flex-grow: 1;
+    }
+
+    .branch-directions {
+      button {
+        background: rgb(51, 102, 255);
+        color: white;
+        text-align: center;
+        border-radius: 16px;
+        width: 103px;
+        height: 32px;
+        font-weight: normal;
+        font-size: 1em;
+
+        line-height: 1em;
+      }
+    }
+
+  }
+
+  .branch-schedule {
+    font-size: 14px;
+    color: rgb(68, 68, 68);
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+
+    .atm-hours,
+    .branch-hours {
+      flex-grow: 1;
+
+      & :first-child {
         font-weight: bold;
       }
-
-      .branch-title {
-        color: rgb(236, 0, 0);
-      }
-
-      .branch-info {
-
-        .branch-name {
-          font-weight: bold;
-          color: rgb(118, 118, 118);
-          padding: 0;
-        }
-
-        .body-medium {
-          font-size: 16px;
-          font-weight: lighter;
-          color: rgb(118, 118, 118);
-        }
-      }
-
-      .branch-location {
-        display: flex;
-        width: 100%;
-        flex-direction: row;
-
-        .branch-address {
-          font-weight: normal;
-          font-size: 16px;
-          color: rgb(118, 118, 118);
-          flex-grow: 1;
-        }
-
-        .branch-directions {
-          button {
-            background: rgb(51, 102, 255);
-            color: white;
-            text-align: center;
-            border-radius: 16px;
-            width: 103px;
-            height: 32px;
-            font-weight: normal;
-            font-size: 1em;
-
-            line-height: 1em;
-          }
-        }
-
-      }
-
-      .branch-schedule {
-        font-size: 14px;
-        color: rgb(68, 68, 68);
-        display: flex;
-        width: 100%;
-        flex-direction: row;
-
-        .atm-hours,
-        .branch-hours {
-          flex-grow: 1;
-
-          & :first-child {
-            font-weight: bold;
-          }
-        }
-
-
-      }
-
     }
+
+
+  }
+
+}
+
+.branch-info-wrapper {
+  padding: 1rem;
+  overflow: scroll;
+
+  sn-option-item {
+    padding: .5rem 0 1rem 0;
+
+    sn-icon {
+      font-size: 2rem;
+    }
+
+    .call-button {
+      background: white;
+      color: $color-primary-santander;
+      text-align: center;
+      border-radius: 16px;
+      width: 103px;
+      height: 32px;
+      font-weight: normal;
+      font-size: 1em;
+      border: 1px solid $color-primary-santander;
+      line-height: 1em;
+    }
+
+    .close-warning {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+  
+      .signal {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 100%;
+        background-color: $color-secondary-yellow;
+        margin: auto auto auto .5rem;
+      }
+    }
+    .hours-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      div {
+        width: 50%;
+      }
+    }
+
+    .title{
+      font-size: 1rem;
+      line-height: 1.5rem;
+      color: $color-secondary-gray;
+      font-weight: 600;
+      margin-bottom: 0;
+      margin-top: .2rem;
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    div {
+      font-size: 1rem;
+      line-height: 1.5rem;
+
+      &.section-title {
+        color: $color-secondary-mediumgray;
+        margin-top: .25rem;
+        
+      }
+
+      ul {
+        padding: 0;
+        margin: 0;
+
+        li>ul {
+          padding-left: 1rem;
+        }
+      }
+      
+    }
+  }
+
+
+  
+
+
+}
