@@ -1,6 +1,6 @@
 <div class="search-box">
   <sn-icon icon="sn-FUNC071"></sn-icon>
-  <input #in type="search"  [placeholder]="placeholder || ''">
+  <input #in *ngIf="useGoogle" type="search"  [placeholder]="placeholder || ''" autocomplete="off" autocapitalize="off" spellcheck="off"  (keydown.enter)="$event.preventDefault()">
   <button *ngIf="showReCenter" (click)="reCenter.emit($event)">
       <sn-icon icon="sn-SYS028"></sn-icon>
   </button>

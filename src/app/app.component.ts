@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'BranchLocator';
 
-  suggestions;
+  constructor() { }
 
-  completeMethod(event) {
-    const brands = ['Audi', 'BMW', 'Fiat', 'Ford', 'Honda', 'Jaguar', 'Mercedes', 'Renault', 'Volvo', 'VW'];
 
-    this.suggestions = brands.filter((item) => item.toLowerCase().includes(event.query.toLowerCase()));
-    console.log(this.suggestions);
+  search(event) {
+    console.log(event);
   }
+
+
 }

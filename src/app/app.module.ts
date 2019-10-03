@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { SnBranchLocatorModule, AutocompleteModule, BranchSearchInputModule } from 'sn-branch-locator';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -13,7 +14,7 @@ import { SnBranchLocatorModule, AutocompleteModule, BranchSearchInputModule } fr
     BrowserModule,
     SnBranchLocatorModule,
     AutocompleteModule,
-    BranchSearchInputModule,
+    BranchSearchInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

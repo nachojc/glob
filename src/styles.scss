@@ -9,3 +9,35 @@ html, body {
     max-height: 100%;
     overflow: hidden;
 }
+
+// Google auto complete styles
+.pac-container{
+
+    .pac-item{
+        .pac-icon .pac-icon-marker {
+
+        }
+        .pac-item-query{
+            line-height: 1rem !important;
+            .pac-matched{
+            font-family: SantanderText !important;
+            font-weight: bold !important;
+            font-size: 1em !important;
+            }
+            font-family: SantanderText !important;
+            font-weight: normal !important;
+            &+span{
+                font-family: SantanderText !important;
+                font-weight: lighter !important;
+                display: block !important;
+                font-size: 1em !important;
+                margin-left: 22px !important;
+                line-height: 1rem !important;
+            }
+        }
+    }
+    &::after{
+        // remove google log from auto comlete list
+        display: none !important;
+    }
+}

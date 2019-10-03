@@ -1,9 +1,11 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from './components/branch-locator/directives/sn-map/sn-map.directive';
-import { AgmMarker, LatLngLiteral } from '@agm/core';
+import { LatLngLiteral } from '@agm/core';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
+import { from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -129,6 +131,16 @@ export class SnBranchLocatorComponent {
 
     }
 
+  }
+
+
+  placeChange(place: LatLngLiteral) {
+    from(this.map.api.panTo(place)).pipe(
+      switchMap(() => from(this.map.api.setZoom(this.zoom))),
+      switchMap(() => from(this.map.api.getBounds()))
+    ).subscribe((mapBounds)=> {
+      console.log('Map Bounds', mapBounds);
+    });
   }
 
 }

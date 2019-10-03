@@ -24,7 +24,8 @@ import { BranchSearchInputModule } from './components/branch-search-input/branch
     AutocompleteModule,
     BranchSearchInputModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0'
+      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      libraries: ['places']
     })
   ],
   exports: [SnBranchLocatorComponent]
