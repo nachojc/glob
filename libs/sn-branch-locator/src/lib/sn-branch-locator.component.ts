@@ -81,8 +81,6 @@ export class SnBranchLocatorComponent {
     });
   }
 
-
-
   mapClick(event: MouseEvent): void {
     if (this.selectedBranch) {
       this.resetMarkers();

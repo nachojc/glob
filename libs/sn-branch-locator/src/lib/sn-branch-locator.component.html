@@ -30,10 +30,9 @@
             </button>
         </section>
         <sn-drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
-                <sn-branch-info></sn-branch-info>
+            <sn-branch-info></sn-branch-info>
         </sn-drawer>
     </div>
-</section>
 
 
 <section class="branch-locator-list-wrapper" *ngIf="!auxTabChange">
