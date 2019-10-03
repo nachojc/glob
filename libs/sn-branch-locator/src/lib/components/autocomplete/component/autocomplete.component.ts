@@ -11,14 +11,27 @@ import {
   Input,
   Output,
   EventEmitter,
-  IterableDiffers
+  IterableDiffers,
+  Renderer2,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   ControlValueAccessor
 } from '@angular/forms';
-import { isObject } from 'util';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  isObject
+} from 'util';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  AnimationEvent
+} from '@angular/animations';
+
+
 
 
 export const AUTOCOMPLETE_VALUE_ACCESSOR: any = {
@@ -129,9 +142,11 @@ export class AutocompleteComponent implements AfterViewChecked, AfterContentInit
 
   focus: boolean = false;
 
+  overlay: HTMLDivElement;
+
   onModelChange: (_: any) => void = (_) => { };
 
-  constructor(public differs: IterableDiffers) {
+  constructor(public renderer: Renderer2, public differs: IterableDiffers, public cd: ChangeDetectorRef) {
     this.differ = differs.find([]).create(null);
   }
 
@@ -240,8 +255,8 @@ export class AutocompleteComponent implements AfterViewChecked, AfterContentInit
   }
 
   updateFilledState() {
-    this.filled = (this.inputFieldValue && this.inputFieldValue !== '')
-      || (this.inputEL && this.inputEL.nativeElement && this.inputEL.nativeElement.value !== '');
+    this.filled = (this.inputFieldValue && this.inputFieldValue !== '') ||
+      (this.inputEL && this.inputEL.nativeElement && this.inputEL.nativeElement.value !== '');
   }
 
   onInputClick(event: MouseEvent) {
@@ -304,6 +319,50 @@ export class AutocompleteComponent implements AfterViewChecked, AfterContentInit
 
     if (focus) {
       this.focusInput();
+    }
+  }
+
+  bindDocumentClickListener() {
+    if (!this.documentClickListener) {
+      this.documentClickListener = this.renderer.listen('document', 'click', (event) => {
+        if (event.which === 3) {
+          return;
+        }
+
+        if (!this.inputClick) {
+          this.hide();
+        }
+
+        this.inputClick = false;
+        this.cd.markForCheck();
+      });
+    }
+  }
+
+  unbindDocumentClickListener() {
+    if (this.documentClickListener) {
+      this.documentClickListener();
+      this.documentClickListener = null;
+    }
+  }
+
+
+  onOverlayHide() {
+    this.unbindDocumentClickListener();
+    this.overlay = null;
+  }
+
+  onOverlayAnimationStart(event: AnimationEvent) {
+    switch (event.toState) {
+      case 'visible':
+        this.overlay = event.element;
+        this.bindDocumentClickListener();
+
+        break;
+
+      case 'void':
+        this.onOverlayHide();
+        break;
     }
   }
 

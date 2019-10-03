@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { SnBranchLocatorModule, AutocompleteModule } from 'sn-branch-locator';
+import { SnBranchLocatorModule, AutocompleteModule, BranchSearchInputModule } from 'sn-branch-locator';
 
 
 @NgModule({
@@ -12,7 +12,8 @@ import { SnBranchLocatorModule, AutocompleteModule } from 'sn-branch-locator';
   imports: [
     BrowserModule,
     SnBranchLocatorModule,
-    AutocompleteModule
+    AutocompleteModule,
+    BranchSearchInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

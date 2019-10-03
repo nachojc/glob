@@ -9,11 +9,11 @@ import { SnTabModule } from './components/tabs/sn-tab.module';
 import { SnDrawerModule } from './components/sn-drawer/sn-drawer.module';
 import { AgmCoreModule } from '@agm/core';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
-import { SnBranchSearchInputComponent } from './components/sn-branch-search-input/sn-branch-search-input.component';
 import { AutocompleteModule } from './components/autocomplete/autocomplete.module';
+import { BranchSearchInputModule } from './components/branch-search-input/branch-search-input.module';
 
 @NgModule({
-  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective, SnBranchSearchInputComponent],
+  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective],
   imports: [
     CommonModule,
     IconModule,
@@ -22,8 +22,9 @@ import { AutocompleteModule } from './components/autocomplete/autocomplete.modul
     SnTabModule,
     SnDrawerModule,
     AutocompleteModule,
+    BranchSearchInputModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyD0C63icAQ0lIu50_xws-k9rdDyzGfCIPc'
+      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0'
     })
   ],
   exports: [SnBranchLocatorComponent]

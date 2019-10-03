@@ -1,4 +1,4 @@
-<span>
+<span class="sn-autocomplete">
   <input
     #in
     [attr.type]="type"
@@ -16,11 +16,13 @@
 
   
     <div
+    class="sn-autocomplete-panel"
     #panel
     *ngIf="overlayVisible"
     [style.max-height]="scrollHeight"
-    [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}">
-      <ul role="listbox">
+    [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}"
+    (@overlayAnimation.start)="onOverlayAnimationStart($event)">
+      <ul role="listbox" class="sn-autocomplete-list">
         <li
           role="option"
           *ngFor="let option of suggestions; let idx = index"
