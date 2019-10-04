@@ -23,7 +23,7 @@ import { SnBranchSearchInputComponent } from './components/sn-branch-search-inpu
     SnDrawerModule,
     OptionListModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCCOzVlRBrfWv06M6pHNtlkmcmuemXneAM'
+      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0'
     })
   ],
   exports: [SnBranchLocatorComponent]
