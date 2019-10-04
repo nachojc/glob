@@ -33,7 +33,6 @@ export class SnBranchLocatorComponent {
   branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
 
   branchesList: Branch[];
-  auxTabChange = true; // TODO: remove. Created for testing propose
 
   userPostion: LatLngLiteral;
   zoom = 15;
@@ -80,8 +79,6 @@ export class SnBranchLocatorComponent {
       }
     });
   }
-
-
 
   mapClick(event: MouseEvent): void {
     if (this.selectedBranch) {
