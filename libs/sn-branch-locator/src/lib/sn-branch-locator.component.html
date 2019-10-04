@@ -1,11 +1,5 @@
 <sn-tab-group>
     <sn-tab label="Map">
-        <section class="locator-search">
-            <div class="locator-search-container">
-                <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
-            </div>
-        </section>
-
         <div class="locator-content">
             <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
@@ -18,10 +12,11 @@
             </agm-map>
 
             <section class="locator-search">
-                <!-- <div class="locator-search-container">
-                    <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5"
-                    placeholder="Santander  - Regent’s Place" (reCenter)="centerMapToUser()"></sn-branch-search-input>
-                </div> -->
+                    <section class="locator-search">
+                            <div class="locator-search-container">
+                                <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
+                            </div>
+                        </section>
                 <button class="center-map-user" (click)="centerMapToUser()">
                     <sn-icon icon="sn-SYS029"></sn-icon>
                 </button>
@@ -31,7 +26,8 @@
             </sn-drawer>
         </div>
     </sn-tab>
-    <sn-tab label="List">
+    <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
+    <sn-tab label="List" style="overflow: scroll">
         <section class="result-list-wrapper">
             <sn-option-list>
                 <sn-option-item border *ngFor="let branch of branchesList">
@@ -45,5 +41,6 @@
                 </sn-option-item>
                 
             </sn-option-list>
-        </section></sn-tab>
+        </section>
+    </sn-tab>
 </sn-tab-group>
