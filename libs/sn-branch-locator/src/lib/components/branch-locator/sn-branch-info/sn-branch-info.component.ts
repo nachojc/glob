@@ -14,6 +14,7 @@ export class SnBranchInfoComponent {
   @Input()
   set branch(value: Branch) {
     this._branch = value;
+    this.parseHour(this._branch.schedule.workingDay);
   }
 
   get branch() {
@@ -22,7 +23,41 @@ export class SnBranchInfoComponent {
 
   constructor() { }
 
-  callBranch() {
+  contactBranch() {
+  }
+
+  parseHour(branchSchedule: any) {
+    const nowWeekDay = new Date().getDay();
+    console.log('nowWeekDay: ', nowWeekDay);
+    Object.keys(branchSchedule).forEach(weekDay => {
+      console.log('day: ', weekDay);
+      console.log(branchSchedule[weekDay]);
+    });
+
+  //   "schedule": {
+  //     "workingDay": {
+  //         "WEDNESDAY": [
+  //             "09:30-17:00"
+  //         ],
+  //         "MONDAY": [
+  //             "09:30-17:00"
+  //         ],
+  //         "THURSDAY": [
+  //             "09:30-17:00"
+  //         ],
+  //         "SUNDAY": [],
+  //         "TUESDAY": [
+  //             "09:30-17:00"
+  //         ],
+  //         "FRIDAY": [
+  //             "09:30-17:00"
+  //         ],
+  //         "SATURDAY": [
+  //             "09:30-16:00"
+  //         ]
+  //     },
+  //     "specialDay": []
+  // },
   }
 
 }
