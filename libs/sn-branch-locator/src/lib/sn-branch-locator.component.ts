@@ -4,6 +4,7 @@ import { AgmMarker, LatLngLiteral } from '@agm/core';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
+// import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -36,8 +37,15 @@ export class SnBranchLocatorComponent {
   showReCenter: boolean;
 
   private selectedBranch: SnMarkerDirective;
-  constructor(private service: BranchLocatorService) {
-
+  constructor(
+    private service: BranchLocatorService,
+    // private translate: TranslateService
+    ) {
+      // translate.setDefaultLang('en');
+      // translate.get('HOME.HELLO', {value: 'world'}).subscribe((res: string) => {
+      //   // => 'hello world'
+      //   console.log(res);
+      // });
   }
 
 
