@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { OptionListModule, IconModule, SnTabModule } from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from './sn-branch-info.component';
-import { SnTabModule } from '../../tabs/sn-tab.module';
-import { OptionListModule, IconModule } from 'sn-common-lib';
+
 
 describe('SnBranchInfoComponent', () => {
   let component: SnBranchInfoComponent;
