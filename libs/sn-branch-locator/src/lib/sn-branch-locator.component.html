@@ -21,14 +21,14 @@
                 [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
         </agm-map>
 
-        <!-- <section class="locator-search">
-            <div class="locator-search-container">
+        <section class="locator-search">
+            <!-- <div class="locator-search-container">
                     <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
-            </div>
+            </div> -->
             <button class="center-map-user" (click)="centerMapToUser()">
                 <sn-icon icon="sn-SYS029"></sn-icon>
             </button>
-        </section> -->
+        </section>
         <sn-drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
                 <sn-branch-info></sn-branch-info>
         </sn-drawer>
