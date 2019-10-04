@@ -138,7 +138,7 @@ export class SnBranchLocatorComponent {
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
       switchMap(() => from(this.map.api.getBounds()))
-    ).subscribe((mapBounds)=> {
+    ).subscribe((mapBounds) => {
       console.log('Map Bounds', mapBounds);
     });
   }
