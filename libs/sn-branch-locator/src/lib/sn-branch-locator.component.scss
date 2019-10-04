@@ -54,6 +54,45 @@
     }
 
 
+    .branch-locator-list-wrapper{
+        flex: 1;
+        height: calc(100% - 48px);
+
+        .result-list-wrapper {
+            height: calc(100%);
+            overflow: scroll;
+
+            sn-option-item {
+                padding: .5rem 1rem .5rem 1.5rem;
+                .name {
+                    font-weight: bold;
+                    color: #ec0000; // change to variable
+                    font-size: 1rem;
+                    line-height: 1.5;
+                    padding-bottom: .5rem;
+                }
+
+                .address {
+                    font-size: 1rem;
+                    line-height: 1.075;
+                    font-weight: 300;
+                    color: rgb(118, 118, 118);
+                }
+
+                .distance {
+                    font-size: 1rem;
+                    font-weight: 300;
+                    color: rgb(118, 118, 118);
+                }
+
+                sn-icon {
+                    display: flex;
+                }
+            }
+
+        }
+    }
+
 
 
 

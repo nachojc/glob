@@ -4,6 +4,8 @@ import { AgmMarker, LatLngLiteral } from '@agm/core';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
+import { SnBranchLocatorService } from './sn-branch-locator.service';
+import { Branch } from './models/branch.model';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -30,14 +32,29 @@ export class SnBranchLocatorComponent {
   };
   branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
 
+  branchesList: Branch[];
+  auxTabChange = true; // TODO: remove. Created for testing propose
+
   userPostion: LatLngLiteral;
   zoom = 15;
   showDrawer: boolean;
   showReCenter: boolean;
 
   private selectedBranch: SnMarkerDirective;
-  constructor(private service: BranchLocatorService) {
+  constructor(
+    private service: BranchLocatorService,
+    private branchService: SnBranchLocatorService,
+  ) {
+    this.getBranchesFromService();
+  }
 
+  // TODO: remove. Created for testing propose
+  getBranchesFromService() {
+    this.branchService.getBranches().subscribe(res => {
+      this.branchesList = res;
+    }, err => {
+      console.error(err);
+    });
   }
 
 

@@ -10,6 +10,7 @@ import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import {  of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
 
 
 const BranchLocatorServiceMock = {
@@ -28,6 +29,7 @@ describe('SnBranchLocatorComponent', () => {
         IconModule,
         SnTabModule,
         OptionListModule,
+        HttpClientModule,
         AgmCoreModule.forRoot({
           apiKey: 'AIzaSyCCOzVlRBrfWv06M6pHNtlkmcmuemXneAM'
         })

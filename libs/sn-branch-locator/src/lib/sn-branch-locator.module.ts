@@ -21,6 +21,7 @@ import { SnBranchSearchInputComponent } from './components/sn-branch-search-inpu
     HttpClientModule,
     SnTabModule,
     SnDrawerModule,
+    OptionListModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0'
     })
