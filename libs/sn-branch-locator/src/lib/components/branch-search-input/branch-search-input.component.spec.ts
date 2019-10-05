@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BranchSearchInputComponent } from './branch-search-input.component';
+import { IconModule } from 'sn-common-lib';
+import { MapsAPILoader, NoOpMapsAPILoader } from '@agm/core';
 
 describe('BranchSearchInputComponent', () => {
   let component: BranchSearchInputComponent;
@@ -8,7 +10,11 @@ describe('BranchSearchInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BranchSearchInputComponent ]
+      declarations: [ BranchSearchInputComponent ],
+      imports: [
+        IconModule,
+      ],
+      providers: [{provide: MapsAPILoader, useClass: NoOpMapsAPILoader}]
     })
     .compileComponents();
   }));

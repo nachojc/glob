@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, OnChanges, NgZone } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
-import { from, fromEvent } from 'rxjs';
+import { from } from 'rxjs';
+
+
 
 @Component({
   selector: 'sn-branch-search-input',
