@@ -40,23 +40,22 @@ export class BranchSearchInputComponent implements OnInit {
 
   initGoogleAutoCommplete(): void {
     from(this.mapsAPILoader.load()).subscribe(() => {
-      const autocomplete = new google.maps.places.Autocomplete(this.googleSearchInput, {
-        types: ['address']
-      });
+      // const autocomplete = new google.maps.places.Autocomplete(this.googleSearchInput, {
+      //   types: ['address']
+      // });
 
-      console.log(autocomplete);
-      autocomplete.addListener('place_changed', () => {
-        this.ngZone.run(() => {
+      // autocomplete.addListener('place_changed', () => {
+      //   this.ngZone.run(() => {
 
-          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+      //     const place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          if (place.geometry !== undefined || place.geometry !== null) {
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-            this.placeChange.emit({lat, lng});
-          }
-        });
-      });
+      //     if (place.geometry !== undefined || place.geometry !== null) {
+      //       const lat = place.geometry.location.lat();
+      //       const lng = place.geometry.location.lng();
+      //       this.placeChange.emit({lat, lng});
+      //     }
+      //   });
+      // });
     });
 
 

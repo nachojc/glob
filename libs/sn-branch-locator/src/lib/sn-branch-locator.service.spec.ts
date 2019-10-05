@@ -10,8 +10,6 @@ describe('SnBranchLocatorService', () => {
     imports: [HttpClientTestingModule]
   }));
 
-  httpTestingController = TestBed.get(HttpTestingController);
-  service = TestBed.get(SnBranchLocatorService);
 
   afterEach(() => {
     httpTestingController.verify();
@@ -19,6 +17,8 @@ describe('SnBranchLocatorService', () => {
 
 
   it('should be created', () => {
+    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.get(SnBranchLocatorService);
     expect(service).toBeTruthy();
   });
 });
