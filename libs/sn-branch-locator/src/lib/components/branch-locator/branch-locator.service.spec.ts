@@ -10,13 +10,13 @@ describe('BranchLocatorService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('When getNames is called Then return an observable list of strings', async(
-    inject([BranchLocatorService], (nameService) => {
+  // it('When getNames is called Then return an observable list of strings', async(
+  //   inject([BranchLocatorService], (nameService) => {
 
-      nameService.watchPosition().subscribe((pos: Position) => {
-        expect(pos).toBeTruthy();
-      });
-    })));
+  //     nameService.watchPosition().subscribe((pos: Position) => {
+  //       expect(pos).toBeTruthy();
+  //     });
+  //   })));
 
 
 
