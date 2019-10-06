@@ -40,6 +40,7 @@ export class SnBranchLocatorComponent {
 
   private selectedMarker: SnMarkerDirective;
   selectedBranch: Branch;
+  startIndex = 0;
 
   constructor(
     private service: BranchLocatorService,
@@ -55,6 +56,14 @@ export class SnBranchLocatorComponent {
     }, err => {
       console.error(err);
     });
+  }
+
+  selectBranch(branch: Branch) {
+    this.startIndex = 0;
+    // tslint:disable-next-line: no-string-literal
+    const markerFound = this.branchMarkerList['_results'].find(marker => marker.title === branch.id);
+    console.log('found: ', markerFound);
+    this.markerSelected(markerFound, branch);
   }
 
 

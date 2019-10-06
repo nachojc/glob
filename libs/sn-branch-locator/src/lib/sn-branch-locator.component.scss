@@ -1,5 +1,13 @@
 :host {
 
+  .locator-search-input{
+    position: absolute;
+    z-index: 2;
+    margin: .5em;
+    width: -webkit-fill-available;
+    top: 48px;
+  }
+
   .branch-locator-tabs-wrapper {
     flex: 0;
   }
@@ -25,7 +33,7 @@
 
       button.center-map-user {
         float: right;
-        margin-top: 16px;
+        margin-top: 3em;
         height: 32px;
         width: 32px;
         background-color: white;
@@ -40,16 +48,11 @@
           }
         }
       }
-
-      .locator-search-container {
-        position: relative;
-        width: 100%;
-      }
     }
   }
 
   .result-list-wrapper {
-    margin-top: 48px;
+    margin-top: calc(48px + 16px); // input-search height + margin
     height: calc(100%);
     overflow: scroll;
 
