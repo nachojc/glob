@@ -32,6 +32,7 @@ export class SnBranchLocatorComponent {
   };
   branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
   branchesList: Branch[];
+
   userPostion: LatLngLiteral;
   zoom = 15;
   showDrawer: boolean;
@@ -75,8 +76,6 @@ export class SnBranchLocatorComponent {
       this.map.api.panTo(selectedPos);
     });
   }
-
-
 
   mapClick(event: MouseEvent): void {
     if (this.selectedMarker) {

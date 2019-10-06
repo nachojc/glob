@@ -1,61 +1,86 @@
 :host {
-    display: flex;
-    flex-direction: column;
+
+  .branch-locator-tabs-wrapper {
+    flex: 0;
+  }
+
+  .branch-locator-map-wrapper {
+    flex: 1;
+  }
+
+  .locator-content {
+    position: relative;
     height: 100%;
 
-    .branch-locator-tabs-wrapper {
-        flex: 0;
+    ::ng-deep agm-map {
+      height: 100%;
     }
 
-    .branch-locator-map-wrapper {
-        flex: 1;
+    .locator-search {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 16px;
 
-        .locator-content {
-            position: relative;
-            height: 100%;
+      button.center-map-user {
+        float: right;
+        margin-top: 16px;
+        height: 32px;
+        width: 32px;
+        background-color: white;
+        border-radius: 2.7px;
+        box-shadow: 0px 1px 2px 0px rgb(118, 118, 118);
+        padding: 0;
 
-            ::ng-deep agm-map {
-                height: 100%;
-            }
-
-            .locator-search {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                padding: 16px;
-
-                button.center-map-user {
-                    float: right;
-                    margin-top: 16px;
-                    height: 32px;
-                    width: 32px;
-                    background-color: white;
-                    border-radius: 2.7px;
-                    box-shadow: 0px 1px 2px 0px rgb(118, 118, 118);
-                    padding: 0;
-
-                    ::ng-deep sn-icon {
-                        i {
-                            font-size: 2em;
-                            line-height: 1;
-                        }
-                    }
-                }
-
-                .locator-search-container {
-                    position: relative;
-                    width: 100%;
-
-                    
-                }
-            }
+        ::ng-deep sn-icon {
+          i {
+            font-size: 2em;
+            line-height: 1;
+          }
         }
+      }
+
+      .locator-search-container {
+        position: relative;
+        width: 100%;
+      }
     }
+  }
 
+  .result-list-wrapper {
+    margin-top: 48px;
+    height: calc(100%);
+    overflow: scroll;
 
+    sn-option-item {
+      padding: .5rem 1rem .5rem 1.5rem;
 
+      .name {
+        font-weight: bold;
+        color: #ec0000; // change to variable
+        font-size: 1rem;
+        line-height: 1.5;
+        padding-bottom: .5rem;
+      }
 
+      .address {
+        font-size: 1rem;
+        line-height: 1.075;
+        font-weight: 300;
+        color: rgb(118, 118, 118);
+      }
 
+      .distance {
+        font-size: 1rem;
+        font-weight: 300;
+        color: rgb(118, 118, 118);
+      }
+
+      sn-icon {
+        display: flex;
+      }
+    }
+  }
 
 }
