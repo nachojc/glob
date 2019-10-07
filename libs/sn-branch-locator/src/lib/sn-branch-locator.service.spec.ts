@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SnBranchLocatorService } from './sn-branch-locator.service';
-import { HttpClient } from 'selenium-webdriver/http';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('SnBranchLocatorService', () => {

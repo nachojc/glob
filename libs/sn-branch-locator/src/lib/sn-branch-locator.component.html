@@ -1,8 +1,6 @@
 
-<section class="locator-search-input">
-    <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
-</section>
-<sn-tab-group [startIndex]="startIndex">
+
+<sn-tab-group [selectIndex]="selectedTabIndex" (selectedTab)='tabsChanged($event)'>
     <sn-tab label="Map">
         <div class="locator-content">
             <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
@@ -16,6 +14,9 @@
             </agm-map>
 
             <section class="locator-search">
+                <div class="locator-search-container">
+                    <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
+                </div>
                 <button class="center-map-user" (click)="centerMapToUser()">
                     <sn-icon icon="sn-SYS029"></sn-icon>
                 </button>
@@ -27,6 +28,9 @@
     </sn-tab>
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
     <sn-tab label="List" style="overflow: scroll">
+        <div class="locator-search-container">
+            <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
+        </div>
         <section class="result-list-wrapper">
             <sn-option-list>
                 <sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">

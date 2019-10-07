@@ -40,13 +40,14 @@ export class SnBranchLocatorComponent {
 
   private selectedMarker: SnMarkerDirective;
   selectedBranch: Branch;
-  startIndex = 0;
+  selectedTabIndex: number;
 
   constructor(
     private service: BranchLocatorService,
     private branchService: SnBranchLocatorService
   ) {
     this.getBranchesFromService();
+
   }
 
   // TODO: remove. Created for testing propose
@@ -58,11 +59,14 @@ export class SnBranchLocatorComponent {
     });
   }
 
-  selectBranch(branch: Branch) {
-    this.startIndex = 0;
+  tabsChanged(event: any) {
+    this.selectedTabIndex = event.tabIndex;
+  }
+
+  selectBranch = (branch: Branch) => {
+    this.selectedTabIndex = 0;
     // tslint:disable-next-line: no-string-literal
     const markerFound = this.branchMarkerList['_results'].find(marker => marker.title === branch.id);
-    console.log('found: ', markerFound);
     this.markerSelected(markerFound, branch);
   }
 
@@ -146,13 +150,9 @@ export class SnBranchLocatorComponent {
 
 
   drawerStageChange(state: DrawerState): void {
-
     if (state === DrawerState.Bottom) {
       this.showDrawer = false;
       console.log(this.showDrawer);
-
     }
-
   }
-
 }
