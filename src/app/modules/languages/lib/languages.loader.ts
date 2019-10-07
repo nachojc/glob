@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export abstract class LanguageLoader {
-    abstract getTranslate(lang: string): Observable<any>;
+    abstract getTranslations(lang: string): Observable<any>;
 }
 
 /**
@@ -11,7 +12,27 @@ export abstract class LanguageLoader {
  */
 @Injectable()
 export class LanguageFakeLoader extends LanguageLoader {
-    getTranslate(lang: string): Observable<any> {
+    getTranslations(lang: string): Observable<any> {
         return of({});
     }
+}
+
+@Injectable()
+export class DefLanguageHttpLoader implements LanguageLoader {
+    constructor(
+        private http: HttpClient,
+        public prefix: string = '/assets/i18n/',
+        public suffix: string = '.json',
+        private module: string = '') {}
+
+    /**
+     * Gets the translations from the server
+     */
+    public getTranslations(lang: string): Observable<any> {
+      return this.http.get(`${this.prefix}${this.module}/${lang}${this.suffix}`);
+    }
+}
+
+export function HttpLoaderFactory(http: HttpClient) {
+    return new DefLanguageHttpLoader(http, '/public/lang-files/', '-lang.json', '');
 }
