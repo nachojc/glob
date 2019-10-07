@@ -4,6 +4,7 @@ import { AgmMarker, LatLngLiteral } from '@agm/core';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
+import { TranslateService } from '@ngx-translate/core';
 // import { TranslateService } from '@ngx-translate/core';
 
 @Component({

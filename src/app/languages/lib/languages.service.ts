@@ -4,9 +4,17 @@ import { LanguageLoader } from './languages.loader';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { USE_MODULE, USE_DEFAULT_LANG } from './languages.models';
+import { HttpClientJsonpModule, HttpClient } from '@angular/common/http';
 
-@Injectable()
-export class LanguageService implements OnDestroy {
+export abstract  class LanguageServiceClass {
+    abstract setDefaultLang(lang: string): void;
+    abstract use(lang: string, locally?: boolean): void;
+    abstract getLangs(): Array<string>;
+    abstract setLangs(langs: Array<string> | string): void;
+
+}
+
+export class LanguageService extends LanguageServiceClass implements OnDestroy {
     private _module: string;
     get module() { return this._module; }
 
@@ -18,17 +26,19 @@ export class LanguageService implements OnDestroy {
 
     constructor(
         private storage: LanguageStore,
-        private http: LanguageLoader,
+        private loader: LanguageLoader,
         @Optional() @Inject(USE_DEFAULT_LANG) private DEFLANG: string = 'en',
-        @Optional() @Inject(USE_MODULE) private MODULE_NAME: string = ''
+        @Optional() @Inject(USE_MODULE) private MODULE_NAME: string = '',
+        private call: HttpClient
         ) {
+            super();
             this._defaultLang = DEFLANG;
             this._module = MODULE_NAME;
             this._langChangeSub = this.storage.onLanguageChange().subscribe( lang => {
                 if (this._langs.includes(lang) && this._currentLang !== lang) {
                     this._currentLang = lang;
                     if (!this._localLang) {
-                        this._loadData();
+                        this._loadData.bind(this)();
                     }
                 }
             });
@@ -37,9 +47,8 @@ export class LanguageService implements OnDestroy {
     use(lang: string, locally = false) {
         if (locally) {
             this._localLang = lang;
-            this._loadData();
+            this._loadData.bind(this)();
         } else {
-            this._currentLang = lang;
             this.storage.use(lang);
         }
     }
@@ -67,12 +76,29 @@ export class LanguageService implements OnDestroy {
 
 
     private _loadData() {
-        this.http.getTranslations(this._currentLang).pipe(map(res => {
-            const result = {module: this.module, data: res};
-            return result;
-        }));
+        // this.loader.getTranslations(this._localLang || this._currentLang)
+        //     .pipe(map(res => {
+        //         const result = {module: this.module, data: res};
+        //         return result;
+        //     }));
+        this.call.get(this.loader.getUrl(this._localLang || this._currentLang))
+            .subscribe(data => {
+
+                this.storage.setTranslations(this._module, data);
+            });
     }
     ngOnDestroy(): void {
         this._langChangeSub.unsubscribe();
     }
+}
+
+
+export function LanguageServiceFactory(
+    storage: LanguageStore,
+    loader: LanguageLoader,
+    DEFLANG: string,
+    MODULE_NAME: string,
+    http: HttpClient
+    ) {
+    return new LanguageService(storage, loader, DEFLANG, MODULE_NAME, http);
 }

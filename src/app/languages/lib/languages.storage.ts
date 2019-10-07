@@ -5,6 +5,8 @@ export class LanguageStore {
     private _instance: LanguageStore;
     private _currentLang = 'en';
     private _defLang = 'en';
+    private _mods: Array<string> = [];
+    private _store = {};
     private _changeLang$: BehaviorSubject<string> = new BehaviorSubject<string>(this._currentLang);
 
     constructor() {
@@ -23,5 +25,11 @@ export class LanguageStore {
     use(lang: string) {
         this._currentLang = lang;
         this._changeLang$.next(this._currentLang);
+    }
+    // tslint:disable-next-line:ban-types
+    setTranslations( mod: string, data: Object) {
+       console.log(mod);
+       console.log(data);
+
     }
 }
