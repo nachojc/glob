@@ -12,11 +12,9 @@
             </agm-map>
 
             <section class="locator-search">
-                    <section class="locator-search">
-                            <div class="locator-search-container">
-                                <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
-                            </div>
-                        </section>
+                <div class="locator-search-container">
+                    <sn-branch-search-input [showReCenter]="showReCenter" filterCount="5" placeholder="Santander  - Regent’s Place"  (reCenter)="centerMapToUser()" ></sn-branch-search-input>
+                </div>
                 <button class="center-map-user" (click)="centerMapToUser()">
                     <sn-icon icon="sn-SYS029"></sn-icon>
                 </button>
