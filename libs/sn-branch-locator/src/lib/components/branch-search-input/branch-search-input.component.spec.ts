@@ -2,10 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BranchSearchInputComponent } from './branch-search-input.component';
 import { IconModule } from 'sn-common-lib';
-import { MapsAPILoader, NoOpMapsAPILoader, AgmCoreModule } from '@agm/core';
-import { AutocompleteModule } from '../autocomplete/autocomplete.module';
-import { ElementRef, Injectable } from '@angular/core';
-import { AutocompleteComponent } from '../autocomplete';
+import { MapsAPILoader, AgmCoreModule } from '@agm/core';
+import { ElementRef } from '@angular/core';
 
 const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
@@ -45,8 +43,7 @@ describe('BranchSearchInputComponent', () => {
         AgmCoreModule.forRoot({
           apiKey: 'demo',
           libraries: ['places']
-        }),
-        AutocompleteModule
+        })
       ],
       providers: [
         {provide: MapsAPILoader, useValue: MapsAPILoaderMock},
