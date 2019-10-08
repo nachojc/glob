@@ -3,10 +3,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BranchSearchInputComponent } from './branch-search-input.component';
 import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, NoOpMapsAPILoader, AgmCoreModule } from '@agm/core';
+import { WindowRef } from '../../utils/window-ref';
 
 describe('BranchSearchInputComponent', () => {
   let component: BranchSearchInputComponent;
   let fixture: ComponentFixture<BranchSearchInputComponent>;
+  const windowRef: WindowRef = {
+    getNativeWindow: () => {
+      return { };
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +24,10 @@ describe('BranchSearchInputComponent', () => {
           libraries: ['places']
         })
       ],
-      providers: [{provide: MapsAPILoader, useClass: NoOpMapsAPILoader}]
+      providers: [
+        {provide: MapsAPILoader, useClass: NoOpMapsAPILoader},
+        {provide: 'WINDOW', useValue: windowRef }
+      ]
     })
     .compileComponents();
   }));

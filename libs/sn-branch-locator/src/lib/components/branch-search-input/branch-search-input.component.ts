@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, OnChanges, NgZone } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, NgZone, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { from } from 'rxjs';
+import { WindowRef } from '../../utils/window-ref';
 
 
 
@@ -26,7 +27,7 @@ export class BranchSearchInputComponent implements OnInit {
   }
 
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) {
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, @Inject('WINDOW') private windowRef: WindowRef) {
 
   }
 
@@ -39,26 +40,25 @@ export class BranchSearchInputComponent implements OnInit {
 
 
   initGoogleAutoCommplete(): void {
+
     from(this.mapsAPILoader.load()).subscribe(() => {
-      // const autocomplete = new google.maps.places.Autocomplete(this.googleSearchInput, {
-      //   types: ['address']
-      // });
+      const autocomplete = new google.maps.places.Autocomplete(this.googleSearchInput, {
+        types: ['address']
+      });
 
-      // autocomplete.addListener('place_changed', () => {
-      //   this.ngZone.run(() => {
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
 
-      //     const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-      //     if (place.geometry !== undefined || place.geometry !== null) {
-      //       const lat = place.geometry.location.lat();
-      //       const lng = place.geometry.location.lng();
-      //       this.placeChange.emit({lat, lng});
-      //     }
-      //   });
-      // });
+          if (place.geometry !== undefined || place.geometry !== null) {
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+            this.placeChange.emit({lat, lng});
+          }
+        });
+      });
     });
-
-
   }
 
 }
