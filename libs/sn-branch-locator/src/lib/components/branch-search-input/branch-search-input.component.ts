@@ -18,7 +18,7 @@ export class BranchSearchInputComponent implements OnInit {
   @Input() placeholder: string;
   @Input() useGoogle: boolean;
 
-  @ViewChild('in') private elementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('in') public elementRef: ElementRef<HTMLInputElement>;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -46,7 +46,6 @@ export class BranchSearchInputComponent implements OnInit {
       this.ngZone.run(() => {
 
         const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
         if (Boolean(place.geometry)) {
           const lat = place.geometry.location.lat();
           const lng = place.geometry.location.lng();
