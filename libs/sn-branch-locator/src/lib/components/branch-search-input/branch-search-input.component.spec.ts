@@ -5,12 +5,16 @@ import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, NoOpMapsAPILoader, AgmCoreModule } from '@agm/core';
 
 const MapsAPILoaderMock = {
-  load: () => new Promise(() => true)
+  load: () => new Promise((resolve) => resolve())
 };
 const windowRef = {
   google: {
     maps : {
-      places: { Autocomplete : (inputField: HTMLInputElement, opts?: {}) => ({})}
+      places: {
+        Autocomplete : () => ({
+          addListener: () => {},
+          getPlace: () => ({geometry: null})
+        })}
     }
   }
 };
@@ -45,5 +49,12 @@ describe('BranchSearchInputComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('use google Api', () => {
+    component.useGoogle = true;
+    expect(component).toBeTruthy();
+    expect(component.useGoogle).toBeTruthy();
+
   });
 });
