@@ -7,7 +7,7 @@
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
-    "sn-common-lib": "^0.3.12",
+    "sn-common-lib": "^0.3.16",
     "@agm/core": "^1.0.0-beta.7",
     "hammerjs": "^2.0.8"
   }

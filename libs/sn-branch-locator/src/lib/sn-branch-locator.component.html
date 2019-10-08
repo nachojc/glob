@@ -1,31 +1,53 @@
-<section class="branch-locator-tabs-wrapper">
-    <sn-tab-group></sn-tab-group>
-</section>
 
-<section class="branch-locator-map-wrapper">
-    <div class="locator-content">
-        <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
+
+<sn-tab-group [selectIndex]="selectedTabIndex" (selectedTab)='tabsChanged($event)'>
+    <sn-tab label="Map">
+        <div class="locator-content">
+            <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
             (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
             <agm-marker [agmFitBounds]="true" [latitude]="userPostion?.lat" [longitude]="userPostion?.lng"
                 [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
-            <agm-marker canChangeIcon *ngFor="let branch of branches" [agmFitBounds]="true" [latitude]="branch.lat"
-                [longitude]="branch.lng" [iconUrl]="branchIcon" (markerClick)="markerSelected($event)"
+            <agm-marker canChangeIcon *ngFor="let branch of branchesList" [title]="branch.id" [agmFitBounds]="true" [latitude]="branch.location.geoCoords.latitude"
+                [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)"
                 [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
-        </agm-map>
+            </agm-map>
 
-        <section class="locator-search">
-            <div class="locator-search-container">
-                <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" filterCount="5"
+            <section class="locator-search">
+                <div class="locator-search-container">
+                    <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" filterCount="5"
                     placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
                     (reCenter)="centerMapToUser()"></sn-branch-search-input>
-            </div>
-            <button class="center-map-user" (click)="centerMapToUser()">
-                <sn-icon icon="sn-SYS029"></sn-icon>
-            </button>
+                </div>
+                <button class="center-map-user" (click)="centerMapToUser()">
+                    <sn-icon icon="sn-SYS029"></sn-icon>
+                </button>
+            </section>
+            <sn-drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
+                <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch"></sn-branch-info>
+            </sn-drawer>
+        </div>
+    </sn-tab>
+    <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
+    <sn-tab label="List" style="overflow: scroll">
+        <div class="locator-search-container">
+            <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" filterCount="5"
+                    placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
+                    (reCenter)="centerMapToUser()"></sn-branch-search-input>
+        </div>
+        <section class="result-list-wrapper">
+            <sn-option-list>
+                <sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
+                    <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
+                    
+                    <div class="Type-5_Regular-Style name">{{branch.name}}</div>
+                    <div class="Type-5_Regular-Style address">{{branch.location.address}}</div>
+                    <div right-text class="TType-5_Regular-Style distance">
+                        {{branch.distanceInMiles | number:'0.0-2'}} m
+                    </div>
+                </sn-option-item>
+                
+            </sn-option-list>
         </section>
-        <sn-drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
-            <sn-branch-info></sn-branch-info>
-        </sn-drawer>
-    </div>
-</section>
+    </sn-tab>
+</sn-tab-group>
