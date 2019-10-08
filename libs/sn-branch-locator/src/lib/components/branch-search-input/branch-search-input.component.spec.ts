@@ -3,16 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BranchSearchInputComponent } from './branch-search-input.component';
 import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, NoOpMapsAPILoader, AgmCoreModule } from '@agm/core';
-import { WindowRef } from '../../utils/window-ref';
+
+const MapsAPILoaderMock = {
+  load: () => new Promise((res) => {res(); })
+};
+const windowRef = {
+  google: {
+    maps : {
+      places: { Autocomplete : (inputField: HTMLInputElement, opts?: {}) => ({})}
+    }
+  }
+};
 
 describe('BranchSearchInputComponent', () => {
   let component: BranchSearchInputComponent;
   let fixture: ComponentFixture<BranchSearchInputComponent>;
-  const windowRef: WindowRef = {
-    getNativeWindow: () => {
-      return { google: {maps : { places: { Autocomplete : (inputField: HTMLInputElement, opts?: {}) => ({})}}}};
-    }
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,12 +25,12 @@ describe('BranchSearchInputComponent', () => {
       imports: [
         IconModule,
         AgmCoreModule.forRoot({
-          apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+          apiKey: 'demo',
           libraries: ['places']
         })
       ],
       providers: [
-        {provide: MapsAPILoader, useClass: NoOpMapsAPILoader},
+        {provide: MapsAPILoader, useValue: MapsAPILoaderMock},
         {provide: 'WINDOW', useValue: windowRef }
       ]
     })

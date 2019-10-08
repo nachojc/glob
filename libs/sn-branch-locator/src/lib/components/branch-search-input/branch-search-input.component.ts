@@ -44,7 +44,7 @@ export class BranchSearchInputComponent implements OnInit {
 
   initGoogleAutoCommplete(): void {
 
-    from(this.mapsAPILoader.load()).subscribe(() => {
+    // from(this.mapsAPILoader.load()).subscribe(() => {
       const autocomplete = new this.window.google.maps.places.Autocomplete(this.googleSearchInput, {
         types: ['address']
       });
@@ -61,7 +61,7 @@ export class BranchSearchInputComponent implements OnInit {
           }
         });
       });
-    });
+    // });
   }
 
 }
