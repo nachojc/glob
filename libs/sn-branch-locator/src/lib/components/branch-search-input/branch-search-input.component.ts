@@ -1,8 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, NgZone, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { from } from 'rxjs';
-import { WindowRef } from '../../utils/window-ref';
-
 
 
 @Component({
@@ -27,15 +25,20 @@ export class BranchSearchInputComponent implements OnInit {
   }
 
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, @Inject('WINDOW') private windowRef: WindowRef) {
-
-  }
+  constructor(
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone,
+    // @Inject('WINDOW') private _window: any
+  ) { }
 
 
   ngOnInit(): void {
-    if (this.useGoogle) {
-      this.initGoogleAutoCommplete();
-    }
+    this.mapsAPILoader.load()
+    .then( () => {
+      if (this.useGoogle) {
+        this.initGoogleAutoCommplete();
+      }
+    });
   }
 
 

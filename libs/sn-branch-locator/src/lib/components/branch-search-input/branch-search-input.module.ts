@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { IconModule } from 'sn-common-lib';
 import { AutocompleteModule } from '../autocomplete/autocomplete.module';
 import { BranchSearchInputComponent } from './branch-search-input.component';
-import { WindowRef } from '../../utils/window-ref';
 
 @NgModule({
   declarations: [BranchSearchInputComponent],
@@ -13,7 +12,7 @@ import { WindowRef } from '../../utils/window-ref';
     AutocompleteModule
   ],
   exports: [BranchSearchInputComponent],
-  providers: [{provide: 'WINDOW', useClass: WindowRef}]
+  providers: [{provide: 'WINDOW', useValue: window}]
 
 })
 export class BranchSearchInputModule { }
