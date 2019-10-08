@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-// import { LanguageService } from 'sn-branch-locator';
-import { LanguageService } from './languages';
+import { LanguageService } from 'sn-branch-locator';
+// import { LanguageService } from '../../libs/sn-branch-locator/src/lib/languages';
 
 
 

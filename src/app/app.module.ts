@@ -8,8 +8,8 @@ import {
   LanguagesModule,
   LanguageLoader,
   DefLanguageHttpLoader
-// } from 'sn-branch-locator';
-} from './languages';
+} from 'sn-branch-locator';
+
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
