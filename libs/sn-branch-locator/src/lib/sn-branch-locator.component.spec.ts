@@ -49,19 +49,17 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   it('map clicked reset with a selected branch', () => {
-    // tslint:disable-next-line: no-string-literal
     component['selectedBranch'] = {} as SnMarkerDirective;
     component.mapClick({} as any);
-    // tslint:disable-next-line: no-string-literal
+
     expect(component['selectedBranch']).toBeUndefined();
   });
 
 
   it('map clicked reset with out a selected branch', () => {
-    // tslint:disable-next-line: no-string-literal
     component['selectedBranch'] = undefined;
     component.mapClick({} as any);
-    // tslint:disable-next-line: no-string-literal
+
     expect(component['selectedBranch']).toBeUndefined();
   });
 
@@ -120,7 +118,7 @@ describe('SnBranchLocatorComponent', () => {
       }
     } as any;
     component.markerSelected(selected);
-    // tslint:disable-next-line: no-string-literal
+
     expect(component['selectedBranch']).toEqual(selected);
   });
 
@@ -131,9 +129,9 @@ describe('SnBranchLocatorComponent', () => {
       {id: () => 2, clickable: true, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined}},
       {id: () => 3, clickable: false, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined }}
     ] as any;
-    // tslint:disable-next-line: no-string-literal
+
     component['resetMarkers']();
-    // tslint:disable-next-line: no-string-literal
+
     expect(component['selectedBranch']).toBeUndefined();
   });
 
