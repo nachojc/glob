@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
-import { AgmCoreModule, LatLngLiteral } from '@agm/core';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader } from '@agm/core';
 import { SnTabModule } from './components/tabs/sn-tab.module';
 import { IconModule } from 'sn-common-lib';
 import { SnDrawerComponent } from './components/sn-drawer/sn-drawer.component';
@@ -8,10 +8,24 @@ import { SnBranchInfoComponent } from './components/branch-locator/sn-branch-inf
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
-import {  of } from 'rxjs';
+import { of } from 'rxjs';
 import { BranchSearchInputModule } from './components/branch-search-input';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-
+const MapsAPILoaderMock = {
+  load: () => new Promise(() => true)
+};
+const windowRef = {
+  google: {
+    maps : {
+      places: {
+        Autocomplete : () => ({
+          addListener: () => {},
+          getPlace: () => ({geometry: null})
+        })}
+    }
+  }
+};
 const BranchLocatorServiceMock = {
   watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
   getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
@@ -23,7 +37,11 @@ describe('SnBranchLocatorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SnBranchLocatorComponent, SnDrawerComponent, SnBranchInfoComponent],
+      declarations: [
+        SnBranchLocatorComponent,
+        SnDrawerComponent,
+        SnBranchInfoComponent
+      ],
       imports: [
         IconModule,
         SnTabModule,
@@ -32,7 +50,14 @@ describe('SnBranchLocatorComponent', () => {
           apiKey: 'AIzaSyCCOzVlRBrfWv06M6pHNtlkmcmuemXneAM'
         })
       ],
-      providers: [{ provide: BranchLocatorService, useValue: BranchLocatorServiceMock  }]
+      providers: [
+        { provide: 'WINDOW', useValue: windowRef },
+        { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
+        { provide: BranchLocatorService, useValue: BranchLocatorServiceMock  }
+      ],
+      schemas: [
+        NO_ERRORS_SCHEMA
+      ]
     })
       .compileComponents();
   }));
@@ -40,7 +65,7 @@ describe('SnBranchLocatorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SnBranchLocatorComponent);
     component = fixture.componentInstance;
-    component.map = { api: {panTo: (position) => undefined}} as any;
+    component.map = { api: {panTo: () => undefined}} as any;
     fixture.detectChanges();
   });
 
@@ -67,7 +92,9 @@ describe('SnBranchLocatorComponent', () => {
     component.userPostion = {lat: 38.7376049, lng: -9.2654431};
     const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
     component.centerChange(center);
-    expect(component.showReCenter).not.toBeTruthy();
+
+    fixture.detectChanges();
+    expect(component.showReCenter).toEqual(true);
   });
 
   it(`call recenter map when user position is undefined`, () => {

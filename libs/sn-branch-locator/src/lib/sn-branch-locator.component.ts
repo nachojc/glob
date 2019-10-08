@@ -5,7 +5,7 @@ import { BranchLocatorService } from './components/branch-locator/branch-locator
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
 import { from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, first } from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -75,18 +75,20 @@ export class SnBranchLocatorComponent {
   }
 
   private resetMarkers() {
-    this.branchMarkerList.filter((marker) => marker.clickable).forEach((marker) => {
-      marker.iconUrl = this.branchIcon as any;
-      marker.markerManager.updateIcon(marker);
-    });
+    this.branchMarkerList
+      .filter((marker) => marker.clickable)
+      .forEach((marker) => {
+        marker.iconUrl = this.branchIcon as any;
+        marker.markerManager.updateIcon(marker);
+      });
     this.selectedBranch = undefined;
     this.showDrawer =  Boolean(this.selectedBranch);
   }
 
   mapReady(): void {
-
     this.centerMapToUser();
-    this.service.watchPosition().subscribe(
+    this.service.watchPosition()
+      .pipe(first()).subscribe(
       (pos: Position) => {
         this.userPostion = {
           lat: pos.coords.latitude,
@@ -95,12 +97,11 @@ export class SnBranchLocatorComponent {
       });
   }
 
-
   centerChange(mapCenter: LatLngLiteral): void {
-
     if (this.userPostion && this.userPostion.lng && this.userPostion.lat) {
-      // tslint:disable-next-line: max-line-length
-      this.showReCenter = ((this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng)) && (this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat)));
+      this.showReCenter = (
+        this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng)
+        || this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat));
     } else {
       this.showReCenter = false;
     }

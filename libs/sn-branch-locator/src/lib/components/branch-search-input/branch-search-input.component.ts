@@ -20,11 +20,6 @@ export class BranchSearchInputComponent implements OnInit {
 
   @ViewChild('in') private elementRef: ElementRef<HTMLInputElement>;
 
-  get googleSearchInput(): HTMLInputElement {
-    return this.elementRef.nativeElement;
-  }
-
-
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
@@ -41,27 +36,24 @@ export class BranchSearchInputComponent implements OnInit {
     });
   }
 
-
   initGoogleAutoCommplete(): void {
-
-    // from(this.mapsAPILoader.load()).subscribe(() => {
-      const autocomplete = new this.window.google.maps.places.Autocomplete(this.googleSearchInput, {
+    const autocomplete = new this.window.google.maps.places
+      .Autocomplete(this.elementRef.nativeElement, {
         types: ['address']
       });
 
-      autocomplete.addListener('place_changed', () => {
-        this.ngZone.run(() => {
+    autocomplete.addListener('place_changed', () => {
+      this.ngZone.run(() => {
 
-          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+        const place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          if (place.geometry !== undefined || place.geometry !== null) {
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-            this.placeChange.emit({lat, lng});
-          }
-        });
+        if (Boolean(place.geometry)) {
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          this.placeChange.emit({lat, lng});
+        }
       });
-    // });
+    });
   }
 
 }

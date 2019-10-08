@@ -5,7 +5,7 @@ import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, NoOpMapsAPILoader, AgmCoreModule } from '@agm/core';
 
 const MapsAPILoaderMock = {
-  load: () => new Promise((res) => {res(); })
+  load: () => new Promise(() => true)
 };
 const windowRef = {
   google: {
