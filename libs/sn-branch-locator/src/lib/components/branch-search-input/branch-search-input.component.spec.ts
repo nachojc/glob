@@ -10,7 +10,7 @@ describe('BranchSearchInputComponent', () => {
   let fixture: ComponentFixture<BranchSearchInputComponent>;
   const windowRef: WindowRef = {
     getNativeWindow: () => {
-      return { };
+      return { google: {maps : { places: { Autocomplete : (inputField: HTMLInputElement, opts?: {}) => ({})}}}};
     }
   };
 

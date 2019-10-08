@@ -42,7 +42,8 @@ export class BranchSearchInputComponent implements OnInit {
   initGoogleAutoCommplete(): void {
 
     from(this.mapsAPILoader.load()).subscribe(() => {
-      const autocomplete = new google.maps.places.Autocomplete(this.googleSearchInput, {
+      const windowObj = this.windowRef.getNativeWindow();
+      const autocomplete = new windowObj.google.maps.places.Autocomplete(this.googleSearchInput, {
         types: ['address']
       });
 
