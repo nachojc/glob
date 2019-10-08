@@ -38,8 +38,11 @@ export class LanguageService extends LanguageServiceClass implements OnDestroy {
                 if (this._langs.includes(lang) && this._currentLang !== lang) {
                     this._currentLang = lang;
                     if (!this._localLang) {
-                        this._loadData.bind(this)();
+                        this._loadData();
                     }
+                } else if (!this._currentLang) {
+                    this._currentLang = this._defaultLang;
+                    this._loadData();
                 }
             });
         }
