@@ -21,11 +21,11 @@
       top: 0;
       left: 0;
       right: 0;
-      padding: 16px;
+      padding: 8px;
 
       button.center-map-user {
         float: right;
-        margin-top: 16px;
+        margin-top: 8px;
         height: 32px;
         width: 32px;
         background-color: white;
@@ -43,14 +43,18 @@
 
       .locator-search-container {
         position: relative;
-        width: 100%;
+        margin: 0;
       }
     }
   }
 
+  .locator-search-container {
+    margin: 8px;
+  }
+
   .result-list-wrapper {
-    margin-top: 48px;
-    height: calc(100%);
+    // margin-top: calc(48px + 16px); // input-search height + margin
+    height: calc(100% - 64px);
     overflow: scroll;
 
     sn-option-item {
