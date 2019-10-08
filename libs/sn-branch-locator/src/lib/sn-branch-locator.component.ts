@@ -118,7 +118,8 @@ export class SnBranchLocatorComponent {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         };
-      });
+      }
+    );
   }
 
 
