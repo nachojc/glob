@@ -32,6 +32,7 @@ export class SnBranchLocatorComponent {
   };
   branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
   branchesList: Branch[];
+
   userPostion: LatLngLiteral;
   zoom = 15;
   showDrawer: boolean;
@@ -39,12 +40,14 @@ export class SnBranchLocatorComponent {
 
   private selectedMarker: SnMarkerDirective;
   selectedBranch: Branch;
+  selectedTabIndex: number;
 
   constructor(
     private service: BranchLocatorService,
     private branchService: SnBranchLocatorService
   ) {
     this.getBranchesFromService();
+
   }
 
   // TODO: remove. Created for testing propose
@@ -54,6 +57,17 @@ export class SnBranchLocatorComponent {
     }, err => {
       console.error(err);
     });
+  }
+
+  tabsChanged(event: any) {
+    this.selectedTabIndex = event.tabIndex;
+  }
+
+  selectBranch = (branch: Branch) => {
+    this.selectedTabIndex = 0;
+    // tslint:disable-next-line: no-string-literal
+    const markerFound = this.branchMarkerList['_results'].find(marker => marker.title === branch.id);
+    this.markerSelected(markerFound, branch);
   }
 
 
@@ -75,8 +89,6 @@ export class SnBranchLocatorComponent {
       this.map.api.panTo(selectedPos);
     });
   }
-
-
 
   mapClick(event: MouseEvent): void {
     if (this.selectedMarker) {
@@ -106,7 +118,8 @@ export class SnBranchLocatorComponent {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         };
-      });
+      }
+    );
   }
 
 
@@ -138,13 +151,9 @@ export class SnBranchLocatorComponent {
 
 
   drawerStageChange(state: DrawerState): void {
-
     if (state === DrawerState.Bottom) {
       this.showDrawer = false;
       console.log(this.showDrawer);
-
     }
-
   }
-
 }
