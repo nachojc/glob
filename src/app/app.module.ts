@@ -1,21 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Injectable } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { SnBranchLocatorModule } from 'sn-branch-locator';
 
-import {
-  LanguagesModule,
-  LanguageLoader,
-  DefLanguageHttpLoader
-} from 'sn-branch-locator';
-
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new DefLanguageHttpLoader(http, '/assets/i18n/', '.json', '');
+  return new TranslateHttpLoader(http, '/assets/i18n/branchlocator/', '.json');
 }
 
 @NgModule({
@@ -26,13 +22,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     HttpClientModule,
     SnBranchLocatorModule,
-    LanguagesModule.forRoot({
+    TranslateModule.forRoot({
       loader: {
-        provide: LanguageLoader,
+        provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
-      },
-      useDefaultLang: 'es'
+      }
     })
   ],
   providers: [],

@@ -6,6 +6,8 @@ import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
 import { Branch } from './models/branch.model';
 import { SnBranchLocatorService } from './sn-branch-locator.service';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'sn-branch-locator',
@@ -44,10 +46,10 @@ export class SnBranchLocatorComponent {
 
   constructor(
     private service: BranchLocatorService,
-    private branchService: SnBranchLocatorService
+    private branchService: SnBranchLocatorService,
+    // private translate: TranslateService
   ) {
     this.getBranchesFromService();
-
   }
 
   // TODO: remove. Created for testing propose

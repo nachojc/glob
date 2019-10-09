@@ -9,12 +9,13 @@ import { SnDrawerModule } from './components/sn-drawer/sn-drawer.module';
 import { AgmCoreModule } from '@agm/core';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
 import { SnBranchSearchInputComponent } from './components/sn-branch-search-input/sn-branch-search-input.component';
-import { LanguagesModule } from './languages/languages.module';
-import { LanguageLoader, DefLanguageHttpLoader } from './languages/lib/languages.loader';
 
+
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function LocalLoaderFactory(http: HttpClient) {
-  return new DefLanguageHttpLoader(http, '/assets/i18n/', '.json', 'branch');
+  return new TranslateHttpLoader(http, '/assets/i18n/branchlocator/', '.json');
 }
 
 @NgModule({
@@ -31,13 +32,12 @@ export function LocalLoaderFactory(http: HttpClient) {
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0'
     }),
-    LanguagesModule.forChild({
+    TranslateModule.forChild({
       loader: {
-        provide: LanguageLoader,
+        provide: TranslateLoader,
         useFactory: LocalLoaderFactory,
         deps: [HttpClient]
-      },
-      useDefaultLang: 'es'
+      }
     })
   ],
   exports: [
