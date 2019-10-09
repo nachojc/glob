@@ -16,7 +16,6 @@ export class SnBranchInfoComponent {
   @Input()
   set branch(value: Branch) {
     this._branch = value;
-    console.log(this._branch);
     this.schedulePreview = this.parseHours(this._branch.schedule.workingDay);
   }
 
@@ -26,7 +25,7 @@ export class SnBranchInfoComponent {
 
   constructor() { }
 
-  contactBranch() {
+  contactBranch(phone: string) {
   }
 
   private parseHours(branchSchedule: any) {
@@ -67,7 +66,7 @@ export class SnBranchInfoComponent {
     const groupedHours = [];
     let index = 0;
     Object.keys(hoursEnum).forEach(res => {
-      if (branchSchedule[res].length > 0) {
+      if (branchSchedule[res] && branchSchedule[res].length > 0) {
         // create first group.
         if (groupedHours.length === 0) {
           groupedHours.push({
