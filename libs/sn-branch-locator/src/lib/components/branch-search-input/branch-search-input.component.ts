@@ -23,7 +23,7 @@ export class BranchSearchInputComponent implements OnInit {
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
-    @Inject('WINDOW') private window: any
+    @Inject('WINDOW') private windowRef: any
   ) { }
 
 
@@ -37,7 +37,7 @@ export class BranchSearchInputComponent implements OnInit {
   }
 
   initGoogleAutoCommplete(): void {
-    const autocomplete = new this.window.google.maps.places
+    const autocomplete = new this.windowRef.google.maps.places
       .Autocomplete(this.elementRef.nativeElement, {
         types: ['address']
       });
