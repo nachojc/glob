@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Branch } from './models/branch.model';
+import { LatLngLiteral } from '@agm/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnBranchLocatorService {
 
+  readonly API_URL = 'https://back-weu.azurewebsites.net/branch-locator';
   constructor(
     private http: HttpClient,
   ) { }
@@ -19,7 +21,7 @@ export class SnBranchLocatorService {
    * @Returns {Observable<Branch[]>}
    * @memberOf SnBranchLocatorService
    */
-  getBranches(): Observable<Branch[]> {
-    return this.http.get<Branch[]>('/find/defaultView');
+  getBranchesByCoords(coords: LatLngLiteral): Observable<Branch[]> {
+    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?config={"coords":[${coords.lat},${coords.lng}]}`);
   }
 }

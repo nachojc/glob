@@ -33,7 +33,7 @@ export class SnBranchLocatorComponent {
   branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
   branchesList: Branch[];
 
-  userPostion: LatLngLiteral;
+  userPosition: LatLngLiteral;
   zoom = 15;
   showDrawer: boolean;
   showReCenter: boolean;
@@ -46,14 +46,13 @@ export class SnBranchLocatorComponent {
     private service: BranchLocatorService,
     private branchService: SnBranchLocatorService
   ) {
-    this.getBranchesFromService();
-
   }
 
-  // TODO: remove. Created for testing propose
-  getBranchesFromService() {
-    this.branchService.getBranches().subscribe(res => {
+  getBranchesByCoordinates(coords: LatLngLiteral) {
+    console.log('coords: ', coords);
+    this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.branchesList = res;
+      console.log('this.branchesList: ', this.branchesList);
     }, err => {
       console.error(err);
     });
@@ -114,7 +113,7 @@ export class SnBranchLocatorComponent {
     this.centerMapToUser();
     this.service.watchPosition().subscribe(
       (pos: Position) => {
-        this.userPostion = {
+        this.userPosition = {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         };
@@ -125,9 +124,9 @@ export class SnBranchLocatorComponent {
 
   centerChange(mapCenter: LatLngLiteral): void {
 
-    if (this.userPostion && this.userPostion.lng && this.userPostion.lat) {
+    if (this.userPosition && this.userPosition.lng && this.userPosition.lat) {
       // tslint:disable-next-line: max-line-length
-      this.showReCenter = ((this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng)) && (this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat)));
+      this.showReCenter = ((this.roundCordinates(this.userPosition.lng) !== this.roundCordinates(mapCenter.lng)) && (this.roundCordinates(this.userPosition.lat) !== this.roundCordinates(mapCenter.lat)));
     } else {
       this.showReCenter = false;
     }
@@ -146,6 +145,8 @@ export class SnBranchLocatorComponent {
           lng: pos.coords.longitude
         };
         this.map.api.panTo(newCenter);
+
+        this.getBranchesByCoordinates({lat: pos.coords.latitude, lng: pos.coords.longitude});
       });
   }
 

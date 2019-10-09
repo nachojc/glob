@@ -6,7 +6,7 @@
             <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
             (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
-            <agm-marker [agmFitBounds]="true" [latitude]="userPostion?.lat" [longitude]="userPostion?.lng"
+            <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
                 [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
             <agm-marker canChangeIcon *ngFor="let branch of branchesList" [title]="branch.id" [agmFitBounds]="true" [latitude]="branch.location.geoCoords.latitude"
                 [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)"
