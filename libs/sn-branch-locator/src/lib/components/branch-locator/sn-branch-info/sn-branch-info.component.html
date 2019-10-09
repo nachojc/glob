@@ -3,7 +3,7 @@
         <h6 class="branch-title">Nearest result</h6>
         <section class="branch-summary">
             <h6 class="branch-name">{{branch.name}}</h6>
-            <div class="body-medium">Private</div>
+            <div class="body-medium" *ngIf="branch.subType?.multi">{{branch.subType?.multi.default}}</div>
         </section>
         <section class="branch-location">
           <p class="branch-address">
@@ -27,7 +27,7 @@
 
   <sn-tab-group>
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
-    <sn-tab label="Branch" style="overflow: scroll">
+    <sn-tab label="Branch" class="tab-branch-info">
       <div class="branch-info-wrapper">
         <sn-option-list>
           <sn-option-item border>
@@ -36,43 +36,25 @@
               <div class="signal"></div>
             </div>
           </sn-option-item>
-          <sn-option-item border>
+          <sn-option-item border *ngIf="branch.contactData?.phoneNumber">
             <sn-icon color="primary" icon="sn-CHAN025" start align-top></sn-icon>
             <div>
               <div class="Type-5_Regular-Style section-title">Contact number</div>
-              <div class="Type-5_Regular-Style">07517 295 793</div>
+              <div class="Type-5_Regular-Style">{{branch.contactData.phoneNumber}}</div>
             </div>
             <div right-text>
-              <button (click)="contactBranch()" class="call-button">Call</button>
+              <button (click)="contactBranch(branch.contactData.phoneNumber)" class="call-button">Call</button>
             </div>
           </sn-option-item>
           <sn-option-item border>
             <sn-icon color="primary" icon="sn-DOC022" start align-top></sn-icon>
             <div class="Type-5_Regular-Style section-title">Opening hours</div>
-            <div class="Type-5_Regular-Style hours-wrapper">
+            <div class="Type-5_Regular-Style hours-wrapper" *ngFor="let schedule of schedulePreview">
               <div class="weekdays">
-                <h1 class="title">Mon - Fri:</h1>
+                <h1 class="title">{{schedule.text}}:</h1>
               </div>
               <div class="hours">
-                08:30 - 14:00<br />
-                16:00 - 18:00
-              </div>
-            </div>
-            <div class="Type-5_Regular-Style hours-wrapper">
-              <div class="weekdays">
-                <h1 class="title">Sat:</h1>
-              </div>
-              <div class="hours">
-                08:30 - 15:00
-              </div>
-            </div>
-            <div class="Type-5_Regular-Style section-title">Bill payments</div>
-            <div class="Type-5_Regular-Style hours-wrapper">
-              <div class="weekdays">
-                <h1 class="title">Tues - Thurs:</h1>
-              </div>
-              <div class="hours">
-                08:30 - 10:00
+                <div *ngFor="let workingHour of schedule.hours">{{workingHour}}<br /></div>
               </div>
             </div>
           </sn-option-item>

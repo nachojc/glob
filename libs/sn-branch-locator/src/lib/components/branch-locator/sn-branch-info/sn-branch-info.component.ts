@@ -10,11 +10,14 @@ export class SnBranchInfoComponent {
 
   // tslint:disable-next-line: variable-name
   private _branch: Branch;
+  public schedulePreview = [];
+
 
   @Input()
   set branch(value: Branch) {
     this._branch = value;
-    this.parseHour(this._branch.schedule.workingDay);
+    console.log(this._branch);
+    this.schedulePreview = this.parseHours(this._branch.schedule.workingDay);
   }
 
   get branch() {
@@ -26,38 +29,67 @@ export class SnBranchInfoComponent {
   contactBranch() {
   }
 
-  parseHour(branchSchedule: any) {
-    const nowWeekDay = new Date().getDay();
-    console.log('nowWeekDay: ', nowWeekDay);
-    Object.keys(branchSchedule).forEach(weekDay => {
-      console.log('day: ', weekDay);
-      console.log(branchSchedule[weekDay]);
-    });
+  private parseHours(branchSchedule: any) {
 
-  //   "schedule": {
-  //     "workingDay": {
-  //         "WEDNESDAY": [
-  //             "09:30-17:00"
-  //         ],
-  //         "MONDAY": [
-  //             "09:30-17:00"
-  //         ],
-  //         "THURSDAY": [
-  //             "09:30-17:00"
-  //         ],
-  //         "SUNDAY": [],
-  //         "TUESDAY": [
-  //             "09:30-17:00"
-  //         ],
-  //         "FRIDAY": [
-  //             "09:30-17:00"
-  //         ],
-  //         "SATURDAY": [
-  //             "09:30-16:00"
-  //         ]
-  //     },
-  //     "specialDay": []
-  // },
+    // TODO: Verify how it will work with internatilization.
+    const language = 'default';
+    const hoursEnum = {
+        MONDAY: {
+          default: 'Mon',
+          br: 'Seg'
+        },
+        TUESDAY: {
+          default: 'Tue',
+          br: 'Ter'
+        },
+        WEDNESDAY: {
+          default: 'Wed',
+          br: 'Qua'
+        },
+        THURSDAY: {
+          default: 'Thu',
+          br: 'Qui'
+        },
+        FRIDAY: {
+          default: 'Fri',
+          br: 'Sex'
+        },
+        SATURDAY: {
+          default: 'Sat',
+          br: 'Sab'
+        },
+        SUNDAY: {
+          default: 'Sun',
+          br: 'Ter'
+        }
+      };
+
+    const groupedHours = [];
+    let index = 0;
+    Object.keys(hoursEnum).forEach(res => {
+      if (branchSchedule[res].length > 0) {
+        // create first group.
+        if (groupedHours.length === 0) {
+          groupedHours.push({
+            text: `${hoursEnum[res][language]}`,
+            hours: branchSchedule[res]
+          });
+        } else {
+          // if same hours, add to the previous group
+          if (JSON.stringify(groupedHours[index].hours) === JSON.stringify(branchSchedule[res])) {
+            groupedHours[index].text = `${groupedHours[index].text.split(' - ')[0]} - ${hoursEnum[res][language]}`;
+          } else {
+            // else, create a new group
+            groupedHours.push({
+              text: `${hoursEnum[res][language]}`,
+              hours: branchSchedule[res]
+            });
+            index ++;
+          }
+        }
+      }
+    });
+    return groupedHours;
   }
 
 }
