@@ -8,7 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { SnDrawerModule } from './components/sn-drawer/sn-drawer.module';
 import { AgmCoreModule } from '@agm/core';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
-import { AutocompleteModule } from './components/autocomplete/autocomplete.module';
 import { BranchSearchInputModule } from './components/branch-search-input/branch-search-input.module';
 
 @NgModule({
@@ -21,7 +20,6 @@ import { BranchSearchInputModule } from './components/branch-search-input/branch
     HttpClientModule,
     SnTabModule,
     SnDrawerModule,
-    AutocompleteModule,
     BranchSearchInputModule,
     OptionListModule,
     AgmCoreModule.forRoot({
