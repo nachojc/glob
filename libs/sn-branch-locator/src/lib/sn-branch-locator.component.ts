@@ -1,11 +1,13 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from './components/branch-locator/directives/sn-map/sn-map.directive';
-import { AgmMarker, LatLngLiteral } from '@agm/core';
+import { LatLngLiteral } from '@agm/core';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
 import { Branch } from './models/branch.model';
 import { SnBranchLocatorService } from './sn-branch-locator.service';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'sn-branch-locator',
@@ -44,10 +46,10 @@ export class SnBranchLocatorComponent {
 
   constructor(
     private service: BranchLocatorService,
-    private branchService: SnBranchLocatorService
+    private branchService: SnBranchLocatorService,
+    // private translate: TranslateService
   ) {
     this.getBranchesFromService();
-
   }
 
   // TODO: remove. Created for testing propose
@@ -118,7 +120,8 @@ export class SnBranchLocatorComponent {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         };
-      });
+      }
+    );
   }
 
 
