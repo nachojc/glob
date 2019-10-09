@@ -15,7 +15,7 @@
 
             <section class="locator-search">
                 <div class="locator-search-container">
-                    <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" filterCount="5"
+                    <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="0"
                     placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
                     (reCenter)="centerMapToUser()"></sn-branch-search-input>
                 </div>
@@ -31,7 +31,7 @@
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
     <sn-tab label="List" style="overflow: scroll">
         <div class="locator-search-container">
-            <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" filterCount="5"
+            <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="0"
                     placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
                     (reCenter)="centerMapToUser()"></sn-branch-search-input>
         </div>
