@@ -52,7 +52,6 @@ export class SnBranchLocatorComponent {
     console.log('coords: ', coords);
     this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.branchesList = res;
-      console.log('this.branchesList: ', this.branchesList);
     }, err => {
       console.error(err);
     });
@@ -138,16 +137,20 @@ export class SnBranchLocatorComponent {
   }
 
   centerMapToUser() {
-    this.service.getCurrentPosition()
-      .subscribe((pos: Position) => {
-        const newCenter = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-        this.map.api.panTo(newCenter);
+    if (this.userPosition && this.userPosition.lat && this.userPosition.lng) {
+      this.map.api.panTo(this.userPosition);
+    } else {
+      this.service.getCurrentPosition()
+        .subscribe((pos: Position) => {
+          const newCenter = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          this.map.api.panTo(newCenter);
 
-        this.getBranchesByCoordinates({lat: pos.coords.latitude, lng: pos.coords.longitude});
-      });
+          this.getBranchesByCoordinates({lat: pos.coords.latitude, lng: pos.coords.longitude});
+        });
+    }
   }
 
 

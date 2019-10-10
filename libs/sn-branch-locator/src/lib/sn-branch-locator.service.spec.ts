@@ -1,19 +1,30 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
 import { SnBranchLocatorService } from './sn-branch-locator.service';
 import { HttpClientModule } from '@angular/common/http';
+import { branchMock } from './sn-branch-locator.component.spec';
+import { of } from 'rxjs';
+import { async } from 'q';
+import { toBase64String } from '@angular/compiler/src/output/source_map';
 
 describe('SnBranchLocatorService', () => {
+  let service: SnBranchLocatorService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule]
-      // providers: [HttpClient]
     })
     .compileComponents();
+    service = TestBed.get(SnBranchLocatorService);
   });
 
   it('should be created', () => {
-    const service: SnBranchLocatorService = TestBed.get(SnBranchLocatorService);
     expect(service).toBeTruthy();
   });
+
+  it('should call getBranchesByBounds and return empty []', inject([SnBranchLocatorService], (nameService: SnBranchLocatorService) => {
+    nameService.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}).subscribe(res => {
+      expect(res).toBe([]);
+    });
+  }));
+
 });

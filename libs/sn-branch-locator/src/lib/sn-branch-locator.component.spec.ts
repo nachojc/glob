@@ -18,7 +18,7 @@ const BranchLocatorServiceMock = {
   getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
 
-const branchMock: Branch = {
+export const branchMock: Branch = {
   id: '5d8b6968048ccee51add3042',
   code: 'Santander_UK_UK_B798',
   entityCode: 'Santander_UK',
@@ -143,14 +143,14 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   it('call recenter map when user position is diferente from the center of the map', () => {
-    component.userPostion = {lat: 38.7376049, lng: -9.2654431};
+    component.userPosition = {lat: 38.7376049, lng: -9.2654431};
     const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
     component.centerChange(center);
     expect(component.showReCenter).not.toBeTruthy();
   });
 
   it(`call recenter map when user position is undefined`, () => {
-    component.userPostion = undefined;
+    component.userPosition = undefined;
     const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
     component.centerChange(center);
     expect(component.showReCenter).not.toBeTruthy();
@@ -158,7 +158,7 @@ describe('SnBranchLocatorComponent', () => {
 
 
   it('call recenter map when user position is equal to center of the map', () => {
-    component.userPostion = {lat: 38.7376049, lng: -9.1654431};
+    component.userPosition = {lat: 38.7376049, lng: -9.1654431};
     const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
     component.centerChange(center);
     expect(component.showReCenter).not.toBeTruthy();
