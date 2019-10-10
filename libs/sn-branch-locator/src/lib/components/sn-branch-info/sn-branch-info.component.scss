@@ -1,8 +1,10 @@
 @import '../../variables.scss';
+
+
 .branch-wrapper {
   display: flex;
   flex-direction: column;
-  height: -webkit-fill-available;  
+  height: 100%;
 }
 
 .branch-summary-wrapper {
@@ -88,7 +90,7 @@
 
 .tab-group-wrapper {
   overflow: scroll;
-  // height: -webkit-fill-available;
+  height: 100%;
 }
 
 .branch-info-wrapper {
