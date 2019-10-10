@@ -2,7 +2,7 @@
 .branch-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;  
+  height: -webkit-fill-available;  
 }
 
 .branch-summary-wrapper {
@@ -86,6 +86,10 @@
 
 }
 
+.tab-group-wrapper {
+  overflow: scroll;
+  // height: -webkit-fill-available;
+}
 
 .branch-info-wrapper {
   padding: 1rem;
