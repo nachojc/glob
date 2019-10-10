@@ -54,10 +54,10 @@ export class SnBranchLocatorComponent {
   }
 
   getBranchesByCoordinates(coords: LatLngLiteral) {
-    console.log('coords: ', coords);
     this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.branchesList = res;
     }, err => {
+      // TODO: Add error handler
       console.error(err);
     });
   }
@@ -134,6 +134,7 @@ export class SnBranchLocatorComponent {
   centerMapToUser() {
     if (this.userPosition && this.userPosition.lat && this.userPosition.lng) {
       this.map.api.panTo(this.userPosition);
+      this.getBranchesByCoordinates({lat: this.userPosition.lat, lng: this.userPosition.lng});
     } else {
       this.service.getCurrentPosition()
         .subscribe((pos: Position) => {
