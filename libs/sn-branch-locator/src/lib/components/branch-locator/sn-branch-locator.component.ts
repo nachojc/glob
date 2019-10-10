@@ -162,7 +162,12 @@ export class SnBranchLocatorComponent {
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
       switchMap(() => from(this.map.api.getBounds()))
     ).subscribe((mapBounds) => {
-      console.log('Map Bounds', mapBounds);
+      this.branchService.getBranchesByBounds({
+        lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
+        {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
+      ).subscribe(res => {
+        this.branchesList = res;
+      });
     });
   }
 
