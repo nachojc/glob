@@ -9,7 +9,7 @@ export class BranchLocatorService {
 
 
 
-  constructor(@Inject('WINDOW') private windowRef: Window) { }
+  constructor(@Inject('WINDOW') private windowRef) { }
 
 
   public watchPosition(): Observable<Position> {

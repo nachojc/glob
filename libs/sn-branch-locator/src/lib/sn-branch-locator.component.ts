@@ -17,7 +17,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent {
-
   @ViewChild(SnMapDirective) map: SnMapDirective;
   @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
   lat: number;

@@ -13,9 +13,8 @@
     ::ng-deep sn-icon {
         display: block;
         i {
-            line-height: 48px;
-            font-size: 18px;
-            font-weight: 900;
+            font-size: 24px;
+            vertical-align: middle;
         }
     }
 
@@ -37,9 +36,12 @@
                 }
             }
             .search-input-input{
+                margin-left: 8px;
+                margin-right: 8px;
                 flex:1;
 
                 input[type=search] {
+                    height: 100%;
                     -webkit-appearance: none;
                     display: block;
                     font-family: inherit;
@@ -59,26 +61,26 @@
                     -webkit-user-select: text;
                     cursor: auto;
             
-                    // /* clears the 'X' from Internet Explorer */
-                    // &::-ms-clear {
-                    //     display: none;
-                    //     width: 0;
-                    //     height: 0;
-                    // }
+                    /* clears the 'X' from Internet Explorer */
+                    &::-ms-clear {
+                        display: none;
+                        width: 0;
+                        height: 0;
+                    }
             
-                    // &::-ms-reveal {
-                    //     display: none;
-                    //     width: 0;
-                    //     height: 0;
-                    // }
+                    &::-ms-reveal {
+                        display: none;
+                        width: 0;
+                        height: 0;
+                    }
             
-                    // /* clears the 'X' from Chrome */
-                    // &::-webkit-search-decoration,
-                    // &::-webkit-search-cancel-button,
-                    // &::-webkit-search-results-button,
-                    // &::-webkit-search-results-decoration {
-                    //     display: none;
-                    // }
+                    /* clears the 'X' from Chrome */
+                    &::-webkit-search-decoration,
+                    &::-webkit-search-cancel-button,
+                    &::-webkit-search-results-button,
+                    &::-webkit-search-results-decoration {
+                        display: none;
+                    }
                 }
             }
             .search-input-center-button{
@@ -86,8 +88,8 @@
                 
                 button{
                     display: block;
-                    padding-top: 0;
-                    padding-bottom: 0;
+                    padding: 0;
+                    margin-right: 8px;
                     ::ng-deep sn-icon {
                         i {
                             color: rgb(236, 0, 0);
@@ -132,13 +134,9 @@
                         .filter-button-notification-wrapper {
                             border-radius: 50%;
                             background-color: rgb(236, 0, 0);
-                            height: 20px;
-                            width: 20px;
+                            height: 25px;
+                            width: 25px;
                             color: rgb(255, 255, 255);
-                            font-size: 14px;
-                            font-family: 'SantanderText';
-                            font-weight: normal;
-                            line-height: 20px;
                             text-align: center;
                         }
                     }
