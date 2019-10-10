@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,13 +9,13 @@ export class BranchLocatorService {
 
 
 
-  constructor() { }
+  constructor(@Inject('WINDOW') private windowRef) { }
 
 
   public watchPosition(): Observable<Position> {
     return Observable.create(
       (observer) => {
-      navigator.geolocation.watchPosition((pos: Position) => {
+        this.windowRef.navigator.geolocation.watchPosition((pos: Position) => {
         observer.next(pos);
       },
       (error) => {
@@ -31,7 +31,7 @@ export class BranchLocatorService {
   public getCurrentPosition(): Observable<Position> {
     return Observable.create(
       (observer) => {
-      navigator.geolocation.getCurrentPosition((pos: Position) => {
+        this.windowRef.navigator.geolocation.getCurrentPosition((pos: Position) => {
         observer.next(pos);
       },
       (error) => {

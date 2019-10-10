@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OptionListModule, IconModule, SnTabModule } from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from './sn-branch-info.component';
-import { Branch } from '../../../models/branch.model';
+import { Branch } from '../../models/branch.model';
 
 
 const branchMock: Branch = {

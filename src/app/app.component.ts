@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'BranchLocator';
+  constructor(
+    private translate: TranslateService
+    ) {
+
+    translate.setDefaultLang('en');
+    translate.use('es');
+  }
+
+  search(event) {
+    console.log(event);
+  }
+
+
 }
