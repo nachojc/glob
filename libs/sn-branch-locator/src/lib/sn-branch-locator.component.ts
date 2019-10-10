@@ -8,6 +8,8 @@ import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from './models/branch.model';
 import { SnBranchLocatorService } from './sn-branch-locator.service';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'sn-branch-locator',
@@ -46,10 +48,10 @@ export class SnBranchLocatorComponent {
 
   constructor(
     private service: BranchLocatorService,
-    private branchService: SnBranchLocatorService
+    private branchService: SnBranchLocatorService,
+    // private translate: TranslateService
   ) {
     this.getBranchesFromService();
-
   }
 
   // TODO: remove. Created for testing propose

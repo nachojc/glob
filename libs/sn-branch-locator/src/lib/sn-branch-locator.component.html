@@ -1,7 +1,7 @@
 
 
 <sn-tab-group [selectIndex]="selectedTabIndex" (selectedTab)='tabsChanged($event)'>
-    <sn-tab label="Map">
+    <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
         <div class="locator-content">
             <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
@@ -29,7 +29,7 @@
         </div>
     </sn-tab>
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
-    <sn-tab label="List" style="overflow: scroll">
+    <sn-tab label="{{ 'branchlocator.title.list' | translate }}" style="overflow: scroll">
         <div class="locator-search-container">
             <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="0"
                     placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
