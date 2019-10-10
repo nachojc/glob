@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Branch } from './models/branch.model';
+import { Branch } from '../../models/branch.model';
 
 @Injectable({
   providedIn: 'root'

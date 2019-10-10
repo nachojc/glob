@@ -11,10 +11,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "types": [],
+    "types": ["googlemaps"],
     "lib": [
       "dom",
       "es2018"
+      
     ]
   },
   "angularCompilerOptions": {

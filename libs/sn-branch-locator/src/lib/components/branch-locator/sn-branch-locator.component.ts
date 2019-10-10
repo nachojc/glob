@@ -1,14 +1,13 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { SnMapDirective } from './components/branch-locator/directives/sn-map/sn-map.directive';
+import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral } from '@agm/core';
-import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
-import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
-import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
+import { GeoPositionService } from '../../services/geo-position/geo-position.service';
+import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
-import { Branch } from './models/branch.model';
-import { SnBranchLocatorService } from './sn-branch-locator.service';
-import { TranslateService } from '@ngx-translate/core';
+import { Branch } from '../../models/branch.model';
+import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 
 
 @Component({
@@ -17,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent {
+
   @ViewChild(SnMapDirective) map: SnMapDirective;
   @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
   lat: number;
@@ -46,9 +46,8 @@ export class SnBranchLocatorComponent {
   selectedTabIndex: number;
 
   constructor(
-    private service: BranchLocatorService,
+    private service: GeoPositionService,
     private branchService: SnBranchLocatorService,
-    // private translate: TranslateService
   ) {
     this.getBranchesFromService();
   }

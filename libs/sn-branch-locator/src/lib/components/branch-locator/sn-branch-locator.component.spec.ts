@@ -1,22 +1,40 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
-import { AgmCoreModule, LatLngLiteral, MarkerManager } from '@agm/core';
-import { SnBranchSearchInputComponent } from './components/sn-branch-search-input/sn-branch-search-input.component';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader, MarkerManager } from '@agm/core';
 import { IconModule, OptionListModule, SnTabModule } from 'sn-common-lib';
-import { SnDrawerComponent } from './components/sn-drawer/sn-drawer.component';
-import { SnBranchInfoComponent } from './components/branch-locator/sn-branch-info/sn-branch-info.component';
-import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
-import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
-import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
-import {  of } from 'rxjs';
+import { SnDrawerComponent } from '../sn-drawer/sn-drawer.component';
+import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
+import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
+import { BranchSearchInputModule } from '../branch-search-input';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { Branch } from './models/branch.model';
+import { Branch } from '../../models/branch.model';
+import { of } from 'rxjs';
+import { GeoPositionService } from '../../services/geo-position/geo-position.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 
-const BranchLocatorServiceMock = {
+const MapsAPILoaderMock = {
+  load: () => new Promise(() => true)
+};
+const windowRef = {
+  google: {
+    maps : {
+      places: {
+        Autocomplete : () => ({
+          addListener: () => {},
+          getPlace: () => ({geometry: null})
+        })}
+    }
+  }
+};
+const GeoPositionServiceMock = {
   watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
   getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
+
+const mapBounds: LatLngLiteral = {lat: 8, lng: 35};
 
 const branchMock: Branch = {
   id: '5d8b6968048ccee51add3042',
@@ -95,19 +113,34 @@ describe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
   let fixture: ComponentFixture<SnBranchLocatorComponent>;
 
+  let placeChangeSpy;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SnBranchLocatorComponent, SnBranchSearchInputComponent, SnDrawerComponent, SnBranchInfoComponent],
+      declarations: [
+        SnBranchLocatorComponent,
+        SnDrawerComponent,
+        SnBranchInfoComponent
+      ],
       imports: [
         IconModule,
         SnTabModule,
+        BranchSearchInputModule,
         OptionListModule,
         HttpClientModule,
+        TranslateModule.forRoot(),
         AgmCoreModule.forRoot({
-          apiKey: 'AIzaSyCCOzVlRBrfWv06M6pHNtlkmcmuemXneAM'
+          apiKey: 'aaa'
         })
       ],
-      providers: [{ provide: BranchLocatorService, useValue: BranchLocatorServiceMock  }]
+      providers: [
+        { provide: 'WINDOW', useValue: windowRef },
+        { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
+        { provide: GeoPositionService, useValue: GeoPositionServiceMock  }
+      ],
+      schemas: [
+        NO_ERRORS_SCHEMA
+      ]
     })
       .compileComponents();
   }));
@@ -115,7 +148,12 @@ describe('SnBranchLocatorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SnBranchLocatorComponent);
     component = fixture.componentInstance;
-    component.map = { api: {panTo: (position) => undefined}} as any;
+    component.map = { api: {
+      panTo: () => new Promise((panToresolve) => panToresolve()),
+      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+    }} as any;
+    placeChangeSpy =  spyOn(component, 'placeChange').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -146,7 +184,9 @@ describe('SnBranchLocatorComponent', () => {
     component.userPostion = {lat: 38.7376049, lng: -9.2654431};
     const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
     component.centerChange(center);
-    expect(component.showReCenter).not.toBeTruthy();
+
+    fixture.detectChanges();
+    expect(component.showReCenter).toEqual(true);
   });
 
   it(`call recenter map when user position is undefined`, () => {
@@ -202,17 +242,12 @@ describe('SnBranchLocatorComponent', () => {
   });
 
 
-  // it('reset markers', () => {
-  //   component.branchMarkerList = [
-  //     {id: () => 1, clickable: true, iconUrl : undefined, markerManager:  {updateIcon : (marker: any) => undefined}},
-  //     {id: () => 2, clickable: true, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined}},
-  //     {id: () => 3, clickable: false, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined }}
-  //   ] as any;
-  //   // tslint:disable-next-line: no-string-literal
-  //   component['resetMarkers']();
-  //   // tslint:disable-next-line: no-string-literal
-  //   expect(component['selectedMarker']).toBeUndefined();
-  // });
+  it('place change', () => {
+    const eventValue: LatLngLiteral = {lat: 9, lng: 33};
+
+    component.placeChange(eventValue);
+    expect(placeChangeSpy).toHaveBeenCalled();
+  });
 
 
 });
