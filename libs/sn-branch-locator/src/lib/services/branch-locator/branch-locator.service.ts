@@ -22,7 +22,8 @@ export class SnBranchLocatorService {
    * @memberOf SnBranchLocatorService
    */
   public getBranchesByCoords(coords: LatLngLiteral): Observable<Branch[]> {
-    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?config={"coords":[${coords.lat},${coords.lng}]}`);
+    // return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?config={"coords":[${coords.lat},${coords.lng}]}`);
+    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?config="coords":${coords.lat},${coords.lng}`);
   }
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): Observable<Branch[]> {
