@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'BranchLocator';
+
+  constructor() { }
+
+
+  search(event) {
+    console.log(event);
+  }
+
+
 }

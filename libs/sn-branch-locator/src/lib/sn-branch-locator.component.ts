@@ -1,9 +1,11 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from './components/branch-locator/directives/sn-map/sn-map.directive';
-import { AgmMarker, LatLngLiteral } from '@agm/core';
+import { LatLngLiteral } from '@agm/core';
 import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
 import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
+import { from } from 'rxjs';
+import { switchMap, first } from 'rxjs/operators';
 import { Branch } from './models/branch.model';
 import { SnBranchLocatorService } from './sn-branch-locator.service';
 
@@ -110,9 +112,9 @@ export class SnBranchLocatorComponent {
   // }
 
   mapReady(): void {
-
     this.centerMapToUser();
-    this.service.watchPosition().subscribe(
+    this.service.watchPosition()
+      .pipe(first()).subscribe(
       (pos: Position) => {
         this.userPostion = {
           lat: pos.coords.latitude,
@@ -122,12 +124,11 @@ export class SnBranchLocatorComponent {
     );
   }
 
-
   centerChange(mapCenter: LatLngLiteral): void {
-
     if (this.userPostion && this.userPostion.lng && this.userPostion.lat) {
-      // tslint:disable-next-line: max-line-length
-      this.showReCenter = ((this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng)) && (this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat)));
+      this.showReCenter = (
+        this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng)
+        || this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat));
     } else {
       this.showReCenter = false;
     }
@@ -156,4 +157,15 @@ export class SnBranchLocatorComponent {
       console.log(this.showDrawer);
     }
   }
+
+
+  placeChange(place: LatLngLiteral) {
+    from(this.map.api.panTo(place)).pipe(
+      switchMap(() => from(this.map.api.setZoom(this.zoom))),
+      switchMap(() => from(this.map.api.getBounds()))
+    ).subscribe((mapBounds) => {
+      console.log('Map Bounds', mapBounds);
+    });
+  }
+
 }

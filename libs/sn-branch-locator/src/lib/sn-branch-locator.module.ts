@@ -8,10 +8,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { SnDrawerModule } from './components/sn-drawer/sn-drawer.module';
 import { AgmCoreModule } from '@agm/core';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
-import { SnBranchSearchInputComponent } from './components/sn-branch-search-input/sn-branch-search-input.component';
+import { BranchSearchInputModule } from './components/branch-search-input/branch-search-input.module';
 
 @NgModule({
-  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective, SnBranchSearchInputComponent],
+  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective],
   imports: [
     CommonModule,
     OptionListModule,
@@ -20,9 +20,11 @@ import { SnBranchSearchInputComponent } from './components/sn-branch-search-inpu
     HttpClientModule,
     SnTabModule,
     SnDrawerModule,
+    BranchSearchInputModule,
     OptionListModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0'
+      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      libraries: ['places']
     })
   ],
   exports: [SnBranchLocatorComponent]
