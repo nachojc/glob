@@ -46,7 +46,7 @@
                 <button (click)="contactBranch(branch.contactData.phoneNumber)" class="call-button">Call</button>
               </div>
             </sn-option-item>
-            <sn-option-item border>
+            <sn-option-item border *ngIf="schedulePreview.length > 0">
               <sn-icon color="primary" icon="sn-DOC022" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Opening hours</div>
               <div class="Type-5_Regular-Style hours-wrapper" *ngFor="let schedule of schedulePreview">
@@ -69,11 +69,14 @@
                 Sorry for the inconvenience
               </div>
             </sn-option-item>
-            <sn-option-item border>
+            <sn-option-item border *ngIf="attributeList">
               <sn-icon color="primary" icon="sn-BAN089" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Additional services</div>
               <div class="Type-5_Regular-Style">
-                <h1 class="title">Financial</h1>
+                <ul type="none">
+                  <li *ngFor="let attr of attributeList">{{attr}}</li>
+                </ul>
+                <!-- <h1 class="title">Financial</h1>
                 <ul type="none">
                   <li>Security box</li>
                   <li>Instant card issuer</li>
@@ -95,10 +98,10 @@
                   <li>Spaces co-Working</li>
                   <li>Own parking</li>
                   <li>English spoken</li>
-                </ul>
+                </ul> -->
               </div>
             </sn-option-item>
-            <sn-option-item>
+            <sn-option-item *ngIf="haveAccesibilitty">
               <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Accessibility</div>
               <h1 class="title">Disabled access</h1>

@@ -9,12 +9,17 @@ import { Branch } from '../../models/branch.model';
 export class SnBranchInfoComponent {
   private _branch: Branch;
   public schedulePreview = [];
-
+  public haveAccesibilitty: boolean;
+  public attributeList: string[];
 
   @Input()
   set branch(value: Branch) {
     this._branch = value;
     this.schedulePreview = this.parseHours(this._branch.schedule.workingDay);
+    if (this._branch.attrib) {
+      this.attributeList = this._branch.attrib.map(attr => attr.code);
+      this.haveAccesibilitty = this.attributeList.find(attr => attr.toUpperCase() === 'ACCESIBILITY') ? true : false;
+    }
   }
 
   get branch() {
