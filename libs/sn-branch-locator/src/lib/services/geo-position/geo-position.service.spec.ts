@@ -1,6 +1,6 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 
-import { BranchLocatorService } from './branch-locator.service';
+import { GeoPositionService } from './geo-position.service';
 
 
 const position: Position = {
@@ -42,7 +42,7 @@ const windowRefKO = {
   }
 };
 
-describe('BranchLocatorService', () => {
+describe('GeoPositionService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
       { provide: 'WINDOW', useValue: windowRefOK }
@@ -50,12 +50,12 @@ describe('BranchLocatorService', () => {
   }));
 
   it('should be created', () => {
-    const service: BranchLocatorService = TestBed.get(BranchLocatorService);
+    const service: GeoPositionService = TestBed.get(GeoPositionService);
     expect(service).toBeTruthy();
   });
 
   it('When watchPosition is called Then return an observable Position', async(
-    inject([BranchLocatorService], (nameService) => {
+    inject([GeoPositionService], (nameService) => {
 
       spyOn(navigator.geolocation, 'watchPosition').and.returnValue(position);
 
@@ -66,7 +66,7 @@ describe('BranchLocatorService', () => {
   );
 
   it('When getCurrentPosition is called Then return an observable Position', async(
-    inject([BranchLocatorService], (nameService) => {
+    inject([GeoPositionService], (nameService) => {
       spyOn(navigator.geolocation, 'getCurrentPosition').and.returnValue(position);
 
       nameService.getCurrentPosition().subscribe((pos: Position) => {
@@ -79,7 +79,7 @@ describe('BranchLocatorService', () => {
 
 
 
-describe('BranchLocatorService', () => {
+describe('GeoPositionService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
       { provide: 'WINDOW', useValue: windowRefKO }
@@ -88,7 +88,7 @@ describe('BranchLocatorService', () => {
 
 
   it('When watchPosition is called Then return an error observable', async(
-    inject([BranchLocatorService], (nameService) => {
+    inject([GeoPositionService], (nameService) => {
 
       spyOn(navigator.geolocation, 'watchPosition').and.returnValue(undefined);
 
@@ -101,7 +101,7 @@ describe('BranchLocatorService', () => {
   );
 
   it('When getCurrentPosition is called Then return an error observable', async(
-    inject([BranchLocatorService], (nameService) => {
+    inject([GeoPositionService], (nameService) => {
       spyOn(navigator.geolocation, 'getCurrentPosition').and.returnValue(undefined);
 
       nameService.getCurrentPosition().subscribe((pos: Position) => {

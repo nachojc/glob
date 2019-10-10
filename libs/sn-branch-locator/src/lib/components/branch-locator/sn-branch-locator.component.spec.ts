@@ -2,16 +2,17 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader, MarkerManager } from '@agm/core';
 import { IconModule, OptionListModule, SnTabModule } from 'sn-common-lib';
-import { SnDrawerComponent } from './components/sn-drawer/sn-drawer.component';
-import { SnBranchInfoComponent } from './components/branch-locator/sn-branch-info/sn-branch-info.component';
-import { DrawerState } from './components/sn-drawer/models/sn-drawer-state.model';
-import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
-import { BranchLocatorService } from './components/branch-locator/branch-locator.service';
-import { of } from 'rxjs';
-import { BranchSearchInputModule } from './components/branch-search-input';
+import { SnDrawerComponent } from '../sn-drawer/sn-drawer.component';
+import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
+import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
+import { BranchSearchInputModule } from '../branch-search-input';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { Branch } from './models/branch.model';
+import { Branch } from '../../models/branch.model';
+import { of } from 'rxjs';
+import { GeoPositionService } from '../../services/geo-position/geo-position.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 
 const MapsAPILoaderMock = {
@@ -28,7 +29,7 @@ const windowRef = {
     }
   }
 };
-const BranchLocatorServiceMock = {
+const GeoPositionServiceMock = {
   watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
   getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
@@ -127,14 +128,15 @@ describe('SnBranchLocatorComponent', () => {
         BranchSearchInputModule,
         OptionListModule,
         HttpClientModule,
+        TranslateModule.forRoot(),
         AgmCoreModule.forRoot({
-          apiKey: 'AIzaSyCCOzVlRBrfWv06M6pHNtlkmcmuemXneAM'
+          apiKey: 'aaa'
         })
       ],
       providers: [
         { provide: 'WINDOW', useValue: windowRef },
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
-        { provide: BranchLocatorService, useValue: BranchLocatorServiceMock  }
+        { provide: GeoPositionService, useValue: GeoPositionServiceMock  }
       ],
       schemas: [
         NO_ERRORS_SCHEMA

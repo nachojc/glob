@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Branch } from '../../../models/branch.model';
+import { Branch } from '../../models/branch.model';
 
 @Component({
   selector: 'sn-branch-info',
@@ -7,8 +7,6 @@ import { Branch } from '../../../models/branch.model';
   styleUrls: ['./sn-branch-info.component.scss']
 })
 export class SnBranchInfoComponent {
-
-  // tslint:disable-next-line: variable-name
   private _branch: Branch;
 
   @Input()

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SnBranchLocatorService } from './sn-branch-locator.service';
+import { SnBranchLocatorService } from './branch-locator.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('SnBranchLocatorService', () => {
