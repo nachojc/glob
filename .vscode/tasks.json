@@ -17,6 +17,17 @@
             "type": "npm",
             "script": "test-lib-dev",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "test-lib",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "build-lib",
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }

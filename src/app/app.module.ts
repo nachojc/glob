@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { SnBranchLocatorModule } from 'sn-branch-locator';
+import { SnBranchLocatorModule} from 'sn-branch-locator';
 
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -30,7 +30,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

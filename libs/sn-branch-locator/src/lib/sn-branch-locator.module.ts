@@ -8,7 +8,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SnDrawerModule } from './components/sn-drawer/sn-drawer.module';
 import { AgmCoreModule } from '@agm/core';
 import { SnMarkerDirective } from './components/branch-locator/directives/sn-marker/sn-marker.directive';
-import { SnBranchSearchInputComponent } from './components/sn-branch-search-input/sn-branch-search-input.component';
+import { BranchSearchInputModule } from './components/branch-search-input/branch-search-input.module';
 
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ export function LocalLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective, SnBranchSearchInputComponent],
+  declarations: [SnBranchLocatorComponent, SnMapDirective, SnBranchInfoComponent, SnMarkerDirective],
   imports: [
     CommonModule,
     OptionListModule,
@@ -28,16 +28,18 @@ export function LocalLoaderFactory(http: HttpClient) {
     HttpClientModule,
     SnTabModule,
     SnDrawerModule,
+    BranchSearchInputModule,
     OptionListModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0'
-    }),
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
         useFactory: LocalLoaderFactory,
         deps: [HttpClient]
       }
+    }),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      libraries: ['places']
     })
   ],
   exports: [

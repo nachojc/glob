@@ -1,19 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-
 import { SnBranchLocatorService } from './sn-branch-locator.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('SnBranchLocatorService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule]
-      // providers: [HttpClient]
-    })
-    .compileComponents();
+  let httpTestingController: HttpTestingController;
+  let service: SnBranchLocatorService;
+
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [HttpClientTestingModule]
+  }));
+
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
+
   it('should be created', () => {
-    const service: SnBranchLocatorService = TestBed.get(SnBranchLocatorService);
+    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.get(SnBranchLocatorService);
     expect(service).toBeTruthy();
   });
 });
