@@ -8,7 +8,8 @@ import { SnBranchLocatorModule} from 'sn-branch-locator';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
+import { ENV_CONFIG } from '@globile/mobile-services';
+import { environment } from 'src/environments/environment';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/branchlocator/', '.json');
@@ -30,7 +31,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-
+  providers: [{provide: ENV_CONFIG, useValue: environment}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
