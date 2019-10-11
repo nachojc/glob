@@ -1,6 +1,6 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral } from '@agm/core';
+import { LatLngLiteral, LatLngBounds } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
@@ -8,6 +8,7 @@ import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class SnBranchLocatorComponent {
   branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
   branchesList: Branch[];
 
-  userPostion: LatLngLiteral;
+  userPosition: LatLngLiteral;
   zoom = 15;
   showDrawer: boolean;
   showReCenter: boolean;
@@ -48,15 +49,15 @@ export class SnBranchLocatorComponent {
   constructor(
     private service: GeoPositionService,
     private branchService: SnBranchLocatorService,
+    // private translate: TranslateService
   ) {
-    this.getBranchesFromService();
   }
 
-  // TODO: remove. Created for testing propose
-  getBranchesFromService() {
-    this.branchService.getBranches().subscribe(res => {
+  getBranchesByCoordinates(coords: LatLngLiteral) {
+    this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.branchesList = res;
     }, err => {
+      // TODO: Add error handler
       console.error(err);
     });
   }
@@ -102,21 +103,12 @@ export class SnBranchLocatorComponent {
     }
   }
 
-  // private resetMarkers() {
-  //   this.branchMarkerList.filter((marker) => marker.clickable).forEach((marker) => {
-  //     marker.iconUrl = this.branchIcon as any;
-  //     marker.markerManager.updateIcon(marker);
-  //   });
-  //   this.selectedMarker = undefined;
-  //   this.showDrawer =  Boolean(this.selectedMarker);
-  // }
-
   mapReady(): void {
     this.centerMapToUser();
     this.service.watchPosition()
       .pipe(first()).subscribe(
       (pos: Position) => {
-        this.userPostion = {
+        this.userPosition = {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         };
@@ -125,10 +117,10 @@ export class SnBranchLocatorComponent {
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
-    if (this.userPostion && this.userPostion.lng && this.userPostion.lat) {
+    if (this.userPosition && this.userPosition.lng && this.userPosition.lat) {
       this.showReCenter = (
-        this.roundCordinates(this.userPostion.lng) !== this.roundCordinates(mapCenter.lng)
-        || this.roundCordinates(this.userPostion.lat) !== this.roundCordinates(mapCenter.lat));
+        this.roundCordinates(this.userPosition.lng) !== this.roundCordinates(mapCenter.lng)
+        || this.roundCordinates(this.userPosition.lat) !== this.roundCordinates(mapCenter.lat));
     } else {
       this.showReCenter = false;
     }
@@ -140,14 +132,21 @@ export class SnBranchLocatorComponent {
   }
 
   centerMapToUser() {
-    this.service.getCurrentPosition()
-      .subscribe((pos: Position) => {
-        const newCenter = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-        this.map.api.panTo(newCenter);
-      });
+    if (this.userPosition && this.userPosition.lat && this.userPosition.lng) {
+      this.map.api.panTo(this.userPosition);
+      this.getBranchesByCoordinates({lat: this.userPosition.lat, lng: this.userPosition.lng});
+    } else {
+      this.service.getCurrentPosition()
+        .subscribe((pos: Position) => {
+          const newCenter = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          this.map.api.panTo(newCenter);
+
+          this.getBranchesByCoordinates({lat: pos.coords.latitude, lng: pos.coords.longitude});
+        });
+    }
   }
 
 
@@ -163,8 +162,13 @@ export class SnBranchLocatorComponent {
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
       switchMap(() => from(this.map.api.getBounds()))
-    ).subscribe((mapBounds) => {
-      console.log('Map Bounds', mapBounds);
+    ).subscribe((mapBounds: LatLngBounds) => {
+      this.branchService.getBranchesByBounds({
+        lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
+        {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
+      ).subscribe(res => {
+        this.branchesList = res;
+      });
     });
   }
 
