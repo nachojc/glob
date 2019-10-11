@@ -9,11 +9,11 @@ import { SnBranchLocatorModule} from 'sn-branch-locator';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ENV_CONFIG } from '@globile/mobile-services';
+import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
 import { environment } from 'src/environments/environment';
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, '/assets/i18n/branchlocator/', '.json');
+export function HttpLoaderFactory(http: HttpClient, path: any) {
+  return new TranslateHttpLoader(http, path.api.BranchLocator.languages + 'assets/i18n/branchlocator/', '.json');
 }
 
 @NgModule({
@@ -28,12 +28,12 @@ export function HttpLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
+        deps: [HttpClient, ENV_CONFIG]
       }
     })
   ],
   providers: [
-    {provide: ENV_CONFIG, useValue: environment},
+    { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
     { provide: APP_BASE_HREF, useValue: './' },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: 'WINDOW', useValue: window }
