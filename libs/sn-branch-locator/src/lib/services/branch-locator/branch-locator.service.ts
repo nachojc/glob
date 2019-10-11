@@ -22,12 +22,12 @@ export class SnBranchLocatorService {
    * @memberOf SnBranchLocatorService
    */
   public getBranchesByCoords(coords: LatLngLiteral): Observable<Branch[]> {
-    // return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?config={"coords":[${coords.lat},${coords.lng}]}`);
-    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?config="coords":${coords.lat},${coords.lng}`);
+    const configVal = encodeURI(`{"coords":[${coords.lat},${coords.lng}]}`);
+    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?config=${configVal}`);
   }
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): Observable<Branch[]> {
-    // tslint:disable-next-line: max-line-length
-    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
+    const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
+    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?northEast=${configVal}`);
   }
 }

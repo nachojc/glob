@@ -8,6 +8,7 @@ import { SnBranchLocatorModule} from 'sn-branch-locator';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF } from '@angular/common';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -30,7 +31,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-
+  providers: [
+    { provide: APP_BASE_HREF, useValue: './' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: 'WINDOW', useValue: window }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

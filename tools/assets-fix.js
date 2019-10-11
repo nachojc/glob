@@ -23,3 +23,10 @@ FILE_TO_COPY.forEach(folder =>{
         console.log('Copy completed!: "' + folder.input + '"');
     }); 
 })
+
+const pars = process.argv;
+
+const build = pars.length > 2 ? pars[2] : '';
+const AssetRemedy = require('./assets');
+
+new AssetRemedy(build);

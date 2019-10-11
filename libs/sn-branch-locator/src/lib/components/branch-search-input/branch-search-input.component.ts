@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, NgZone, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
-import { from } from 'rxjs';
-
 
 @Component({
   selector: 'sn-branch-search-input',
@@ -12,7 +10,6 @@ export class BranchSearchInputComponent implements OnInit {
 
   @Input() showReCenter: boolean;
   @Output() reCenter = new EventEmitter<MouseEvent>();
-  // tslint:disable-next-line: no-output-on-prefix
   @Output() placeChange = new EventEmitter<LatLngLiteral>();
   @Input() filterCount: number;
   @Input() placeholder: string;
@@ -28,29 +25,28 @@ export class BranchSearchInputComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.mapsAPILoader.load()
-    .then( () => {
-      if (this.useGoogle) {
-        this.initGoogleAutoCommplete();
-      }
-    });
+    if (this.useGoogle) {
+      this.initGoogleAutoCommplete();
+    }
   }
 
   initGoogleAutoCommplete(): void {
-    const autocomplete = new this.windowRef.google.maps.places
-      .Autocomplete(this.elementRef.nativeElement, {
-        types: ['address']
-      });
+    this.mapsAPILoader.load()
+    .then( () => {
+      const autocomplete = new this.windowRef.google.maps.places
+        .Autocomplete(this.elementRef.nativeElement, {
+          types: ['address']
+        });
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
 
-    autocomplete.addListener('place_changed', () => {
-      this.ngZone.run(() => {
-
-        const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-        if (Boolean(place.geometry)) {
-          const lat = place.geometry.location.lat();
-          const lng = place.geometry.location.lng();
-          this.placeChange.emit({lat, lng});
-        }
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          if (Boolean(place.geometry)) {
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+            this.placeChange.emit({lat, lng});
+          }
+        });
       });
     });
   }

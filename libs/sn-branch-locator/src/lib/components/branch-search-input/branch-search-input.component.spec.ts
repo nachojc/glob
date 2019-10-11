@@ -70,9 +70,10 @@ describe('BranchSearchInputComponent', () => {
     expect(component.useGoogle).toBeTruthy();
   });
 
-  describe('initGoogleAutoCommplete()', () => {
+  fdescribe('initGoogleAutoCommplete()', () => {
     it('shoul call placeChange', () => {
       spyOn(component.placeChange, 'emit');
+      component.useGoogle = true;
       component.initGoogleAutoCommplete();
       expect(component.placeChange.emit).toHaveBeenCalled();
     });
