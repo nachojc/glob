@@ -1,6 +1,6 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral } from '@agm/core';
+import { LatLngLiteral, LatLngBounds } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
@@ -54,10 +54,10 @@ export class SnBranchLocatorComponent {
   }
 
   getBranchesByCoordinates(coords: LatLngLiteral) {
-    console.log('coords: ', coords);
     this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.branchesList = res;
     }, err => {
+      // TODO: Add error handler
       console.error(err);
     });
   }
@@ -134,6 +134,7 @@ export class SnBranchLocatorComponent {
   centerMapToUser() {
     if (this.userPosition && this.userPosition.lat && this.userPosition.lng) {
       this.map.api.panTo(this.userPosition);
+      this.getBranchesByCoordinates({lat: this.userPosition.lat, lng: this.userPosition.lng});
     } else {
       this.service.getCurrentPosition()
         .subscribe((pos: Position) => {
@@ -161,8 +162,13 @@ export class SnBranchLocatorComponent {
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
       switchMap(() => from(this.map.api.getBounds()))
-    ).subscribe((mapBounds) => {
-      console.log('Map Bounds', mapBounds);
+    ).subscribe((mapBounds: LatLngBounds) => {
+      this.branchService.getBranchesByBounds({
+        lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
+        {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
+      ).subscribe(res => {
+        this.branchesList = res;
+      });
     });
   }
 

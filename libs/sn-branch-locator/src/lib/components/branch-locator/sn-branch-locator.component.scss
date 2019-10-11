@@ -15,6 +15,10 @@
     ::ng-deep agm-map {
       height: 100%;
     }
+    ::ng-deep sn-drawer .drawer-content {
+      height: calc(100% - (4px + 8px + 2px));
+    }
+    
 
     .locator-search {
       position: absolute;

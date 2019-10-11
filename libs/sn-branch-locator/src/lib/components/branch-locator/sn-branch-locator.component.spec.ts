@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader, MarkerManager } from '@agm/core';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
 import { IconModule, OptionListModule, SnTabModule } from 'sn-common-lib';
 import { SnDrawerComponent } from '../sn-drawer/sn-drawer.component';
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
@@ -34,7 +34,18 @@ const GeoPositionServiceMock = {
   getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
 
-const mapBounds: LatLngLiteral = {lat: 8, lng: 35};
+const mapBounds = {
+  getNorthEast: () => ({
+    lat: () => 123,
+    lng: () => 123,
+    toJSON: () => null
+  }),
+  getSouthWest: () => ({
+    lat: () => 123,
+    lng: () => 123,
+    toJSON: () => null
+  })
+};
 
 const branchMock: Branch = {
   id: '5d8b6968048ccee51add3042',
