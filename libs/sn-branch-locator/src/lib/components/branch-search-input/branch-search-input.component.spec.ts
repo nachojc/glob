@@ -57,7 +57,7 @@ describe('BranchSearchInputComponent', () => {
     fixture = TestBed.createComponent(BranchSearchInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.elementRef = new ElementRef<any>({nativeElement: () => {}});
+    component.inputElementRef = new ElementRef<any>({nativeElement: () => {}});
   });
 
   it('should create', () => {
@@ -70,10 +70,10 @@ describe('BranchSearchInputComponent', () => {
     expect(component.useGoogle).toBeTruthy();
   });
 
-  describe('initGoogleAutoCommplete()', () => {
+  describe('initSearchBox()', () => {
     it('shoul call placeChange', () => {
       spyOn(component.placeChange, 'emit');
-      component.initGoogleAutoCommplete();
+      component.initSearchBox();
       expect(component.placeChange.emit).toHaveBeenCalled();
     });
   });

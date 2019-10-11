@@ -18,7 +18,7 @@ export class BranchSearchInputComponent implements OnInit {
   @Input() placeholder: string;
   @Input() useGoogle: boolean;
 
-  @ViewChild('in') public elementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('in') public inputElementRef: ElementRef<HTMLInputElement>;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -29,30 +29,55 @@ export class BranchSearchInputComponent implements OnInit {
 
   ngOnInit(): void {
     this.mapsAPILoader.load()
-    .then( () => {
-      if (this.useGoogle) {
-        this.initGoogleAutoCommplete();
+      .then(() => {
+        if (this.useGoogle) {
+          // this.initGoogleAutoCommplete();
+          this.initSearchBox();
+        }
+      });
+
+  }
+
+  // initGoogleAutoCommplete(): void {
+  //   const autocomplete = new this.windowRef.google.maps.places
+  //     .Autocomplete(this.inputElementRef.nativeElement, {
+  //       types: ['address']
+  //     });
+
+  //   autocomplete.addListener('place_changed', () => {
+  //     this.ngZone.run(() => {
+
+  //       const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+  //       if (Boolean(place.geometry)) {
+  //         const lat = place.geometry.location.lat();
+  //         const lng = place.geometry.location.lng();
+  //         this.placeChange.emit({ lat, lng });
+  //       }
+  //     });
+  //   });
+  // }
+
+  initSearchBox(): void {
+    const searchBox = new google.maps.places.SearchBox(this.inputElementRef.nativeElement);
+    searchBox.addListener('places_changed', () => {
+
+      const places = searchBox.getPlaces();
+      if (places.length > 0) {
+        const place = places[0];
+        if (Boolean(place.geometry)) {
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          this.placeChange.emit({ lat, lng });
+        }
       }
     });
   }
 
-  initGoogleAutoCommplete(): void {
-    const autocomplete = new this.windowRef.google.maps.places
-      .Autocomplete(this.elementRef.nativeElement, {
-        types: ['address']
-      });
 
-    autocomplete.addListener('place_changed', () => {
-      this.ngZone.run(() => {
-
-        const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-        if (Boolean(place.geometry)) {
-          const lat = place.geometry.location.lat();
-          const lng = place.geometry.location.lng();
-          this.placeChange.emit({lat, lng});
-        }
-      });
-    });
+  search(): void {
+    this.inputElementRef.nativeElement.dispatchEvent(new KeyboardEvent('keydown', {code: 'enter'}));
   }
+
+
 
 }
