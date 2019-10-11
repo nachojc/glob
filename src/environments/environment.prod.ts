@@ -1,3 +1,9 @@
 export const environment = {
-  production: true
+  production: true,
+  api: {
+    BranchLocator: {
+      apiURL: 'https://back-weu.azurewebsites.net/branch-locator',
+      // googleApiKey: ''
+    }
+  }
 };
