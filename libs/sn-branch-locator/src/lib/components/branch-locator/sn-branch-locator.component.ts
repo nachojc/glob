@@ -161,15 +161,21 @@ export class SnBranchLocatorComponent {
   placeChange(place: LatLngLiteral) {
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
-      switchMap(() => from(this.map.api.getBounds()))
-    ).subscribe((mapBounds: LatLngBounds) => {
-      this.branchService.getBranchesByBounds({
-        lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
-        {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
-      ).subscribe(res => {
-        this.branchesList = res;
-      });
+      switchMap(() => from(this.map.api.getBounds())),
+      switchMap((mapBounds: LatLngBounds) => {
+        return this.branchService.getBranchesByBounds({
+          lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()
+        },
+          { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
+        );
+      })
+    ).subscribe(res => {
+      this.branchesList = res;
+    }, (error) => {
+      // TODO: Add error handler
+      console.error(error);
     });
   }
+
 
 }
