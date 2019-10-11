@@ -12,7 +12,10 @@ export class Branch {
         },
         code: string; // TODO: change to enum?
     };
-    subType: string;
+    subType: {
+        multi: any,
+        code: string
+    };
     specialType: string;
     description: string;
     status: string;
@@ -34,7 +37,7 @@ export class Branch {
     };
     distanceInKm: number;
     distanceInMiles: number;
-    contactData: string;
+    contactData: any;
     socialData: {
         youtubeLink: string;
         facebookLink: string;

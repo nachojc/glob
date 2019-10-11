@@ -1,8 +1,10 @@
 @import '../../variables.scss';
+
+
 .branch-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;  
+  height: 100%;
 }
 
 .branch-summary-wrapper {
@@ -86,6 +88,11 @@
 
 }
 
+.tab-group-wrapper {
+  overflow: scroll;
+  height: 100%;
+}
+
 .branch-info-wrapper {
   padding: 1rem;
   overflow: scroll;
@@ -128,8 +135,11 @@
       flex-direction: row;
       justify-content: space-between;
 
-      div {
+      & > div {
         width: 50%;
+        & > div {
+          margin-top: .2em;
+        }
       }
     }
 
