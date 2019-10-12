@@ -3,7 +3,8 @@ export const environment = {
   api: {
     BranchLocator: {
       apiURL: 'https://back-weu.azurewebsites.net/branch-locator',
-      googleApiKey: ''
+      googleApiKey: '',
+      languages: './'
     }
   }
 };

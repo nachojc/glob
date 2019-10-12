@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 
-
 @Component({
   selector: 'sn-branch-search-input',
   templateUrl: './branch-search-input.component.html',
@@ -11,7 +10,6 @@ export class BranchSearchInputComponent implements OnInit {
 
   @Input() showReCenter: boolean;
   @Output() reCenter = new EventEmitter<MouseEvent>();
-  // tslint:disable-next-line: no-output-on-prefix
   @Output() placeChange = new EventEmitter<LatLngLiteral>();
   @Input() filterCount: number;
   @Input() placeholder: string;

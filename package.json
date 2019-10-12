@@ -1,13 +1,13 @@
 {
   "name": "branch-locator",
-  "version": "0.0.0",
+  "version": "0.5.0",
   "scripts": {
     "preversion": "npm install && npm run build && npm run patch-lib && git add .",
     "start": "ng serve --open",
     "build": "npm run test-lib-prod && npm run build-lib && node ./tools/readme-coverage.js",
     "build-dev": "npm run test-lib-dev && npm run build-lib && node ./tools/readme-coverage.js",
-    "build-local": "ng build --base-href /",
-    "build-aot": "ng build --aot --base-href /",
+    "build-local": "ng build --base-href ./",
+    "build-pro": "ng build --prod --aot --base-href ./ && node tools/assets-fix.js LOCAL",
     "build-lib": "ng lint sn-branch-locator && ng build sn-branch-locator && node tools/assets-fix.js",
     "dev-lib": "ng lint sn-branch-locator && ng build sn-branch-locator --watch",
     "test": "ng test",

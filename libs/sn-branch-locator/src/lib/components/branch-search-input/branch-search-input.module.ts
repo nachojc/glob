@@ -10,7 +10,9 @@ import { BranchSearchInputComponent } from './branch-search-input.component';
     IconModule
   ],
   exports: [BranchSearchInputComponent],
-  providers: [{provide: 'WINDOW', useValue: window}]
+  providers: [
+    {provide: 'WINDOW', useValue: window}
+  ]
 
 })
 export class BranchSearchInputModule { }

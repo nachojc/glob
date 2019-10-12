@@ -87,6 +87,7 @@ describe('BranchSearchInputComponent', () => {
   describe('initSearchBox()', () => {
     it('shoul call placeChange', () => {
       spyOn(component.placeChange, 'emit');
+      component.useGoogle = true;
       component.initSearchBox();
       expect(component.placeChange.emit).toHaveBeenCalled();
     });
