@@ -33,7 +33,7 @@ export function HttpLoaderFactory(http: HttpClient, path: EnvironmentConfigModel
     }),
     AgmCoreModule.forRoot({
       apiKey: environment.api.BranchLocator.googleApiKey,
-      libraries: environment.api.BranchLocator.googleApiLibs
+      libraries: environment.api.BranchLocator.googleApiLibs || []
     }),
   ],
   providers: [
