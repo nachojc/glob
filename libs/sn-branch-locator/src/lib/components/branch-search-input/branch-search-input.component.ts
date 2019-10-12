@@ -39,7 +39,7 @@ export class BranchSearchInputComponent implements OnInit {
 
 
   initSearchBox(): void {
-    this.searchBox = new google.maps.places.SearchBox(this.inputElementRef.nativeElement);
+    this.searchBox = new this.windowRef.google.maps.places.SearchBox(this.inputElementRef.nativeElement);
     this.searchBox.addListener('places_changed', () => {
 
       const places = this.searchBox.getPlaces();
@@ -59,7 +59,7 @@ export class BranchSearchInputComponent implements OnInit {
 
   search(event: MouseEvent): void {
     this.inputElementRef.nativeElement.focus();
-    google.maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
+    this.windowRef.google.maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
       keyCode: 13
     });
 

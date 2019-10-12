@@ -24,7 +24,21 @@ const windowRef = {
               }
             }
           })
-        })
+        }),
+        SearchBox : () => ({
+          addListener: (event: string, callback) => {
+            return callback({});
+          },
+          getPlaces: () => ([{
+            geometry: {
+              location: {
+                lat: () => 10,
+                lng: () => 10
+              }
+            }
+          }])
+        }),
+
       }
     }
   }
