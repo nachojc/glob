@@ -7,7 +7,8 @@ export const environment = {
   api: {
     BranchLocator: {
       apiURL: 'https://back-weu.azurewebsites.net/branch-locator',
-      googleApiKey: '',
+      googleApiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      googleApiLibs: ['places'],
       languages: './'
     }
   }
