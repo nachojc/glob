@@ -1,7 +1,9 @@
 <div class="search-box">
   <div class="search-input-wrapper">
-    <div class="search-input-icon" >
-      <sn-icon icon="sn-FUNC071" (click)="search()"></sn-icon>
+    <div class="search-input-button" >
+      <button (click)="search($event)">
+        <sn-icon icon="sn-FUNC071"></sn-icon>
+      </button>
     </div>
     <div class="search-input-input">
       <input
