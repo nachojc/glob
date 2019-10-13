@@ -1,12 +1,5 @@
 :host {
 
-  .branch-locator-tabs-wrapper {
-    flex: 0;
-  }
-
-  .branch-locator-map-wrapper {
-    flex: 1;
-  }
 
   .locator-content {
     position: relative;
@@ -16,36 +9,23 @@
       height: 100%;
     }
     ::ng-deep sn-drawer .drawer-content {
-      height: calc(100% - (4px + 8px + 2px));
+      height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
     }
     
 
-    .locator-search {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 8px;
 
-      .locator-search-container {
-        position: relative;
-        margin: 0;
-      }
-    }
-    .locator-center button{
-        background-color: #ffffff;
+    .locator-center {
+      position: absolute;
+      top: 4rem;
+      right: 0.5rem;
+      button{
+        background-color: #ffffff; // TODO: import color variable from common lib change to variable
         border-radius: 2.7px;
         box-shadow: 0px 1px 2px 0px rgb(118, 118, 118);
-        
-        background-color: transparent;
         border: 0;
-        box-shadow: none;
-        position: absolute;
-        top: 2em;
-        right: 8px;
-        font-size: 2em;
-        height: 32px;
-        width: 32px;
+        font-size: 1.5rem;
+        height: 2rem;
+        width: 2rem;
         padding: 0;
         ::ng-deep sn-icon {
           line-height: 1;
@@ -55,23 +35,21 @@
           }
         }
     }
+    }
   }
 
-  .locator-search-container {
-    margin: 8px;
-  }
 
   .result-list-wrapper {
-    // margin-top: calc(48px + 16px); // input-search height + margin
-    height: calc(100% - 64px);
+    height: 100%;
     overflow: scroll;
+    margin-top: 4rem;
 
     sn-option-item {
       padding: .5rem 1rem .5rem 1.5rem;
 
       .name {
         font-weight: bold;
-        color: #ec0000; // change to variable
+        color: #ec0000; // TODO: import color variable from common lib change to variable
         font-size: 1rem;
         line-height: 1.5;
         padding-bottom: .5rem;
@@ -94,6 +72,24 @@
         display: flex;
       }
     }
+  }
+
+
+  .locator-search {
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+
+    .locator-search-container {
+      position: relative;
+      margin: 0;
+    }
+  }
+
+  sn-tab{
+    overflow: hidden; //TODO: add this style to common-lib 
   }
 
 }

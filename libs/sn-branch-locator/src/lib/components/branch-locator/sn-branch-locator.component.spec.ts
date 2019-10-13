@@ -264,5 +264,14 @@ describe('SnBranchLocatorComponent', () => {
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
+  it('centerMapToUser', () => {
+    component.centerMapToUser();
+  });
+
+  it('centerMapToUser', () => {
+    component.userPosition = {lat: 38.7376049, lng: -9.1654431};
+    component.centerMapToUser();
+  });
+
 
 });

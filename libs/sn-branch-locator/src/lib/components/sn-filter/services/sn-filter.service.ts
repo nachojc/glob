@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 @Injectable()
 export class FilterService {
 
-  private _filterCount: number;
+  private _filterCount: number = 0;
   private _hasChanges: boolean;
   private _previousValues: { [key: string]: any; };
 

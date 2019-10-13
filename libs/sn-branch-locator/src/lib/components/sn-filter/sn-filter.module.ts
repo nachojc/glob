@@ -21,11 +21,5 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 
 export class FilterModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: FilterModule,
-      providers: [ FilterService ]
-    };
-  }
 
 }
