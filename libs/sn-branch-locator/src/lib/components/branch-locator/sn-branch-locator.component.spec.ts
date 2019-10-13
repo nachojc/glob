@@ -143,7 +143,8 @@ describe('SnBranchLocatorComponent', () => {
         HttpClientModule,
         TranslateModule.forRoot(),
         AgmCoreModule.forRoot({
-          apiKey: environment.api.BranchLocator.googleApiKey
+          apiKey: 'demo',
+          libraries: ['places']
         })
       ],
       providers: [

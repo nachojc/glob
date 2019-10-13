@@ -12,7 +12,8 @@ import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
 import { environment } from 'src/environments/environment';
 import { AgmCoreModule } from '@agm/core';
 
-export function HttpLoaderFactory(http: HttpClient, path: EnvironmentConfigModel) {
+// TODO: path Update EnvironmentConfigModel
+export function HttpLoaderFactory(http: HttpClient, path: any) {
   return new TranslateHttpLoader(http, path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/', '.json');
 }
 

@@ -25,7 +25,7 @@
 
 
   <div class="filter-button-container">
-    <button class="filter-button">
+    <button class="filter-button" (click)="callFilter.emit($event)">
       <div class="filter-button-wrapper">
         <div class="filter-button-label">
           Filter

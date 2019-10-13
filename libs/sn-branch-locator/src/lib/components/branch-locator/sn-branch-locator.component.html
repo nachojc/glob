@@ -13,9 +13,9 @@
 
             <section class="locator-search">
                 <div class="locator-search-container">
-                    <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="0"
+                    <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="filterCounts"
                     placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
-                    (reCenter)="centerMapToUser()"></sn-branch-search-input>
+                    (reCenter)="centerMapToUser()" (callFilter)="showFilter($event)"></sn-branch-search-input>
                 </div>
             </section>
             <section class="locator-center">
@@ -31,9 +31,9 @@
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
     <sn-tab label="{{ 'branchlocator.title.list' | translate }}" style="overflow: scroll">
         <div class="locator-search-container">
-            <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="0"
+            <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="filterCounts"
                     placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
-                    (reCenter)="centerMapToUser()"></sn-branch-search-input>
+                    (reCenter)="centerMapToUser()" (callFilter)="showFilter($event)"></sn-branch-search-input>
         </div>
         <section class="result-list-wrapper">
             <sn-option-list>
@@ -51,3 +51,4 @@
         </section>
     </sn-tab>
 </sn-tab-group>
+<sn-filter modal (filterApply)="onFilterApply($event)" ></sn-filter>

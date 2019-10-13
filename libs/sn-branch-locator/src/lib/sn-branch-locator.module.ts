@@ -13,8 +13,10 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SnBranchInfoComponent } from './components/sn-branch-info/sn-branch-info.component';
 import { EnvironmentConfigModel, ENV_CONFIG } from '@globile/mobile-services';
+import { FilterModule } from './components/sn-filter/sn-filter.module';
 
-export function LocalLoaderFactory(http: HttpClient, path: EnvironmentConfigModel) {
+// TODO: path Update EnvironmentConfigModel
+export function LocalLoaderFactory(http: HttpClient, path: any) {
   return new TranslateHttpLoader(http, path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/', '.json');
 }
 
@@ -40,8 +42,9 @@ export function LocalLoaderFactory(http: HttpClient, path: EnvironmentConfigMode
         deps: [HttpClient, ENV_CONFIG]
       }
     }),
-    AgmCoreModule.forRoot({}),
-    DrawerModule
+    AgmCoreModule,
+    DrawerModule,
+    FilterModule
   ],
   exports: [
     SnBranchLocatorComponent,

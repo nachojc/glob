@@ -8,6 +8,7 @@ import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
+import { FilterComponent } from '../sn-filter/sn-filter.component';
 import { DrawerState } from 'sn-common-lib';
 
 
@@ -21,6 +22,7 @@ export class SnBranchLocatorComponent {
 
   @ViewChild(SnMapDirective) map: SnMapDirective;
   @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
+  @ViewChild(FilterComponent) filterView: FilterComponent;
   lat: number;
   lng: number;
   branchIcon = {
@@ -46,6 +48,7 @@ export class SnBranchLocatorComponent {
   private selectedMarker: SnMarkerDirective;
   selectedBranch: Branch;
   selectedTabIndex: number;
+  filterCounts: number;
 
   constructor(
     private service: GeoPositionService,
@@ -177,6 +180,15 @@ export class SnBranchLocatorComponent {
       console.error(error);
     });
   }
+
+
+  onFilterApply(event) {
+    this.filterCounts = event.count;
+  }
+
+    showFilter(visible: boolean) {
+      this.filterView.open();
+    }
 
 
 }

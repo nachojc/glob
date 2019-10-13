@@ -1,0 +1,108 @@
+@import '../../variables.scss';
+
+:host {
+    background-color: $color-secondary-bg;
+    height: 100%;
+
+    &[modal], &.modal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    
+    h1, h2 {
+        font-size: 1em;
+        color: $color-secondary-gray;
+        margin: auto 0;
+        font-weight: bold;
+        line-height: 1.5;
+    }
+    
+    .sn-filter-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        height: 100%;
+    }
+
+
+    .sn-filter-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1.25em 1em;
+        border-bottom: 1px solid $color-secondary-lightgray;
+
+        .sub-title {
+            // TODO: Temporary until have back button from design
+            sn-icon {
+                margin-right: 5px;
+
+                &::ng-deep i {
+                    font-size: 1.5em;
+                    vertical-align: bottom;
+                }
+            }
+        }
+
+        &>button {
+            border-color: #ec0000;
+            color: #ec0000;
+            background-color: transparent;
+            margin: 0;
+            min-height: 0;
+            min-width: min-content;
+            font-weight: 400;
+            font-size: 0.875em;
+            padding: 0em 1.5em;
+            line-height: 1;
+            height: 2em;
+        }
+    }
+
+
+    .sn-filter-content {
+        flex: 1;
+        overflow: scroll;
+        padding: 1.5em 1em;
+
+        .title {
+            font-size: 1.125em;
+            padding-bottom: .5em;
+            margin-bottom: 1.25em;
+            border-bottom: 1px solid $color-primary-sky;
+        }
+
+        .sub-title {
+            // margin-top: 1.25em;
+            margin-bottom: 1em;
+        }
+
+        .filter-item{
+            margin-bottom: 1.25em;
+
+            &:last-child {
+                margin-bottom: 2.5em;
+            }
+        }
+    
+        
+    }
+
+    .sn-filter-footer{
+        background-color: white;
+        border-top: 1px solid $color-primary-sky;
+        width: 100%;
+        display: flex;
+        flex: 0;
+
+        button {
+            margin: 1em 1.5em;
+            width: 100%;
+        }
+    }
+    
+  
+}

@@ -11,6 +11,7 @@ export class BranchSearchInputComponent implements OnInit {
   @Input() showReCenter: boolean;
   @Output() reCenter = new EventEmitter<MouseEvent>();
   @Output() placeChange = new EventEmitter<LatLngLiteral>();
+  @Output() callFilter = new EventEmitter<MouseEvent>();
   @Input() filterCount: number;
   @Input() placeholder: string;
   @Input() useGoogle: boolean;
@@ -28,7 +29,6 @@ export class BranchSearchInputComponent implements OnInit {
     this.mapsAPILoader.load()
       .then(() => {
         if (this.useGoogle) {
-          // this.initGoogleAutoCommplete();
           this.initSearchBox();
         }
       });

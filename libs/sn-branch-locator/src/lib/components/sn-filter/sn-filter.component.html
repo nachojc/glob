@@ -1,0 +1,55 @@
+<form class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="apply()">
+
+    <div class="sn-filter-header">
+        <h1 class="sub-title">
+            <!-- TODO: Temporary until have back button from design -->
+            <sn-icon icon="sn-SYS020" (click)="close()"></sn-icon>
+            FILTERS
+        </h1>
+        <button sn-button-outlined type="reset" >Delete all</button>
+    </div>
+    <div class="sn-filter-content">
+
+        <h1 class="title">Branches</h1>
+        <div class="filters-list-wrapper">
+            <div class="filters-list">
+                <div class="filter-item">
+                    <sn-checkbox formControlName="personal" icon="sn-BAN005">Personal</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="openAfternoons" icon="sn-BAN005">Open Afternoons</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="workCafe">Work Cafe</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="privateBanking" icon="sn-BAN005">Private Banking</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="smeBusiness" icon="sn-BAN005">SME's / Business</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="popularPastor">Popular / Pastor</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="partners" icon="sn-SERV008">Partners</sn-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="title">Cajeros</h1>
+        <div class="filters-list-wrapper">
+            <div class="filters-list">
+                <div class="filter-item">
+                    <sn-checkbox formControlName="santanderAtms" icon="sn-BAN005">Santander ATMs</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="otherAtms" icon="sn-FUNC019B">Other ATMs</sn-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sn-filter-footer">
+        <button sn-button type="submit">APPLY FILTERS</button>
+    </div>
+</form>
