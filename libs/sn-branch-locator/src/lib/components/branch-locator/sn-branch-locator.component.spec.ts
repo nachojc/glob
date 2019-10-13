@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core';
-import { IconModule, OptionListModule, SnTabModule } from 'sn-common-lib';
-import { SnDrawerComponent } from '../sn-drawer/sn-drawer.component';
+import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
+
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
-import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { BranchSearchInputModule } from '../branch-search-input';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -132,10 +132,10 @@ describe('SnBranchLocatorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SnBranchLocatorComponent,
-        SnDrawerComponent,
         SnBranchInfoComponent
       ],
       imports: [
+        DrawerModule,
         IconModule,
         SnTabModule,
         BranchSearchInputModule,
