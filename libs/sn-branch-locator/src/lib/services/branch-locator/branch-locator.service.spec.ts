@@ -1,13 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { SnBranchLocatorService } from './branch-locator.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ENV_CONFIG } from '@globile/mobile-services';
+import { environment } from 'src/environments/environment';
 
 describe('SnBranchLocatorService', () => {
   let httpTestingController: HttpTestingController;
   let service: SnBranchLocatorService;
 
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule]
+    imports: [HttpClientTestingModule],
+    providers: [
+      { provide: ENV_CONFIG, useValue: environment }
+    ]
   }));
 
 

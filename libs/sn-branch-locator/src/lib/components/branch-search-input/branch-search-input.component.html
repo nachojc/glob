@@ -1,7 +1,9 @@
 <div class="search-box">
   <div class="search-input-wrapper">
-    <div class="search-input-icon">
-      <sn-icon icon="sn-FUNC071"></sn-icon>
+    <div class="search-input-button" >
+      <button (click)="search($event)">
+        <sn-icon icon="sn-FUNC071"></sn-icon>
+      </button>
     </div>
     <div class="search-input-input">
       <input
@@ -12,10 +14,9 @@
         autocomplete="off"
         autocapitalize="off"
         spellcheck="off"
-        (keydown.enter)="$event.preventDefault()"
       />
     </div>
-    <div class="search-input-center-button">
+    <div  class="search-input-center-button">
         <button *ngIf="showReCenter" (click)="reCenter.emit($event)">
             <sn-icon icon="sn-SYS028"></sn-icon>
           </button>

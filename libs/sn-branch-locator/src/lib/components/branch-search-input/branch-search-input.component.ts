@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, NgZone, Inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 
 @Component({
@@ -15,40 +15,58 @@ export class BranchSearchInputComponent implements OnInit {
   @Input() placeholder: string;
   @Input() useGoogle: boolean;
 
-  @ViewChild('in') public elementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('in') public inputElementRef: ElementRef<HTMLInputElement>;
+  searchBox: google.maps.places.SearchBox;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
     @Inject('WINDOW') private windowRef: any
   ) { }
 
 
   ngOnInit(): void {
-    if (this.useGoogle) {
-      this.initGoogleAutoCommplete();
-    }
-  }
-
-  initGoogleAutoCommplete(): void {
     this.mapsAPILoader.load()
-    .then( () => {
-      const autocomplete = new this.windowRef.google.maps.places
-        .Autocomplete(this.elementRef.nativeElement, {
-          types: ['address']
-        });
-      autocomplete.addListener('place_changed', () => {
-        this.ngZone.run(() => {
-
-          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          if (Boolean(place.geometry)) {
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-            this.placeChange.emit({lat, lng});
-          }
-        });
+      .then(() => {
+        if (this.useGoogle) {
+          // this.initGoogleAutoCommplete();
+          this.initSearchBox();
+        }
       });
-    });
+
   }
+
+
+  initSearchBox(): void {
+    this.searchBox = new this.windowRef.google.maps.places.SearchBox(this.inputElementRef.nativeElement);
+    this.searchBox.addListener('places_changed', () => {
+
+      const places = this.searchBox.getPlaces();
+      if (places && places.length > 0) {
+        const place = places[0];
+        if (Boolean(place.geometry)) {
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          this.placeChange.emit({ lat, lng });
+        }
+      }
+    });
+
+
+  }
+
+
+  search(event: MouseEvent): void {
+    this.inputElementRef.nativeElement.focus();
+    this.windowRef.google.maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
+      keyCode: 13
+    });
+
+  }
+
+
+
+
+
+
 
 }
