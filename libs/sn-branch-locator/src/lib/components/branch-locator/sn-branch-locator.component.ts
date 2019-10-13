@@ -2,13 +2,14 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
-import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
-import { TranslateService } from '@ngx-translate/core';
+import { DrawerState } from 'sn-common-lib';
+
 
 
 @Component({
