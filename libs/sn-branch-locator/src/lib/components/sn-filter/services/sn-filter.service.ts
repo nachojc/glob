@@ -32,6 +32,23 @@ export class FilterService {
         partners: new FormControl(),
         santanderAtms: new FormControl(),
         otherAtms: new FormControl(),
+        withdrawal: new FormControl(),
+        withdrawWithoutCard: new FormControl(),
+        deposit: new FormControl(),
+        pay: new FormControl(),
+        cardIssuanceInstantly: new FormControl(),
+        availableNow: new FormControl(),
+        openAfternoonsAdditional: new FormControl(),
+        openSaturdays: new FormControl(),
+        noCommissions: new FormControl(),
+        lowDenominationBanknotes: new FormControl(),
+        ownParking: new FormControl(),
+        wheelchairAccessibility: new FormControl(),
+        audioGuidance: new FormControl(),
+        coWorkingSpaces: new FormControl(),
+        wiFi: new FormControl(),
+        securityBoxes: new FormControl(),
+        driveThru: new FormControl(),
       });
     }
     return this.form;
