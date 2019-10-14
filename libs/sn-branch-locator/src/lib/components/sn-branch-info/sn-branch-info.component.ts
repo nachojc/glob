@@ -9,7 +9,7 @@ import { Branch } from '../../models/branch.model';
 export class SnBranchInfoComponent {
   private _branch: Branch;
   public schedulePreview = [];
-  public haveAccesibilitty: boolean;
+  public haveAccesibility: boolean;
   public attributeList: string[];
 
   @Input()
@@ -18,7 +18,8 @@ export class SnBranchInfoComponent {
     this.schedulePreview = this.parseHours(this._branch.schedule.workingDay);
     if (this._branch.attrib) {
       this.attributeList = this._branch.attrib.map(attr => attr.code);
-      this.haveAccesibilitty = this.attributeList.find(attr => attr.toUpperCase() === 'ACCESIBILITY') ? true : false;
+      const auxAccesibility = this.attributeList.findIndex(attr => attr.toUpperCase() === 'ACCESIBILITY');
+      this.haveAccesibility = auxAccesibility > -1 ? true : false;
     }
   }
 
@@ -32,7 +33,6 @@ export class SnBranchInfoComponent {
   }
 
   private parseHours(branchSchedule: any) {
-
     // TODO: Verify how it will work with translation.
     const language = 'default';
     const hoursEnum = {

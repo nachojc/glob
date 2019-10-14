@@ -42,7 +42,7 @@ describe('SnBranchLocatorService', () => {
     it('should return an array with 2 objects and 1 atm inside the first one', () => {
       const response = service['groupAtmToBranch']([branchMock, branchMock2, atmMock]);
       expect(response.length).toBe(2);
-      expect(response[0].atm.id).toBe('2');
+      expect(response[0].atm[0].id).toBe('2');
     });
 
 
@@ -50,7 +50,18 @@ describe('SnBranchLocatorService', () => {
       atmMock.distanceInKm = 123;
       const response = service['groupAtmToBranch']([atmMock, branchMock, branchMock2]);
       expect(response.length).toBe(2);
-      expect(response[0].atm.id).toBe('2');
+      expect(response[0].atm[0].id).toBe('2');
+    });
+
+
+
+    it('should return an array with 1 objects and 2 atm inside', () => {
+      atmMock.distanceInKm = 123;
+      const atmMock2 = Object.assign({}, atmMock, {id: '3'});
+      const atmMock3 = Object.assign({}, atmMock, {id: '4'});
+      const response = service['groupAtmToBranch']([atmMock, atmMock2, atmMock3, branchMock2]);
+      expect(response.length).toBe(1);
+      expect(response[0].atm.length).toBe(3);
     });
   });
 

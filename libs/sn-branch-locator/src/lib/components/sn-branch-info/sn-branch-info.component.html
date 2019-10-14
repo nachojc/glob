@@ -101,7 +101,7 @@
                 </ul> -->
               </div>
             </sn-option-item>
-            <sn-option-item *ngIf="haveAccesibilitty">
+            <sn-option-item *ngIf="haveAccesibility">
               <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Accessibility</div>
               <h1 class="title">Disabled access</h1>
@@ -111,7 +111,7 @@
         </div>
       </sn-tab>
       <!-- FIXME: insert here the ATM content when exist -->
-      <sn-tab label="ATM">{{branch.atm?.id}}</sn-tab>
+      <sn-tab label="ATM">{{branch.atm ? branch.atm[0]?.id : ''}}</sn-tab>
     </sn-tab-group>
   </div>
 </div>

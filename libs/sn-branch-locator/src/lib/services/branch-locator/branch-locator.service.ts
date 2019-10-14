@@ -49,11 +49,30 @@ export class SnBranchLocatorService {
       const index = pv.findIndex(el => el.distanceInKm === cv.distanceInKm);
       if (index >= 0) {
         if (pv[index].objectType.code.toUpperCase() === 'BRANCH') {
-          pv[index].atm = cv;
+          if (pv[index].atm) {
+            pv[index].atm.push(cv);
+          } else {
+            pv[index].atm = [cv];
+          }
           return pv;
         } else {
-          cv.atm = pv[index];
-          pv[index] = cv;
+          if (cv.objectType.code.toUpperCase() === 'BRANCH') {
+            if (pv[index].atm) {
+              cv.atm = pv[index].atm;
+              cv.atm.push(pv[index]);
+            } else {
+              cv.atm = [pv[index]];
+            }
+            pv[index] = cv;
+          } else {
+            // TODO: What should we do when there are 2 branches in the same place?
+            cv.atm = [pv[index]];
+            if (pv[index].atm) {
+              pv[index].atm.push(cv);
+            } else {
+              pv[index].atm = [cv];
+            }
+          }
           return pv;
         }
       }

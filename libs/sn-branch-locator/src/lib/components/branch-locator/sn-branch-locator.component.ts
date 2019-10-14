@@ -61,6 +61,7 @@ export class SnBranchLocatorComponent {
   getBranchesByCoordinates(coords: LatLngLiteral) {
     this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.branchesList = res;
+      console.log(this.branchesList);
     }, err => {
       // TODO: Add error handler
       console.error(err);

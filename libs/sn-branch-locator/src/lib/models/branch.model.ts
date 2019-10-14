@@ -1,6 +1,6 @@
 export class Branch {
     id: string;
-    atm?: Branch;
+    atm?: Branch[];
     code: string;
     entityCode: string;
     name: string;
