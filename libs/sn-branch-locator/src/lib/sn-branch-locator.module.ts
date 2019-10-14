@@ -13,7 +13,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SnBranchInfoComponent } from './components/sn-branch-info/sn-branch-info.component';
 import { EnvironmentConfigModel, ENV_CONFIG } from '@globile/mobile-services';
-import { FilterModule } from './components/filter/sn-filter.module';
+import { FilterModule } from './components/filter/filter.module';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
