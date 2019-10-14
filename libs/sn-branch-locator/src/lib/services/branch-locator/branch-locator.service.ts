@@ -1,11 +1,12 @@
 import { Injectable, Inject} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Branch } from '../../models/branch.model';
 import { LatLngLiteral } from '@agm/core';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
 import { ENV_CONFIG } from '@globile/mobile-services';
+import { FilterService } from '../filter/filter.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class SnBranchLocatorService {
   constructor(
     @Inject(ENV_CONFIG) envConfig: any,
     public http: HttpClient,
+    private filterservice: FilterService
   ) {
     this.branchLocator = envConfig.api.BranchLocator;
   }
@@ -35,7 +37,8 @@ export class SnBranchLocatorService {
   }
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): Observable<Branch[]> {
+    const params = this.filterservice.filterParams as any;
     const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
-    return this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?northEast=${configVal}`);
+    return this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?northEast=${configVal}`, { params});
   }
 }
