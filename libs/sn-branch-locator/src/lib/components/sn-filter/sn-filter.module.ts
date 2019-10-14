@@ -4,6 +4,7 @@ import { FilterComponent } from './sn-filter.component';
 import { ButtonModule, CheckboxModule, IconModule } from 'sn-common-lib';
 import { FilterService } from './services/sn-filter.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -14,7 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ButtonModule,
     CheckboxModule,
     IconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ],
   providers: [FilterService],
   exports: [FilterComponent],

@@ -4,9 +4,9 @@
         <h1 class="sub-title">
             <!-- TODO: Temporary until have back button from design -->
             <sn-icon icon="sn-SYS020" (click)="close()"></sn-icon>
-            FILTERS
+            {{ 'branchlocator.filters.filters' | translate }}
         </h1>
-        <button sn-button-outlined type="reset" >Delete all</button>
+        <button sn-button-outlined type="reset" > {{ 'branchlocator.filters.buttondeleteall' | translate }}</button>
     </div>
     <div class="sn-filter-content">
 
@@ -50,6 +50,6 @@
         </div>
     </div>
     <div class="sn-filter-footer">
-        <button sn-button type="submit">APPLY FILTERS</button>
+        <button sn-button type="submit">{{ 'branchlocator.filters.applyfilter' | translate }}</button>
     </div>
 </form>

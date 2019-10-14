@@ -1,8 +1,17 @@
 {
-    "branchlocator":{
+    "branchlocator": {
         "title": {
-            "map" :"Mapa",
+            "map": "Mapa",
             "list": "Listado"
+        },
+        "searchinput": {
+            "placeholder": "Busque aquí",
+            "filterbutton": "Filtrar"
+        },
+        "filters": {
+            "applyfilter": "APLICAR FILTROS",
+            "filters": "FILTROS",
+            "buttondeleteall": "Eliminar todos"
         }
     }
 }

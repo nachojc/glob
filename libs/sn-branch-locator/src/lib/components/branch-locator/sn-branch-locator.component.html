@@ -40,7 +40,7 @@
 <section class="locator-search">
     <div class="locator-search-container">
         <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="filterCounts"
-        placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
+        (placeChange)="placeChange($event)"
         (reCenter)="centerMapToUser()" (callFilter)="showFilter($event)"></sn-branch-search-input>
     </div>
 </section>
