@@ -24,7 +24,21 @@ const windowRef = {
               }
             }
           })
-        })
+        }),
+        SearchBox : () => ({
+          addListener: (event: string, callback) => {
+            return callback({});
+          },
+          getPlaces: () => ([{
+            geometry: {
+              location: {
+                lat: () => 10,
+                lng: () => 10
+              }
+            }
+          }])
+        }),
+
       }
     }
   }
@@ -57,7 +71,7 @@ describe('BranchSearchInputComponent', () => {
     fixture = TestBed.createComponent(BranchSearchInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.elementRef = new ElementRef<any>({nativeElement: () => {}});
+    component.inputElementRef = new ElementRef<any>({nativeElement: () => {}});
   });
 
   it('should create', () => {
@@ -70,10 +84,11 @@ describe('BranchSearchInputComponent', () => {
     expect(component.useGoogle).toBeTruthy();
   });
 
-  describe('initGoogleAutoCommplete()', () => {
+  describe('initSearchBox()', () => {
     it('shoul call placeChange', () => {
       spyOn(component.placeChange, 'emit');
-      component.initGoogleAutoCommplete();
+      component.useGoogle = true;
+      component.initSearchBox();
       expect(component.placeChange.emit).toHaveBeenCalled();
     });
   });

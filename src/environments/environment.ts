@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: {
+    BranchLocator: {
+      apiURL: 'https://back-weu.azurewebsites.net/branch-locator',
+      googleApiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      googleApiLibs: ['places'],
+      languages: './'
+    }
+  }
 };
 
 /*

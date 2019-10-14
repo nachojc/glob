@@ -2,14 +2,16 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
-import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
+import { FilterComponent } from '../sn-filter/sn-filter.component';
+import { DrawerState } from 'sn-common-lib';
 import { TranslateService } from '@ngx-translate/core';
-import { reduce, filter } from 'rxjs/operators';
+
 
 
 @Component({
@@ -21,6 +23,7 @@ export class SnBranchLocatorComponent {
 
   @ViewChild(SnMapDirective) map: SnMapDirective;
   @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
+  @ViewChild(FilterComponent) filterView: FilterComponent;
   lat: number;
   lng: number;
   branchIcon = {
@@ -46,6 +49,7 @@ export class SnBranchLocatorComponent {
   private selectedMarker: SnMarkerDirective;
   selectedBranch: Branch;
   selectedTabIndex: number;
+  filterCounts: number;
 
   constructor(
     private service: GeoPositionService,
@@ -169,8 +173,21 @@ export class SnBranchLocatorComponent {
         {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
       ).subscribe(res => {
         this.branchesList = res;
+      }, (error) => {
+        // TODO: Add error handler
+        console.error(error);
       });
     });
   }
+
+
+  onFilterApply(event) {
+    this.filterCounts = event.count;
+  }
+
+    showFilter(visible: boolean) {
+      this.filterView.open();
+    }
+
 
 }

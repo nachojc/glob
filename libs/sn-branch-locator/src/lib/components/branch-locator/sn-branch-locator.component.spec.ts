@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
-import { IconModule, OptionListModule, SnTabModule } from 'sn-common-lib';
-import { SnDrawerComponent } from '../sn-drawer/sn-drawer.component';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core';
+import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
+
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
-import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { BranchSearchInputModule } from '../branch-search-input';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -12,10 +12,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { Branch } from '../../models/branch.model';
 import { of } from 'rxjs';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
-import { tick } from '@angular/core/src/render3';
 import { branchMock } from '../../helpers/branch.mock';
+import { environment } from 'src/environments/environment';
+import { ENV_CONFIG } from '@globile/mobile-services';
 
 
 const MapsAPILoaderMock = {
@@ -62,10 +63,10 @@ describe('SnBranchLocatorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SnBranchLocatorComponent,
-        SnDrawerComponent,
         SnBranchInfoComponent
       ],
       imports: [
+        DrawerModule,
         IconModule,
         SnTabModule,
         BranchSearchInputModule,
@@ -73,13 +74,15 @@ describe('SnBranchLocatorComponent', () => {
         HttpClientModule,
         TranslateModule.forRoot(),
         AgmCoreModule.forRoot({
-          apiKey: 'aaa'
+          apiKey: 'demo',
+          libraries: ['places']
         })
       ],
       providers: [
         { provide: 'WINDOW', useValue: windowRef },
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
+        {provide: ENV_CONFIG, useValue: environment},
         SnBranchLocatorService
       ],
       schemas: [
@@ -109,7 +112,7 @@ describe('SnBranchLocatorComponent', () => {
     // tslint:disable-next-line: no-string-literal
     component['selectedMarker'] = new SnMarkerDirective({} as MarkerManager);
     // tslint:disable-next-line: no-string-literal
-    component['selectedMarker'].markerManager.updateIcon = (aux) => null;
+    component['selectedMarker'].markerManager.updateIcon = () => null;
     component.mapClick({} as any);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toBeUndefined();
@@ -165,17 +168,17 @@ describe('SnBranchLocatorComponent', () => {
 
   it('marker selected', () => {
     component.branchMarkerList = [
-      {id: () => 1, clickable: true, iconUrl : undefined, markerManager:  {updateIcon : (marker: any) => undefined}},
-      {id: () => 2, clickable: true, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined}},
-      {id: () => 3, clickable: false, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined }}
+      {id: () => 1, clickable: true, iconUrl : undefined, markerManager:  {updateIcon : () => undefined}},
+      {id: () => 2, clickable: true, iconUrl : undefined, markerManager: {updateIcon : () => undefined}},
+      {id: () => 3, clickable: false, iconUrl : undefined, markerManager: {updateIcon : () => undefined }}
     ] as any;
     const selected = {
       id: () => 1,
       clickable: true,
       iconUrl: undefined,
       markerManager: {
-        updateIcon: (marker: any) => undefined,
-        getNativeMarker: (marker: any) => new Promise((resolve) => {
+        updateIcon: () => undefined,
+        getNativeMarker: () => new Promise((resolve) => {
           resolve({ position: { lat: () => undefined, lng: () => undefined}});
         })
       }
@@ -200,6 +203,16 @@ describe('SnBranchLocatorComponent', () => {
       expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({lat: 1, lng: 2});
     }));
   });
+
+  it('centerMapToUser', () => {
+    component.centerMapToUser();
+  });
+
+  it('centerMapToUser', () => {
+    component.userPosition = {lat: 38.7376049, lng: -9.1654431};
+    component.centerMapToUser();
+  });
+
 
   it('tabsChanged() should set selectedTabIndex to 0', () => {
     component.tabsChanged({tabIndex: 0});

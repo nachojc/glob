@@ -1,6 +1,6 @@
 <sn-tab-group [selectIndex]="selectedTabIndex" (selectedTab)='tabsChanged($event)'>
     <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
-        <div class="locator-content">
+        <section class="locator-content">
             <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
             (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
@@ -10,13 +10,7 @@
                 [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)"
                 [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
             </agm-map>
-
-            <section class="locator-search">
-                <div class="locator-search-container">
-                    <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="0"
-                    placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
-                    (reCenter)="centerMapToUser()"></sn-branch-search-input>
-                </div>
+            <section class="locator-center">
                 <button class="center-map-user" (click)="centerMapToUser()">
                     <sn-icon icon="sn-SYS029"></sn-icon>
                 </button>
@@ -24,15 +18,10 @@
             <sn-drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
                 <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch"></sn-branch-info>
             </sn-drawer>
-        </div>
+        </section>
     </sn-tab>
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
-    <sn-tab label="{{ 'branchlocator.title.list' | translate }}" style="overflow: scroll">
-        <div class="locator-search-container">
-            <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="0"
-                    placeholder="Santander  - Regent’s Place" (placeChange)="placeChange($event)"
-                    (reCenter)="centerMapToUser()"></sn-branch-search-input>
-        </div>
+    <sn-tab label="{{ 'branchlocator.title.list' | translate }}">
         <section class="result-list-wrapper">
             <sn-option-list>
                 <sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
@@ -40,12 +29,19 @@
                     
                     <div class="Type-5_Regular-Style name">{{branch.name}}</div>
                     <div class="Type-5_Regular-Style address">{{branch.location.address}}</div>
-                    <div right-text class="TType-5_Regular-Style distance">
+                    <div right-text class="Type-5_Regular-Style distance">
                         {{branch.distanceInMiles | number:'0.0-2'}} m
                     </div>
                 </sn-option-item>
-                
             </sn-option-list>
         </section>
     </sn-tab>
 </sn-tab-group>
+<section class="locator-search">
+    <div class="locator-search-container">
+        <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="filterCounts"
+        placeholder="Search here" (placeChange)="placeChange($event)"
+        (reCenter)="centerMapToUser()" (callFilter)="showFilter($event)"></sn-branch-search-input>
+    </div>
+</section>
+<sn-filter modal (filterApply)="onFilterApply($event)" ></sn-filter>

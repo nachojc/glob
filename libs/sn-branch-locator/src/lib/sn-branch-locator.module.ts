@@ -12,9 +12,12 @@ import { BranchSearchInputModule } from './components/branch-search-input/branch
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SnBranchInfoComponent } from './components/sn-branch-info/sn-branch-info.component';
+import { EnvironmentConfigModel, ENV_CONFIG } from '@globile/mobile-services';
+import { FilterModule } from './components/sn-filter/sn-filter.module';
 
-export function LocalLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, '/assets/i18n/branchlocator/', '.json');
+// TODO: path Update EnvironmentConfigModel
+export function LocalLoaderFactory(http: HttpClient, path: any) {
+  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/', '.json');
 }
 
 @NgModule({
@@ -36,14 +39,12 @@ export function LocalLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: LocalLoaderFactory,
-        deps: [HttpClient]
+        deps: [HttpClient, ENV_CONFIG]
       }
     }),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
-      libraries: ['places']
-    }),
-    DrawerModule
+    AgmCoreModule,
+    DrawerModule,
+    FilterModule
   ],
   exports: [
     SnBranchLocatorComponent,

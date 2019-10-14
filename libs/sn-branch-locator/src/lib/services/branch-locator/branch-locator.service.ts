@@ -1,20 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Branch } from '../../models/branch.model';
 import { LatLngLiteral } from '@agm/core';
-import { retry, groupBy, map, mergeMap, reduce, filter, tap } from 'rxjs/operators';
+import { map, reduce } from 'rxjs/operators';
+import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
+import { ENV_CONFIG } from '@globile/mobile-services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnBranchLocatorService {
 
-  readonly API_URL = 'https://back-weu.azurewebsites.net/branch-locator';
+  branchLocator: EnvBranchLocatorModel;
+
+  // TODO:For now we using "any" because mobile service still not updated. Change to EnvironmentConfigModel after.
+
   constructor(
+    @Inject(ENV_CONFIG) envConfig: any,
     public http: HttpClient,
-  ) { }
+  ) {
+    this.branchLocator = envConfig.api.BranchLocator;
+  }
 
 
   /**
@@ -24,13 +32,15 @@ export class SnBranchLocatorService {
    */
   public getBranchesByCoords(coords: LatLngLiteral): Observable<any> {
     // coords = {lat: 52.037222, lng: -0.77027524 };
-    return this.http.get<any>(`${this.API_URL}/find/defaultView?config={"coords":[${coords.lat},${coords.lng}]}`)
+    const configVal = encodeURI(`{"coords":[${coords.lat},${coords.lng}]}`);
+    return this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?config=${configVal}`)
       .pipe(map(resp => this.groupAtmToBranch(resp)));
   }
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): Observable<Branch[]> {
     // tslint:disable-next-line: max-line-length
-    return this.http.get<Branch[]>(`${this.API_URL}/find/defaultView?northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`)
+    const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
+    return this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?northEast=${configVal}`)
       .pipe(map(resp => this.groupAtmToBranch(resp)));
   }
 
@@ -51,4 +61,5 @@ export class SnBranchLocatorService {
       return pv;
     }, []);
   }
+
 }

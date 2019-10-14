@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { SnBranchLocatorService } from './branch-locator.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { of } from 'rxjs';
+import { ENV_CONFIG } from '@globile/mobile-services';
+import { SnBranchLocatorService } from './branch-locator.service';
 import { branchMock } from '../../helpers/branch.mock';
 import { Branch } from '../../models/branch.model';
-import { of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 describe('SnBranchLocatorService', () => {
   let httpTestingController: HttpTestingController;
@@ -12,7 +14,10 @@ describe('SnBranchLocatorService', () => {
   const atmMock: Branch = Object.assign({}, branchMock, {objectType: {code: 'ATM'}, id: '2'});
 
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule]
+    imports: [HttpClientTestingModule],
+    providers: [
+      { provide: ENV_CONFIG, useValue: environment }
+    ]
   }));
 
   beforeEach(() => {
@@ -66,10 +71,9 @@ describe('SnBranchLocatorService', () => {
 
     it('should call get function passing: API_URL/find/defaultView?config={"coords":[1,2]}', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
-      // TODO: Integrate with environment URL
+      const apiUrl = encodeURI(`${service.branchLocator.apiURL}/find/defaultView?northEast=1,2&southWest=3,4`);
       service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}).subscribe(res => {
-        expect(service.http.get).toHaveBeenCalledWith(
-          `https://back-weu.azurewebsites.net/branch-locator/find/defaultView?northEast=1,2&southWest=3,4`);
+        expect(service.http.get).toHaveBeenCalledWith(apiUrl);
       });
     });
   });
@@ -93,10 +97,9 @@ describe('SnBranchLocatorService', () => {
 
     it('should call get function passing: API_URL/find/defaultView?config={"coords":[1,2]}', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
-      // TODO: Integrate with environment URL
+      const apiUrl = encodeURI(`${service.branchLocator.apiURL}/find/defaultView?config={"coords":[1,2]}`);
       service.getBranchesByCoords({lat: 1, lng: 2}).subscribe(res => {
-        expect(service.http.get).toHaveBeenCalledWith(
-          `https://back-weu.azurewebsites.net/branch-locator/find/defaultView?config={"coords":[1,2]}`);
+        expect(service.http.get).toHaveBeenCalledWith(apiUrl);
       });
     });
   });

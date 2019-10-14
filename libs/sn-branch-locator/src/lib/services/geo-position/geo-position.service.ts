@@ -1,44 +1,59 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
+import { MapsAPILoader } from '@agm/core';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeoPositionService {
   private _observer$ = new Subject<Position>();
-  constructor(@Inject('WINDOW') private windowRef: any) { }
+  private _position$ = new Subject<Position>();
+  private mapLoaded = false;
+
+  constructor(
+    private mapsAPILoader: MapsAPILoader,
+    @Inject('WINDOW') private windowRef: any) { }
 
 
   public watchPosition(): Observable<Position> {
-
-    this.windowRef.navigator.geolocation.watchPosition((pos: Position) => {
-      this._observer$.next(pos);
-    },
-    (error) => {
-        console.log('Position is not available', error);
-        this._observer$.error(error);
-    },
-    {
-      enableHighAccuracy: true
-    });
-
-
-    return this._observer$.asObservable();
-  }
-
-  public getCurrentPosition(): Observable<Position> {
-    return Observable.create(
-      (observer) => {
-        this.windowRef.navigator.geolocation.getCurrentPosition((pos: Position) => {
-        observer.next(pos);
+    this._readyMaps().subscribe( () => {
+      this.windowRef.navigator.geolocation.watchPosition((pos: Position) => {
+        this._observer$.next(pos);
       },
       (error) => {
           console.log('Position is not available', error);
-          observer.error(error);
+          this._observer$.error(error);
       },
       {
         enableHighAccuracy: true
       });
     });
+
+    return this._observer$.asObservable().pipe(first());
+  }
+
+  public getCurrentPosition(): Observable<Position> {
+
+    this._readyMaps().subscribe( () => {
+      this.windowRef.navigator.geolocation.getCurrentPosition((pos: Position) => {
+        this._position$.next(pos);
+      },
+      (error) => {
+        console.log('Position is not available', error);
+        this._position$.error(error);
+      },
+      {
+        enableHighAccuracy: true
+      });
+    });
+    return this._position$.asObservable().pipe(first());
+  }
+
+  private _readyMaps(): Observable<void> {
+    return this._readyMaps ? of(true) : Observable.create(obs => {
+      this.mapsAPILoader.load()
+      .then( () => { this.mapLoaded = true; obs.next(); });
+    }).pipe(first());
   }
 }
