@@ -9,8 +9,8 @@
         <button sn-button-outlined type="reset" >Delete all</button>
     </div>
     <div class="sn-filter-content">
-
-        <h1 class="title">Branches</h1>
+        <h1 class="title">Point of Interest (POI)</h1>
+        <h2 class="sub-title">Branches</h2>
         <div class="filters-list-wrapper">
             <div class="filters-list">
                 <div class="filter-item">
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <h1 class="title">Cajeros</h1>
+        <h2 class="sub-title">Cajeros</h2>
         <div class="filters-list-wrapper">
             <div class="filters-list">
                 <div class="filter-item">
@@ -45,6 +45,68 @@
                 </div>
                 <div class="filter-item">
                     <sn-checkbox formControlName="otherAtms" icon="sn-FUNC019B">Other ATMs</sn-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="title">Operational</h1>
+        <div class="filters-list-wrapper">
+            <div class="filters-list">
+                <div class="filter-item">
+                    <sn-checkbox formControlName="withdrawal" icon="sn-BAN005">Withdrawal</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="withdrawWithoutCard" icon="sn-BAN005">Withdraw without card</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="deposit">Deposit</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="pay" icon="sn-BAN005">Pay</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="cardIssuanceInstantly" icon="sn-BAN005">Card issuance instantly</sn-checkbox>
+                </div>
+            </div>
+        </div>
+        <h1 class="title">Additional services</h1>
+        <div class="filters-list-wrapper">
+            <div class="filters-list">
+                <div class="filter-item">
+                    <sn-checkbox formControlName="availableNow" icon="sn-BAN005">Available now</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="openAfternoons" icon="sn-BAN005">Open afternoons</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="openSaturdays">Open Saturdays</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="noCommissions" icon="sn-BAN005">No Commissions</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="lowDenominationBanknotes" icon="sn-BAN005">Low denomination banknotes</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="ownParking" icon="sn-BAN005">Own parking</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="wheelchairAccessibility" icon="sn-BAN005">Wheelchair accessibility</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="audioGuidance">Audio guidance</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="coWorkingSpaces" icon="sn-BAN005">Co-working spaces</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="wiFi" icon="sn-BAN005">Wi-Fi</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="securityBoxes" icon="sn-BAN005">Security Boxes</sn-checkbox>
+                </div>
+                <div class="filter-item">
+                    <sn-checkbox formControlName="driveThru" icon="sn-BAN005">Drive Thru</sn-checkbox>
                 </div>
             </div>
         </div>
