@@ -8,7 +8,7 @@ import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
-import { FilterComponent } from '../sn-filter/sn-filter.component';
+import { FilterComponent } from '../filter/sn-filter.component';
 import { DrawerState } from 'sn-common-lib';
 
 
@@ -156,7 +156,6 @@ export class SnBranchLocatorComponent {
   drawerStageChange(state: DrawerState): void {
     if (state === DrawerState.Bottom) {
       this.showDrawer = false;
-      console.log(this.showDrawer);
     }
   }
 

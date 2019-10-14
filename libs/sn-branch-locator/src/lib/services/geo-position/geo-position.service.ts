@@ -22,7 +22,7 @@ export class GeoPositionService {
         this._observer$.next(pos);
       },
       (error) => {
-          console.log('Position is not available', error);
+          console.error('Position is not available', error);
           this._observer$.error(error);
       },
       {
@@ -40,7 +40,7 @@ export class GeoPositionService {
         this._position$.next(pos);
       },
       (error) => {
-        console.log('Position is not available', error);
+        console.error('Position is not available', error);
         this._position$.error(error);
       },
       {

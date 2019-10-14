@@ -41,8 +41,8 @@ export class FilterComponent implements OnInit {
     public apply(): void {
         this.snFilterService.applyChanges();
         this.filterApply.emit({
-            values: this.snFilterService.filterParams,
-            count: this.snFilterService.count
+            count: this.snFilterService.count,
+            values: this.snFilterService.filterParams
         });
         this.hide();
     }

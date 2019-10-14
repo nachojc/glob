@@ -4,15 +4,16 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { isObject, isNumber } from 'util';
 import { FilterParams } from '../../../models/default-view-request';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FilterService {
 
-  private _filterCount: number = 0;
-  private _hasChanges: boolean;
-  private _previousValues: { [key: string]: any; };
+  public _filterCount: number;
+  private _previousValues: { [key: string]: any };
   private _filterParams: FilterParams;
 
-  private appliedFiltersSubject = new BehaviorSubject<{ [key: string]: any; }>({});
+  private appliedFiltersSubject = new BehaviorSubject<FilterParams>({});
   public form: FormGroup;
 
 
@@ -80,7 +81,6 @@ export class FilterService {
 
 
   public startFilter(): void {
-    this._hasChanges = false;
     this.resetPreviousValues();
   }
 
@@ -88,28 +88,29 @@ export class FilterService {
   /**
    * Resets Count of checked filters
    */
-  private resetActiveFilterCount(values): void {
-    this._filterCount = 0;
+  private resetActiveFilterCount(values: { [key: string]: any }): number {
+    let count = 0;
     Object.keys(values).forEach((groupKey) => {
       if (isObject(values[groupKey])) {
         const group = values[groupKey];
         const counter = Object.keys(group).filter((filterKey) => group[filterKey]);
         if (counter && isNumber(counter.length)) {
-          this._filterCount += counter.length;
+          count += counter.length;
         }
       }
     });
+
+    return count;
   }
 
   /**
    * Apply changes
    */
   public applyChanges(): void {
-    this._previousValues = this.form.value;
-    this.resetActiveFilterCount(this._previousValues);
-    this.generateParams(this._previousValues);
+    this._filterCount = this.resetActiveFilterCount(this.form.value);
+    this._filterParams = this.generateParams(this.form.value);
     this.appliedFiltersSubject.next(this._filterParams);
-    this._hasChanges = true;
+    this._previousValues = this.form.value;
   }
 
   /**
@@ -131,10 +132,9 @@ export class FilterService {
     // TODO: // set filter to disable or enable based on Results
   }
 
-  private generateParams(values): void {
+  private generateParams(values: { [key: string]: any }): FilterParams {
     const filterSubType = new Array<string>();
     const filterType = new Array<string>();
-    this._filterCount = 0;
     Object.keys(values).forEach((groupKey) => {
       if (isObject(values[groupKey])) {
         const group = values[groupKey];
@@ -149,8 +149,6 @@ export class FilterService {
       }
     });
 
-    this._filterParams = { filterType: filterType.toString(), filterSubType: filterSubType.toString() };
+    return { filterType: filterType.toString(), filterSubType: filterSubType.toString() };
   }
-
-
 }

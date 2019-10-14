@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterService } from './sn-filter.service';
+import { FilterService } from './filter.service';
 import { ReactiveFormsModule } from '@angular/forms';
 
 describe('SnFilterService', () => {
