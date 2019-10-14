@@ -1,0 +1,117 @@
+<form class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="apply()">
+
+  <div class="sn-filter-header">
+      <h1 class="sub-title">
+          <!-- TODO: Temporary until have back button from design -->
+          <sn-icon icon="sn-SYS020" (click)="close()"></sn-icon>
+          {{ 'branchlocator.filters.filters' | translate }}
+      </h1>
+      <button sn-button-outlined type="reset" > {{ 'branchlocator.filters.buttondeleteall' | translate }}</button>
+  </div>
+  <div class="sn-filter-content">
+      <h1 class="title">Point of Interest (POI)</h1>
+      <h2 class="sub-title">Branches</h2>
+      <div class="filters-list-wrapper">
+          <div class="filters-list">
+              <div class="filter-item">
+                  <sn-checkbox formControlName="personal" icon="sn-BAN005">Personal</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="openAfternoons" icon="sn-BAN005">Open Afternoons</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="workCafe">Work Cafe</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="privateBanking" icon="sn-BAN005">Private Banking</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="smeBusiness" icon="sn-BAN005">SME's / Business</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="popularPastor">Popular / Pastor</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="partners" icon="sn-SERV008">Partners</sn-checkbox>
+              </div>
+          </div>
+      </div>
+
+      <h2 class="sub-title">Cajeros</h2>
+      <div class="filters-list-wrapper">
+          <div class="filters-list">
+              <div class="filter-item">
+                  <sn-checkbox formControlName="santanderAtms" icon="sn-BAN005">Santander ATMs</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="otherAtms" icon="sn-FUNC019B">Other ATMs</sn-checkbox>
+              </div>
+          </div>
+      </div>
+
+      <h1 class="title">Operational</h1>
+      <div class="filters-list-wrapper">
+          <div class="filters-list">
+              <div class="filter-item">
+                  <sn-checkbox formControlName="withdrawal" icon="sn-BAN005">Withdrawal</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="withdrawWithoutCard" icon="sn-BAN005">Withdraw without card</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="deposit">Deposit</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="pay" icon="sn-BAN005">Pay</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="cardIssuanceInstantly" icon="sn-BAN005">Card issuance instantly</sn-checkbox>
+              </div>
+          </div>
+      </div>
+      <h1 class="title">Additional services</h1>
+      <div class="filters-list-wrapper">
+          <div class="filters-list">
+              <div class="filter-item">
+                  <sn-checkbox formControlName="availableNow" icon="sn-BAN005">Available now</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="openAfternoons" icon="sn-BAN005">Open afternoons</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="openSaturdays">Open Saturdays</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="noCommissions" icon="sn-BAN005">No Commissions</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="lowDenominationBanknotes" icon="sn-BAN005">Low denomination banknotes</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="ownParking" icon="sn-BAN005">Own parking</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="wheelchairAccessibility" icon="sn-BAN005">Wheelchair accessibility</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="audioGuidance">Audio guidance</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="coWorkingSpaces" icon="sn-BAN005">Co-working spaces</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="wiFi" icon="sn-BAN005">Wi-Fi</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="securityBoxes" icon="sn-BAN005">Security Boxes</sn-checkbox>
+              </div>
+              <div class="filter-item">
+                  <sn-checkbox formControlName="driveThru" icon="sn-BAN005">Drive Thru</sn-checkbox>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="sn-filter-footer">
+      <button sn-button type="submit">{{ 'branchlocator.filters.applyfilter' | translate }}</button>
+  </div>
+</form>

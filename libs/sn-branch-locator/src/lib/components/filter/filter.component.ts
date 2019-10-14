@@ -1,12 +1,12 @@
 import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
-import { FilterService } from './services/sn-filter.service';
+import { FilterService } from '../../services/filter/filter.service';
 import { FormGroup } from '@angular/forms';
 
 
 @Component({
     selector: 'sn-filter',
-    templateUrl: './sn-filter.component.html',
-    styleUrls: ['./sn-filter.component.scss']
+    templateUrl: './filter.component.html',
+    styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
 
@@ -41,8 +41,8 @@ export class FilterComponent implements OnInit {
     public apply(): void {
         this.snFilterService.applyChanges();
         this.filterApply.emit({
-            values: this.snFilterService.values,
-            count: this.snFilterService.count
+            count: this.snFilterService.count,
+            values: this.snFilterService.filterParams
         });
         this.hide();
     }
