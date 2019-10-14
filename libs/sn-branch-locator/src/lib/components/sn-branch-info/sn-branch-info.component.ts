@@ -33,7 +33,7 @@ export class SnBranchInfoComponent {
 
   private parseHours(branchSchedule: any) {
 
-    // TODO: Verify how it will work with internatilization.
+    // TODO: Verify how it will work with translation.
     const language = 'default';
     const hoursEnum = {
         MONDAY: {

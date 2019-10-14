@@ -9,6 +9,7 @@ import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { TranslateService } from '@ngx-translate/core';
+import { reduce, filter } from 'rxjs/operators';
 
 
 @Component({
@@ -163,8 +164,8 @@ export class SnBranchLocatorComponent {
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
       switchMap(() => from(this.map.api.getBounds()))
     ).subscribe((mapBounds: LatLngBounds) => {
-      this.branchService.getBranchesByBounds({
-        lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
+      this.branchService.getBranchesByBounds(
+        {lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
         {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
       ).subscribe(res => {
         this.branchesList = res;

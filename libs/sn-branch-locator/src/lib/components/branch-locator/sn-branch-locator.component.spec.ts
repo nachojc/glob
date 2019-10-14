@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
 import { IconModule, OptionListModule, SnTabModule } from 'sn-common-lib';
@@ -13,6 +13,9 @@ import { Branch } from '../../models/branch.model';
 import { of } from 'rxjs';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
+import { tick } from '@angular/core/src/render3';
+import { branchMock } from '../../helpers/branch.mock';
 
 
 const MapsAPILoaderMock = {
@@ -29,11 +32,6 @@ const windowRef = {
     }
   }
 };
-const GeoPositionServiceMock = {
-  watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
-  getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
-};
-
 const mapBounds = {
   getNorthEast: () => ({
     lat: () => 123,
@@ -47,78 +45,12 @@ const mapBounds = {
   })
 };
 
-const branchMock: Branch = {
-  id: '5d8b6968048ccee51add3042',
-  code: 'Santander_UK_UK_B798',
-  entityCode: 'Santander_UK',
-  name: 'Milton Keynes GG',
-  action: null,
-  poiStatus: 'ACTIVE',
-  objectType: {
-      multi: {
-          default: 'BRANCH',
-          es: 'BRANCH'
-      },
-      code: 'BRANCH'
-  },
-  subType: null,
-  specialType: null,
-  description: null,
-  status: null,
-  location: {
-      type: 'Point',
-      coordinates: [-0.77027524, 52.037222],
-      address: 'Santander House, 201, Grafton Gate East, Milton Keynes, Buckinghamshire, MK9 1AN',
-      zipcode: 'MK9 1AN',
-      city: 'Milton Keynes',
-      country: 'UK',
-      locationDetails: null,
-      parking: null,
-      geoCoords: { latitude: 52.037222, longitude: -0.77027524},
-      urlPhoto: null,
-      descriptionPhoto: null
-  },
-  distanceInKm: 0.39915483283281106,
-  distanceInMiles: 0.6386477325324977,
-  contactData: null,
-  socialData: {
-      youtubeLink: 'https://www.youtube.com/user/UKSantander',
-      facebookLink: 'https://www.facebook.com/santanderuk/',
-      twitterLink: 'https://twitter.com/santanderuk',
-      linkedinLink: 'https://www.linkedin.com/company/santander-uk-corporate-&-commercial',
-      instagramLink: null,
-      googleLink: null
-  },
-  appointment: {
-      waitingTimeTeller: null,
-      waitingTimeSpecialist: null,
-      branchAppointment: 'https://www.santander.co.uk/uk/book-an-appointment'
-  },
-  schedule: {
-      workingDay: {
-        WEDNESDAY: ['09:30-17:00'],
-        MONDAY: ['09:30-17:00'],
-        THURSDAY: ['09:30-17:00'],
-        SUNDAY: [],
-        TUESDAY: ['09:30-17:00'],
-        FRIDAY: ['09:30-17:00'],
-        SATURDAY: []},
-      specialDay: []
-  },
-  comercialProducts: [],
-  banner: null,
-  spokenlanguages: ['EN'],
-  attrib: [],
-  richTexts: [],
-  people: null,
-  events: null,
-  store: '',
-  urlDetailPage: '',
-  dialogAttribute: null,
-  updatedTime: 1569417528615,
-  hideURLDetail: 'NO',
-  poicode: 'B798'
+
+const GeoPositionServiceMock = {
+  watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
+  getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
+
 
 describe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
@@ -147,7 +79,8 @@ describe('SnBranchLocatorComponent', () => {
       providers: [
         { provide: 'WINDOW', useValue: windowRef },
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
-        { provide: GeoPositionService, useValue: GeoPositionServiceMock  }
+        { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
+        SnBranchLocatorService
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -260,5 +193,16 @@ describe('SnBranchLocatorComponent', () => {
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
+  describe('getBranchesByCoordinates()', () => {
+    it('should return a list of branches', async(() => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      component.getBranchesByCoordinates({lat: 1, lng: 2});
+      expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({lat: 1, lng: 2});
+    }));
+  });
 
+  it('tabsChanged() should set selectedTabIndex to 0', () => {
+    component.tabsChanged({tabIndex: 0});
+    expect(component['selectedTabIndex']).toBe(0);
+  });
 });
