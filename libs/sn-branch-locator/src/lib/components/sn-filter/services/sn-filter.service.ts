@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { isObject, isNumber } from 'util';
+import { FilterParams } from '../../../models/default-view-request';
 
 @Injectable()
 export class FilterService {
@@ -8,9 +10,11 @@ export class FilterService {
   private _filterCount: number = 0;
   private _hasChanges: boolean;
   private _previousValues: { [key: string]: any; };
+  private _filterParams: FilterParams;
 
-  private applyedFiltersSubject = new BehaviorSubject<{ [key: string]: any; }>({});
+  private appliedFiltersSubject = new BehaviorSubject<{ [key: string]: any; }>({});
   public form: FormGroup;
+
 
   constructor(private fb: FormBuilder) {
 
@@ -18,37 +22,40 @@ export class FilterService {
 
 
   /**
-   * Initialises filter form and returns the form;
+   * Initializes filter form and returns the form;
    */
   initForm(): FormGroup {
     if (!this.form) {
       this.form = this.fb.group({
-        personal: new FormControl(),
-        openAfternoons: new FormControl(),
-        workCafe: new FormControl(),
-        privateBanking: new FormControl(),
-        smeBusiness: new FormControl(),
-        popularPastor: new FormControl(),
-        partners: new FormControl(),
-        santanderAtms: new FormControl(),
-        otherAtms: new FormControl(),
-        withdrawal: new FormControl(),
-        withdrawWithoutCard: new FormControl(),
-        deposit: new FormControl(),
-        pay: new FormControl(),
-        cardIssuanceInstantly: new FormControl(),
-        availableNow: new FormControl(),
-        openAfternoonsAdditional: new FormControl(),
-        openSaturdays: new FormControl(),
-        noCommissions: new FormControl(),
-        lowDenominationBanknotes: new FormControl(),
-        ownParking: new FormControl(),
-        wheelchairAccessibility: new FormControl(),
-        audioGuidance: new FormControl(),
-        coWorkingSpaces: new FormControl(),
-        wiFi: new FormControl(),
-        securityBoxes: new FormControl(),
-        driveThru: new FormControl(),
+        BRANCH: this.fb.group({
+          SELECT: new FormControl(),
+          BANCAPRIVADA: new FormControl(),
+          PYME: new FormControl(),
+          WORKCAFE: new FormControl(),
+          EMPRESAS: new FormControl(),
+          UNIVERSIDADES: new FormControl(),
+          CLIENTES_POPULAR: new FormControl(),
+          CLIENTES_PASTOR: new FormControl(),
+          CLIENTES_BANEFE: new FormControl(),
+          RESIDENTES: new FormControl(),
+          GRANDES_SUPERFICIES: new FormControl(),
+          AG_COLABORADORES: new FormControl(),
+          AG_FINANCIEROS: new FormControl()
+        }),
+        ATM: this.fb.group({
+          NON_SANTANDER_ATM: new FormControl(),
+          ATM: new FormControl()
+        }),
+        CORRESPONSALES: this.fb.group({
+          CORRESPONSALES: new FormControl(),
+          ELEVEN: new FormControl(),
+          CIRCLE_K: new FormControl(),
+          TIENDA_EXTRA: new FormControl(),
+          TIENDA_K: new FormControl(),
+          TELECOMM: new FormControl(),
+          SUPER7_24: new FormControl(),
+          OXXO: new FormControl(),
+        }),
       });
     }
     return this.form;
@@ -60,15 +67,15 @@ export class FilterService {
   }
 
   /**
-   * Listens to when values are applyed and returns the filter values
+   * Listens to when values are applied and returns the filter values
    */
-  public get valueChanges(): Observable<any> {
-    return this.applyedFiltersSubject.asObservable();
+  public get filterParamsChanges(): Observable<any> {
+    return this.appliedFiltersSubject.asObservable();
   }
 
 
-  public get values(): { [key: string]: any } {
-    return this._previousValues;
+  public get filterParams(): FilterParams {
+    return this._filterParams;
   }
 
 
@@ -82,21 +89,26 @@ export class FilterService {
    * Resets Count of checked filters
    */
   private resetActiveFilterCount(values): void {
-    const counter = Object.keys(values).filter((key) => values[key]);
-    if (counter && counter.length) {
-      this._filterCount = counter.length;
-    } else {
-      this._filterCount = 0;
-    }
+    this._filterCount = 0;
+    Object.keys(values).forEach((groupKey) => {
+      if (isObject(values[groupKey])) {
+        const group = values[groupKey];
+        const counter = Object.keys(group).filter((filterKey) => group[filterKey]);
+        if (counter && isNumber(counter.length)) {
+          this._filterCount += counter.length;
+        }
+      }
+    });
   }
 
   /**
-   * Applys changes
+   * Apply changes
    */
   public applyChanges(): void {
     this._previousValues = this.form.value;
     this.resetActiveFilterCount(this._previousValues);
-    this.applyedFiltersSubject.next(this._previousValues);
+    this.generateParams(this._previousValues);
+    this.appliedFiltersSubject.next(this._filterParams);
     this._hasChanges = true;
   }
 
@@ -117,6 +129,27 @@ export class FilterService {
    */
   public enableFilters(markers: Array<any>): void {
     // TODO: // set filter to disable or enable based on Results
+  }
+
+  private generateParams(values): void {
+    const filterSubType = new Array<string>();
+    const filterType = new Array<string>();
+    this._filterCount = 0;
+    Object.keys(values).forEach((groupKey) => {
+      if (isObject(values[groupKey])) {
+        const group = values[groupKey];
+        Object.keys(group).forEach((filterKey) => {
+          if (group[filterKey]) {
+            filterSubType.push(filterKey);
+            if (!filterType.includes(groupKey)) {
+              filterType.push(groupKey);
+            }
+          }
+        });
+      }
+    });
+
+    this._filterParams = { filterType: filterType.toString(), filterSubType: filterSubType.toString() };
   }
 
 

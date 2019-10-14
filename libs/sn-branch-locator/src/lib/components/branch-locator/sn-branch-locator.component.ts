@@ -37,11 +37,10 @@ export class SnBranchLocatorComponent {
     url: 'assets/branchlocator/pinVoce.svg',
     scaledSize: { height: 90, width: 90 }
   };
-  branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
   branchesList: Branch[];
 
   userPosition: LatLngLiteral;
-  zoom = 15;
+  zoom = 13;
   showDrawer: boolean;
   showReCenter: boolean;
 
@@ -184,6 +183,21 @@ export class SnBranchLocatorComponent {
 
   onFilterApply(event) {
     this.filterCounts = event.count;
+    from(this.map.api.getBounds()).pipe(
+      switchMap((mapBounds: LatLngBounds) => {
+        return this.branchService.getBranchesByBounds({
+          lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()
+        },
+          { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
+        );
+      })
+    ).subscribe(res => {
+      this.branchesList = res;
+    }, (error) => {
+      // TODO: Add error handler
+      console.error(error);
+    });
+
   }
 
     showFilter(visible: boolean) {

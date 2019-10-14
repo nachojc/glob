@@ -21,7 +21,7 @@ describe('SnFilterService', () => {
 
   it('initial values should be undefined', () => {
     const service: FilterService = TestBed.get(FilterService);
-    expect(service.values).toBeUndefined();
+    expect(service.filterParams).toBeUndefined();
   });
 
   it('startFilter() should call form reset if no previous values', () => {
@@ -64,7 +64,7 @@ describe('SnFilterService', () => {
     expect(formpatchValueSpy).not.toHaveBeenCalled();
     expect(formupdateValueAndValidityValueSpy).toHaveBeenCalled();
     service.startFilter();
-    expect(service.values).not.toBeUndefined();
+    expect(service.filterParams).not.toBeUndefined();
     expect(service.form.get('personal').value).toBeTruthy();
     expect(service.count).toEqual(0);
   });
@@ -80,7 +80,7 @@ describe('SnFilterService', () => {
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
     expect(service.count).toEqual(0);
-    expect(service.values).toBeUndefined();
+    expect(service.filterParams).toBeUndefined();
   });
 
 
@@ -97,7 +97,7 @@ describe('SnFilterService', () => {
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
     expect(service.count).toEqual(1);
-    expect(service.values).not.toBeUndefined();
+    expect(service.filterParams).not.toBeUndefined();
   });
 
   it('enableFilters', () => {
