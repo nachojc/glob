@@ -6,8 +6,7 @@ import { Branch } from '../../models/branch.model';
 import { LatLngLiteral } from '@agm/core';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
 import { ENV_CONFIG } from '@globile/mobile-services';
-import { FilterService } from '../../components/filter/services/sn-filter.service';
-import { FilterParams } from '../../models/default-view-request';
+import { FilterService } from '../filter/filter.service';
 
 @Injectable({
   providedIn: 'root'

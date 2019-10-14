@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FilterComponent } from './sn-filter.component';
+import { FilterComponent } from './filter.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IconModule, CheckboxModule } from 'sn-common-lib';
-import { FilterService } from './services/sn-filter.service';
-import { notEqual } from 'assert';
+import { FilterService } from '../../services/filter/filter.service';
+
 
 describe('SnFilterComponent', () => {
   let component: FilterComponent;

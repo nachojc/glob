@@ -8,7 +8,7 @@ import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
-import { FilterComponent } from '../filter/sn-filter.component';
+import { FilterComponent } from '../filter/filter.component';
 import { DrawerState } from 'sn-common-lib';
 
 

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { isObject, isNumber } from 'util';
-import { FilterParams } from '../../../models/default-view-request';
+import { FilterParams } from '../../models/default-view-request';
+
 
 @Injectable({
   providedIn: 'root'
