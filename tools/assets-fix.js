@@ -25,8 +25,8 @@ FILE_TO_COPY.forEach(folder =>{
 })
 
 const pars = process.argv;
-
-const build = pars.length > 2 ? pars[2] : '';
-const AssetRemedy = require('./assets');
-
-new AssetRemedy(build);
+if (pars.length > 2){
+    const AssetRemedy = require('./assets');
+    
+    new AssetRemedy(pars[2]);
+}
