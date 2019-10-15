@@ -14,7 +14,6 @@ export class SnBranchInfoComponent {
   @Input()
   set branch(value: Branch) {
     this._branch = this.setPOIInformation(value);
-    // setTimeout(() => {
     this.isBranch = true;
     if (this._branch.objectType.code.toUpperCase() === 'ATM') {
       this._branch.atm = [this.setPOIInformation(value)];
@@ -22,13 +21,6 @@ export class SnBranchInfoComponent {
     } else if (this._branch.atm && this._branch.atm.length > 0) {
       this._branch.atm[0] = this.setPOIInformation(this._branch.atm[0]);
     }
-    // }, 0);
-    // console.log(this._branch);
-    // if (this._branch.attrib) {
-    //   this.attributeList = this._branch.attrib.map(attr => attr.code);
-    //   const auxAccesibility = this.attributeList.findIndex(attr => attr.toUpperCase() === 'ACCESIBILITY');
-    //   this.haveAccesibility = auxAccesibility > -1 ? true : false;
-    // }
   }
 
   get branch() {

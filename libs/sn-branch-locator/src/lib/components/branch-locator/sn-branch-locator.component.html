@@ -11,11 +11,11 @@
                 [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
             </agm-map>
             <section class="locator-center">
-                <button class="center-map-user" (click)="centerMapToUser()">
+                <button class="center-map-user" (click)="goToUserPositon()">
                     <sn-icon icon="sn-SYS029"></sn-icon>
                 </button>
             </section>
-            <sn-drawer #drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
+            <sn-drawer #drawer [dockedHeight]="300" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
                 <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()"></sn-branch-info>
             </sn-drawer>
         </section>
