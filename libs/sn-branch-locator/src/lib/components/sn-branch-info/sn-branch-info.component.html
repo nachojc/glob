@@ -1,12 +1,12 @@
 <div class="branch-wrapper">
     <div class="branch-summary-wrapper">
-        <h6 class="branch-title">Nearest result</h6>
+        <h6 class="branch-title" >Nearest result</h6>
         <section class="branch-summary">
-            <h6 class="branch-name">{{branch.name}}</h6>
+            <h6 class="branch-name" style="min-height: 48px;">{{branch.name}}</h6>
             <div class="body-medium" *ngIf="branch.subType?.multi">{{branch.subType?.multi.default}}</div>
         </section>
         <section class="branch-location">
-          <p class="branch-address">
+          <p class="branch-address" style="min-height: 72px;">
             {{branch.location.address}}
           </p>
           <div class="branch-directions">
