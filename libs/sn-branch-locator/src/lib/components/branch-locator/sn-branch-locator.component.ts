@@ -98,7 +98,7 @@ export class SnBranchLocatorComponent {
         lat: nativeMarker.position.lat(),
         lng: nativeMarker.position.lng()
       };
-      this.map.api.panTo(selectedPos).then(() => {
+      this.map.api.panTo(selectedPos).then(() => this.map.api.setZoom(this.zoom)).then(() => {
         if (Boolean(this.selectedMarker)) {
           this.openDrawer();
         }
@@ -152,9 +152,10 @@ export class SnBranchLocatorComponent {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude
           };
-          this.map.api.panTo(newCenter);
+          this.map.api.panTo(newCenter).then(() => this.map.api.setZoom(this.zoom)).then(() => {
+            this.getBranchesByCoordinates({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+          });
 
-          this.getBranchesByCoordinates({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         });
     }
   }
@@ -231,6 +232,11 @@ export class SnBranchLocatorComponent {
 
   private openDrawer(): void {
     this.showDrawer = true;
+  }
+
+
+  public goToUserPositon(): void {
+    this.map.api.panTo(this.userPosition).then(() => this.map.api.setZoom(this.zoom)).then(() => this.clearSelectedMarker());
   }
 
 
