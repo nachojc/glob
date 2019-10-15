@@ -1,6 +1,6 @@
 <div class="branch-wrapper">
-    <div class="branch-summary-wrapper">
-        <h6 class="branch-title" >Nearest result</h6>
+    <div class="branch-summary-wrapper" (click)="emitClick()">
+        <!-- <h6 class="branch-title" ></h6> -->
         <section class="branch-summary">
             <h6 class="branch-name" style="min-height: 48px;">{{branch.name}}</h6>
             <div class="body-medium" *ngIf="branch.subType?.multi">{{branch.subType?.multi.default}}</div>
@@ -18,6 +18,7 @@
         <div>Branch</div>
         <div>Today, {{todayHours}}</div>
       </div>
+      <!-- [ngClass]="{hidden: branch?.atm?.length === 0}" -->
       <div class="atm-hours" *ngIf="!isBranch || (branch.atm && branch.atm[0])">
         <div>ATM</div>
         <div>Free cash withdrawals</div>
@@ -26,7 +27,7 @@
   </div>
 
   <div class="tab-group-wrapper">
-    <sn-tab-group>
+    <sn-tab-group [ngClass]="{both: isBranch && branch?.atm?.length}">
       <sn-tab [label]="isBranch?'Branch':'ATM'" class="tab-branch-info">
         <div class="branch-info-wrapper">
           <sn-option-list >
@@ -141,13 +142,13 @@
                 <sn-icon color="primary" icon="sn-BAN089" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Additional services</div>
                 <div class="Type-5_Regular-Style" *ngIf="branch.atm[0].products.length > 0">
-                    <h1 class="title">Financial</h1>
-                    <ul type="none">
-                      <li *ngFor="let attr of branch.atm[0].products">{{attr}}</li>
-                    </ul>
+                  <h1 class="title">Financial</h1>
+                  <ul type="none">
+                    <li *ngFor="let attr of branch.atm[0].products">{{attr}}</li>
+                  </ul>
                 </div>
                 <div class="Type-5_Regular-Style" *ngIf="branch.atm[0].attributes.length > 0">
-                    <h1 class="title">No Financial</h1>
+                  <h1 class="title">No Financial</h1>
                   <ul type="none">
                     <li *ngFor="let attr of branch.atm[0].attributes">{{attr}}</li>
                   </ul>

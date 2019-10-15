@@ -1,4 +1,4 @@
-import { Component, Input,  ChangeDetectorRef } from '@angular/core';
+import { Component, Input,  ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 
 @Component({
@@ -25,20 +25,18 @@ export class SnBranchInfoComponent {
     } else if (this._branch.atm && this._branch.atm.length > 0) {
       this._branch.atm[0] = this.setPOIInformation(this._branch.atm[0]);
     }
-    // }, 0);
-    // console.log(this._branch);
-    // if (this._branch.attrib) {
-    //   this.attributeList = this._branch.attrib.map(attr => attr.code);
-    //   const auxAccesibility = this.attributeList.findIndex(attr => attr.toUpperCase() === 'ACCESIBILITY');
-    //   this.haveAccesibility = auxAccesibility > -1 ? true : false;
-    // }
   }
 
   get branch() {
     return this._branch;
   }
 
-  constructor(private ref: ChangeDetectorRef) {}
+  // TODO : Temporary fix.
+  @Output() branchInfoClicked = new EventEmitter<any>();
+
+
+
+  constructor(private ref: ChangeDetectorRef) { }
 
   contactBranch(phone: string) {
   }
@@ -152,6 +150,10 @@ export class SnBranchInfoComponent {
       }
     });
     return groupedHours;
+  }
+
+  emitClick() {
+    this.branchInfoClicked.emit();
   }
 
 }
