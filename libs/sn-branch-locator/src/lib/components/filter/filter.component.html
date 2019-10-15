@@ -1,117 +1,150 @@
 <form class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="apply()">
-
-  <div class="sn-filter-header">
+    <div class="sn-filter-header">
       <h1 class="sub-title">
-          <!-- TODO: Temporary until have back button from design -->
-          <sn-icon icon="sn-SYS020" (click)="close()"></sn-icon>
-          {{ 'branchlocator.filters.filters' | translate }}
+        <!-- TODO: Temporary until have back button from design -->
+        <sn-icon icon="sn-SYS020" (click)="close()"></sn-icon>
+        FILTERS
       </h1>
-      <button sn-button-outlined type="reset" > {{ 'branchlocator.filters.buttondeleteall' | translate }}</button>
-  </div>
-  <div class="sn-filter-content">
-      <h1 class="title">Point of Interest (POI)</h1>
-      <h2 class="sub-title">Branches</h2>
-      <div class="filters-list-wrapper">
+      <button sn-button-outlined type="reset">Delete all</button>
+    </div>
+    <div class="sn-filter-content">
+      <div formGroupName="BRANCH">
+        <h2 class="title">Branch</h2>
+        <div class="filters-list-wrapper">
           <div class="filters-list">
-              <div class="filter-item">
-                  <sn-checkbox formControlName="personal" icon="sn-BAN005">Personal</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="openAfternoons" icon="sn-BAN005">Open Afternoons</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="workCafe">Work Cafe</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="privateBanking" icon="sn-BAN005">Private Banking</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="smeBusiness" icon="sn-BAN005">SME's / Business</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="popularPastor">Popular / Pastor</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="partners" icon="sn-SERV008">Partners</sn-checkbox>
-              </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="SELECT" icon="sn-BAN005"
+                >Select</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="BANCAPRIVADA" icon="sn-BAN005"
+                >Banca Privada</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="PYME" icon="sn-BAN005"
+                >Pyme</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="WORKCAFE" icon="sn-BAN005"
+                >Workcafe</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="EMPRESAS" icon="sn-BAN005"
+                >Empresas</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="UNIVERSIDADES" icon="sn-BAN005"
+                >Universidades</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="CLIENTES_POPULAR" icon="sn-BAN005"
+                >Clientes Popular</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="CLIENTES_PASTOR" icon="sn-BAN005"
+                >Clientes Pastor</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="CLIENTES_BANEFE" icon="sn-BAN005"
+                >Clientes Banefe</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="RESIDENTES" icon="sn-BAN005"
+                >Residentes</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="GRANDES_SUPERFICIES" icon="sn-BAN005"
+                >Grandes Superficies</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="AG_COLABORADORES" icon="sn-BAN005"
+                >AG Colaboradores</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="AG_FINANCIEROS" icon="sn-BAN005"
+                >AG Financieros</sn-checkbox
+              >
+            </div>
           </div>
+        </div>
       </div>
-
-      <h2 class="sub-title">Cajeros</h2>
-      <div class="filters-list-wrapper">
+      <div formGroupName="ATM">
+        <h2 class="title">ATM</h2>
+        <div class="filters-list-wrapper">
           <div class="filters-list">
-              <div class="filter-item">
-                  <sn-checkbox formControlName="santanderAtms" icon="sn-BAN005">Santander ATMs</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="otherAtms" icon="sn-FUNC019B">Other ATMs</sn-checkbox>
-              </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="NON_SANTANDER_ATM" icon="sn-BAN005"
+                >Non Santander ATM</sn-checkbox
+              >
+            </div>
           </div>
+          <div class="filter-item">
+            <sn-checkbox formControlName="ATM" icon="sn-BAN005">ATM</sn-checkbox>
+          </div>
+        </div>
       </div>
-
-      <h1 class="title">Operational</h1>
-      <div class="filters-list-wrapper">
+      <div formGroupName="CORRESPONSALES">
+        <h2 class="title">Corresponsales</h2>
+        <div class="filters-list-wrapper">
           <div class="filters-list">
-              <div class="filter-item">
-                  <sn-checkbox formControlName="withdrawal" icon="sn-BAN005">Withdrawal</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="withdrawWithoutCard" icon="sn-BAN005">Withdraw without card</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="deposit">Deposit</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="pay" icon="sn-BAN005">Pay</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="cardIssuanceInstantly" icon="sn-BAN005">Card issuance instantly</sn-checkbox>
-              </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="CORRESPONSALES" icon="sn-BAN005"
+                >Corresponsales</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="ELEVEN" icon="sn-BAN005"
+                >Eleven</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="CIRCLE_K" icon="sn-BAN005"
+                >Circle K</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="TIENDA_EXTRA" icon="sn-BAN005"
+                >Tienda Extra</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="TIENDA_K" icon="sn-BAN005"
+                >Tienda K</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="TELECOMM" icon="sn-BAN005"
+                >Telecomm</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="SUPER7_24" icon="sn-BAN005"
+                >Super7 24</sn-checkbox
+              >
+            </div>
+            <div class="filter-item">
+              <sn-checkbox formControlName="OXXO" icon="sn-BAN005"
+                >Oxxo</sn-checkbox
+              >
+            </div>
           </div>
+        </div>
       </div>
-      <h1 class="title">Additional services</h1>
-      <div class="filters-list-wrapper">
-          <div class="filters-list">
-              <div class="filter-item">
-                  <sn-checkbox formControlName="availableNow" icon="sn-BAN005">Available now</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="openAfternoons" icon="sn-BAN005">Open afternoons</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="openSaturdays">Open Saturdays</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="noCommissions" icon="sn-BAN005">No Commissions</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="lowDenominationBanknotes" icon="sn-BAN005">Low denomination banknotes</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="ownParking" icon="sn-BAN005">Own parking</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="wheelchairAccessibility" icon="sn-BAN005">Wheelchair accessibility</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="audioGuidance">Audio guidance</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="coWorkingSpaces" icon="sn-BAN005">Co-working spaces</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="wiFi" icon="sn-BAN005">Wi-Fi</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="securityBoxes" icon="sn-BAN005">Security Boxes</sn-checkbox>
-              </div>
-              <div class="filter-item">
-                  <sn-checkbox formControlName="driveThru" icon="sn-BAN005">Drive Thru</sn-checkbox>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="sn-filter-footer">
-      <button sn-button type="submit">{{ 'branchlocator.filters.applyfilter' | translate }}</button>
-  </div>
-</form>
+    </div>
+    <div class="sn-filter-footer">
+      <button sn-button type="submit">APPLY FILTERS</button>
+    </div>
+  </form>
+  
