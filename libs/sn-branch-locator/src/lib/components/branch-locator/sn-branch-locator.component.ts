@@ -175,6 +175,7 @@ export class SnBranchLocatorComponent {
 
 
   placeChange(place: LatLngLiteral) {
+    this.closeDrawer();
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
       switchMap(() => from(this.map.api.getBounds()))
