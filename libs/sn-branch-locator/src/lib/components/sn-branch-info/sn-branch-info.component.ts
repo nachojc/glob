@@ -1,4 +1,4 @@
-import { Component, Input,  ChangeDetectorRef } from '@angular/core';
+import { Component, Input,  ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 
 @Component({
@@ -26,6 +26,11 @@ export class SnBranchInfoComponent {
   get branch() {
     return this._branch;
   }
+
+  // TODO : Temporary fix.
+  @Output() branchInfoClicked = new EventEmitter<any>();
+
+
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -109,6 +114,10 @@ export class SnBranchInfoComponent {
       }
     });
     return groupedHours;
+  }
+
+  emitClick() {
+    this.branchInfoClicked.emit();
   }
 
 }

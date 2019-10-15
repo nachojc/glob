@@ -210,7 +210,7 @@ export class SnBranchLocatorComponent {
 
   }
 
-  showFilter(visible: boolean) {
+  showFilter() {
     this.clearSelectedMarker();
     this.filterView.open();
   }
