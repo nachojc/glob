@@ -95,6 +95,10 @@
 .tab-group-wrapper {
   overflow: scroll;
   height: 100%;
+
+  &.hide-tabs ::ng-deep sn-tab-group .tab-wrapper ul{
+    display: none;
+  }
 }
 
 .branch-info-wrapper {

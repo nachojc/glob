@@ -26,7 +26,7 @@
     </section>
   </div>
 
-  <div class="tab-group-wrapper">
+  <div class="tab-group-wrapper" [class.hide-tabs]="(isBranch && !(branch.atm?.length > 0)) || !isBranch">
     <sn-tab-group [ngClass]="{both: isBranch && branch?.atm?.length}">
       <sn-tab [label]="isBranch?'Branch':'ATM'" class="tab-branch-info">
         <div class="branch-info-wrapper">
