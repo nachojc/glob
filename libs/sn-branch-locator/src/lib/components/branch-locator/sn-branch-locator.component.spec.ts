@@ -6,7 +6,7 @@ import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
-import { BranchSearchInputModule } from '../branch-search-input';
+import { BranchSearchInputModule } from '../branch-search-input/branch-search-input.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Branch } from '../../models/branch.model';

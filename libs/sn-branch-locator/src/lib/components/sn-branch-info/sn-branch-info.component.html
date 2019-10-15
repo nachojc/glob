@@ -14,11 +14,11 @@
           </div>
         </section>
     <section class="branch-schedule">
-      <div class="branch-hours">
+      <div class="branch-hours" *ngIf="isBranch && todayHours">
         <div>Branch</div>
-        <div>Today, 08:30 - 14:30h</div>
+        <div>Today, {{todayHours}}</div>
       </div>
-      <div class="atm-hours">
+      <div class="atm-hours" *ngIf="!isBranch || (branch.atm && branch.atm[0])">
         <div>ATM</div>
         <div>Free cash withdrawals</div>
       </div>
@@ -29,10 +29,10 @@
     <sn-tab-group>
       <sn-tab [label]="isBranch?'Branch':'ATM'" class="tab-branch-info">
         <div class="branch-info-wrapper">
-          <sn-option-list>
-            <sn-option-item border>
+          <sn-option-list >
+            <sn-option-item border *ngIf="branch.schedule?.timeToClose">
               <div class="close-warning">
-                <div class="Type-5_Light-Style">Closing in 30min</div>
+                <div class="Type-5_Light-Style">{{branch.schedule.timeToClose}}</div>
                 <div class="signal"></div>
               </div>
             </sn-option-item>
@@ -58,7 +58,7 @@
                 </div>
               </div>
             </sn-option-item>
-            <sn-option-item border>
+            <!-- <sn-option-item border>
               <sn-icon color="primary" icon="sn-SYS004" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Notices and news</div>
               <div class="Type-5_Regular-Style">
@@ -68,7 +68,7 @@
                 <br />
                 Sorry for the inconvenience
               </div>
-            </sn-option-item>
+            </sn-option-item> -->
             <sn-option-item border *ngIf="branch.attributes?.length > 0 || branch.products?.length > 0">
               <sn-icon color="primary" icon="sn-BAN089" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Additional services</div>
@@ -85,7 +85,7 @@
                 </ul>
               </div>
             </sn-option-item>
-            <sn-option-item *ngIf="true">
+            <sn-option-item *ngIf="getAccesibility(branch.attr)">
               <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Accessibility</div>
               <h1 class="title">Disabled access</h1>
@@ -94,13 +94,13 @@
           </sn-option-list>
         </div>
       </sn-tab>
-        <!-- *ngIf="(isBranch && branch.atm && branch.atm[0])" -->
-      <sn-tab label="ATM" class="tab-branch-info" *ngIf="false">
+        
+      <sn-tab label="ATM" class="tab-branch-info" *ngIf="false"> <!--*ngIf="(isBranch && branch.atm && branch.atm[0])"-->
           <div class="branch-info-wrapper">
             <sn-option-list>
-              <sn-option-item border>
+              <sn-option-item border *ngIf="branch.atm.schedule?.timeToClose">
                 <div class="close-warning">
-                  <div class="Type-5_Light-Style">Closing in 30min</div>
+                  <div class="Type-5_Light-Style">{{branch.atm.schedule?.timeToClose}}</div>
                   <div class="signal"></div>
                 </div>
               </sn-option-item>
@@ -126,7 +126,7 @@
                   </div>
                 </div>
               </sn-option-item>
-              <sn-option-item border>
+              <!-- <sn-option-item border>
                 <sn-icon color="primary" icon="sn-SYS004" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Notices and news</div>
                 <div class="Type-5_Regular-Style">
@@ -136,7 +136,7 @@
                   <br />
                   Sorry for the inconvenience
                 </div>
-              </sn-option-item>
+              </sn-option-item> -->
               <sn-option-item border *ngIf="branch.atm && (branch.atm[0].attributes?.length > 0 || branch.atm[0].products?.length > 0)">
                 <sn-icon color="primary" icon="sn-BAN089" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Additional services</div>
@@ -153,7 +153,7 @@
                   </ul>
                 </div>
               </sn-option-item>
-              <sn-option-item *ngIf="true">
+              <sn-option-item *ngIf="getAccesibility(branch.atm[0].attr)">
                 <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Accessibility</div>
                 <h1 class="title">Disabled access</h1>
