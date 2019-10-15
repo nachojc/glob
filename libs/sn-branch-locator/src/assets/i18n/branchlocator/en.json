@@ -1,8 +1,16 @@
 {
-    "branchlocator":{
+    "branchlocator": {
         "title": {
-            "map" :"Map",
+            "map": "Map",
             "list": "List"
+        },
+        "searchinput": {
+            "placeholder": "Search here",
+            "filterbutton": "Filter"
+        },
+        "filters": {
+            "applyfilter": "APPLY FILTERS",
+            "filters": "FILTERS",
+            "buttondeleteall": "Delete all"
         }
     }
-}

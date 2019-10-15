@@ -13,7 +13,6 @@ export class BranchSearchInputComponent implements OnInit {
   @Output() placeChange = new EventEmitter<LatLngLiteral>();
   @Output() callFilter = new EventEmitter<MouseEvent>();
   @Input() filterCount: number;
-  @Input() placeholder: string;
   @Input() useGoogle: boolean;
 
   @ViewChild('in') public inputElementRef: ElementRef<HTMLInputElement>;

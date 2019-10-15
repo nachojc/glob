@@ -10,7 +10,7 @@
         #in
         *ngIf="useGoogle"
         type="search"
-        [placeholder]="placeholder || ''"
+        [placeholder]="'branchlocator.searchinput.placeholder' | translate"
         autocomplete="off"
         autocapitalize="off"
         spellcheck="off"
@@ -28,7 +28,7 @@
     <button class="filter-button" (click)="callFilter.emit($event)">
       <div class="filter-button-wrapper">
         <div class="filter-button-label">
-          Filter
+          {{'branchlocator.searchinput.filterbutton' | translate}}
         </div>
         <div class="filter-button-icon">
           <sn-icon icon="sn-FUNC035" *ngIf="!filterCount"></sn-icon>
