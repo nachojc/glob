@@ -8,7 +8,6 @@ import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.componen
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { Branch } from '../../models/branch.model';
 import { of } from 'rxjs';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 import { TranslateModule } from '@ngx-translate/core';
