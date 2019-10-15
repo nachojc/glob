@@ -8,7 +8,7 @@ import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
-import { FilterComponent } from '../sn-filter/sn-filter.component';
+import { FilterComponent } from '../filter/filter.component';
 import { DrawerState } from 'sn-common-lib';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -38,11 +38,10 @@ export class SnBranchLocatorComponent {
     url: 'assets/branchlocator/pinVoce.svg',
     scaledSize: { height: 90, width: 90 }
   };
-  branches: LatLngLiteral[] = [{lat: -23.6102161, lng: -46.6967274}, { lat: 38.7396376, lng: -9.1694687 }];
   branchesList: Branch[];
 
   userPosition: LatLngLiteral;
-  zoom = 15;
+  zoom = 13;
   showDrawer: boolean;
   showReCenter: boolean;
 
@@ -159,7 +158,6 @@ export class SnBranchLocatorComponent {
   drawerStageChange(state: DrawerState): void {
     if (state === DrawerState.Bottom) {
       this.showDrawer = false;
-      console.log(this.showDrawer);
     }
   }
 
@@ -184,6 +182,21 @@ export class SnBranchLocatorComponent {
 
   onFilterApply(event) {
     this.filterCounts = event.count;
+    from(this.map.api.getBounds()).pipe(
+      switchMap((mapBounds: LatLngBounds) => {
+        return this.branchService.getBranchesByBounds({
+          lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()
+        },
+          { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
+        );
+      })
+    ).subscribe(res => {
+      this.branchesList = res;
+    }, (error) => {
+      // TODO: Add error handler
+      console.error(error);
+    });
+
   }
 
     showFilter(visible: boolean) {
