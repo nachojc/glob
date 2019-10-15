@@ -38,46 +38,45 @@ export class SnBranchLocatorService {
   }
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): Observable<Branch[]> {
-    // tslint:disable-next-line: max-line-length
     const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
     return this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?northEast=${configVal}`)
       .pipe(map(resp => this.groupAtmToBranch(resp)));
   }
 
   private groupAtmToBranch(array: Branch[]): Branch[] {
-    return array.reduce((pv, cv) => {
-      const index = pv.findIndex(el => el.distanceInKm === cv.distanceInKm);
+    return array.reduce((poiArray, currentValue) => {
+      const index = poiArray.findIndex(el => el.distanceInKm === currentValue.distanceInKm);
       if (index >= 0) {
-        if (pv[index].objectType.code.toUpperCase() === 'BRANCH') {
-          if (pv[index].atm) {
-            pv[index].atm.push(cv);
+        if (poiArray[index].objectType.code.toUpperCase() === 'BRANCH') {
+          if (poiArray[index].atm) {
+            poiArray[index].atm.push(currentValue);
           } else {
-            pv[index].atm = [cv];
+            poiArray[index].atm = [currentValue];
           }
-          return pv;
+          return poiArray;
         } else {
-          if (cv.objectType.code.toUpperCase() === 'BRANCH') {
-            if (pv[index].atm) {
-              cv.atm = pv[index].atm;
-              cv.atm.push(pv[index]);
+          if (currentValue.objectType.code.toUpperCase() === 'BRANCH') {
+            if (poiArray[index].atm) {
+              currentValue.atm = poiArray[index].atm;
+              currentValue.atm.push(poiArray[index]);
             } else {
-              cv.atm = [pv[index]];
+              currentValue.atm = [poiArray[index]];
             }
-            pv[index] = cv;
+            poiArray[index] = currentValue;
           } else {
             // TODO: What should we do when there are 2 branches in the same place?
-            cv.atm = [pv[index]];
-            if (pv[index].atm) {
-              pv[index].atm.push(cv);
+            currentValue.atm = [poiArray[index]];
+            if (poiArray[index].atm) {
+              poiArray[index].atm.push(currentValue);
             } else {
-              pv[index].atm = [cv];
+              poiArray[index].atm = [currentValue];
             }
           }
-          return pv;
+          return poiArray;
         }
       }
-      pv.push(cv);
-      return pv;
+      poiArray.push(currentValue);
+      return poiArray;
     }, []);
   }
 

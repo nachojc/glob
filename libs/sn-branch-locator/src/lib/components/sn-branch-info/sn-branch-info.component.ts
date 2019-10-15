@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input,  ChangeDetectorRef } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 
 @Component({
@@ -8,31 +8,56 @@ import { Branch } from '../../models/branch.model';
 })
 export class SnBranchInfoComponent {
   private _branch: Branch;
-  public schedulePreview = [];
-  public haveAccesibility: boolean;
-  public attributeList: string[];
+  public isBranch: boolean = true;
+
 
   @Input()
   set branch(value: Branch) {
-    this._branch = value;
-    this.schedulePreview = this.parseHours(this._branch.schedule.workingDay);
-    if (this._branch.attrib) {
-      this.attributeList = this._branch.attrib.map(attr => attr.code);
-      const auxAccesibility = this.attributeList.findIndex(attr => attr.toUpperCase() === 'ACCESIBILITY');
-      this.haveAccesibility = auxAccesibility > -1 ? true : false;
+    this._branch = this.setPOIInformation(value);
+    // setTimeout(() => {
+    this.isBranch = true;
+    if (this._branch.objectType.code.toUpperCase() === 'ATM') {
+      this._branch.atm = [this.setPOIInformation(value)];
+      this.isBranch = false;
+    } else if (this._branch.atm && this._branch.atm.length > 0) {
+      this._branch.atm[0] = this.setPOIInformation(this._branch.atm[0]);
     }
+    // }, 0);
+    // console.log(this._branch);
+    // if (this._branch.attrib) {
+    //   this.attributeList = this._branch.attrib.map(attr => attr.code);
+    //   const auxAccesibility = this.attributeList.findIndex(attr => attr.toUpperCase() === 'ACCESIBILITY');
+    //   this.haveAccesibility = auxAccesibility > -1 ? true : false;
+    // }
   }
 
   get branch() {
     return this._branch;
   }
 
-  constructor() { }
+  constructor(private ref: ChangeDetectorRef) { }
 
   contactBranch(phone: string) {
   }
 
-  private parseHours(branchSchedule: any) {
+  setPOIInformation(poi: Branch): Branch {
+    poi.products = this.getProducts(poi);
+    poi.attributes = this.getAttributes(poi);
+    poi.schedule.preview = this.parseHours(poi.schedule.workingDay);
+    return poi;
+  }
+
+  public getProducts(poi: Branch): string[] {
+    return poi.comercialProducts ? poi.comercialProducts.map(product => product.default) : [];
+  }
+
+  public getAttributes(poi: Branch): string[] {
+    // remove blank attributes and accesibility
+    return (poi.attrib ? poi.attrib.map(attr => attr.code && attr.code !== '' ? attr.code : null) : [])
+      .filter(attr => (attr !== null && attr.toUpperCase() !== 'ACCESIBILITY'));
+  }
+
+  public parseHours(branchSchedule: any): any[] {
     // TODO: Verify how it will work with translation.
     const language = 'default';
     const hoursEnum = {
