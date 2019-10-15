@@ -16,7 +16,7 @@
                 </button>
             </section>
             <sn-drawer #drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
-                <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch"></sn-branch-info>
+                <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()"></sn-branch-info>
             </sn-drawer>
         </section>
     </sn-tab>
@@ -41,7 +41,7 @@
     <div class="locator-search-container">
         <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="filterCounts"
         (placeChange)="placeChange($event)"
-        (reCenter)="centerMapToUser()" (callFilter)="showFilter($event)"></sn-branch-search-input>
+        (reCenter)="centerMapToUser()" (callFilter)="showFilter()"></sn-branch-search-input>
     </div>
 </section>
 <sn-filter modal (filterApply)="onFilterApply($event)" ></sn-filter>

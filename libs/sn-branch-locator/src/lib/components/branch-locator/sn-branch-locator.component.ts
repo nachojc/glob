@@ -212,10 +212,12 @@ export class SnBranchLocatorComponent {
 
   }
 
-  showFilter(visible: boolean) {
+  showFilter() {
     this.closeDrawer();
     this.filterView.open();
   }
+
+
 
 
   private closeDrawer(): void {
@@ -225,6 +227,7 @@ export class SnBranchLocatorComponent {
   private openDrawer(): void {
     this.showDrawer = true;
   }
+
 
 
 }
