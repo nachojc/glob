@@ -1,5 +1,6 @@
 export class Branch {
     id: string;
+    atm?: Branch[];
     code: string;
     entityCode: string;
     name: string;
@@ -61,12 +62,14 @@ export class Branch {
             FRIDAY: string[];
             SATURDAY: string[];
         },
-        specialDay: []
+        specialDay: [],
+        preview?: any[];
     };
     comercialProducts: Array<{
         default: string;
         es: string
     }>;
+    products?: string[];
     banner: null;
     spokenlanguages: string[];
     attrib: Array<{
@@ -76,6 +79,7 @@ export class Branch {
         };
         code: string;
     }>;
+    attributes?: string[];
     richTexts: Array<{
         multi: {
             default: string;

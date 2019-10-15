@@ -10,6 +10,7 @@ import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { FilterComponent } from '../filter/filter.component';
 import { DrawerState } from 'sn-common-lib';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -59,6 +60,7 @@ export class SnBranchLocatorComponent {
   getBranchesByCoordinates(coords: LatLngLiteral) {
     this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.branchesList = res;
+      // console.log(this.branchesList);
     }, err => {
       // TODO: Add error handler
       console.error(err);
@@ -163,19 +165,17 @@ export class SnBranchLocatorComponent {
   placeChange(place: LatLngLiteral) {
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
-      switchMap(() => from(this.map.api.getBounds())),
-      switchMap((mapBounds: LatLngBounds) => {
-        return this.branchService.getBranchesByBounds({
-          lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()
-        },
-          { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
-        );
-      })
-    ).subscribe(res => {
-      this.branchesList = res;
-    }, (error) => {
-      // TODO: Add error handler
-      console.error(error);
+      switchMap(() => from(this.map.api.getBounds()))
+    ).subscribe((mapBounds: LatLngBounds) => {
+      this.branchService.getBranchesByBounds(
+        {lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
+        {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
+      ).subscribe(res => {
+        this.branchesList = res;
+      }, (error) => {
+        // TODO: Add error handler
+        console.error(error);
+      });
     });
   }
 
