@@ -10,7 +10,6 @@ import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { FilterComponent } from '../filter/filter.component';
 import { DrawerState } from 'sn-common-lib';
-import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -21,9 +20,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SnBranchLocatorComponent {
 
+  private selectedMarker: SnMarkerDirective;
+
   @ViewChild(SnMapDirective) map: SnMapDirective;
   @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
   @ViewChild(FilterComponent) filterView: FilterComponent;
+
   lat: number;
   lng: number;
   branchIcon = {
@@ -42,18 +44,17 @@ export class SnBranchLocatorComponent {
 
   userPosition: LatLngLiteral;
   zoom = 13;
-  showDrawer: boolean;
   showReCenter: boolean;
 
-  private selectedMarker: SnMarkerDirective;
   selectedBranch: Branch;
   selectedTabIndex: number;
   filterCounts: number;
+  drawerState: DrawerState;
+  showDrawer: boolean;
 
   constructor(
     private service: GeoPositionService,
     private branchService: SnBranchLocatorService,
-    // private translate: TranslateService
   ) {
   }
 
@@ -69,6 +70,9 @@ export class SnBranchLocatorComponent {
 
   tabsChanged(event: any) {
     this.selectedTabIndex = event.tabIndex;
+    if (this.selectedTabIndex === 1) {
+      this.closeDrawer();
+    }
   }
 
   selectBranch = (branch: Branch) => {
@@ -80,6 +84,7 @@ export class SnBranchLocatorComponent {
 
 
   markerSelected(selected: SnMarkerDirective, branch: Branch) {
+    this.closeDrawer();
     if (this.selectedMarker) {
       this.selectedMarker.iconUrl = this.branchIcon as any;
       this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
@@ -88,22 +93,27 @@ export class SnBranchLocatorComponent {
     selected.markerManager.updateIcon(selected);
     this.selectedMarker = selected;
     this.selectedBranch = branch;
-    this.showDrawer =  Boolean(this.selectedMarker);
+
+
     selected.markerManager.getNativeMarker(selected).then((nativeMarker: any) => {
       const selectedPos: LatLngLiteral = {
         lat: nativeMarker.position.lat(),
-        lng:  nativeMarker.position.lng()
+        lng: nativeMarker.position.lng()
       };
-      this.map.api.panTo(selectedPos);
+      this.map.api.panTo(selectedPos).then(() => {
+        if (Boolean(this.selectedMarker)) {
+          this.openDrawer();
+        }
+      });
     });
   }
 
   mapClick(event: MouseEvent): void {
     if (this.selectedMarker) {
+      this.closeDrawer();
       this.selectedMarker.iconUrl = this.branchIcon as any;
       this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
       this.selectedMarker = undefined;
-      this.showDrawer =  Boolean(this.selectedMarker);
       this.selectedBranch = undefined;
     }
   }
@@ -112,13 +122,13 @@ export class SnBranchLocatorComponent {
     this.centerMapToUser();
     this.service.watchPosition()
       .pipe(first()).subscribe(
-      (pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-      }
-    );
+        (pos: Position) => {
+          this.userPosition = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+        }
+      );
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
@@ -139,7 +149,7 @@ export class SnBranchLocatorComponent {
   centerMapToUser() {
     if (this.userPosition && this.userPosition.lat && this.userPosition.lng) {
       this.map.api.panTo(this.userPosition);
-      this.getBranchesByCoordinates({lat: this.userPosition.lat, lng: this.userPosition.lng});
+      this.getBranchesByCoordinates({ lat: this.userPosition.lat, lng: this.userPosition.lng });
     } else {
       this.service.getCurrentPosition()
         .subscribe((pos: Position) => {
@@ -149,7 +159,7 @@ export class SnBranchLocatorComponent {
           };
           this.map.api.panTo(newCenter);
 
-          this.getBranchesByCoordinates({lat: pos.coords.latitude, lng: pos.coords.longitude});
+          this.getBranchesByCoordinates({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         });
     }
   }
@@ -157,7 +167,9 @@ export class SnBranchLocatorComponent {
 
   drawerStageChange(state: DrawerState): void {
     if (state === DrawerState.Bottom) {
-      this.showDrawer = false;
+      this.closeDrawer();
+    } else {
+      this.openDrawer();
     }
   }
 
@@ -168,8 +180,8 @@ export class SnBranchLocatorComponent {
       switchMap(() => from(this.map.api.getBounds()))
     ).subscribe((mapBounds: LatLngBounds) => {
       this.branchService.getBranchesByBounds(
-        {lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()},
-        {lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng()}
+        { lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng() },
+        { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
       ).subscribe(res => {
         this.branchesList = res;
       }, (error) => {
@@ -199,9 +211,19 @@ export class SnBranchLocatorComponent {
 
   }
 
-    showFilter(visible: boolean) {
-      this.filterView.open();
-    }
+  showFilter(visible: boolean) {
+    this.closeDrawer();
+    this.filterView.open();
+  }
+
+
+  private closeDrawer(): void {
+    this.showDrawer = false;
+  }
+
+  private openDrawer(): void {
+    this.showDrawer = true;
+  }
 
 
 }
