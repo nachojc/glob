@@ -60,6 +60,7 @@ export class SnBranchLocatorComponent {
 
   getBranchesByCoordinates(coords: LatLngLiteral) {
     this.branchService.getBranchesByCoords(coords).subscribe(res => {
+      this.clearSelectedMarker();
       this.branchesList = res;
       // console.log(this.branchesList);
     }, err => {
@@ -71,7 +72,7 @@ export class SnBranchLocatorComponent {
   tabsChanged(event: any) {
     this.selectedTabIndex = event.tabIndex;
     if (this.selectedTabIndex === 1) {
-      this.closeDrawer();
+      this.clearSelectedMarker();
     }
   }
 
@@ -84,11 +85,8 @@ export class SnBranchLocatorComponent {
 
 
   markerSelected(selected: SnMarkerDirective, branch: Branch) {
-    this.closeDrawer();
-    if (this.selectedMarker) {
-      this.selectedMarker.iconUrl = this.branchIcon as any;
-      this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
-    }
+    this.clearSelectedMarker();
+
     selected.iconUrl = this.branchSelectedIcon as any;
     selected.markerManager.updateIcon(selected);
     this.selectedMarker = selected;
@@ -110,11 +108,8 @@ export class SnBranchLocatorComponent {
 
   mapClick(event: MouseEvent): void {
     if (this.selectedMarker) {
-      this.closeDrawer();
-      this.selectedMarker.iconUrl = this.branchIcon as any;
-      this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
-      this.selectedMarker = undefined;
-      this.selectedBranch = undefined;
+      this.clearSelectedMarker();
+
     }
   }
 
@@ -167,7 +162,7 @@ export class SnBranchLocatorComponent {
 
   drawerStageChange(state: DrawerState): void {
     if (state === DrawerState.Bottom) {
-      this.closeDrawer();
+      this.clearSelectedMarker();
     } else {
       this.openDrawer();
     }
@@ -175,7 +170,7 @@ export class SnBranchLocatorComponent {
 
 
   placeChange(place: LatLngLiteral) {
-    this.closeDrawer();
+    this.clearSelectedMarker();
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
       switchMap(() => from(this.map.api.getBounds()))
@@ -184,6 +179,7 @@ export class SnBranchLocatorComponent {
         { lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng() },
         { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
       ).subscribe(res => {
+        this.clearSelectedMarker();
         this.branchesList = res;
       }, (error) => {
         // TODO: Add error handler
@@ -204,6 +200,7 @@ export class SnBranchLocatorComponent {
         );
       })
     ).subscribe(res => {
+      this.clearSelectedMarker();
       this.branchesList = res;
     }, (error) => {
       // TODO: Add error handler
@@ -213,10 +210,20 @@ export class SnBranchLocatorComponent {
   }
 
   showFilter(visible: boolean) {
-    this.closeDrawer();
+    this.clearSelectedMarker();
     this.filterView.open();
   }
 
+
+  private clearSelectedMarker(): void {
+    this.closeDrawer();
+    if (this.selectedMarker) {
+      this.selectedMarker.iconUrl = this.branchIcon as any;
+      this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
+      this.selectedMarker = undefined;
+      this.selectedBranch = undefined;
+    }
+  }
 
   private closeDrawer(): void {
     this.showDrawer = false;
