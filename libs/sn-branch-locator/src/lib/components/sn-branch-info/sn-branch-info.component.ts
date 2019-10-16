@@ -11,6 +11,7 @@ export class SnBranchInfoComponent {
   public isBranch: boolean = true;
   public todayHours: string;
 
+  @Input() isNearestMarker: boolean;
 
   @Input()
   set branch(value: Branch) {
