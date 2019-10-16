@@ -62,8 +62,9 @@ export class Branch {
             FRIDAY: string[];
             SATURDAY: string[];
         },
-        specialDay: [],
+        specialDay: [];
         preview?: any[];
+        timeToClose?: string;
     };
     comercialProducts: Array<{
         default: string;
