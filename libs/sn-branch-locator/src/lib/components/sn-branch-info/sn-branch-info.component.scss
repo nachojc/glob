@@ -1,5 +1,4 @@
-@import '../../variables.scss';
-
+@import '~sn-common-lib/styles/settings/colors';
 
 .branch-wrapper {
   display: flex;
@@ -11,27 +10,26 @@
   padding: 16px;
 
   h6 {
-    font-family: 'SantanderHeadline';
     font-size: 18px;
     font-weight: bold;
   }
 
   .branch-title {
-    color: rgb(236, 0, 0);
+    color: $color-primary-santander;
   }
 
   .branch-summary {
 
     .branch-name {
       font-weight: bold;
-      color: rgb(118, 118, 118);
+      color: $color-secondary-mediumgray;
       padding: 0;
     }
 
     .body-medium {
       font-size: 16px;
       font-weight: lighter;
-      color: rgb(118, 118, 118);
+      color: $color-secondary-mediumgray;
     }
   }
 
@@ -43,14 +41,14 @@
     .branch-address {
       font-weight: normal;
       font-size: 16px;
-      color: rgb(118, 118, 118);
+      color: $color-secondary-mediumgray;
       flex-grow: 1;
     }
 
     .branch-directions {
       button {
-        background: rgb(51, 102, 255);
-        color: white;
+        background: $color-secondary-blue;
+        color: $color-primary-white;
         text-align: center;
         border-radius: 16px;
         width: 103px;
@@ -63,10 +61,9 @@
     }
 
   }
-
   .branch-schedule {
     font-size: 14px;
-    color: rgb(68, 68, 68);
+    color: $color-secondary-gray;
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -113,7 +110,7 @@
     }
 
     .call-button {
-      background: white;
+      background: $color-primary-white;
       color: $color-primary-santander;
       text-align: center;
       border-radius: 16px;
