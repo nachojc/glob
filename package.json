@@ -26,7 +26,7 @@
     "sn-branch-locator"
   ],
   "dependencies": {
-    "@agm/core": "^1.0.0-beta.7",
+    "@agm/core": "^1.0.0",
     "@angular/animations": "~7.2.0",
     "@angular/common": "~7.2.0",
     "@angular/compiler": "~7.2.0",
@@ -70,7 +70,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tsickle": ">=0.34.0",
-    "tslib": "^1.9.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2"
   },
