@@ -1,4 +1,4 @@
-@import '../../variables.scss';
+@import '~sn-common-lib/styles/settings/colors';
 
 :host {
     background-color: $color-secondary-bg;
@@ -34,7 +34,7 @@
         flex-direction: row;
         justify-content: space-between;
         padding: 1.25em 1em;
-        border-bottom: 1px solid $color-secondary-lightgray;
+        border-bottom: 1px solid $color-secondary-lihtgray;
 
         .sub-title {
             // TODO: Temporary until have back button from design
@@ -49,8 +49,8 @@
         }
 
         &>button {
-            border-color: #ec0000;
-            color: #ec0000;
+            border-color: $color-functional-linkdefault;
+            color: $color-functional-linkdefault;
             background-color: transparent;
             margin: 0;
             min-height: 0;
@@ -93,7 +93,7 @@
     }
 
     .sn-filter-footer{
-        background-color: white;
+        background-color: $color-primary-white;
         border-top: 1px solid $color-primary-sky;
         width: 100%;
         display: flex;
