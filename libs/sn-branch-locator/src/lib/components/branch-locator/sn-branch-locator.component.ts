@@ -153,7 +153,7 @@ export class SnBranchLocatorComponent {
     this.goToUserPositon();
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
-    } else if (openNearest && this.branchesList.length > 0) {
+    } else if (openNearest && this.branchesList && this.branchesList.length > 0) {
       this.selectBranch(this.branchesList[0]);
       this.showNearest = true;
     }
