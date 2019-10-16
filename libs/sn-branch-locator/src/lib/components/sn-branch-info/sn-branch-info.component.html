@@ -86,7 +86,7 @@
                 </ul>
               </div>
             </sn-option-item>
-            <sn-option-item *ngIf="getAccesibility(branch.attr)">
+            <sn-option-item *ngIf="getAccesibility(branch.attrib)">
               <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">Accessibility</div>
               <h1 class="title">Disabled access</h1>
@@ -99,9 +99,9 @@
       <sn-tab label="ATM" class="tab-branch-info" *ngIf="false"> <!--*ngIf="(isBranch && branch.atm && branch.atm[0])"-->
           <div class="branch-info-wrapper">
             <sn-option-list>
-              <sn-option-item border *ngIf="branch.atm.schedule?.timeToClose">
+              <sn-option-item border *ngIf="branch.atm[0].schedule?.timeToClose">
                 <div class="close-warning">
-                  <div class="Type-5_Light-Style">{{branch.atm.schedule?.timeToClose}}</div>
+                  <div class="Type-5_Light-Style">{{branch.atm[0].schedule?.timeToClose}}</div>
                   <div class="signal"></div>
                 </div>
               </sn-option-item>
@@ -154,7 +154,7 @@
                   </ul>
                 </div>
               </sn-option-item>
-              <sn-option-item *ngIf="getAccesibility(branch.atm[0].attr)">
+              <sn-option-item *ngIf="getAccesibility(branch.atm[0].attrib)">
                 <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Accessibility</div>
                 <h1 class="title">Disabled access</h1>
