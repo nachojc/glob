@@ -9,11 +9,15 @@ import { Branch } from '../../models/branch.model';
 export class SnBranchInfoComponent {
   private _branch: Branch;
   public isBranch: boolean = true;
+  public todayHours: string;
 
 
   @Input()
   set branch(value: Branch) {
     this._branch = this.setPOIInformation(value);
+    console.log(this._branch);
+    this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
+    // setTimeout(() => {
     this.isBranch = true;
     if (this._branch.objectType.code.toUpperCase() === 'ATM') {
       this._branch.atm = [this.setPOIInformation(value)];
@@ -37,10 +41,42 @@ export class SnBranchInfoComponent {
   contactBranch(phone: string) {
   }
 
+  getHoursToClose(schedule) {
+    const poiHours = this.getTodayTimeInformation(schedule);
+    if (poiHours) {
+      const now = new Date(0, 0, 0 , new Date().getHours(), new Date().getMinutes(), 0);
+      const [start, end] = poiHours.split('-').map(res => res.split(':'));
+      const startDate = new Date(0, 0, 0, Number(start[0]), Number(start[1]), 0);
+      const endDate = new Date(0, 0, 0, Number(end[0]), Number(end[1]), 0);
+      if (now.getTime() < startDate.getTime() || now.getTime() > endDate.getTime()) {
+        return 'Closed';
+      } else {
+        let diff = endDate.getTime() - now.getTime();
+        const hours = Math.floor(diff / 1000 / 60 / 60);
+        diff -= hours * 1000 * 60 * 60;
+        const minutes = Math.floor(diff / 1000 / 60);
+
+        return 'Closing in ' + (hours > 0 ? hours + 'h' : '') + (minutes <= 9 ? '0' : '') + minutes;
+      }
+    }
+  }
+
+  getAccesibility(attributes): boolean {
+    return attributes ? attributes.find(attr => attr.toUpperCase() === 'ACCESIBILITY') ? true : false : false;
+  }
+
+
+  getTodayTimeInformation(branchSchedule: any) {
+    const auxHours = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    const now = new Date();
+    return branchSchedule[auxHours[now.getDay()]][0];
+  }
+
   setPOIInformation(poi: Branch): Branch {
     poi.products = this.getProducts(poi);
     poi.attributes = this.getAttributes(poi);
-    poi.schedule.preview = this.parseHours(poi.schedule.workingDay);
+    poi.schedule.preview = this.parseSchedule(poi.schedule.workingDay);
+    poi.schedule.timeToClose = this.getHoursToClose(poi.schedule.workingDay);
     return poi;
   }
 
@@ -54,7 +90,7 @@ export class SnBranchInfoComponent {
       .filter(attr => (attr !== null && attr.toUpperCase() !== 'ACCESIBILITY'));
   }
 
-  public parseHours(branchSchedule: any): any[] {
+  public parseSchedule(branchSchedule: any): any[] {
     // TODO: Verify how it will work with translation.
     const language = 'default';
     const hoursEnum = {
