@@ -1,3 +1,5 @@
+@import '../../../../../../node_modules/sn-common-lib/styles/settings/colors';
+
 :host {
 
 
@@ -49,7 +51,7 @@
 
       .name {
         font-weight: bold;
-        color: #ec0000; // TODO: import color variable from common lib change to variable
+        color: $color-primary-santander; 
         font-size: 1rem;
         line-height: 1.5;
         padding-bottom: .5rem;
@@ -59,13 +61,13 @@
         font-size: 1rem;
         line-height: 1.075;
         font-weight: 300;
-        color: rgb(118, 118, 118);
+        color: $color-secondary-mediumgray;
       }
 
       .distance {
         font-size: 1rem;
         font-weight: 300;
-        color: rgb(118, 118, 118);
+        color: $color-secondary-mediumgray;
       }
 
       sn-icon {
