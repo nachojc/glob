@@ -45,6 +45,11 @@
               "src/styles.scss",
               "node_modules/sn-common-lib/styles/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "/node_modules"
+              ]
+            },
             "scripts": [],
             "es5BrowserSupport": true
           },
