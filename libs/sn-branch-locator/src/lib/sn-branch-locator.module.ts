@@ -14,6 +14,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SnBranchInfoComponent } from './components/sn-branch-info/sn-branch-info.component';
 import { EnvironmentConfigModel, ENV_CONFIG } from '@globile/mobile-services';
 import { FilterModule } from './components/filter/filter.module';
+import { MenuComponent } from './components/menu/menu.component';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
@@ -25,7 +26,8 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
     SnBranchLocatorComponent,
     SnMapDirective,
     SnBranchInfoComponent,
-    SnMarkerDirective],
+    SnMarkerDirective,
+    MenuComponent],
   imports: [
     CommonModule,
     OptionListModule,

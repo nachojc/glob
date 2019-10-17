@@ -1,3 +1,8 @@
+<sn-menu>
+    <sn-branch-search-input [showReCenter]="showReCenter" [useGoogle]="true" [filterCount]="filterCounts"
+        (placeChange)="placeChange($event)"
+        (reCenter)="centerMapToUser(true, true)" (callFilter)="showFilter()"></sn-branch-search-input>
+</sn-menu>
 <sn-tab-group [selectIndex]="selectedTabIndex" (selectedTab)='tabsChanged($event)'>
     <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
         <section class="locator-content">
