@@ -12,6 +12,9 @@
             "applyfilter": "APLIQUE FILTROS",
             "filters": "FILTROS",
             "buttondeleteall": "Apague tudo"
+        },
+        "details": {
+            "neartitle": "Resultado mais próximo"
         }
     }
 }

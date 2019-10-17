@@ -16,6 +16,7 @@ import { branchMock } from '../../helpers/branch.mock';
 import { environment } from 'src/environments/environment';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search-input/branch-search-input.module';
+import { FormBuilder } from '@angular/forms';
 
 
 const MapsAPILoaderMock = {
@@ -82,7 +83,8 @@ describe('SnBranchLocatorComponent', () => {
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
         {provide: ENV_CONFIG, useValue: environment},
-        SnBranchLocatorService
+        SnBranchLocatorService,
+        FormBuilder
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -198,23 +200,57 @@ describe('SnBranchLocatorComponent', () => {
   describe('getBranchesByCoordinates()', () => {
     it('should return a list of branches', async(() => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      spyOn(component, 'selectBranch');
       component.getBranchesByCoordinates({lat: 1, lng: 2});
       expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({lat: 1, lng: 2});
+      expect(component.selectBranch).not.toHaveBeenCalled();
     }));
+
+    it('should call API with userPosition as param', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.callThrough();
+      component.userPosition = {lat: 2, lng: 3};
+      component.getBranchesByCoordinates();
+      expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith(component.userPosition);
+    });
+
   });
 
-  it('centerMapToUser', () => {
-    component.centerMapToUser();
+  describe('centerMapToUser()', () => {
+    it('should call getBranchesByCoordinates with params', () => {
+      spyOn(component, 'getBranchesByCoordinates');
+      component.userPosition = {lat: 38.7376049, lng: -9.1654431};
+      component.centerMapToUser();
+      expect(component.getBranchesByCoordinates).toHaveBeenCalledWith(component.userPosition, false);
+    });
+
+    it('should call selectBranch', () => {
+      spyOn(component, 'selectBranch');
+      component.branchesList = [branchMock];
+      component.centerMapToUser(false, true);
+      expect(component.selectBranch).toHaveBeenCalled();
+      expect(component.showNearest).toBeTruthy();
+    });
   });
 
-  it('centerMapToUser', () => {
-    component.userPosition = {lat: 38.7376049, lng: -9.1654431};
-    component.centerMapToUser();
+
+  describe('tabsChanged()', () => {
+    it('should set selectedTabIndex to 0', () => {
+      component.tabsChanged({tabIndex: 0});
+      expect(component['selectedTabIndex']).toBe(0);
+    });
+    it('should set selectedTabIndex to 1 and call clearSelectedMarker', () => {
+      spyOn<any>(component, 'clearSelectedMarker');
+      component.tabsChanged({tabIndex: 1});
+      expect(component['selectedTabIndex']).toBe(1);
+      expect(component['clearSelectedMarker']).toHaveBeenCalled();
+    });
   });
 
-
-  it('tabsChanged() should set selectedTabIndex to 0', () => {
-    component.tabsChanged({tabIndex: 0});
-    expect(component['selectedTabIndex']).toBe(0);
+  describe('mapReady()', () => {
+    it('should set userPosition', () => {
+      spyOn(component['service'], 'getCurrentPosition').and.callThrough();
+      component.mapReady();
+      expect(component.userPosition).toBeDefined();
+    });
   });
 });
