@@ -18,23 +18,15 @@
             <sn-drawer #drawer [dockedHeight]="300" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
                 <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()"></sn-branch-info>
             </sn-drawer>
+            
+            <sn-loading *ngIf="isLoading && selectedTabIndex=== 0" full="true" [ngStyle]="{'position': 'absolute', 'opacity': '0.75'}"></sn-loading>
         </section>
     </sn-tab>
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
     <sn-tab label="{{ 'branchlocator.title.list' | translate }}">
-        <section class="result-list-wrapper">
-            <sn-option-list>
-                <sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
-                    <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
-                    
-                    <div class="Type-5_Regular-Style name">{{branch.name}}</div>
-                    <div class="Type-5_Regular-Style address">{{branch.location.address}}</div>
-                    <div right-text class="Type-5_Regular-Style distance">
-                        {{branch.distanceInMiles | number:'0.0-2'}} m
-                    </div>
-                </sn-option-item>
-            </sn-option-list>
-        </section>
+            <section class="result-list-wrapper">
+                <sn-branch-list [branchesList]="branchesList" (branchSelected)="selectBranch($event)"></sn-branch-list>
+            </section>
     </sn-tab>
 </sn-tab-group>
 <section class="locator-search">
@@ -45,6 +37,4 @@
     </div>
 </section>
 <sn-filter modal (filterApply)="onFilterApply($event)" ></sn-filter>
-<div style="z-index: 5000; opacity: 0.8;" *ngIf="isLoading">
-    <sn-loading full="true"></sn-loading>
-</div>
+
