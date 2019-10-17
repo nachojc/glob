@@ -45,3 +45,6 @@
     </div>
 </section>
 <sn-filter modal (filterApply)="onFilterApply($event)" ></sn-filter>
+<div style="z-index: 5000; opacity: 0.8;" *ngIf="isLoading">
+    <sn-loading full="true"></sn-loading>
+</div>

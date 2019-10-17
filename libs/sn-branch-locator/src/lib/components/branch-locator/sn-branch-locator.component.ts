@@ -26,6 +26,7 @@ export class SnBranchLocatorComponent {
   @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
   @ViewChild(FilterComponent) filterView: FilterComponent;
 
+  isLoading: boolean = false;
   lat: number;
   lng: number;
   branchIcon = {
@@ -59,13 +60,16 @@ export class SnBranchLocatorComponent {
   }
 
   getBranchesByCoordinates(coords: LatLngLiteral) {
+    this.isLoading = true;
     this.branchService.getBranchesByCoords(coords).subscribe(res => {
       this.clearSelectedMarker();
       this.branchesList = res;
+      this.isLoading = false;
       // console.log(this.branchesList);
     }, err => {
       // TODO: Add error handler
       console.error(err);
+      this.isLoading = false;
     });
   }
 
@@ -171,6 +175,7 @@ export class SnBranchLocatorComponent {
 
 
   placeChange(place: LatLngLiteral) {
+    this.isLoading = true;
     this.clearSelectedMarker();
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom))),
@@ -182,6 +187,7 @@ export class SnBranchLocatorComponent {
       ).subscribe(res => {
         this.clearSelectedMarker();
         this.branchesList = res;
+        this.isLoading = false;
       }, (error) => {
         // TODO: Add error handler
         console.error(error);
@@ -194,6 +200,7 @@ export class SnBranchLocatorComponent {
     this.filterCounts = event.count;
     from(this.map.api.getBounds()).pipe(
       switchMap((mapBounds: LatLngBounds) => {
+        this.isLoading = true;
         return this.branchService.getBranchesByBounds({
           lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()
         },
@@ -203,9 +210,11 @@ export class SnBranchLocatorComponent {
     ).subscribe(res => {
       this.clearSelectedMarker();
       this.branchesList = res;
+      this.isLoading = false;
     }, (error) => {
       // TODO: Add error handler
       console.error(error);
+      this.isLoading = false;
     });
 
   }
