@@ -15,12 +15,12 @@
         </section>
     <section class="branch-schedule">
       <div class="branch-hours" *ngIf="isBranch && todayHours">
-        <div>{{ 'branchlocator.details.branch' | translate }}</div>
+        <div>{{ 'branchlocator.shared.branch' | translate }}</div>
         <div>{{ 'branchlocator.details.today' | translate }}, {{todayHours}}</div>
       </div>
       <!-- [ngClass]="{hidden: branch?.atm?.length === 0}" -->
       <div class="atm-hours" *ngIf="!isBranch || (branch.atm && branch.atm[0])">
-        <div>{{ 'branchlocator.details.atm' | translate }}</div>
+        <div>{{ 'branchlocator.shared.atm' | translate }}</div>
         <div>{{ 'branchlocator.details.atminfo' | translate }}</div>
       </div>
     </section>
@@ -28,7 +28,7 @@
 
   <div class="tab-group-wrapper" [class.hide-tabs]="(isBranch && !(branch.atm?.length > 0)) || !isBranch">
     <sn-tab-group [ngClass]="{both: isBranch && branch?.atm?.length}">
-      <sn-tab [label]="isBranch?translate.instant('branchlocator.details.branch'):translate.instant('branchlocator.details.atm')" class="tab-branch-info">
+      <sn-tab [label]="isBranch?translate.instant('branchlocator.shared.branch'):translate.instant('branchlocator.shared.atm')" class="tab-branch-info">
         <div class="branch-info-wrapper">
           <sn-option-list >
             <sn-option-item border *ngIf="branch.schedule?.timeToClose">
