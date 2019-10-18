@@ -1,6 +1,8 @@
 @import '~sn-common-lib/styles/settings/colors';
 
-sn-option-item {
+
+:host{
+  sn-option-item {
     padding: .5rem 1rem .5rem 1.5rem;
 
     .name {
@@ -28,3 +30,4 @@ sn-option-item {
       display: flex;
     }
   }
+}

@@ -26,7 +26,7 @@ export class SnBranchLocatorComponent {
   @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
   @ViewChild(FilterComponent) filterView: FilterComponent;
 
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   lat: number;
   lng: number;
   branchIcon = {

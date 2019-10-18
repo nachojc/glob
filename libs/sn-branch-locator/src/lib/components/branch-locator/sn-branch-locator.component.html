@@ -19,13 +19,13 @@
                 <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()"></sn-branch-info>
             </sn-drawer>
             
-            <sn-loading *ngIf="isLoading && selectedTabIndex=== 0" full="true" [ngStyle]="{'position': 'absolute', 'opacity': '0.75'}"></sn-loading>
+            <sn-loading *ngIf="isLoading" full="true"></sn-loading>
         </section>
     </sn-tab>
     <!-- FIXME: fix the height of the content that is inside of the tab and make the scroller style inside the correct localization -->
     <sn-tab label="{{ 'branchlocator.title.list' | translate }}">
             <section class="result-list-wrapper">
-                <sn-branch-list [branchesList]="branchesList" (branchSelected)="selectBranch($event)"></sn-branch-list>
+                <sn-branch-list [isLoading]="isLoading" [branchesList]="branchesList" (branchSelected)="selectBranch($event)"></sn-branch-list>
             </section>
     </sn-tab>
 </sn-tab-group>

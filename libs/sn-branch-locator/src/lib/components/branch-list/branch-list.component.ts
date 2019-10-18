@@ -9,7 +9,8 @@ import { Branch } from '../../models/branch.model';
 export class BranchListComponent implements OnInit {
 
   @Input() branchesList: Branch[];
-  @Output() branchSelected = new EventEmitter<any>();
+  @Input() isLoading: boolean;
+  @Output() branchSelected = new EventEmitter<Branch>();
 
   ngOnInit(): void {
 
@@ -20,7 +21,6 @@ export class BranchListComponent implements OnInit {
   constructor() { }
 
   selectBranch(branch: Branch) {
-
     this.branchSelected.emit(branch);
   }
 

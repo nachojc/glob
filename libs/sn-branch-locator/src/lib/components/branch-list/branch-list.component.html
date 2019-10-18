@@ -1,4 +1,4 @@
-<sn-option-list>
+<sn-option-list [style.display]=" isLoading? 'none' : 'initial'">
   <sn-option-item
     border
     *ngFor="let branch of branchesList"
@@ -15,3 +15,4 @@
     </div>
   </sn-option-item>
 </sn-option-list>
+<sn-loader *ngIf="isLoading"></sn-loader>
