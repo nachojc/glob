@@ -47,10 +47,10 @@ export class SnBranchLocatorComponent {
   clusterStyles: ClusterStyle[] =  [
     {
         textColor: '#000000',
-        url: 'assets/branchlocator/touchpointIcon.png',
+        url: 'assets/branchlocator/coffeeBlank.svg',
         height: 40,
         width: 32,
-        iconAnchor: [0, 0]
+        backgroundPosition: '-4px 2px'
     }
   ];
 
