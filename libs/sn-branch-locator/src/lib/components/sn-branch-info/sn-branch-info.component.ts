@@ -36,7 +36,8 @@ export class SnBranchInfoComponent {
 
 
 
-  constructor(public translate: TranslateService) { }
+  constructor(public translate: TranslateService) {
+  }
 
   contactBranch(phone: string) {
   }
@@ -91,36 +92,42 @@ export class SnBranchInfoComponent {
   }
 
   public parseSchedule(branchSchedule: any): any[] {
-    // TODO: Verify how it will work with translation.
-    const language = 'default';
+    const language = this.translate.getDefaultLang();
     const hoursEnum = {
         MONDAY: {
-          default: 'Mon',
-          br: 'Seg'
+          en: 'Mon',
+          es: 'Seg', // TODO: review translation
+          pt: 'Seg'
         },
         TUESDAY: {
-          default: 'Tue',
-          br: 'Ter'
+          en: 'Tue',
+          es: 'Ter', // TODO: review translation
+          pt: 'Ter'
         },
         WEDNESDAY: {
-          default: 'Wed',
-          br: 'Qua'
+          en: 'Wed',
+          es: 'Qua', // TODO: review translation
+          pt: 'Qua'
         },
         THURSDAY: {
-          default: 'Thu',
-          br: 'Qui'
+          en: 'Thu',
+          es: 'Qui', // TODO: review translation
+          pt: 'Qui'
         },
         FRIDAY: {
-          default: 'Fri',
-          br: 'Sex'
+          en: 'Fri',
+          es: 'Sex', // TODO: review translation
+          pt: 'Sex'
         },
         SATURDAY: {
-          default: 'Sat',
-          br: 'Sab'
+          en: 'Sat',
+          es: 'Sab', // TODO: review translation
+          pt: 'Sab'
         },
         SUNDAY: {
-          default: 'Sun',
-          br: 'Ter'
+          en: 'Sun',
+          es: 'Ter', // TODO: review translation
+          pt: 'Ter'
         }
       };
 
