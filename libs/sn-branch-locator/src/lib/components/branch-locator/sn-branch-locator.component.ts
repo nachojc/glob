@@ -81,10 +81,10 @@ export class SnBranchLocatorComponent {
   }
 
   selectBranch = (branch: Branch) => {
-    this.selectedTabIndex = 0;
     // tslint:disable-next-line: no-string-literal
     const markerFound = this.branchMarkerList['_results'].find(marker => marker.title === branch.id);
     this.markerSelected(markerFound, branch);
+    this.selectedTabIndex = 0;
   }
 
 
