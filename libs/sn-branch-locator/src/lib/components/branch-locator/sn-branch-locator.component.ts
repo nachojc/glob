@@ -10,6 +10,7 @@ import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { FilterComponent } from '../filter/filter.component';
 import { DrawerState } from 'sn-common-lib';
+import { ClusterStyle } from '@agm/js-marker-clusterer/services/google-clusterer-types';
 
 
 
@@ -42,6 +43,17 @@ export class SnBranchLocatorComponent {
     scaledSize: { height: 90, width: 90 }
   };
   branchesList: Branch[];
+
+
+  clusterStyles: ClusterStyle[] =  [
+    {
+        textColor: '#000000',
+        url: 'assets/branchlocator/coffeeBlank.svg',
+        height: 40,
+        width: 32,
+        backgroundPosition: '-4px 2px'
+    }
+  ];
 
   userPosition: LatLngLiteral;
   zoom = 13;
