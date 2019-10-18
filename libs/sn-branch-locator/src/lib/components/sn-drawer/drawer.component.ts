@@ -11,27 +11,17 @@ import {
   Renderer2
 } from '@angular/core';
 
-import { DrawerState } from './drawer-state.enum';
-
 import * as Hammer from 'hammerjs';
 
-import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { DrawerState } from './drawer-state.enum';
 
-export class DrawerCustomHammerConfig extends HammerGestureConfig {
-  overrides = {
-    pan: {
-      threshold: 0,
-      enable: true,
-      direction: Hammer.DIRECTION_VERTICAL
-    }
-  };
-}
+
+
 
 @Component({
   selector: 'sn-drawer',
   templateUrl: './drawer.component.html',
   styleUrls: ['./drawer.component.scss'],
-  providers: [{ provide: HAMMER_GESTURE_CONFIG, useClass: DrawerCustomHammerConfig }]
 })
 export class DrawerComponent implements AfterViewInit, OnChanges {
 
@@ -50,31 +40,51 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) { }
 
 
-  @HostListener('pan', ['$event']) drawerPan(event) {
-    if (!this.disableDrag) {
-      this._handlePan(event);
-    }
-  }
+  // @HostListener('pan', ['$event']) drawerPan(event) {
+  //   if (!this.disableDrag) {
+    //   }
+    //     this._handlePan(event);
+  // }
 
-  @HostListener('panstart') drawerPanStart() {
-    if (!this.disableDrag) {
-      this.handlePanStart();
-    }
-  }
+  // @HostListener('panstart') drawerPanStart() {
+  //   if (!this.disableDrag) {
+  //     this.handlePanStart();
+  //   }
+  // }
 
-  @HostListener('panend', ['$event']) drawerPanEnd(event) {
-    if (!this.disableDrag) {
-      this.handlePanEnd(event);
-    }
-  }
+  // @HostListener('panend', ['$event']) drawerPanEnd(event) {
+  //   if (!this.disableDrag) {
+  //     this.handlePanEnd(event);
+  //   }
+  // }
 
   ngAfterViewInit(): void {
     // this.renderer.setStyle(this.elementRef.nativeElement.querySelector('.drawer-handle'),
     //   'touch-action', 'none');
+
+    const hammer = new Hammer(this.elementRef.nativeElement);
+    hammer.get('pan').set({ enable: true, direction: Hammer.DIRECTION_VERTICAL, threshold: 0});
+
+    hammer.on('pan panstart panend', (ev: any) => {
+      if (this.disableDrag) {
+        return;
+      }
+
+      switch (ev.type) {
+        case 'panstart':
+          this.handlePanStart();
+          break;
+        case 'panend':
+          this.handlePanEnd(ev);
+          break;
+        default:
+          this._handlePan(ev);
+      }
+    });
     this.setDrawerState(this.state);
   }
 
