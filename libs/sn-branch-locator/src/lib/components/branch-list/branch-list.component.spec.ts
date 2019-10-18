@@ -32,5 +32,26 @@ describe('BranchListComponent', () => {
       expect(resp).toEqual(branch);
     });
     component.selectBranch(branch);
+
+  });
+
+  it('should show loading', () => {
+    component.isLoading = true;
+    fixture.detectChanges();
+    const mainElement: HTMLElement = fixture.debugElement.nativeElement;
+    const snOptionList: HTMLElement = mainElement.querySelector('sn-option-list');
+
+    expect(mainElement.querySelector('sn-loader')).toBeDefined();
+    expect(snOptionList.style.display).toEqual('none');
+  });
+
+  it('should hide loading', () => {
+    component.isLoading = false;
+    fixture.detectChanges();
+    const mainElement: HTMLElement = fixture.debugElement.nativeElement;
+    const snOptionList: HTMLElement = mainElement.querySelector('sn-option-list');
+
+    expect(mainElement.querySelector('sn-loader')).toBeNull();
+    expect(snOptionList.style.display).not.toEqual('none');
   });
 });
