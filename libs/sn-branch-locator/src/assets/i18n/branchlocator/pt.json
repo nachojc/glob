@@ -14,7 +14,19 @@
             "buttondeleteall": "Apague tudo"
         },
         "details": {
-            "neartitle": "Resultado mais próximo"
+            "neartitle": "Resultado mais próximo",
+            "branch": "Agência",
+            "today": "Hoje",
+            "atm": "Caixa eletrônico",
+            "atminfo": "Saques gratuitos",
+            "contact": "Contato",
+            "contactbutton": "Ligar",
+            "schedule": "Horário de funcionamento",
+            "services": "Serviços adicionais",
+            "servicesfinancial": "Financeiros",
+            "servicesnofinancial": "Não financeiros",
+            "accessibility": "Acessibilidade",
+            "accessibilitymessage": "Acesso para deficientes"
         }
     }
 }

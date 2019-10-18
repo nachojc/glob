@@ -16,7 +16,9 @@
         "details": {
             "neartitle": "Nearest result",
             "branch": "Branch",
+            "today": "Today",
             "atm": "ATM",
+            "atminfo": "Free cash withdrawals",
             "contact": "Contact number",
             "contactbutton": "Call",
             "schedule": "Opening hours",

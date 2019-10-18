@@ -14,7 +14,19 @@
             "buttondeleteall": "Eliminar todos"
         },
         "details": {
-            "neartitle": "Resultado más cercano"
+            "neartitle": "Resultado más cercano",
+            "branch": "Branch",
+            "today": "Today",
+            "atm": "ATM",
+            "atminfo": "Free cash withdrawals",
+            "contact": "Contact number",
+            "contactbutton": "Call",
+            "schedule": "Opening hours",
+            "services": "Additional services",
+            "servicesfinancial": "Financial",
+            "servicesnofinancial": "No financial",
+            "accessibility": "Accessibility",
+            "accessibilitymessage": "Disabled access"
         }
     }
 }

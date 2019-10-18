@@ -1,5 +1,6 @@
 import { Component, Input,  ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'sn-branch-info',
@@ -35,7 +36,7 @@ export class SnBranchInfoComponent {
 
 
 
-  constructor(private ref: ChangeDetectorRef) { }
+  constructor(public translate: TranslateService) { }
 
   contactBranch(phone: string) {
   }
@@ -154,5 +155,4 @@ export class SnBranchInfoComponent {
   emitClick() {
     this.branchInfoClicked.emit();
   }
-
 }
