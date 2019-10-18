@@ -1,8 +1,6 @@
-@import '~sn-common-lib/styles/settings/colors';
+@import "~sn-common-lib/styles/settings/colors";
 
 :host {
-
-
   .locator-content {
     position: relative;
     height: 100%;
@@ -13,14 +11,12 @@
     ::ng-deep sn-drawer .drawer-content {
       height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
     }
-    
-
 
     .locator-center {
       position: absolute;
       top: 4rem;
       right: 0.5rem;
-      button{
+      button {
         background-color: $color-primary-white; // TODO: import color variable from common lib change to variable
         border-radius: 2.7px;
         box-shadow: 0px 1px 2px 0px $color-secondary-mediumgray;
@@ -36,10 +32,9 @@
             line-height: 1;
           }
         }
-    }
+      }
     }
   }
-
 
   .result-list-wrapper {
     height: 100%;
@@ -47,14 +42,14 @@
     margin-top: 4rem;
 
     sn-option-item {
-      padding: .5rem 1rem .5rem 1.5rem;
+      padding: 0.5rem 1rem 0.5rem 1.5rem;
 
       .name {
         font-weight: bold;
-        color: $color-primary-santander; 
+        color: $color-primary-santander;
         font-size: 1rem;
         line-height: 1.5;
-        padding-bottom: .5rem;
+        padding-bottom: 0.5rem;
       }
 
       .address {
@@ -76,7 +71,6 @@
     }
   }
 
-
   .locator-search {
     position: absolute;
     top: 3rem;
@@ -90,8 +84,20 @@
     }
   }
 
-  sn-tab{
-    overflow: hidden; //TODO: add this style to common-lib 
+  sn-tab {
+    overflow: hidden; //TODO: add this style to common-lib
   }
 
+  //TODO: refactor sn-loading compomnent. Need input type to full and to block . Full will use fixed. Block will use absolute
+  ::ng-deep sn-tab-group {
+    sn-tab {
+      sn-loading {
+        position: absolute !important;
+        background-color: rgba(white, 0.75) !important;
+        user-select: none;
+        pointer-events: none;
+        touch-action: none;
+      }
+    }
+  }
 }
