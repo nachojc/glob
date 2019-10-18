@@ -15,7 +15,7 @@
                     <sn-icon icon="sn-SYS029"></sn-icon>
                 </button>
             </section>
-            <sn-drawer #drawer [dockedHeight]="300" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
+            <sn-drawer #drawer [dockedHeight]="300" [state]="(showDrawer)? 1 : 0" [distanceTop]="64" (stateChange)="drawerStageChange($event)">
                 <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()" [isNearestMarker]="showNearest"></sn-branch-info>
             </sn-drawer>
         </section>
