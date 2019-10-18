@@ -11,13 +11,12 @@ export class SnBranchInfoComponent {
   public isBranch: boolean = true;
   public todayHours: string;
 
+  @Input() isNearestMarker: boolean = false;
 
   @Input()
   set branch(value: Branch) {
     this._branch = this.setPOIInformation(value);
-    console.log(this._branch);
     this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
-    // setTimeout(() => {
     this.isBranch = true;
     if (this._branch.objectType.code.toUpperCase() === 'ATM') {
       this._branch.atm = [this.setPOIInformation(value)];
@@ -62,7 +61,7 @@ export class SnBranchInfoComponent {
   }
 
   getAccesibility(attributes): boolean {
-    return attributes ? attributes.find(attr => attr.toUpperCase() === 'ACCESIBILITY') ? true : false : false;
+    return attributes ? attributes.find(attr => attr.code && attr.code.toUpperCase() === 'ACCESIBILITY') ? true : false : false;
   }
 
 
