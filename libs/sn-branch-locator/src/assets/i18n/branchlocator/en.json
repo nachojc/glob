@@ -14,7 +14,17 @@
             "buttondeleteall": "Delete all"
         },
         "details": {
-            "neartitle": "Nearest result"
+            "neartitle": "Nearest result",
+            "branch": "Branch",
+            "atm": "ATM",
+            "contact": "Contact number",
+            "contactbutton": "Call",
+            "schedule": "Opening hours",
+            "services": "Additional services",
+            "servicesfinancial": "Financial",
+            "servicesnofinancial": "No financial",
+            "accessibility": "Accessibility",
+            "accessibilitymessage": "Disabled access"
         }
     }
 }
