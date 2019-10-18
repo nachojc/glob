@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, OnInit } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
@@ -10,6 +10,7 @@ import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { FilterComponent } from '../filter/filter.component';
 import { DrawerState } from 'sn-common-lib';
+import { Platform } from '../../services/platform/platform.service';
 
 
 
@@ -18,7 +19,8 @@ import { DrawerState } from 'sn-common-lib';
   templateUrl: 'sn-branch-locator.component.html',
   styleUrls: ['sn-branch-locator.component.scss']
 })
-export class SnBranchLocatorComponent {
+export class SnBranchLocatorComponent implements OnInit {
+
 
   private selectedMarker: SnMarkerDirective;
 
@@ -52,10 +54,12 @@ export class SnBranchLocatorComponent {
   drawerState: DrawerState;
   showDrawer: boolean;
   showNearest: boolean = false;
+  isMobile: boolean;
 
   constructor(
     private service: GeoPositionService,
     private branchService: SnBranchLocatorService,
+    private platform: Platform
   ) {
     this.service.watchPosition()
       .pipe(first()).subscribe(
@@ -66,6 +70,10 @@ export class SnBranchLocatorComponent {
           };
         }
       );
+  }
+
+  ngOnInit(): void {
+    this.isMobile = this.platform.isMobile;
   }
 
   getBranchesByCoordinates(coords: LatLngLiteral = this.userPosition, openNearest: boolean = false) {

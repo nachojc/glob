@@ -1,7 +1,11 @@
-<div class="widget-pane widget-pane-visible">
-<section class="section-layout section-layout-root">
-<div class="section-omnibox-spacer section-omnibox-spacer-red">
-  <ng-content></ng-content>
-</div>
-</section>
+<div class="panel panel-visible">
+  <section class="panel-wrapper">
+    <div class="search-input-wrapper">
+      <ng-content select="sn-branch-search-input"></ng-content>
+    </div>
+
+    <div class="search-results-wrapper">
+      <ng-content select="sn-option-list"></ng-content>
+    </div>
+  </section>
 </div>
