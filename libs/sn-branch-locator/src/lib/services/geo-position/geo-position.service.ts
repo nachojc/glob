@@ -14,8 +14,12 @@ export class GeoPositionService {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject('WINDOW') private windowRef: WindowRef) { }
+    @Inject('WINDOW') private windowRef: WindowRef
+  ) { }
 
+  get geolocation(): Geolocation {
+    return this.windowRef.navigator.geolocation;
+  }
 
   public watchPosition(): Observable<Position> {
     this._readyMaps().subscribe( () => {

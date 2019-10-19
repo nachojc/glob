@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BranchSearchInputComponent } from './branch-search-input.component';
+import { BranchSearchInputComponent } from './branch-search.component';
 import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, AgmCoreModule } from '@agm/core';
 import { ElementRef } from '@angular/core';
