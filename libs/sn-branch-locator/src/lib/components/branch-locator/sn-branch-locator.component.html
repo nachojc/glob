@@ -30,7 +30,7 @@
         <sn-tab label="{{ 'branchlocator.title.list' | translate }}">
             <section class="result-list-wrapper">
                 <sn-option-list>
-                    <sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
+                    <button sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
                         <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
 
                         <div class="Type-5_Regular-Style name">{{branch.name}}</div>
@@ -38,7 +38,7 @@
                         <div right-text class="Type-5_Regular-Style distance">
                             {{branch.distanceInMiles | number:'0.0-2'}} m
                         </div>
-                    </sn-option-item>
+                    </button>
                 </sn-option-list>
             </section>
         </sn-tab>
@@ -62,7 +62,7 @@
         </sn-branch-search-input>
 
         <sn-option-list>
-            <sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
+            <button sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
                 <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
 
                 <div class="Type-5_Regular-Style name">{{branch.name}}</div>
@@ -70,18 +70,31 @@
                 <div right-text class="Type-5_Regular-Style distance">
                     {{branch.distanceInMiles | number:'0.0-2'}} m
                 </div>
-            </sn-option-item>
+            </button>
         </sn-option-list>
+        <sn-branch-info
+            *ngIf="selectedBranch" 
+            branch]="selectedBranch"
+            [isNearestMarker]="showNearest"></sn-branch-info>
         <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
     </sn-menu>
-    <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
-        [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
-        (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
-        <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
-            [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
-        <agm-marker canChangeIcon *ngFor="let branch of branchesList" [title]="branch.id" [agmFitBounds]="true"
-            [latitude]="branch.location.geoCoords.latitude" [longitude]="branch.location.geoCoords.longitude"
-            [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)" [markerClickable]="true"
-            [openInfoWindow]="false"></agm-marker>
-    </agm-map>
+    <section class="locator-content">
+        <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
+            [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false"
+            [zoom]="zoom" (mapReady)="mapReady()" (mapClick)="mapClick($event)"
+            (centerChange)="centerChange($event)">
+            <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
+                [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
+            <agm-marker canChangeIcon *ngFor="let branch of branchesList" [title]="branch.id"
+                [agmFitBounds]="true" [latitude]="branch.location.geoCoords.latitude"
+                [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon"
+                (markerClick)="markerSelected($event, branch)" [markerClickable]="true"
+                [openInfoWindow]="false"></agm-marker>
+        </agm-map>
+        <section class="locator-center">
+            <button class="center-map-user" (click)="centerMapToUser(false, true)">
+                <sn-icon icon="sn-SYS029"></sn-icon>
+            </button>
+        </section>
+    </section>
 </ng-container>

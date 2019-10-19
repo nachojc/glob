@@ -4,21 +4,15 @@
   ::ng-deep agm-map {
     height: 100%;
   }
+  
   .locator-content {
-    position: relative;
     height: 100%;
-
-    
-    ::ng-deep sn-drawer .drawer-content {
-      height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
-    }
-
     .locator-center {
       position: absolute;
-      top: 4rem;
       right: 0.5rem;
+      top: 0.5rem;
       button {
-        background-color: $color-primary-white; // TODO: import color variable from common lib change to variable
+        background-color: $color-primary-white;
         border-radius: 2.7px;
         box-shadow: 0px 1px 2px 0px $color-secondary-mediumgray;
         border: 0;
@@ -35,7 +29,7 @@
         }
       }
     }
-  }
+  }  
 
   .result-list-wrapper {
     height: 100%;
@@ -58,10 +52,23 @@
 
   sn-tab {
     overflow: hidden; //TODO: add this style to common-lib
+    .locator-content {
+      position: relative;
+      height: 100%;
+  
+      
+      ::ng-deep sn-drawer .drawer-content {
+        height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
+      }
+  
+      .locator-center {
+        top: 4rem;
+      }
+    }   
   }
 
   sn-option-list {
-    sn-option-item {
+    button[sn-option-item] {
       padding: 0.5rem 1rem 0.5rem 1.5rem;
 
       .name {

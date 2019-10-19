@@ -74,9 +74,6 @@ export class SnBranchLocatorComponent implements OnInit {
 
   ngOnInit(): void {
     this.isMobile = this.platform.isMobile;
-    this.platform.orientationChange.subscribe((value) => {
-      console.log('orientation', value);
-    });
   }
 
   getBranchesByCoordinates(coords: LatLngLiteral = this.userPosition, openNearest: boolean = false) {
