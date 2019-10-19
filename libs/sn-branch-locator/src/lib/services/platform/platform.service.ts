@@ -1,37 +1,40 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { isNumber } from 'util';
+import { WindowRef } from '../../models/window-ref';
+import { fromEvent, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Platform {
 
-  constructor() {
-    console.log(window.clientInformation);
-    // tslint:disable-next-line: deprecation
-    console.log(window.orientation);
-    console.log(window.screen);
-    console.log(window.navigator.mediaDevices);
-    console.log(window.navigator.platform);
-
-
+  constructor(@Inject('WINDOW') private windowRef: WindowRef) {
   }
 
-  get orientation() {
-    // tslint:disable-next-line: deprecation
-    return window.orientation;
+  get orientation(): ScreenOrientation {
+    return this.windowRef.screen.orientation;
   }
 
   get isMobile(): boolean {
-    // tslint:disable-next-line: deprecation
-    return isNumber(orientation) && window.navigator.userAgent.toLowerCase().includes('mobile');
+    // tslint:disable-next-line: max-line-length
+    return !(this.orientation.angle === 0 && this.orientation.type === 'landscape-primary') && this.windowRef.navigator.userAgent.toLowerCase().includes('mobile');
   }
 
   get isDesktop(): boolean {
     return !this.isMobile;
   }
 
+  get orientationChange(): Observable<ScreenOrientation> {
+    return fromEvent(this.orientation, 'change')
+    .pipe(
+      map(() => this.orientation)
+    );
+  }
 
 
+  get screen(): Screen {
+    return this.windowRef.screen;
+  }
 
 }

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
+import { WindowRef } from '../../models/window-ref';
 
 @Component({
   selector: 'sn-branch-search-input',
@@ -20,7 +21,7 @@ export class BranchSearchInputComponent implements OnInit {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject('WINDOW') private windowRef: any
+    @Inject('WINDOW') private windowRef: WindowRef
   ) { }
 
 

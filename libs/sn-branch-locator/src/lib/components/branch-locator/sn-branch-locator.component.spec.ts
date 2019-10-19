@@ -15,7 +15,7 @@ import { SnBranchLocatorService } from '../../services/branch-locator/branch-loc
 import { branchMock } from '../../helpers/branch.mock';
 import { environment } from 'src/environments/environment';
 import { ENV_CONFIG } from '@globile/mobile-services';
-import { BranchSearchInputModule } from '../branch-search-input/branch-search-input.module';
+import { BranchSearchInputModule } from '../branch-search/branch-search-input.module';
 import { FormBuilder } from '@angular/forms';
 
 

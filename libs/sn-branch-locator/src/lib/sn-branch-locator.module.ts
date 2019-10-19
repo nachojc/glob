@@ -6,7 +6,7 @@ import { IconModule, ButtonModule, OptionListModule, SnTabModule, DrawerModule }
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AgmCoreModule } from '@agm/core';
 import { SnMarkerDirective } from './directives/sn-marker/sn-marker.directive';
-import { BranchSearchInputModule } from './components/branch-search-input/branch-search-input.module';
+import { BranchSearchInputModule } from './components/branch-search/branch-search-input.module';
 
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
