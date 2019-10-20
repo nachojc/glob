@@ -45,28 +45,21 @@
 
 <!-- Desktop -->
 <ng-container *ngIf="!isMobile">
+    <!-- Side Menu -->
     <sn-menu>
         <sn-branch-search #test [showReCenter]="showReCenter" [filterCount]="filterCounts"
             (placeChange)="placeChange($event)" (reCenter)="centerMapToUser(true, true)" (callFilter)="showFilter()">
         </sn-branch-search>
 
-        <sn-option-list>
-            <button sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
-                <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
+        <sn-branch-list [isLoading]="isLoading" [branchesList]="branchesList" (branchSelected)="selectBranch($event)"></sn-branch-list>
 
-                <div class="Type-5_Regular-Style name">{{branch.name}}</div>
-                <div class="Type-5_Regular-Style address">{{branch.location.address}}</div>
-                <div right-text class="Type-5_Regular-Style distance">
-                    {{branch.distanceInMiles | number:'0.0-2'}} m
-                </div>
-            </button>
-        </sn-option-list>
         <sn-branch-info
-            *ngIf="selectedBranch" 
-            branch]="selectedBranch"
+            *ngIf="showDrawer" 
+            [branch]="selectedBranch"
             [isNearestMarker]="showNearest"></sn-branch-info>
         <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
     </sn-menu>
+
     <section class="locator-content">
         <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false"

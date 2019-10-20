@@ -1,22 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { NetworkService } from '../../services/Network/network.service';
+import { Component, OnInit, ContentChild } from '@angular/core';
+import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
+import { OptionListComponent } from 'sn-common-lib';
 
 @Component({
   selector: 'sn-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent  {
 
-  constructor(private network: NetworkService) {
-
-  }
-
-
-  ngOnInit(): void {
-    this.network.connectionChange.subscribe((value) => {
-      console.log('connection', value);
-    });
-  }
+  @ContentChild(SnBranchInfoComponent) info: SnBranchInfoComponent;
 
 }

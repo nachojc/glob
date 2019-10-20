@@ -4,9 +4,12 @@
       <ng-content select="sn-branch-search"></ng-content>
     </div>
 
-    <div class="search-results-wrapper">
-      <ng-content select="sn-option-list, sn-filter"></ng-content>
+    <div class="search-results-wrapper" *ngIf="!info">
+      <ng-content select="sn-branch-list, sn-filter"></ng-content>
     </div>
-    <ng-content select="sn-branch-info"></ng-content>
+
+    <div [ngClass]="{'info-wrapper': info}" >
+        <ng-content select="sn-branch-info"></ng-content>
+    </div>
   </section>
 </div>

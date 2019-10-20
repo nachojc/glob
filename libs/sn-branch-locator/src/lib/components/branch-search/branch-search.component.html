@@ -1,7 +1,7 @@
 <div class="search-box">
   <div class="search-input-wrapper">
     <div class="search-input-button" >
-      <button (click)="search($event)">
+      <button (click)="search($event)" aria-label="Search">
         <sn-icon icon="sn-FUNC071"></sn-icon>
       </button>
     </div>
@@ -24,7 +24,7 @@
 
 
   <div class="filter-button-container">
-    <button class="filter-button" (click)="callFilter.emit($event)">
+    <button class="filter-button" (click)="callFilter.emit($event)" aria-label="Filter">
       <div class="filter-button-wrapper">
         <div class="filter-button-label">
           {{'branchlocator.searchinput.filterbutton' | translate}}
