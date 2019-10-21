@@ -7,7 +7,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { EnvironmentConfigModel, ENV_CONFIG } from '@globile/mobile-services';
-import { IconModule, ButtonModule, OptionListModule, SnTabModule, DrawerModule } from 'sn-common-lib';
 
 import { SnMapDirective } from './directives/sn-map/sn-map.directive';
 import { SnMarkerDirective } from './directives/sn-marker/sn-marker.directive';
