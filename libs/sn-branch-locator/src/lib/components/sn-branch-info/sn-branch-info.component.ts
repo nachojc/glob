@@ -11,6 +11,7 @@ export class SnBranchInfoComponent {
   private _branch: Branch;
   public isBranch: boolean = true;
   public todayHours: string;
+  public language = this.translate.getDefaultLang();
 
   @Input() isNearestMarker: boolean = false;
 
@@ -18,6 +19,7 @@ export class SnBranchInfoComponent {
   set branch(value: Branch) {
     this._branch = this.setPOIInformation(value);
     this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
+    console.log(this._branch);
     this.isBranch = true;
     if (this._branch.objectType.code.toUpperCase() === 'ATM') {
       this._branch.atm = [this.setPOIInformation(value)];
@@ -41,6 +43,51 @@ export class SnBranchInfoComponent {
 
   contactBranch(phone: string) {
   }
+
+  private setPOIInformation(poi: Branch): Branch {
+    poi.products = this.getProducts(poi);
+    poi.attributes = this.getAttributes(poi);
+    poi.schedule.preview = this.parseSchedule(poi.schedule.workingDay);
+    poi.schedule.timeToClose = this.getHoursToClose(poi.schedule.workingDay);
+    return poi;
+  }
+
+  private getProducts(poi: Branch): string[] {
+    if (poi.comercialProducts) {
+      return poi.comercialProducts.map(product => product[this.language] ? product[this.language] : product.default);
+    }
+    return [];
+  }
+
+  private getAttributes(poi: Branch): string[] {
+    if (poi.attrib) {
+      return poi.attrib.map(attr => {
+        // Remover blank spaces and nullable
+        if (attr.code && attr.code !== '') {
+          // get accesibility attribute
+          if (attr.code.toUpperCase() === 'ACCESIBILITY') {
+            poi.hasAccesibility = true;
+            return null;
+          }
+          if (attr.multi && (attr.multi.default || attr.multi[this.language])) {
+            if (attr.multi.default === 'NO') {
+              return null;
+            } else if (attr.multi.default === 'YES') {
+              return attr.code;
+            } else {
+              return attr.multi[this.language] ? attr.multi[this.language] :  attr.multi.default;
+            }
+          } else {
+            // if there aren't translation display the code
+            return attr.code;
+          }
+        }
+        return null;
+      }).filter(attr => attr !== null);
+    }
+    return [];
+  }
+
 
   getHoursToClose(schedule) {
     const poiHours = this.getTodayTimeInformation(schedule);
@@ -69,30 +116,12 @@ export class SnBranchInfoComponent {
 
   getTodayTimeInformation(branchSchedule: any) {
     const auxHours = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-    const now = new Date();
-    return branchSchedule[auxHours[now.getDay()]][0];
+    const now = new Date().getDay();
+    return branchSchedule[auxHours[now]][0];
   }
 
-  setPOIInformation(poi: Branch): Branch {
-    poi.products = this.getProducts(poi);
-    poi.attributes = this.getAttributes(poi);
-    poi.schedule.preview = this.parseSchedule(poi.schedule.workingDay);
-    poi.schedule.timeToClose = this.getHoursToClose(poi.schedule.workingDay);
-    return poi;
-  }
-
-  public getProducts(poi: Branch): string[] {
-    return poi.comercialProducts ? poi.comercialProducts.map(product => product.default) : [];
-  }
-
-  public getAttributes(poi: Branch): string[] {
-    // remove blank attributes and accesibility
-    return (poi.attrib ? poi.attrib.map(attr => attr.code && attr.code !== '' ? attr.code : null) : [])
-      .filter(attr => (attr !== null && attr.toUpperCase() !== 'ACCESIBILITY'));
-  }
 
   public parseSchedule(branchSchedule: any): any[] {
-    const language = this.translate.getDefaultLang();
     const hoursEnum = {
         MONDAY: {
           en: 'Mon',
@@ -138,17 +167,17 @@ export class SnBranchInfoComponent {
         // create first group.
         if (groupedHours.length === 0) {
           groupedHours.push({
-            text: `${hoursEnum[res][language]}`,
+            text: `${hoursEnum[res][this.language]}`,
             hours: branchSchedule[res]
           });
         } else {
           // if same hours, add to the previous group
           if (JSON.stringify(groupedHours[index].hours) === JSON.stringify(branchSchedule[res])) {
-            groupedHours[index].text = `${groupedHours[index].text.split(' - ')[0]} - ${hoursEnum[res][language]}`;
+            groupedHours[index].text = `${groupedHours[index].text.split(' - ')[0]} - ${hoursEnum[res][this.language]}`;
           } else {
             // else, create a new group
             groupedHours.push({
-              text: `${hoursEnum[res][language]}`,
+              text: `${hoursEnum[res][this.language]}`,
               hours: branchSchedule[res]
             });
             index ++;

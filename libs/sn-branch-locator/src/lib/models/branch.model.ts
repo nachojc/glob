@@ -81,6 +81,7 @@ export class Branch {
         code: string;
     }>;
     attributes?: string[];
+    hasAccesibility: boolean = false;
     richTexts: Array<{
         multi: {
             default: string;

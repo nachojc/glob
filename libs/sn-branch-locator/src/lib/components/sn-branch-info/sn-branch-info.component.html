@@ -86,7 +86,7 @@
                 </ul>
               </div>
             </sn-option-item>
-            <sn-option-item *ngIf="getAccesibility(branch.attrib)">
+            <sn-option-item *ngIf="branch.hasAccesibility">
               <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
               <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.accessibility' | translate }}</div>
               <h1 class="title">{{ 'branchlocator.details.accessibilitymessage' | translate }}</h1>
@@ -154,7 +154,7 @@
                   </ul>
                 </div>
               </sn-option-item>
-              <sn-option-item *ngIf="getAccesibility(branch.atm[0].attrib)">
+              <sn-option-item *ngIf="branch.atm[0].hasAccesibility">
                 <sn-icon color="primary" icon="sn-FUNC094" start align-top></sn-icon>
                 <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.accessibility' | translate }}</div>
                 <h1 class="title">{{ 'branchlocator.details.accessibilitymessage' | translate }}</h1>
