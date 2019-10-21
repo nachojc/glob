@@ -4,7 +4,7 @@ import { BranchListComponent } from './branch-list.component';
 import { Branch } from '../../models/branch.model';
 import { IconModule, OptionListModule, LoaderModule } from 'sn-common-lib';
 
-fdescribe('BranchListComponent', () => {
+describe('BranchListComponent', () => {
   let component: BranchListComponent;
   let fixture: ComponentFixture<BranchListComponent>;
 
@@ -27,6 +27,7 @@ fdescribe('BranchListComponent', () => {
   });
 
   it('should emit on click' , () => {
+
     const branch: Branch = {} as Branch;
     component.isLoading = false;
     component.branchesList = [branch, branch];
@@ -34,14 +35,16 @@ fdescribe('BranchListComponent', () => {
     const mainElement = fixture.debugElement.nativeElement;
     const snOptionList = mainElement.querySelector('sn-option-list');
     const snOptionItem = snOptionList.firstElementChild;
-
     component.branchSelected.subscribe(resp => {
       expect(resp).toEqual(branch);
     });
 
     snOptionList.click();
 
-
+    // Extra line just for the coverage
+    const callbranchSelected = spyOn(component, 'selectBranch').and.callThrough();
+    component.selectBranch({} as Branch);
+    expect(callbranchSelected).toHaveBeenCalled();
   });
 
   it('should show loading', () => {

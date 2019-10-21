@@ -4,15 +4,16 @@ import { BranchSearchInputComponent } from './branch-search.component';
 import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, AgmCoreModule } from '@agm/core';
 import { ElementRef } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
 };
 const windowRef = {
   google: {
-    maps : {
+    maps: {
       places: {
-        Autocomplete : () => ({
+        Autocomplete: () => ({
           addListener: (event: string, callback) => {
             return callback({});
           },
@@ -25,7 +26,7 @@ const windowRef = {
             }
           })
         }),
-        SearchBox : () => ({
+        SearchBox: () => ({
           addListener: (event: string, callback) => {
             return callback({});
           },
@@ -51,27 +52,25 @@ describe('BranchSearchInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BranchSearchInputComponent ],
+      declarations: [BranchSearchInputComponent],
       imports: [
         IconModule,
-        AgmCoreModule.forRoot({
-          apiKey: 'demo',
-          libraries: ['places']
-        })
+        AgmCoreModule.forRoot(),
+        TranslateModule.forRoot()
       ],
       providers: [
-        {provide: MapsAPILoader, useValue: MapsAPILoaderMock},
-        {provide: 'WINDOW', useValue: windowRef }
+        { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
+        { provide: 'WINDOW', useValue: windowRef }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BranchSearchInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.inputElementRef = new ElementRef<any>({nativeElement: () => {}});
+    component.inputElementRef = new ElementRef<any>({ nativeElement: () => { } });
   });
 
   it('should create', () => {
@@ -79,11 +78,11 @@ describe('BranchSearchInputComponent', () => {
   });
 
 
-  describe('initSearchBox()', () => {
-    it('shoul call placeChange', () => {
-      spyOn(component.placeChange, 'emit');
-      component.initSearchBox();
-      expect(component.placeChange.emit).toHaveBeenCalled();
-    });
+
+  it('shoul call placeChange', () => {
+    spyOn(component.placeChange, 'emit');
+    component.initSearchBox();
+    expect(component.placeChange.emit).toHaveBeenCalled();
   });
+
 });

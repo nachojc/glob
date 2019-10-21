@@ -1,5 +1,4 @@
 import { Injectable, Inject } from '@angular/core';
-import { isNumber } from 'util';
 import { WindowRef } from '../../models/window-ref';
 import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
