@@ -95,6 +95,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   }
 
   setDrawerState(state: DrawerState) {
+    const parentHeight = this.elementRef.nativeElement.parentElement.clientHeight;
     this.state = state;
     this.renderer.setStyle(this.elementRef.nativeElement, 'transition', this.transition);
     switch (state) {
@@ -102,7 +103,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
         this._setTranslateY(this.distanceTop + 'px');
         break;
       case DrawerState.Docked:
-        this._setTranslateY((window.innerHeight - this.dockedHeight) + 'px');
+        this._setTranslateY((parentHeight - this.dockedHeight) + 'px');
         break;
       default:
         this._setTranslateY('calc(100vh - ' + this.minimumHeight + 'px)');
@@ -112,15 +113,17 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
 
   private _setTranslateY(value) {
-    window.requestAnimationFrame(() => {
+     window.requestAnimationFrame(() => {
       this.renderer.setStyle(this.elementRef.nativeElement, 'transform', 'translateY(' + value + ')');
       this.renderer.setStyle(this.elementRef.nativeElement, 'height', 'calc(100% - ' + value + ')');
-    });
+     });
 
   }
 
   handlePanStart() {
-    this.startPositionTop = this.elementRef.nativeElement.getBoundingClientRect().top;
+    this.startPositionTop = this.elementRef.nativeElement.getBoundingClientRect().top
+                           - this.elementRef.nativeElement.parentElement.offsetTop;
+
   }
 
   handlePanEnd(ev) {
@@ -141,13 +144,14 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   }
 
   handleDockedPanEnd(ev) {
+    const parentHeight = this.elementRef.nativeElement.parentElement.clientHeight;
     const absDeltaY = Math.abs(ev.deltaY);
     if (absDeltaY > this._BOUNCE_DELTA && ev.deltaY < 0) {
       this.state = DrawerState.Top;
     } else if (absDeltaY > this._BOUNCE_DELTA && ev.deltaY > 0) {
       this.state = DrawerState.Bottom;
     } else {
-      this._setTranslateY((window.innerHeight - this.dockedHeight) + 'px');
+      this._setTranslateY((parentHeight - this.dockedHeight) + 'px');
     }
   }
 
@@ -169,17 +173,18 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
   private _handlePan(ev) {
     const pointerY = ev.center.y;
+    const parentHeight = this.elementRef.nativeElement.parentElement.clientHeight;
     this.renderer.setStyle(this.elementRef.nativeElement, 'transition', 'none');
-    if (pointerY > 0 && pointerY < window.innerHeight) {
+    if (pointerY > 0 && pointerY < parentHeight) {
       if (ev.additionalEvent === 'panup' || ev.additionalEvent === 'pandown') {
-        // const newTop = this.startPositionTop + ev.deltaY;
-        if (pointerY >= this.distanceTop) {
-          this._setTranslateY(pointerY + 'px');
-        } else if (pointerY < this.distanceTop) {
+        const newTop = this.startPositionTop + ev.deltaY;
+        if (newTop >= this.distanceTop) {
+          this._setTranslateY(newTop + 'px');
+        } else if (newTop < this.distanceTop) {
           this._setTranslateY(this.distanceTop + 'px');
         }
-        if (pointerY > window.innerHeight - this.minimumHeight) {
-          this._setTranslateY((window.innerHeight - this.minimumHeight) + 'px');
+        if (newTop > parentHeight - this.minimumHeight) {
+          this._setTranslateY((parentHeight - this.minimumHeight) + 'px');
         }
       }
     }
