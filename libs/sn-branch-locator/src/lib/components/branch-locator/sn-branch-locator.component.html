@@ -4,11 +4,13 @@
             <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
             [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
             (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
-            <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
-                [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
-            <agm-marker canChangeIcon *ngFor="let branch of branchesList" [title]="branch.id" [agmFitBounds]="true" [latitude]="branch.location.geoCoords.latitude"
-                [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)"
-                [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
+                <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
+                    [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
+                <agm-marker-cluster [styles]="clusterStyles" [maxZoom]="'15'" [minimumClusterSize]="5" [averageCenter]="true">
+                    <agm-marker canChangeIcon *ngFor="let branch of branchesList" [title]="branch.id" [agmFitBounds]="true" [latitude]="branch.location.geoCoords.latitude"
+                        [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)"
+                        [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
+                </agm-marker-cluster>
             </agm-map>
             <section class="locator-center">
                 <button class="center-map-user" (click)="centerMapToUser(false, true)">
@@ -18,22 +20,14 @@
             <sn-drawer #drawer [dockedHeight]="300" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
                 <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()" [isNearestMarker]="showNearest"></sn-branch-info>
             </sn-drawer>
+            
+            <sn-loading *ngIf="isLoading" full="true"></sn-loading>
         </section>
     </sn-tab>
     <sn-tab label="{{ 'branchlocator.title.list' | translate }}">
-        <section class="result-list-wrapper">
-            <sn-option-list>
-                <sn-option-item border *ngFor="let branch of branchesList" (click)="selectBranch(branch)">
-                    <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
-                    
-                    <div class="Type-5_Regular-Style name">{{branch.name}}</div>
-                    <div class="Type-5_Regular-Style address">{{branch.location.address}}</div>
-                    <div right-text class="Type-5_Regular-Style distance">
-                        {{branch.distanceInMiles | number:'0.0-2'}} m
-                    </div>
-                </sn-option-item>
-            </sn-option-list>
-        </section>
+            <section class="result-list-wrapper">
+                <sn-branch-list [isLoading]="isLoading" [branchesList]="branchesList" (branchSelected)="selectBranch($event)"></sn-branch-list>
+            </section>
     </sn-tab>
 </sn-tab-group>
 <section class="locator-search">

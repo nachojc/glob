@@ -1,0 +1,18 @@
+<sn-option-list [style.display]=" isLoading? 'none' : 'initial'">
+  <sn-option-item
+    border
+    *ngFor="let branch of branchesList"
+    (click)="selectBranch(branch)"
+  >
+    <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
+
+    <div class="Type-5_Regular-Style name">{{ branch?.name }}</div>
+    <div class="Type-5_Regular-Style address">
+      {{ branch?.location?.address }}
+    </div>
+    <div right-text class="Type-5_Regular-Style distance">
+      {{ branch?.distanceInMiles | number: "0.0-2" }} m
+    </div>
+  </sn-option-item>
+</sn-option-list>
+<sn-loader *ngIf="isLoading"></sn-loader>

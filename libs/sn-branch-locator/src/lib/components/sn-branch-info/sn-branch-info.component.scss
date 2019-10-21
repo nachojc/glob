@@ -93,7 +93,7 @@
   overflow: scroll;
   height: 100%;
 
-  &.hide-tabs ::ng-deep sn-tab-group .tab-wrapper ul{
+  &.hide-tabs ::ng-deep sn-tab-group .tab-wrapper {
     display: none;
   }
 }
