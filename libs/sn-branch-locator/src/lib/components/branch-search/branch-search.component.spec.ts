@@ -78,16 +78,10 @@ describe('BranchSearchInputComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('use google Api', () => {
-    component.useGoogle = true;
-    expect(component).toBeTruthy();
-    expect(component.useGoogle).toBeTruthy();
-  });
 
   describe('initSearchBox()', () => {
     it('shoul call placeChange', () => {
       spyOn(component.placeChange, 'emit');
-      component.useGoogle = true;
       component.initSearchBox();
       expect(component.placeChange.emit).toHaveBeenCalled();
     });

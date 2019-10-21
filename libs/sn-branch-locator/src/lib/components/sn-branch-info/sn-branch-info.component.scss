@@ -90,7 +90,7 @@
 }
 
 .tab-group-wrapper {
-  overflow: scroll;
+  overflow-y: auto;
   height: 100%;
 
   &.hide-tabs ::ng-deep sn-tab-group .tab-wrapper {
@@ -100,7 +100,7 @@
 
 .branch-info-wrapper {
   padding: 1rem;
-  overflow: scroll;
+  overflow-y: auto;
 
   sn-option-item {
     padding: .5rem 0 1rem 0;

@@ -12,7 +12,7 @@ export class NetworkService {
 
   }
 
-  get online(): boolean {
+  get onLine(): boolean {
     return this.windowRef.navigator.onLine;
   }
 
@@ -20,8 +20,11 @@ export class NetworkService {
     return this.windowRef.navigator['connection'];
   }
 
-  get connectionChange(): Observable<boolean> {
-    return fromEvent(this.connection, 'change');
+  get connectionChange(): Observable<{onLine: boolean, connection: any}> {
+    return fromEvent(this.connection, 'change').pipe(
+      map(() => ({
+        onLine : this.onLine, connection: this.connection}))
+    );
   }
 
   get connectionType(): string {

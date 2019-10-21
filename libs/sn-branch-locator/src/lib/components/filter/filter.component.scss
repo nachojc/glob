@@ -66,7 +66,7 @@
 
     .sn-filter-content {
         flex: 1;
-        overflow: scroll;
+        overflow-y: auto;
         padding: 1.5em 1em;
 
         .title {
