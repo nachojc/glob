@@ -54,7 +54,13 @@ const GeoPositionServiceMock = {
 };
 
 
-fdescribe('SnBranchLocatorComponent', () => {
+const SnBranchLocatorServiceMock = {
+  getBranchesByCoords: (coords) => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
+  getBranchesByBounds : (northEast, southWest) => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
+};
+
+
+describe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
   let fixture: ComponentFixture<SnBranchLocatorComponent>;
 
@@ -85,7 +91,7 @@ fdescribe('SnBranchLocatorComponent', () => {
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
         {provide: ENV_CONFIG, useValue: environment},
         {provide : Platform, useClass: NoopPlatform},
-        SnBranchLocatorService,
+        {provide : SnBranchLocatorService, useValue: SnBranchLocatorServiceMock},
         FormBuilder,
       ],
       schemas: [
