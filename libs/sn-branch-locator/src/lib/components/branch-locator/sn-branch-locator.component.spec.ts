@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
 import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
-import { Platform } from '../../services/platform/platform.service';
+import { Platform, NoopPlatform } from '../../services/platform/platform.service';
 
 
 const MapsAPILoaderMock = {
@@ -53,12 +53,8 @@ const GeoPositionServiceMock = {
   getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
 
-const PlatformServiceMock = {
-  isMobile: () => true
-};
 
-
-describe('SnBranchLocatorComponent', () => {
+fdescribe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
   let fixture: ComponentFixture<SnBranchLocatorComponent>;
 
@@ -87,10 +83,10 @@ describe('SnBranchLocatorComponent', () => {
         { provide: 'WINDOW', useValue: windowRef },
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
-        { provide: ENV_CONFIG, useValue: environment },
+        {provide: ENV_CONFIG, useValue: environment},
+        {provide : Platform, useClass: NoopPlatform},
         SnBranchLocatorService,
         FormBuilder,
-        { provide: Platform, useValue: PlatformServiceMock },
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -113,6 +109,12 @@ describe('SnBranchLocatorComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set userPosition', () => {
+    fixture.detectChanges();
+    component.tilesLoaded();
+    expect(component).toBeDefined();
   });
 
   it('map clicked reset with a selected branch', () => {
@@ -259,4 +261,8 @@ describe('SnBranchLocatorComponent', () => {
       expect(component.userPosition).toBeDefined();
     });
   });
+
+
+
+
 });

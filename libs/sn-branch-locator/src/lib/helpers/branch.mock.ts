@@ -1,6 +1,7 @@
 import { Branch } from '../models/branch.model';
 
 export const branchMock: Branch = {
+    hasAccesibility: true,
     id: '5d8b6968048ccee51add3042',
     code: 'Santander_UK_UK_B798',
     entityCode: 'Santander_UK',

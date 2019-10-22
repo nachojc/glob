@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { WindowRef } from '../../models/window-ref';
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -35,5 +35,25 @@ export class Platform {
   get screen(): Screen {
     return this.windowRef.screen;
   }
+
+}
+
+export class NoopPlatform {
+  get orientation(): ScreenOrientation {
+    return {} as ScreenOrientation;
+  }
+  get isMobile(): boolean {
+    return true;
+  }
+  get isDesktop(): boolean {
+    return true;
+  }
+  get orientationChange(): Observable<ScreenOrientation> {
+    return of(this.orientation);
+  }
+  get screen(): Screen {
+    return {} as Screen;
+  }
+
 
 }

@@ -269,4 +269,26 @@ export class SnBranchLocatorComponent implements OnInit {
       this.map.api.panTo(this.userPosition).then(() => this.map.api.setZoom(this.zoom));
     }
   }
+
+
+  tilesLoaded() {
+    from(this.map.api.getBounds()).pipe(
+      switchMap((mapBounds: LatLngBounds) => {
+        this.isLoading = true;
+        return this.branchService.getBranchesByBounds({
+          lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()
+        },
+          { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
+        );
+      })
+    ).subscribe(res => {
+      this.clearSelectedMarker();
+      this.branchesList = res;
+      this.isLoading = false;
+    }, (error) => {
+      // TODO: Add error handler
+      console.error(error);
+      this.isLoading = false;
+    });
+  }
 }
