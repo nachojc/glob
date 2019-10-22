@@ -3,6 +3,7 @@
 
 :host{
   sn-option-item {
+    cursor: pointer; //TODO : need to use button[sn-option-item] for clickcable list
     padding: .5rem 1rem .5rem 1.5rem;
 
     .name {

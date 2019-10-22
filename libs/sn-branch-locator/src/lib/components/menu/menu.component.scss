@@ -53,6 +53,7 @@
   
 
   .info-wrapper{
+    box-shadow: inset 0 14px 10px -10px rgba(60, 64, 67, 0.28);
     flex: 1;
     overflow: hidden;
     .info-close-button-wrapper{
@@ -65,21 +66,20 @@
         font-size: 24px;
       }
     }
-    ::ng-deep sn-branch-info{
-      height: 100%;
-      overflow: initial;
-      .branch-wrapper{
-        overflow-y: auto;
-      }
+    ::ng-deep sn-branch-info {
       .tab-group-wrapper{
-        overflow: initial;
+       
         sn-tab-group {
-          .branch-info-wrapper{
-            overflow: initial;
+          sn-tab{
+            overflow-y: auto;
           }
         }
       }
     }
+  }
+
+  .closed{
+    display: none;
   }
 }
 
