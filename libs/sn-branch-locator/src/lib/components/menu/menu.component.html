@@ -7,8 +7,13 @@
     <div class="search-results-wrapper" >
       <ng-content select="sn-branch-list, sn-filter"></ng-content>
     </div>
-
     <div [ngClass]="{'info-wrapper': !!info}" >
+      <hr>
+      <div>
+        <button>
+          <sn-icon icon="sn-SYS020"></sn-icon>
+        </button>
+      </div>
         <ng-content select="sn-branch-info"></ng-content>
     </div>
   </section>
