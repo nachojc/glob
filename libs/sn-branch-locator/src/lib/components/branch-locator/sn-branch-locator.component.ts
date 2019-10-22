@@ -1,9 +1,9 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral, LatLngBounds } from '@agm/core';
+import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
-import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
+// import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { from } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
@@ -21,10 +21,10 @@ import { ClusterStyle } from '@agm/js-marker-clusterer/services/google-clusterer
 })
 export class SnBranchLocatorComponent {
 
-  private selectedMarker: SnMarkerDirective;
+  private selectedMarker: AgmMarker;
 
   @ViewChild(SnMapDirective) map: SnMapDirective;
-  @ViewChildren(SnMarkerDirective) branchMarkerList: QueryList<SnMarkerDirective>;
+  @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
   @ViewChild(FilterComponent) filterView: FilterComponent;
 
   isLoading: boolean = true;
@@ -108,22 +108,20 @@ export class SnBranchLocatorComponent {
   }
 
   selectBranch = (branch: Branch) => {
-    // tslint:disable-next-line: no-string-literal
     const markerFound = this.branchMarkerList['_results'].find(marker => marker.title === branch.id);
     this.markerSelected(markerFound, branch);
     this.selectedTabIndex = 0;
   }
 
-  markerSelected(selected: SnMarkerDirective, branch: Branch) {
+  markerSelected(selected: AgmMarker, branch: Branch) {
     this.clearSelectedMarker();
-
     selected.iconUrl = this.branchSelectedIcon as any;
-    selected.markerManager.updateIcon(selected);
+    selected['_markerManager'].updateIcon(selected);
     this.selectedMarker = selected;
     this.selectedBranch = branch;
 
 
-    selected.markerManager.getNativeMarker(selected).then((nativeMarker: any) => {
+    selected['_markerManager'].getNativeMarker(selected).then((nativeMarker: any) => {
       const selectedPos: LatLngLiteral = {
         lat: nativeMarker.position.lat(),
         lng: nativeMarker.position.lng()
@@ -142,7 +140,6 @@ export class SnBranchLocatorComponent {
 
     }
   }
-
   mapReady(): void {
     this.service.getCurrentPosition()
       .subscribe((pos: Position) => {
@@ -241,7 +238,7 @@ export class SnBranchLocatorComponent {
     this.closeDrawer();
     if (this.selectedMarker) {
       this.selectedMarker.iconUrl = this.branchIcon as any;
-      this.selectedMarker.markerManager.updateIcon(this.selectedMarker);
+      this.selectedMarker['_markerManager'].updateIcon(this.selectedMarker);
       this.selectedMarker = undefined;
       this.selectedBranch = undefined;
     }

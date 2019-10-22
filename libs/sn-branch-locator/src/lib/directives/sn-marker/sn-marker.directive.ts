@@ -2,7 +2,7 @@ import { Directive } from '@angular/core';
 import { AgmMarker, MarkerManager } from '@agm/core';
 
 @Directive({
-  selector: '[snMarker],agm-marker'
+  selector: '[snMarker]'
 })
 export class SnMarkerDirective extends AgmMarker {
 
