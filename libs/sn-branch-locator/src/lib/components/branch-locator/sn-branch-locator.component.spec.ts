@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
+import { Platform } from '../../services/platform/platform.service';
 
 
 const MapsAPILoaderMock = {
@@ -52,6 +53,10 @@ const GeoPositionServiceMock = {
   getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
 
+const PlatformServiceMock = {
+  isMobile: () => true
+};
+
 
 describe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
@@ -82,9 +87,10 @@ describe('SnBranchLocatorComponent', () => {
         { provide: 'WINDOW', useValue: windowRef },
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
-        {provide: ENV_CONFIG, useValue: environment},
+        { provide: ENV_CONFIG, useValue: environment },
         SnBranchLocatorService,
-        FormBuilder
+        FormBuilder,
+        { provide: Platform, useValue: PlatformServiceMock },
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -113,7 +119,7 @@ describe('SnBranchLocatorComponent', () => {
     // tslint:disable-next-line: no-string-literal
     component['selectedMarker'] = new SnMarkerDirective({} as MarkerManager);
     // tslint:disable-next-line: no-string-literal
-    component['selectedMarker'].markerManager.updateIcon = () => null;
+    component['selectedMarker']['_markerManager'].updateIcon = () => null;
     component.mapClick({} as any);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toBeUndefined();
@@ -169,15 +175,15 @@ describe('SnBranchLocatorComponent', () => {
 
   it('marker selected', () => {
     component.branchMarkerList = [
-      {id: () => 1, clickable: true, iconUrl : undefined, markerManager:  {updateIcon : () => undefined}},
-      {id: () => 2, clickable: true, iconUrl : undefined, markerManager: {updateIcon : () => undefined}},
-      {id: () => 3, clickable: false, iconUrl : undefined, markerManager: {updateIcon : () => undefined }}
+      {id: () => 1, clickable: true, iconUrl : undefined, _markerManager:  {updateIcon : () => undefined}},
+      {id: () => 2, clickable: true, iconUrl : undefined, _markerManager: {updateIcon : () => undefined}},
+      {id: () => 3, clickable: false, iconUrl : undefined, _markerManager: {updateIcon : () => undefined }}
     ] as any;
     const selected = {
       id: () => 1,
       clickable: true,
       iconUrl: undefined,
-      markerManager: {
+      _markerManager: {
         updateIcon: () => undefined,
         getNativeMarker: () => new Promise((resolve) => {
           resolve({ position: { lat: () => undefined, lng: () => undefined}});
