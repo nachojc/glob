@@ -33,24 +33,27 @@
             "telecomm": "Telecomm",
             "super": "Super7 24",
             "oxxo": "Oxxo",
-            "otheratm": "Non Santander ATMs"
+            "otheratm": "Otros"
         },
         "shared": {
-            "branch": "Branch",
-            "atm": "Cajeros"
+            "branch": "Agencia",
+            "atm": "Cajeros automáticos"
         },
         "details": {
             "neartitle": "Resultado más cercano",
-            "today": "Today",
-            "atminfo": "Free cash withdrawals",
-            "contact": "Contact number",
-            "contactbutton": "Call",
-            "schedule": "Opening hours",
-            "services": "Additional services",
-            "servicesfinancial": "Financial",
-            "servicesnofinancial": "No financial",
-            "accessibility": "Accessibility",
-            "accessibilitymessage": "Disabled access"
+            "today": "Hoy",
+            "atminfo": "Retiros de efectivo gratis",
+            "contact": "Número de contacto",
+            "contactbutton": "llamar",
+            "schedule": "Horas de oficina ",
+            "services": "Servicios adicionales",
+            "servicesfinancial": "Financiero",
+            "servicesnofinancial": "No Financiero",
+            "accessibility": "Accesibilidad",
+            "accessibilitymessage": "Acceso para discapacitados",
+            "open": "Abierto",
+            "closed": "Cerrado",
+            "closing": "Cerrando en"
         }
     }
 }

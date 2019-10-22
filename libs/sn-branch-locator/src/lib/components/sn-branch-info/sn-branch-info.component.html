@@ -33,8 +33,8 @@
           <sn-option-list >
             <sn-option-item border *ngIf="branch.schedule?.timeToClose">
               <div class="close-warning">
-                <div class="Type-5_Light-Style">{{branch.schedule.timeToClose}}</div>
-                <div class="signal"></div>
+                <div class="Type-5_Light-Style">{{branch.schedule.timeToClose.text}}</div>
+                <div class="signal {{branch.schedule.timeToClose.mode}}"></div>
               </div>
             </sn-option-item>
             <sn-option-item border *ngIf="branch.contactData?.phoneNumber">

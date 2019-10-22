@@ -72,7 +72,7 @@ export class SnBranchInfoComponent {
           if (attr.multi && (attr.multi.default || attr.multi[this.language])) {
             if (attr.multi.default === 'NO') {
               return null;
-            } else if (attr.multi.default === 'YES') {
+            } else if (attr.multi.default === 'YES' || attr.multi.default === 'SI') {
               return attr.code;
             } else {
               return attr.multi[this.language] ? attr.multi[this.language] :  attr.multi.default;
@@ -97,14 +97,26 @@ export class SnBranchInfoComponent {
       const startDate = new Date(0, 0, 0, Number(start[0]), Number(start[1]), 0);
       const endDate = new Date(0, 0, 0, Number(end[0]), Number(end[1]), 0);
       if (now.getTime() < startDate.getTime() || now.getTime() > endDate.getTime()) {
-        return 'Closed';
+        return {
+          text: this.translate.instant('branchlocator.details.closed'),
+          mode: 'CLOSED'
+        };
       } else {
         let diff = endDate.getTime() - now.getTime();
         const hours = Math.floor(diff / 1000 / 60 / 60);
         diff -= hours * 1000 * 60 * 60;
         const minutes = Math.floor(diff / 1000 / 60);
-
-        return 'Closing in ' + (hours > 0 ? hours + 'h' : '') + (minutes <= 9 ? '0' : '') + minutes;
+        if (hours <= 0) {
+          return {
+            text: `${this.translate.instant('branchlocator.details.closing')} ${(minutes <= 9 ? '0' : '')}${minutes} min`,
+            mode: 'CLOSING'
+          };
+        }
+        // return 'Closing in ' + (hours > 0 ? hours + 'h' : '') + (minutes <= 9 ? '0' : '') + minutes;
+        return {
+          text: this.translate.instant('branchlocator.details.open'),
+          mode: 'OPEN'
+        };
       }
     }
   }

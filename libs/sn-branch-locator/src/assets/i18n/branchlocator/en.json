@@ -32,6 +32,7 @@
             "tiendak": "Tienda K",
             "telecomm": "Telecomm",
             "super": "Super7 24",
+            "oxxo": "Oxxo",
             "otheratm": "Non Santander ATMs"
         },
         "shared": {
@@ -49,7 +50,10 @@
             "servicesfinancial": "Financial",
             "servicesnofinancial": "No financial",
             "accessibility": "Accessibility",
-            "accessibilitymessage": "Disabled access"
+            "accessibilitymessage": "Disabled access",
+            "open": "Open",
+            "closed": "Closed",
+            "closing": "Closing in"
         }
     }
 }

@@ -32,6 +32,7 @@
             "tiendak": "Tienda K",
             "telecomm": "Telecomm",
             "super": "Super7 24",
+            "oxxo": "Oxxo",
             "otheratm": "Outros"
         },
         "shared": {
@@ -49,7 +50,10 @@
             "servicesfinancial": "Financeiros",
             "servicesnofinancial": "Não financeiros",
             "accessibility": "Acessibilidade",
-            "accessibilitymessage": "Acesso para deficientes"
+            "accessibilitymessage": "Acesso para deficientes",
+            "open": "Aberto",
+            "closed": "Fechado",
+            "closing": "Fechando em"
         }
     }
 }
