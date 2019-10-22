@@ -4,7 +4,7 @@ import { BranchListComponent } from './branch-list.component';
 import { Branch } from '../../models/branch.model';
 import { IconModule, OptionListModule, LoaderModule } from 'sn-common-lib';
 
-fdescribe('BranchListComponent', () => {
+describe('BranchListComponent', () => {
   let component: BranchListComponent;
   let fixture: ComponentFixture<BranchListComponent>;
 
