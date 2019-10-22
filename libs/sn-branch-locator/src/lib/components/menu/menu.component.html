@@ -7,10 +7,9 @@
     <div class="search-results-wrapper" >
       <ng-content select="sn-branch-list, sn-filter"></ng-content>
     </div>
-    <div [ngClass]="{'info-wrapper': !!info}" >
-      <hr>
-      <div>
-        <button>
+    <div class="info-wrapper" *ngIf="!!info" >
+      <div class="info-close-button-wrapper">
+        <button class="info-close-button" (click)="closeInfo.emit($event)">
           <sn-icon icon="sn-SYS020"></sn-icon>
         </button>
       </div>

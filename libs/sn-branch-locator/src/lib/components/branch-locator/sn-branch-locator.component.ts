@@ -191,6 +191,10 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
+  closeInfo() {
+    this.showDrawer = !this.showDrawer;
+  }
+
   placeChange(place: LatLngLiteral) {
     this.isLoading = true;
     this.clearSelectedMarker();

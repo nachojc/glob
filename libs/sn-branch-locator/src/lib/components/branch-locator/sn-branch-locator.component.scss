@@ -66,13 +66,7 @@
       }
     }
     //TODO: refactor sn-loading compomnent. Need input type to full and to block . Full will use fixed. Block will use absolute
-    sn-loading {
-      position: absolute !important;
-      background-color: rgba(white, 0.75) !important;
-      user-select: none;
-      pointer-events: none;
-      touch-action: none;
-    }
+    
   }
 
   sn-option-list {
@@ -104,5 +98,13 @@
         display: flex;
       }
     }
+  }
+
+  sn-loading {
+    position: absolute !important;
+    background-color: rgba(white, 0.75) !important;
+    user-select: none;
+    pointer-events: none;
+    touch-action: none;
   }
 }
