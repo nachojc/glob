@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
+import { WindowRef } from '../../models/window-ref';
 
 @Component({
-  selector: 'sn-branch-search-input',
-  templateUrl: './branch-search-input.component.html',
-  styleUrls: ['./branch-search-input.component.scss']
+  selector: 'sn-branch-search',
+  templateUrl: './branch-search.component.html',
+  styleUrls: ['./branch-search.component.scss']
 })
 export class BranchSearchInputComponent implements OnInit {
 
@@ -13,23 +14,20 @@ export class BranchSearchInputComponent implements OnInit {
   @Output() placeChange = new EventEmitter<LatLngLiteral>();
   @Output() callFilter = new EventEmitter<MouseEvent>();
   @Input() filterCount: number;
-  @Input() useGoogle: boolean;
 
   @ViewChild('in') public inputElementRef: ElementRef<HTMLInputElement>;
   searchBox: google.maps.places.SearchBox;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject('WINDOW') private windowRef: any
+    @Inject('WINDOW') private windowRef: WindowRef
   ) { }
 
 
   ngOnInit(): void {
     this.mapsAPILoader.load()
       .then(() => {
-        if (this.useGoogle) {
           this.initSearchBox();
-        }
       });
 
   }

@@ -1,0 +1,19 @@
+<div class="panel panel-visible">
+  <section class="panel-wrapper">
+    <div class="search-input-wrapper">
+      <ng-content select="sn-branch-search"></ng-content>
+    </div>
+
+    <div class="search-results-wrapper" >
+      <ng-content select="sn-branch-list, sn-filter"></ng-content>
+    </div>
+    <div class="info-wrapper" *ngIf="!!info" >
+      <div class="info-close-button-wrapper">
+        <button class="info-close-button" (click)="closeInfo.emit($event)">
+          <sn-icon icon="sn-SYS022"></sn-icon>
+        </button>
+      </div>
+        <ng-content select="sn-branch-info"></ng-content>
+    </div>
+  </section>
+</div>
