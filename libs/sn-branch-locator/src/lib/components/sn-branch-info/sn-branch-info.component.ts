@@ -1,4 +1,4 @@
-import { Component, Input,  ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -19,7 +19,6 @@ export class SnBranchInfoComponent {
   set branch(value: Branch) {
     this._branch = this.setPOIInformation(value);
     this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
-    console.log(this._branch);
     this.isBranch = true;
     if (this._branch.objectType.code.toUpperCase() === 'ATM') {
       this._branch.atm = [this.setPOIInformation(value)];
@@ -92,7 +91,7 @@ export class SnBranchInfoComponent {
   getHoursToClose(schedule) {
     const poiHours = this.getTodayTimeInformation(schedule);
     if (poiHours) {
-      const now = new Date(0, 0, 0 , new Date().getHours(), new Date().getMinutes(), 0);
+      const now = new Date(0, 0, 0, new Date().getHours(), new Date().getMinutes(), 0);
       const [start, end] = poiHours.split('-').map(res => res.split(':'));
       const startDate = new Date(0, 0, 0, Number(start[0]), Number(start[1]), 0);
       const endDate = new Date(0, 0, 0, Number(end[0]), Number(end[1]), 0);
@@ -192,7 +191,7 @@ export class SnBranchInfoComponent {
               text: `${hoursEnum[res][this.language]}`,
               hours: branchSchedule[res]
             });
-            index ++;
+            index++;
           }
         }
       }

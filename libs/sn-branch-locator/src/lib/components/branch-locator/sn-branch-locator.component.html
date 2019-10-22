@@ -2,10 +2,10 @@
 <ng-container *ngIf="isMobile">
     <sn-tab-group [selectIndex]="selectedTabIndex" (selectedTab)='tabsChanged($event)'>
         <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
-            <section class="locator-content">
+            <section  class="locator-content">
                 <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
                 [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
-                (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
+                (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
                     <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
                         [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
                     <agm-marker-cluster [styles]="clusterStyles" [maxZoom]="'15'" [minimumClusterSize]="5" [averageCenter]="true">
@@ -19,7 +19,7 @@
                         <sn-icon icon="sn-SYS029"></sn-icon>
                     </button>
                 </section>
-                <sn-drawer #drawer [dockedHeight]="300" [state]="(showDrawer)? 1 : 0" (stateChange)="drawerStageChange($event)">
+                <sn-drawer #drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" [distanceTop]="64" (stateChange)="drawerStageChange($event)">
                     <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()" [isNearestMarker]="showNearest"></sn-branch-info>
                 </sn-drawer>
                 
@@ -64,9 +64,9 @@
     <section class="locator-content">
         <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
         [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
-        (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)">
+        (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
             <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
-                [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
+                [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false" ></agm-marker>
             <agm-marker-cluster [styles]="clusterStyles" [maxZoom]="'15'" [minimumClusterSize]="5" [averageCenter]="true">
                 <agm-marker canChangeIcon *ngFor="let branch of branchesList" [title]="branch.id" [agmFitBounds]="true" [latitude]="branch.location.geoCoords.latitude"
                     [longitude]="branch.location.geoCoords.longitude" [iconUrl]="branchIcon" (markerClick)="markerSelected($event, branch)"
