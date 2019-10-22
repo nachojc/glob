@@ -10,7 +10,7 @@ import { FilterParams } from '../../models/default-view-request';
 })
 export class FilterService {
 
-  public _filterCount: number;
+  public _filterCount: number = 0;
   private _previousValues: { [key: string]: any };
   private _filterParams: FilterParams;
 

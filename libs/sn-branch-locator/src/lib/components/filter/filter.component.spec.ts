@@ -7,7 +7,7 @@ import { FilterService } from '../../services/filter/filter.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 
-fdescribe('SnFilterComponent', () => {
+describe('SnFilterComponent', () => {
   let component: FilterComponent;
   let fixture: ComponentFixture<FilterComponent>;
 

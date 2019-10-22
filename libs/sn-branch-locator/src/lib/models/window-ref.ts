@@ -14,6 +14,8 @@ export class NoopWindowRef {
 
   }
 
+  google: typeof google;
+
   screen = {
     orientation: {
       angle: 0,

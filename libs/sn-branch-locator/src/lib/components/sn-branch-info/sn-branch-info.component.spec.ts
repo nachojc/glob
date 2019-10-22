@@ -3,6 +3,7 @@ import { OptionListModule, IconModule, SnTabModule } from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from './sn-branch-info.component';
 import { branchMock } from '../../helpers/branch.mock';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('SnBranchInfoComponent', () => {
   let component: SnBranchInfoComponent;
@@ -15,6 +16,7 @@ describe('SnBranchInfoComponent', () => {
         SnTabModule,
         IconModule,
         OptionListModule,
+        TranslateModule.forRoot()
       ]
     })
     .compileComponents();
@@ -25,6 +27,7 @@ describe('SnBranchInfoComponent', () => {
     component = fixture.componentInstance;
     component.branch = branchMock;
     fixture.detectChanges();
+    component.language = 'en';
   });
 
   it('should create', () => {
@@ -34,7 +37,7 @@ describe('SnBranchInfoComponent', () => {
   describe('parseHours()', () => {
     it('should return an array with one object', () => {
       // tslint:disable-next-line: no-string-literal
-      expect(component['parseHours'](branchMock.schedule.workingDay).length).toBe(1);
+      expect(component['parseSchedule'](branchMock.schedule.workingDay).length).toBe(1);
     });
 
 
@@ -49,8 +52,8 @@ describe('SnBranchInfoComponent', () => {
         SATURDAY: []
       };
       // tslint:disable-next-line: no-string-literal
-      const result = component['parseHours'](branchMock.schedule.workingDay);
-
+      const result = component['parseSchedule'](branchMock.schedule.workingDay);
+      console.log(result);
       expect(result.length).toBe(3);
       expect(result[0].text).toBe('Mon');
       expect(result[0].hours[0]).toBe('09:30-17:00');
@@ -71,7 +74,7 @@ describe('SnBranchInfoComponent', () => {
         SATURDAY: []
       };
       // tslint:disable-next-line: no-string-literal
-      expect(component['parseHours'](branchMock.schedule.workingDay).length).toBe(3);
+      expect(component['parseSchedule'](branchMock.schedule.workingDay).length).toBe(3);
     });
   });
 });

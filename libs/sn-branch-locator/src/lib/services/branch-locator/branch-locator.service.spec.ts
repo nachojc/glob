@@ -6,17 +6,26 @@ import { SnBranchLocatorService } from './branch-locator.service';
 import { branchMock } from '../../helpers/branch.mock';
 import { Branch } from '../../models/branch.model';
 import { environment } from 'src/environments/environment';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FilterService } from '../filter/filter.service';
 
 describe('SnBranchLocatorService', () => {
   let httpTestingController: HttpTestingController;
   let service: SnBranchLocatorService;
   const branchMock2: Branch =  Object.assign({}, branchMock, {distanceInKm: 123, id: '1'});
   const atmMock: Branch = Object.assign({}, branchMock, {objectType: {code: 'ATM'}, id: '2'});
+  const filterserviceMock = {
+    filterParams: {}
+  };
 
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
+    imports: [
+      HttpClientTestingModule,
+      ReactiveFormsModule
+    ],
     providers: [
-      { provide: ENV_CONFIG, useValue: environment }
+      { provide: ENV_CONFIG, useValue: environment },
+      { provide: FilterService, useValue: filterserviceMock }
     ]
   }));
 
@@ -84,7 +93,7 @@ describe('SnBranchLocatorService', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
       const apiUrl = encodeURI(`${service.branchLocator.apiURL}/find/defaultView?northEast=1,2&southWest=3,4`);
       service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}).subscribe(res => {
-        expect(service.http.get).toHaveBeenCalledWith(apiUrl);
+        expect(service.http.get).toHaveBeenCalledWith(apiUrl, { params: filterserviceMock.filterParams });
       });
     });
   });
