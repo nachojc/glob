@@ -90,7 +90,7 @@
 }
 
 .tab-group-wrapper {
-  overflow: scroll;
+  overflow-y: auto;
   height: 100%;
 
   &.hide-tabs ::ng-deep sn-tab-group .tab-wrapper {
@@ -100,7 +100,7 @@
 
 .branch-info-wrapper {
   padding: 1rem;
-  overflow: scroll;
+  overflow-y: auto;
 
   sn-option-item {
     padding: .5rem 0 1rem 0;
@@ -133,6 +133,13 @@
         border-radius: 100%;
         background-color: $color-secondary-yellow;
         margin: auto auto auto .5rem;
+
+        &.OPEN {
+          background-color: green;
+        }
+        &.CLOSED {
+          background-color: transparent;
+        }
       }
     }
     .hours-wrapper {

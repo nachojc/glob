@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
 import { first } from 'rxjs/operators';
+import { WindowRef } from '../../models/window-ref';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,12 @@ export class GeoPositionService {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject('WINDOW') private windowRef: any) { }
+    @Inject('WINDOW') private windowRef: WindowRef
+  ) { }
 
+  get geolocation(): Geolocation {
+    return this.windowRef.navigator.geolocation;
+  }
 
   public watchPosition(): Observable<Position> {
     this._readyMaps().subscribe( () => {

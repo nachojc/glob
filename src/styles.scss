@@ -40,4 +40,20 @@ html, body {
         // remove google log from auto comlete list
         display: none !important;
     }
+
+
+
 }
+
+*{
+    &::-webkit-scrollbar-track {
+      background-color: lightgray;
+    }
+    &::-webkit-scrollbar {
+      width: 6px;
+      background-color: lightgray;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: gray;
+    }
+  }
