@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement} from '@angular/core';
 import { By, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { DrawerComponent } from './drawer.component';
@@ -39,6 +39,8 @@ describe('DrawerComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+
 
     it('Pan Event biger then window heigh, additionalEvent panup', () => {
       fixture.detectChanges();
@@ -197,6 +199,13 @@ describe('DrawerComponent', () => {
       fixture.whenStable().then(() => {
         expect(component.drawerPanEnd).toHaveBeenCalled();
       });
+    });
+
+    it('should changeState', () => {
+      const mainElement = fixture.debugElement.nativeElement;
+      const drawerHandle = mainElement.querySelector('.drawer-handle');
+
+      drawerHandle.click();
     });
 
 
