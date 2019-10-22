@@ -4,7 +4,6 @@ import { IconModule,
   ButtonModule,
   OptionListModule,
   SnTabModule,
-  DrawerModule,
   LoadingModule,
   LoaderModule
 } from 'sn-common-lib';
@@ -21,6 +20,7 @@ import { SnBranchLocatorComponent } from './components/branch-locator/sn-branch-
 import { BranchSearchInputModule } from './components/branch-search/branch-search.module';
 import { SnBranchInfoComponent } from './components/sn-branch-info/sn-branch-info.component';
 import { FilterModule } from './components/filter/filter.module';
+import { DrawerModule } from './components/sn-drawer';
 import { BranchListComponent } from './components/branch-list/branch-list.component';
 import { MenuComponent } from './components/menu/menu.component';
 
