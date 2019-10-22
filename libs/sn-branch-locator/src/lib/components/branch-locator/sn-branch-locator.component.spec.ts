@@ -86,7 +86,7 @@ fdescribe('SnBranchLocatorComponent', () => {
         {provide: ENV_CONFIG, useValue: environment},
         {provide : Platform, useClass: NoopPlatform},
         SnBranchLocatorService,
-        FormBuilder
+        FormBuilder,
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -121,7 +121,7 @@ fdescribe('SnBranchLocatorComponent', () => {
     // tslint:disable-next-line: no-string-literal
     component['selectedMarker'] = new SnMarkerDirective({} as MarkerManager);
     // tslint:disable-next-line: no-string-literal
-    component['selectedMarker'].markerManager.updateIcon = () => null;
+    component['selectedMarker']['_markerManager'].updateIcon = () => null;
     component.mapClick({} as any);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toBeUndefined();
@@ -177,15 +177,15 @@ fdescribe('SnBranchLocatorComponent', () => {
 
   it('marker selected', () => {
     component.branchMarkerList = [
-      {id: () => 1, clickable: true, iconUrl : undefined, markerManager:  {updateIcon : () => undefined}},
-      {id: () => 2, clickable: true, iconUrl : undefined, markerManager: {updateIcon : () => undefined}},
-      {id: () => 3, clickable: false, iconUrl : undefined, markerManager: {updateIcon : () => undefined }}
+      {id: () => 1, clickable: true, iconUrl : undefined, _markerManager:  {updateIcon : () => undefined}},
+      {id: () => 2, clickable: true, iconUrl : undefined, _markerManager: {updateIcon : () => undefined}},
+      {id: () => 3, clickable: false, iconUrl : undefined, _markerManager: {updateIcon : () => undefined }}
     ] as any;
     const selected = {
       id: () => 1,
       clickable: true,
       iconUrl: undefined,
-      markerManager: {
+      _markerManager: {
         updateIcon: () => undefined,
         getNativeMarker: () => new Promise((resolve) => {
           resolve({ position: { lat: () => undefined, lng: () => undefined}});
