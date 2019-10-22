@@ -3,149 +3,151 @@
       <h1 class="sub-title">
         <!-- TODO: Temporary until have back button from design -->
         <sn-icon icon="sn-SYS020" (click)="close()"></sn-icon>
-        FILTERS
+        {{ 'branchlocator.filters.filters' | translate }}
       </h1>
       <!-- style="cursor: pointer;" fix why button is uson not-allowed curso -->
-      <button sn-button-outlined style="cursor: pointer;" type="reset">Delete all</button>
+      <button sn-button-outlined style="cursor: pointer;" type="reset">{{ 'branchlocator.filters.buttondeleteall' | translate }}</button>
     </div>
     <div class="sn-filter-content">
       <div formGroupName="BRANCH">
-        <h2 class="title">Branch</h2>
+        <h2 class="title">{{ 'branchlocator.shared.branch' | translate }}</h2>
         <div class="filters-list-wrapper">
           <div class="filters-list">
             <div class="filter-item">
-              <sn-checkbox formControlName="SELECT" icon="sn-BAN005"
-                >Select</sn-checkbox
-              >
+              <sn-checkbox formControlName="SELECT" icon="sn-BAN005">
+                {{ 'branchlocator.filters.select' | translate }}
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="BANCAPRIVADA" icon="sn-BAN005"
-                >Banca Privada</sn-checkbox
-              >
+              <sn-checkbox formControlName="BANCAPRIVADA" icon="sn-BAN005">
+                {{ 'branchlocator.filters.private' | translate }}
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="PYME" icon="sn-BAN005"
-                >Pyme</sn-checkbox
-              >
+              <sn-checkbox formControlName="PYME" icon="sn-BAN005">
+                {{ 'branchlocator.filters.pyme' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="WORKCAFE" icon="sn-BAN005"
-                >Workcafe</sn-checkbox
-              >
+              <sn-checkbox formControlName="WORKCAFE" icon="sn-BAN005">
+                {{ 'branchlocator.filters.workcafe' | translate }}
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="EMPRESAS" icon="sn-BAN005"
-                >Empresas</sn-checkbox
-              >
+              <sn-checkbox formControlName="EMPRESAS" icon="sn-BAN005">
+                {{ 'branchlocator.filters.business' | translate }}
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="UNIVERSIDADES" icon="sn-BAN005"
-                >Universidades</sn-checkbox
-              >
+              <sn-checkbox formControlName="UNIVERSIDADES" icon="sn-BAN005">
+                {{ 'branchlocator.filters.universities' | translate }}
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="CLIENTES_POPULAR" icon="sn-BAN005"
-                >Clientes Popular</sn-checkbox
-              >
+              <sn-checkbox formControlName="CLIENTES_POPULAR" icon="sn-BAN005">
+                {{ 'branchlocator.filters.popular' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="CLIENTES_PASTOR" icon="sn-BAN005"
-                >Clientes Pastor</sn-checkbox
-              >
+              <sn-checkbox formControlName="CLIENTES_PASTOR" icon="sn-BAN005">
+                {{ 'branchlocator.filters.pastor' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="CLIENTES_BANEFE" icon="sn-BAN005"
-                >Clientes Banefe</sn-checkbox
-              >
+              <sn-checkbox formControlName="CLIENTES_BANEFE" icon="sn-BAN005">
+                {{ 'branchlocator.filters.banefe' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="RESIDENTES" icon="sn-BAN005"
-                >Residentes</sn-checkbox
-              >
+              <sn-checkbox formControlName="RESIDENTES" icon="sn-BAN005">
+                {{ 'branchlocator.filters.residents' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="GRANDES_SUPERFICIES" icon="sn-BAN005"
-                >Grandes Superficies</sn-checkbox
-              >
+              <sn-checkbox formControlName="GRANDES_SUPERFICIES" icon="sn-BAN005">
+                {{ 'branchlocator.filters.superficies' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="AG_COLABORADORES" icon="sn-BAN005"
-                >AG Colaboradores</sn-checkbox
-              >
+              <sn-checkbox formControlName="AG_COLABORADORES" icon="sn-BAN005">
+                {{ 'branchlocator.filters.agcolaboradores' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="AG_FINANCIEROS" icon="sn-BAN005"
-                >AG Financieros</sn-checkbox
-              >
+              <sn-checkbox formControlName="AG_FINANCIEROS" icon="sn-BAN005">
+                {{ 'branchlocator.filters.agfinancieros' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
           </div>
         </div>
       </div>
       <div formGroupName="ATM">
-        <h2 class="title">ATM</h2>
+        <h2 class="title">{{ 'branchlocator.shared.atm' | translate }}</h2>
         <div class="filters-list-wrapper">
           <div class="filters-list">
             <div class="filter-item">
-              <sn-checkbox formControlName="NON_SANTANDER_ATM" icon="sn-BAN005"
-                >Non Santander ATM</sn-checkbox
-              >
+              <sn-checkbox formControlName="ATM" icon="sn-BAN005">
+                Santander
+              </sn-checkbox>
             </div>
-          </div>
-          <div class="filter-item">
-            <sn-checkbox formControlName="ATM" icon="sn-BAN005">ATM</sn-checkbox>
+            <div class="filter-item">
+              <sn-checkbox formControlName="NON_SANTANDER_ATM" icon="sn-BAN005">
+                {{ 'branchlocator.filters.otheratm' | translate }}
+              </sn-checkbox>
+            </div>
           </div>
         </div>
       </div>
       <div formGroupName="CORRESPONSALES">
-        <h2 class="title">Corresponsales</h2>
+        <h2 class="title">{{ 'branchlocator.filters.correspondents' | translate }}</h2>
         <div class="filters-list-wrapper">
           <div class="filters-list">
             <div class="filter-item">
-              <sn-checkbox formControlName="CORRESPONSALES" icon="sn-BAN005"
-                >Corresponsales</sn-checkbox
-              >
+              <sn-checkbox formControlName="CORRESPONSALES" icon="sn-BAN005">
+                {{ 'branchlocator.filters.correspondents' | translate }}
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="ELEVEN" icon="sn-BAN005"
-                >Eleven</sn-checkbox
-              >
+              <sn-checkbox formControlName="ELEVEN" icon="sn-BAN005">
+                {{ 'branchlocator.filters.eleven' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="CIRCLE_K" icon="sn-BAN005"
-                >Circle K</sn-checkbox
-              >
+              <sn-checkbox formControlName="CIRCLE_K" icon="sn-BAN005">
+                {{ 'branchlocator.filters.circlek' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="TIENDA_EXTRA" icon="sn-BAN005"
-                >Tienda Extra</sn-checkbox
-              >
+              <sn-checkbox formControlName="TIENDA_EXTRA" icon="sn-BAN005">
+                {{ 'branchlocator.filters.tiendaextra' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="TIENDA_K" icon="sn-BAN005"
-                >Tienda K</sn-checkbox
-              >
+              <sn-checkbox formControlName="TIENDA_K" icon="sn-BAN005">
+                {{ 'branchlocator.filters.tiendak' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="TELECOMM" icon="sn-BAN005"
-                >Telecomm</sn-checkbox
-              >
+              <sn-checkbox formControlName="TELECOMM" icon="sn-BAN005">
+                {{ 'branchlocator.filters.telecomm' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="SUPER7_24" icon="sn-BAN005"
-                >Super7 24</sn-checkbox
-              >
+              <sn-checkbox formControlName="SUPER7_24" icon="sn-BAN005">
+                {{ 'branchlocator.filters.super' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="OXXO" icon="sn-BAN005"
-                >Oxxo</sn-checkbox
-              >
+              <sn-checkbox formControlName="OXXO" icon="sn-BAN005">
+                {{ 'branchlocator.filters.oxxo' | translate }} <!-- TODO: review translation -->
+              </sn-checkbox>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="sn-filter-footer">
-      <button sn-button type="submit">APPLY FILTERS</button>
+      <button sn-button type="submit">{{ 'branchlocator.filters.applyfilter' | translate }}</button>
     </div>
   </form>
   

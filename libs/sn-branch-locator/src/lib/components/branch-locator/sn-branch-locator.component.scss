@@ -1,23 +1,18 @@
 @import "~sn-common-lib/styles/settings/colors";
 
 :host {
-  .locator-content {
-    position: relative;
+  ::ng-deep agm-map {
     height: 100%;
-
-    ::ng-deep agm-map {
-      height: 100%;
-    }
-    ::ng-deep sn-drawer .drawer-content {
-      height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
-    }
-
+  }
+  
+  .locator-content {
+    height: 100%;
     .locator-center {
       position: absolute;
-      top: 4rem;
       right: 0.5rem;
+      top: 0.5rem;
       button {
-        background-color: $color-primary-white; // TODO: import color variable from common lib change to variable
+        background-color: $color-primary-white;
         border-radius: 2.7px;
         box-shadow: 0px 1px 2px 0px $color-secondary-mediumgray;
         border: 0;
@@ -34,41 +29,12 @@
         }
       }
     }
-  }
+  }  
 
   .result-list-wrapper {
     height: 100%;
-    overflow: scroll;
+
     margin-top: 4rem;
-
-    sn-option-item {
-      padding: 0.5rem 1rem 0.5rem 1.5rem;
-
-      .name {
-        font-weight: bold;
-        color: $color-primary-santander;
-        font-size: 1rem;
-        line-height: 1.5;
-        padding-bottom: 0.5rem;
-      }
-
-      .address {
-        font-size: 1rem;
-        line-height: 1.075;
-        font-weight: 300;
-        color: $color-secondary-mediumgray;
-      }
-
-      .distance {
-        font-size: 1rem;
-        font-weight: 300;
-        color: $color-secondary-mediumgray;
-      }
-
-      sn-icon {
-        display: flex;
-      }
-    }
   }
 
   .locator-search {
@@ -86,18 +52,28 @@
 
   sn-tab {
     overflow: hidden; //TODO: add this style to common-lib
-  }
-
-  //TODO: refactor sn-loading compomnent. Need input type to full and to block . Full will use fixed. Block will use absolute
-  ::ng-deep sn-tab-group {
-    sn-tab {
-      sn-loading {
-        position: absolute !important;
-        background-color: rgba(white, 0.75) !important;
-        user-select: none;
-        pointer-events: none;
-        touch-action: none;
+    .locator-content {
+      position: relative;
+      height: 100%;
+  
+      
+      ::ng-deep sn-drawer .drawer-content {
+        height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
+      }
+  
+      .locator-center {
+        top: 4rem;
       }
     }
+    //TODO: refactor sn-loading compomnent. Need input type to full and to block . Full will use fixed. Block will use absolute
+    
+  }
+
+  sn-loading {
+    position: absolute !important;
+    background-color: rgba(white, 0.75) !important;
+    user-select: none;
+    pointer-events: none;
+    touch-action: none;
   }
 }

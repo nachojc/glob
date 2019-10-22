@@ -11,10 +11,49 @@
         "filters": {
             "applyfilter": "APLIQUE FILTROS",
             "filters": "FILTROS",
-            "buttondeleteall": "Apague tudo"
+            "buttondeleteall": "Apague tudo",
+            "select": "Select",
+            "private": "Private",
+            "pyme": "Pyme",
+            "workcafe": "Workcafe",
+            "business": "Empresas",
+            "universities": "Universidades",
+            "popular": "Clientes Popular",
+            "pastor": "Clientes Pastor",
+            "banefe": "Clientes Banefe",
+            "residents": "Residentes", 
+            "superficies": "Grandes superficies",
+            "agcolaboradores": "AG Colaboradores",
+            "agfinancieros": "AG Financieros",
+            "correspondents": "Correspondentes",
+            "eleven": "Eleven",
+            "circlek": "Circle K",
+            "tiendaextra": "Tienda Extra",
+            "tiendak": "Tienda K",
+            "telecomm": "Telecomm",
+            "super": "Super7 24",
+            "oxxo": "Oxxo",
+            "otheratm": "Outros"
+        },
+        "shared": {
+            "branch": "Agência",
+            "atm": "Caixa eletrônico"
         },
         "details": {
-            "neartitle": "Resultado mais próximo"
+            "neartitle": "Resultado mais próximo",
+            "today": "Hoje",
+            "atminfo": "Saques gratuitos",
+            "contact": "Contato",
+            "contactbutton": "Ligar",
+            "schedule": "Horário de funcionamento",
+            "services": "Serviços adicionais",
+            "servicesfinancial": "Financeiros",
+            "servicesnofinancial": "Não financeiros",
+            "accessibility": "Acessibilidade",
+            "accessibilitymessage": "Acesso para deficientes",
+            "open": "Aberto",
+            "closed": "Fechado",
+            "closing": "Fechando em"
         }
     }
 }
