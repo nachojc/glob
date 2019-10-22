@@ -15,7 +15,6 @@ import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { ENV_CONFIG } from '@globile/mobile-services';
 
-
 import { SnMapDirective } from './directives/sn-map/sn-map.directive';
 import { SnMarkerDirective } from './directives/sn-marker/sn-marker.directive';
 import { SnBranchLocatorComponent } from './components/branch-locator/sn-branch-locator.component';
