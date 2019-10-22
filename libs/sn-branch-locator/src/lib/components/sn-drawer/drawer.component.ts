@@ -7,8 +7,7 @@ import {
   AfterViewInit,
   OnChanges,
   SimpleChanges,
-  HostListener,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
 
 import * as Hammer from 'hammerjs';
@@ -33,6 +32,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   @Input() state: DrawerState = DrawerState.Bottom;
   @Input() minimumHeight = 0;
 
+
   @Output() stateChange: EventEmitter<DrawerState> = new EventEmitter<DrawerState>();
 
   private startPositionTop: number;
@@ -43,31 +43,9 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
     private renderer: Renderer2,
   ) { }
 
-
-  // @HostListener('pan', ['$event']) drawerPan(event) {
-  //   if (!this.disableDrag) {
-    //   }
-    //     this._handlePan(event);
-  // }
-
-  // @HostListener('panstart') drawerPanStart() {
-  //   if (!this.disableDrag) {
-  //     this.handlePanStart();
-  //   }
-  // }
-
-  // @HostListener('panend', ['$event']) drawerPanEnd(event) {
-  //   if (!this.disableDrag) {
-  //     this.handlePanEnd(event);
-  //   }
-  // }
-
   ngAfterViewInit(): void {
-    // this.renderer.setStyle(this.elementRef.nativeElement.querySelector('.drawer-handle'),
-    //   'touch-action', 'none');
-
     const hammer = new Hammer(this.elementRef.nativeElement);
-    hammer.get('pan').set({ enable: true, direction: Hammer.DIRECTION_VERTICAL, threshold: 0});
+    hammer.get('pan').set({ enable: true, direction: Hammer.DIRECTION_VERTICAL, threshold: 0 });
 
     hammer.on('pan panstart panend', (ev: any) => {
       if (this.disableDrag) {
@@ -81,12 +59,18 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
         case 'panend':
           this.handlePanEnd(ev);
           break;
-        default:
+        case 'pan':
           this._handlePan(ev);
+          break;
+        default:
+          break;
+
       }
     });
     this.setDrawerState(this.state);
   }
+
+
 
 
 
@@ -99,30 +83,30 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
     this.state = state;
     this.renderer.setStyle(this.elementRef.nativeElement, 'transition', this.transition);
     switch (state) {
-      case DrawerState.Top:
-        this._setTranslateY(this.distanceTop + 'px');
+      case DrawerState.Bottom:
+        this._setTranslateY('calc(100vh - ' + this.minimumHeight + 'px)');
         break;
       case DrawerState.Docked:
         this._setTranslateY((parentHeight - this.dockedHeight) + 'px');
         break;
       default:
-        this._setTranslateY('calc(100vh - ' + this.minimumHeight + 'px)');
+        this._setTranslateY(this.distanceTop + 'px');
     }
   }
 
 
 
   private _setTranslateY(value) {
-     window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
       this.renderer.setStyle(this.elementRef.nativeElement, 'transform', 'translateY(' + value + ')');
       this.renderer.setStyle(this.elementRef.nativeElement, 'height', 'calc(100% - ' + value + ')');
-     });
+    });
 
   }
 
   handlePanStart() {
     this.startPositionTop = this.elementRef.nativeElement.getBoundingClientRect().top
-                           - this.elementRef.nativeElement.parentElement.offsetTop;
+      - this.elementRef.nativeElement.parentElement.offsetTop;
 
   }
 

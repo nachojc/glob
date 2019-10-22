@@ -1,4 +1,4 @@
-import { Component, Input,  ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 
 @Component({
@@ -35,6 +35,7 @@ export class SnBranchInfoComponent {
 
 
 
+
   constructor(private ref: ChangeDetectorRef) { }
 
   contactBranch(phone: string) {
@@ -43,7 +44,7 @@ export class SnBranchInfoComponent {
   getHoursToClose(schedule) {
     const poiHours = this.getTodayTimeInformation(schedule);
     if (poiHours) {
-      const now = new Date(0, 0, 0 , new Date().getHours(), new Date().getMinutes(), 0);
+      const now = new Date(0, 0, 0, new Date().getHours(), new Date().getMinutes(), 0);
       const [start, end] = poiHours.split('-').map(res => res.split(':'));
       const startDate = new Date(0, 0, 0, Number(start[0]), Number(start[1]), 0);
       const endDate = new Date(0, 0, 0, Number(end[0]), Number(end[1]), 0);
@@ -93,35 +94,35 @@ export class SnBranchInfoComponent {
     // TODO: Verify how it will work with translation.
     const language = 'default';
     const hoursEnum = {
-        MONDAY: {
-          default: 'Mon',
-          br: 'Seg'
-        },
-        TUESDAY: {
-          default: 'Tue',
-          br: 'Ter'
-        },
-        WEDNESDAY: {
-          default: 'Wed',
-          br: 'Qua'
-        },
-        THURSDAY: {
-          default: 'Thu',
-          br: 'Qui'
-        },
-        FRIDAY: {
-          default: 'Fri',
-          br: 'Sex'
-        },
-        SATURDAY: {
-          default: 'Sat',
-          br: 'Sab'
-        },
-        SUNDAY: {
-          default: 'Sun',
-          br: 'Ter'
-        }
-      };
+      MONDAY: {
+        default: 'Mon',
+        br: 'Seg'
+      },
+      TUESDAY: {
+        default: 'Tue',
+        br: 'Ter'
+      },
+      WEDNESDAY: {
+        default: 'Wed',
+        br: 'Qua'
+      },
+      THURSDAY: {
+        default: 'Thu',
+        br: 'Qui'
+      },
+      FRIDAY: {
+        default: 'Fri',
+        br: 'Sex'
+      },
+      SATURDAY: {
+        default: 'Sat',
+        br: 'Sab'
+      },
+      SUNDAY: {
+        default: 'Sun',
+        br: 'Ter'
+      }
+    };
 
     const groupedHours = [];
     let index = 0;
@@ -143,7 +144,7 @@ export class SnBranchInfoComponent {
               text: `${hoursEnum[res][language]}`,
               hours: branchSchedule[res]
             });
-            index ++;
+            index++;
           }
         }
       }
@@ -154,5 +155,4 @@ export class SnBranchInfoComponent {
   emitClick() {
     this.branchInfoClicked.emit();
   }
-
 }
