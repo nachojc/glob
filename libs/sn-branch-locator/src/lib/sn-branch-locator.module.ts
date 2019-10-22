@@ -1,12 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconModule, ButtonModule, OptionListModule, SnTabModule, LoadingModule, LoaderModule } from 'sn-common-lib';
+import { IconModule,
+  ButtonModule,
+  OptionListModule,
+  SnTabModule,
+  LoadingModule,
+  LoaderModule
+} from 'sn-common-lib';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
-import { EnvironmentConfigModel, ENV_CONFIG } from '@globile/mobile-services';
+import { ENV_CONFIG } from '@globile/mobile-services';
 
 import { SnMapDirective } from './directives/sn-map/sn-map.directive';
 import { SnMarkerDirective } from './directives/sn-marker/sn-marker.directive';
