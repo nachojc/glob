@@ -1,5 +1,6 @@
 
 @import '~sn-common-lib/styles/settings/colors';
+@import '~sn-common-lib/styles/settings/typography';
 
 .search-box {
     display: flex;
@@ -51,6 +52,7 @@
                 flex:1;
 
                 input[type=search] {
+                    font-family: inherit !important;
                     height: 100%;
                     -webkit-appearance: none;
                     display: block;
