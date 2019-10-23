@@ -106,7 +106,6 @@ describe('GeoPositionService', () => {
       nameService.getCurrentPosition().subscribe((pos: Position) => {
 
       }, (error) => {
-        console.error(error);
         expect(error).toBeUndefined();
       });
     }))

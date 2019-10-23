@@ -54,13 +54,7 @@ const GeoPositionServiceMock = {
 };
 
 
-// const SnBranchLocatorServiceMock = {
-//   getBranchesByCoords: (coords) => of([branchMock, branchMock]),
-//   getBranchesByBounds : (northEast, southWest) => of([branchMock, branchMock])
-// };
-
-
-fdescribe('SnBranchLocatorComponent', () => {
+describe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
   let fixture: ComponentFixture<SnBranchLocatorComponent>;
 
@@ -118,6 +112,7 @@ fdescribe('SnBranchLocatorComponent', () => {
   });
 
   it('should set userPosition', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     fixture.detectChanges();
     component.tilesLoaded();
     expect(component).toBeDefined();
@@ -205,23 +200,24 @@ fdescribe('SnBranchLocatorComponent', () => {
 
 
   it('place change', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     const eventValue: LatLngLiteral = {lat: 9, lng: 33};
-
     component.placeChange(eventValue);
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
   describe('getBranchesByCoordinates()', () => {
-    it('should return a list of branches', async(() => {
+    beforeEach(() => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+    });
+    it('should return a list of branches', () => {
       spyOn(component, 'selectBranch');
       component.getBranchesByCoordinates({lat: 1, lng: 2});
       expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({lat: 1, lng: 2});
       expect(component.selectBranch).not.toHaveBeenCalled();
-    }));
+    });
 
     it('should call API with userPosition as param', () => {
-      spyOn(component['branchService'], 'getBranchesByCoords').and.callThrough();
       component.userPosition = {lat: 2, lng: 3};
       component.getBranchesByCoordinates();
       expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith(component.userPosition);
@@ -229,7 +225,7 @@ fdescribe('SnBranchLocatorComponent', () => {
 
   });
 
-  fdescribe('centerMapToUser()', () => {
+  describe('centerMapToUser()', () => {
     it('should call getBranchesByCoordinates with params', () => {
       spyOn(component, 'getBranchesByCoordinates').and.returnValue(of([branchMock, branchMock]));
       component.userPosition = {lat: 38.7376049, lng: -9.1654431};
@@ -262,6 +258,7 @@ fdescribe('SnBranchLocatorComponent', () => {
 
   describe('mapReady()', () => {
     it('should set userPosition', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['service'], 'getCurrentPosition').and.callThrough();
       component.mapReady();
       expect(component.userPosition).toBeDefined();
