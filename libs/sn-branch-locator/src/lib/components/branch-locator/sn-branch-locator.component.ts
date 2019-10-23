@@ -128,24 +128,13 @@ export class SnBranchLocatorComponent implements OnInit {
     this.selectedMarker = selected;
     this.selectedBranch = branch;
 
+    this.openDrawer();
 
-    selected['_markerManager'].getNativeMarker(selected).then((nativeMarker: any) => {
-      const selectedPos: LatLngLiteral = {
-        lat: nativeMarker.position.lat(),
-        lng: nativeMarker.position.lng()
-      };
-      this.map.api.panTo(selectedPos).then(() => this.map.api.setZoom(this.zoom)).then(() => {
-        if (Boolean(this.selectedMarker)) {
-          this.openDrawer();
-        }
-      });
-    });
   }
 
   mapClick(event: MouseEvent): void {
     if (this.selectedMarker) {
       this.clearSelectedMarker();
-
     }
   }
   mapReady(): void {
