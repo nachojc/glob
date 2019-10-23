@@ -44,7 +44,7 @@ describe('DrawerComponent', () => {
 
     it('Pan Event biger then window heigh, additionalEvent panup', () => {
       fixture.detectChanges();
-      // tslint:disable-next-line: no-string-literal
+      spyOn(component, 'drawerPan');
       const drawer = fixture.debugElement.triggerEventHandler('pan', {center : {y: 50}, additionalEvent : 'panup'});
       fixture.whenStable().then(() => {
         expect(component.drawerPan).toHaveBeenCalled();
@@ -54,6 +54,7 @@ describe('DrawerComponent', () => {
 
     it('Pan Event biger then window heigh, additionalEvent pandown', () => {
       fixture.detectChanges();
+      spyOn(component, 'drawerPan');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('pan', {center : {y: 50}, additionalEvent : 'pandown'});
       fixture.whenStable().then(() => {
@@ -64,6 +65,7 @@ describe('DrawerComponent', () => {
 
     it('Pan Event smaller then window heigh', () => {
       fixture.detectChanges();
+      spyOn(component, 'drawerPan');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('pan', {center : {y: 0}});
       fixture.whenStable().then(() => {
@@ -73,7 +75,7 @@ describe('DrawerComponent', () => {
 
     it('Pan end Event', () => {
       fixture.detectChanges();
-      // tslint:disable-next-line: no-string-literal
+      spyOn(component, 'drawerPanEnd');
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true});
       fixture.whenStable().then(() => {
         expect(component.drawerPanEnd).toHaveBeenCalled();
@@ -84,7 +86,7 @@ describe('DrawerComponent', () => {
 
     it('Pan start Event', () => {
       fixture.detectChanges();
-      // tslint:disable-next-line: no-string-literal
+      spyOn(component, 'drawerPanStart');
       const drawer = fixture.debugElement.triggerEventHandler('panstart', {});
       fixture.whenStable().then(() => {
         expect(component.drawerPanStart).toHaveBeenCalled();
@@ -120,6 +122,7 @@ describe('DrawerComponent', () => {
     it('Pan end Event deltaY  smaller then BOUNCE_DELTA and state is top', () => {
       component.state = DrawerState.Top;
       fixture.detectChanges();
+      spyOn(component, 'drawerPanEnd');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 0});
 
@@ -132,6 +135,7 @@ describe('DrawerComponent', () => {
     it('Pan end Event deltaY  bigger then BOUNCE_DELTA and state is bottom', () => {
       component.state = DrawerState.Bottom;
       fixture.detectChanges();
+      spyOn(component, 'drawerPanEnd');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: -50});
 
@@ -145,6 +149,7 @@ describe('DrawerComponent', () => {
     it('Pan end Event deltaY  bigger then BOUNCE_DELTA and state is top', () => {
       component.state = DrawerState.Top;
       fixture.detectChanges();
+      spyOn(component, 'drawerPanEnd');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 50});
 
@@ -156,6 +161,7 @@ describe('DrawerComponent', () => {
 
     it('Pan end Event deltaY negative and state is docked', () => {
       component.state = DrawerState.Docked;
+      spyOn(component, 'drawerPanEnd');
       fixture.detectChanges();
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: -50});
@@ -169,6 +175,7 @@ describe('DrawerComponent', () => {
     it('Pan end Event deltaY posite and state is docked', () => {
       component.state = DrawerState.Docked;
       fixture.detectChanges();
+      spyOn(component, 'drawerPanEnd');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true , deltaY: 50});
 
@@ -181,6 +188,7 @@ describe('DrawerComponent', () => {
     it('Pan end Event isFinal false an stae is Docked', () => {
       component.state = DrawerState.Docked;
       fixture.detectChanges();
+      spyOn(component, 'drawerPanEnd');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: false , deltaY: 0});
 
@@ -193,6 +201,7 @@ describe('DrawerComponent', () => {
     it('Pan end Event isFinal true an stae is Docked', () => {
       component.state = DrawerState.Docked;
       fixture.detectChanges();
+      spyOn(component, 'drawerPanEnd');
       // tslint:disable-next-line: no-string-literal
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true , deltaY: 0});
 

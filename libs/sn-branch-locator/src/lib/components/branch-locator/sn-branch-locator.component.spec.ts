@@ -60,7 +60,7 @@ const GeoPositionServiceMock = {
 // };
 
 
-describe('SnBranchLocatorComponent', () => {
+fdescribe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
   let fixture: ComponentFixture<SnBranchLocatorComponent>;
 
@@ -229,9 +229,9 @@ describe('SnBranchLocatorComponent', () => {
 
   });
 
-  describe('centerMapToUser()', () => {
+  fdescribe('centerMapToUser()', () => {
     it('should call getBranchesByCoordinates with params', () => {
-      spyOn(component, 'getBranchesByCoordinates');
+      spyOn(component, 'getBranchesByCoordinates').and.returnValue(of([branchMock, branchMock]));
       component.userPosition = {lat: 38.7376049, lng: -9.1654431};
       component.centerMapToUser();
       expect(component.getBranchesByCoordinates).toHaveBeenCalledWith(component.userPosition, false);
