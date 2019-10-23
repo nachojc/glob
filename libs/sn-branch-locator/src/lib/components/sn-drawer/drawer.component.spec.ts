@@ -44,7 +44,6 @@ describe('DrawerComponent', () => {
 
     it('Pan Event biger then window heigh, additionalEvent panup', () => {
       fixture.detectChanges();
-      spyOn(component, 'drawerPan');
       const drawer = fixture.debugElement.triggerEventHandler('pan', {center : {y: 50}, additionalEvent : 'panup'});
       fixture.whenStable().then(() => {
         expect(component.drawerPan).toHaveBeenCalled();
@@ -75,7 +74,6 @@ describe('DrawerComponent', () => {
 
     it('Pan end Event', () => {
       fixture.detectChanges();
-      spyOn(component, 'drawerPanEnd');
       const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true});
       fixture.whenStable().then(() => {
         expect(component.drawerPanEnd).toHaveBeenCalled();
@@ -86,127 +84,124 @@ describe('DrawerComponent', () => {
 
     it('Pan start Event', () => {
       fixture.detectChanges();
-      spyOn(component, 'drawerPanStart');
+      // spyOn(component, 'drawerPanStart');
       const drawer = fixture.debugElement.triggerEventHandler('panstart', {});
       fixture.whenStable().then(() => {
         expect(component.drawerPanStart).toHaveBeenCalled();
       });
     });
 
-    it('Change drawer State to Top', () => {
-      component.state = DrawerState.Top;
-      component.setDrawerState(component.state);
-      expect( component.state ).toEqual(DrawerState.Top);
-    });
-
-    it('Change drawer State to Docke', () => {
-      component.state = DrawerState.Docked;
-      component.setDrawerState(component.state);
-      expect( component.state ).toEqual(DrawerState.Docked);
-    });
-
-    it('Change drawer State to Bottom', () => {
-      component.state = DrawerState.Bottom;
-      component.setDrawerState(component.state);
-      expect( component.state ).toEqual(DrawerState.Bottom);
-    });
-
-
-    it('Change drawer State to undefined', () => {
-      component.state = undefined;
-      component.setDrawerState(component.state);
-      expect( component.state ).toBeUndefined();
-    });
-
-
-    it('Pan end Event deltaY  smaller then BOUNCE_DELTA and state is top', () => {
-      component.state = DrawerState.Top;
-      fixture.detectChanges();
-      spyOn(component, 'drawerPanEnd');
-      // tslint:disable-next-line: no-string-literal
-      const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 0});
-
-      fixture.whenStable().then(() => {
-        expect(component.drawerPanEnd).toHaveBeenCalled();
+    describe('setDrawerState', () => {
+      it('Change drawer State to Top', () => {
+        component.state = DrawerState.Top;
+        component.setDrawerState(component.state);
+        expect( component.state ).toEqual(DrawerState.Top);
       });
-    });
 
+      it('Change drawer State to Docke', () => {
+        component.state = DrawerState.Docked;
+        component.setDrawerState(component.state);
+        expect( component.state ).toEqual(DrawerState.Docked);
+      });
 
-    it('Pan end Event deltaY  bigger then BOUNCE_DELTA and state is bottom', () => {
-      component.state = DrawerState.Bottom;
-      fixture.detectChanges();
-      spyOn(component, 'drawerPanEnd');
-      // tslint:disable-next-line: no-string-literal
-      const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: -50});
+      it('Change drawer State to Bottom', () => {
+        component.state = DrawerState.Bottom;
+        component.setDrawerState(component.state);
+        expect( component.state ).toEqual(DrawerState.Bottom);
+      });
 
-      fixture.whenStable().then(() => {
-        expect(component.drawerPanEnd).toHaveBeenCalled();
+      it('Change drawer State to undefined', () => {
+        component.state = undefined;
+        component.setDrawerState(component.state);
+        expect( component.state ).toBeUndefined();
       });
     });
 
 
 
-    it('Pan end Event deltaY  bigger then BOUNCE_DELTA and state is top', () => {
-      component.state = DrawerState.Top;
-      fixture.detectChanges();
-      spyOn(component, 'drawerPanEnd');
-      // tslint:disable-next-line: no-string-literal
-      const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 50});
+    describe('drawerPanEnd()', () => {
+      it('Pan end Event deltaY  smaller then BOUNCE_DELTA and state is top', () => {
+        component.state = DrawerState.Top;
+        fixture.detectChanges();
+        spyOn(component, 'drawerPanEnd');
+        // tslint:disable-next-line: no-string-literal
+        const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 0});
 
-      fixture.whenStable().then(() => {
-        expect(component.drawerPanEnd).toHaveBeenCalled();
+        fixture.whenStable().then(() => {
+          expect(component.drawerPanEnd).toHaveBeenCalled();
+        });
       });
-    });
 
+      it('Pan end Event deltaY  bigger then BOUNCE_DELTA and state is bottom', () => {
+        component.state = DrawerState.Bottom;
+        fixture.detectChanges();
+        spyOn(component, 'drawerPanEnd');
+        // tslint:disable-next-line: no-string-literal
+        const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: -50});
 
-    it('Pan end Event deltaY negative and state is docked', () => {
-      component.state = DrawerState.Docked;
-      spyOn(component, 'drawerPanEnd');
-      fixture.detectChanges();
-      // tslint:disable-next-line: no-string-literal
-      const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: -50});
-
-      fixture.whenStable().then(() => {
-        expect(component.drawerPanEnd).toHaveBeenCalled();
+        fixture.whenStable().then(() => {
+          expect(component.drawerPanEnd).toHaveBeenCalled();
+        });
       });
-    });
 
+      it('Pan end Event deltaY  bigger then BOUNCE_DELTA and state is top', () => {
+        component.state = DrawerState.Top;
+        fixture.detectChanges();
+        spyOn(component, 'drawerPanEnd');
+        // tslint:disable-next-line: no-string-literal
+        const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 50});
 
-    it('Pan end Event deltaY posite and state is docked', () => {
-      component.state = DrawerState.Docked;
-      fixture.detectChanges();
-      spyOn(component, 'drawerPanEnd');
-      // tslint:disable-next-line: no-string-literal
-      const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true , deltaY: 50});
-
-      fixture.whenStable().then(() => {
-        expect(component.drawerPanEnd).toHaveBeenCalled();
+        fixture.whenStable().then(() => {
+          expect(component.drawerPanEnd).toHaveBeenCalled();
+        });
       });
-    });
 
+      it('Pan end Event deltaY negative and state is docked', () => {
+        component.state = DrawerState.Docked;
+        spyOn(component, 'drawerPanEnd');
+        fixture.detectChanges();
+        // tslint:disable-next-line: no-string-literal
+        const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: -50});
 
-    it('Pan end Event isFinal false an stae is Docked', () => {
-      component.state = DrawerState.Docked;
-      fixture.detectChanges();
-      spyOn(component, 'drawerPanEnd');
-      // tslint:disable-next-line: no-string-literal
-      const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: false , deltaY: 0});
-
-      fixture.whenStable().then(() => {
-        expect(component.drawerPanEnd).toHaveBeenCalled();
+        fixture.whenStable().then(() => {
+          expect(component.drawerPanEnd).toHaveBeenCalled();
+        });
       });
-    });
 
+      it('Pan end Event deltaY posite and state is docked', () => {
+        component.state = DrawerState.Docked;
+        fixture.detectChanges();
+        spyOn(component, 'drawerPanEnd');
+        // tslint:disable-next-line: no-string-literal
+        const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true , deltaY: 50});
 
-    it('Pan end Event isFinal true an stae is Docked', () => {
-      component.state = DrawerState.Docked;
-      fixture.detectChanges();
-      spyOn(component, 'drawerPanEnd');
-      // tslint:disable-next-line: no-string-literal
-      const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true , deltaY: 0});
+        fixture.whenStable().then(() => {
+          expect(component.drawerPanEnd).toHaveBeenCalled();
+        });
+      });
 
-      fixture.whenStable().then(() => {
-        expect(component.drawerPanEnd).toHaveBeenCalled();
+      it('Pan end Event isFinal false an stae is Docked', () => {
+        component.state = DrawerState.Docked;
+        fixture.detectChanges();
+        spyOn(component, 'drawerPanEnd');
+        // tslint:disable-next-line: no-string-literal
+        const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: false , deltaY: 0});
+
+        fixture.whenStable().then(() => {
+          expect(component.drawerPanEnd).toHaveBeenCalled();
+        });
+      });
+
+      it('Pan end Event isFinal true an stae is Docked', () => {
+        component.state = DrawerState.Docked;
+        fixture.detectChanges();
+        spyOn(component, 'drawerPanEnd');
+        // tslint:disable-next-line: no-string-literal
+        const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true , deltaY: 0});
+
+        fixture.whenStable().then(() => {
+          expect(component.drawerPanEnd).toHaveBeenCalled();
+        });
       });
     });
 

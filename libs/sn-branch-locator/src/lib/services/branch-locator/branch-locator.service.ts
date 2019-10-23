@@ -67,7 +67,7 @@ export class SnBranchLocatorService {
             }
             poiArray[index] = currentValue;
           } else {
-            // TODO: What should we do when there are 2 branches in the same place?
+            // TODO: What should we do when there are 2 atm in the same place?
             currentValue.atm = [poiArray[index]];
             if (poiArray[index].atm) {
               poiArray[index].atm.push(currentValue);

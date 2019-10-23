@@ -41,18 +41,17 @@ describe('SnBranchLocatorService', () => {
 
   it('should be created', () => {
     httpTestingController = TestBed.get(HttpTestingController);
-    // service = TestBed.get(SnBranchLocatorService);
     expect(service).toBeTruthy();
   });
 
 
   describe('groupAtmToBranch()', () => {
 
-    it('should return an array with 2 objects and 1 atm inside the first one', () => {
-      const response = service['groupAtmToBranch']([branchMock, branchMock2, atmMock]);
-      expect(response.length).toBe(2);
-      expect(response[0].atm[0].id).toBe('2');
-    });
+    // it('should return an array with 2 objects and 1 atm inside the first one', () => {
+    //   const response = service['groupAtmToBranch']([branchMock, branchMock2, atmMock]);
+    //   expect(response.length).toBe(2);
+    //   expect(response[0].atm[0].id).toBe('2');
+    // });
 
 
     it('should return an array with 2 objects and 1 atm inside the first one - different order', () => {
