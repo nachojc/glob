@@ -53,7 +53,6 @@ describe('SnBranchInfoComponent', () => {
       };
       // tslint:disable-next-line: no-string-literal
       const result = component['parseSchedule'](branchMock.schedule.workingDay);
-      
       expect(result.length).toBe(3);
       expect(result[0].text).toBe('Mon');
       expect(result[0].hours[0]).toBe('09:30-17:00');
