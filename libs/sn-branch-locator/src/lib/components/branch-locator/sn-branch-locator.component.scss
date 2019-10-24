@@ -73,7 +73,7 @@
     position: absolute !important;
     background-color: rgba(white, 0.75) !important;
     user-select: none;
-    pointer-events: none;
+    pointer-events: all;
     touch-action: none;
   }
 }
