@@ -81,7 +81,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
 
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: any): void {
     this.setDrawerState(changes.state.currentValue);
   }
 
