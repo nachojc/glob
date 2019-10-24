@@ -2,7 +2,7 @@
     <div #header class="branch-summary-wrapper" (click)="emitClick()">
         <h6 class="branch-title" *ngIf="isNearestMarker">{{ 'branchlocator.details.neartitle' | translate }}</h6>
         <section class="branch-summary">
-            <h6 class="branch-name" style="min-height: 48px;">{{branch.name}}</h6>
+            <h6 class="branch-name" style="min-height: 48px;">{{((branch && branch?.name)? branch.name + ' - ': '') + branch?.location.city}}</h6>
             <div class="body-medium" *ngIf="branch.subType?.multi">{{branch.subType?.multi.default}}</div>
         </section>
         <section class="branch-location">
@@ -10,7 +10,7 @@
             {{branch.location.address}}
           </p>
           <div class="branch-directions">
-            <button>{{branch.distanceInMiles | number:'0.0-2'}} m</button>
+            <button>{{branch.distanceInKm | number:'0.0-2'}} km</button>
           </div>
         </section>
     <section class="branch-schedule">

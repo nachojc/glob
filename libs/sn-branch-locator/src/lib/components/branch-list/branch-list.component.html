@@ -7,12 +7,12 @@
   >
     <sn-icon color="secondary" icon="sn-SYS016"></sn-icon>
 
-    <div class="Type-5_Regular-Style name">{{ branch?.name }}</div>
+    <div class="Type-5_Regular-Style name">{{ ((branch && branch?.name)? branch.name + ' - ': '') + branch?.location.city }}</div>
     <div class="Type-5_Regular-Style address">
       {{ branch?.location?.address }}
     </div>
     <div right-text class="Type-5_Regular-Style distance">
-      {{ branch?.distanceInMiles | number: "0.0-2" }} m
+      {{ branch?.distanceInKm | number: "0.0-2" }} km
     </div>
   </sn-option-item>
 </sn-option-list>

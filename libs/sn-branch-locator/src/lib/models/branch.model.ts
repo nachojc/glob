@@ -38,6 +38,7 @@ export class Branch {
     };
     distanceInKm: number;
     distanceInMiles: number;
+    distanceDone?: boolean;
     contactData: any;
     socialData: {
         youtubeLink: string;
