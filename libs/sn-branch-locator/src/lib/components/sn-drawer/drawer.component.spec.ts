@@ -73,9 +73,7 @@ describe('DrawerComponent', () => {
         component['startPositionTop'] = 10;
         component.distanceTop = 30;
         fixture.debugElement.triggerEventHandler('pan', {center : {y: 1}, additionalEvent: 'pandown', deltaY: 10});
-        fixture.whenStable().then(() => {
-          expect(component['_setTranslateY']).toHaveBeenCalledWith('30px');
-        });
+        expect(component['_setTranslateY']).toHaveBeenCalledWith('30px');
       });
 
     });
