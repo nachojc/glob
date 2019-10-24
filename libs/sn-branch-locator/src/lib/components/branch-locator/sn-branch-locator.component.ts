@@ -204,25 +204,7 @@ export class SnBranchLocatorComponent implements OnInit {
 
   onFilterApply(event) {
     this.filterCounts = event.count;
-    from(this.map.api.getBounds()).pipe(
-      switchMap((mapBounds: LatLngBounds) => {
-        this.isLoading = true;
-        return this.branchService.getBranchesByBounds({
-          lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng()
-        },
-          { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() }
-        );
-      })
-    ).subscribe(res => {
-      this.clearSelectedMarker();
-      this.branchesList = res;
-      this.isLoading = false;
-    }, (error) => {
-      // TODO: Add error handler
-      console.error(error);
-      this.isLoading = false;
-    });
-
+    this.getBranchesByBounds();
   }
 
   showFilter() {
@@ -261,6 +243,10 @@ export class SnBranchLocatorComponent implements OnInit {
 
 
   tilesLoaded() {
+    this.getBranchesByBounds();
+  }
+
+  getBranchesByBounds() {
     from(this.map.api.getBounds()).pipe(
       switchMap((mapBounds: LatLngBounds) => {
         this.isLoading = true;
