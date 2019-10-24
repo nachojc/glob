@@ -57,7 +57,7 @@ export class SnBranchLocatorService {
 
   private groupAtmToBranch(array: Branch[]): Branch[] {
     return array.reduce((poiArray, currentValue) => {
-      const index = poiArray.findIndex(el => parseFloat( el.distanceInKm.toFixed(2)) === parseFloat(currentValue.distanceInKm.toFixed(2)));
+      const index = poiArray.findIndex(el => el.distanceInKm.toFixed(2) === currentValue.distanceInKm.toFixed(2));
       if (index >= 0) {
         if (poiArray[index].objectType.code.toUpperCase() === 'BRANCH') {
           if (poiArray[index].atm) {
