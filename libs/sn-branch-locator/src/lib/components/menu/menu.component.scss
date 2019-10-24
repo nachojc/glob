@@ -57,11 +57,13 @@
     flex: 1;
     overflow: hidden;
     .info-close-button-wrapper{
-      border-top: 1px solid $color-primary-mediumsky;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
+      // border-top: 1px solid $color-primary-mediumsky;
+      // display: flex;
+      // flex-direction: row;
+      // justify-content: flex-end;
       padding: 8px;
+      position: fixed;
+      right: 0;
       button.info-close-button{
         font-size: 24px;
       }
