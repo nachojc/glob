@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'sn-branch-info',
@@ -8,17 +9,22 @@ import { Branch } from '../../models/branch.model';
 })
 export class SnBranchInfoComponent {
   private _branch: Branch;
-  public schedulePreview = [];
-  public haveAccesibilitty: boolean;
-  public attributeList: string[];
+  public isBranch: boolean = true;
+  public todayHours: string;
+  public language = this.translate.getDefaultLang();
+
+  @Input() isNearestMarker: boolean = false;
 
   @Input()
   set branch(value: Branch) {
-    this._branch = value;
-    this.schedulePreview = this.parseHours(this._branch.schedule.workingDay);
-    if (this._branch.attrib) {
-      this.attributeList = this._branch.attrib.map(attr => attr.code);
-      this.haveAccesibilitty = this.attributeList.find(attr => attr.toUpperCase() === 'ACCESIBILITY') ? true : false;
+    this._branch = this.setPOIInformation(value);
+    this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
+    this.isBranch = true;
+    if (this._branch.objectType.code.toUpperCase() === 'ATM') {
+      this._branch.atm = [this.setPOIInformation(value)];
+      this.isBranch = false;
+    } else if (this._branch.atm && this._branch.atm.length > 0) {
+      this._branch.atm[0] = this.setPOIInformation(this._branch.atm[0]);
     }
   }
 
@@ -26,43 +32,138 @@ export class SnBranchInfoComponent {
     return this._branch;
   }
 
-  constructor() { }
+  // TODO : Temporary fix.
+  @Output() branchInfoClicked = new EventEmitter<any>();
+
+
+
+  constructor(public translate: TranslateService) {
+  }
 
   contactBranch(phone: string) {
   }
 
-  private parseHours(branchSchedule: any) {
+  private setPOIInformation(poi: Branch): Branch {
+    poi.products = this.getProducts(poi);
+    poi.attributes = this.getAttributes(poi);
+    poi.schedule.preview = this.parseSchedule(poi.schedule.workingDay);
+    poi.schedule.timeToClose = this.getHoursToClose(poi.schedule.workingDay);
+    return poi;
+  }
 
-    // TODO: Verify how it will work with internatilization.
-    const language = 'default';
+  private getProducts(poi: Branch): string[] {
+    if (poi.comercialProducts) {
+      return poi.comercialProducts.map(product => product[this.language] ? product[this.language] : product.default);
+    }
+    return [];
+  }
+
+  private getAttributes(poi: Branch): string[] {
+    if (poi.attrib) {
+      return poi.attrib.map(attr => {
+        // Remover blank spaces and nullable
+        if (attr.code && attr.code !== '') {
+          // get accesibility attribute
+          if (attr.code.toUpperCase() === 'ACCESIBILITY') {
+            poi.hasAccesibility = true;
+            return null;
+          }
+          if (attr.multi && (attr.multi.default || attr.multi[this.language])) {
+            if (attr.multi.default === 'NO') {
+              return null;
+            } else if (attr.multi.default === 'YES' || attr.multi.default === 'SI') {
+              return attr.code;
+            } else {
+              return attr.multi[this.language] ? attr.multi[this.language] :  attr.multi.default;
+            }
+          } else {
+            // if there aren't translation display the code
+            return attr.code;
+          }
+        }
+        return null;
+      }).filter(attr => attr !== null);
+    }
+    return [];
+  }
+
+
+  getHoursToClose(schedule) {
+    const poiHours = this.getTodayTimeInformation(schedule);
+    if (poiHours) {
+      const now = new Date(0, 0, 0, new Date().getHours(), new Date().getMinutes(), 0);
+      const [start, end] = poiHours.split('-').map(res => res.split(':'));
+      const startDate = new Date(0, 0, 0, Number(start[0]), Number(start[1]), 0);
+      const endDate = new Date(0, 0, 0, Number(end[0]), Number(end[1]), 0);
+      if (now.getTime() < startDate.getTime() || now.getTime() > endDate.getTime()) {
+        return {
+          text: this.translate.instant('branchlocator.details.closed'),
+          mode: 'CLOSED'
+        };
+      } else {
+        let diff = endDate.getTime() - now.getTime();
+        const hours = Math.floor(diff / 1000 / 60 / 60);
+        diff -= hours * 1000 * 60 * 60;
+        const minutes = Math.floor(diff / 1000 / 60);
+        if (hours <= 0) {
+          return {
+            text: `${this.translate.instant('branchlocator.details.closing')} ${(minutes <= 9 ? '0' : '')}${minutes} min`,
+            mode: 'CLOSING'
+          };
+        }
+        // return 'Closing in ' + (hours > 0 ? hours + 'h' : '') + (minutes <= 9 ? '0' : '') + minutes;
+        return {
+          text: this.translate.instant('branchlocator.details.open'),
+          mode: 'OPEN'
+        };
+      }
+    }
+  }
+
+
+  getTodayTimeInformation(branchSchedule: any) {
+    const auxHours = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    const now = new Date().getDay();
+    return branchSchedule[auxHours[now]][0];
+  }
+
+
+  public parseSchedule(branchSchedule: any): any[] {
     const hoursEnum = {
         MONDAY: {
-          default: 'Mon',
-          br: 'Seg'
+          en: 'Mon',
+          es: 'Seg', // TODO: review translation
+          pt: 'Seg'
         },
         TUESDAY: {
-          default: 'Tue',
-          br: 'Ter'
+          en: 'Tue',
+          es: 'Ter', // TODO: review translation
+          pt: 'Ter'
         },
         WEDNESDAY: {
-          default: 'Wed',
-          br: 'Qua'
+          en: 'Wed',
+          es: 'Qua', // TODO: review translation
+          pt: 'Qua'
         },
         THURSDAY: {
-          default: 'Thu',
-          br: 'Qui'
+          en: 'Thu',
+          es: 'Qui', // TODO: review translation
+          pt: 'Qui'
         },
         FRIDAY: {
-          default: 'Fri',
-          br: 'Sex'
+          en: 'Fri',
+          es: 'Sex', // TODO: review translation
+          pt: 'Sex'
         },
         SATURDAY: {
-          default: 'Sat',
-          br: 'Sab'
+          en: 'Sat',
+          es: 'Sab', // TODO: review translation
+          pt: 'Sab'
         },
         SUNDAY: {
-          default: 'Sun',
-          br: 'Ter'
+          en: 'Sun',
+          es: 'Ter', // TODO: review translation
+          pt: 'Ter'
         }
       };
 
@@ -73,20 +174,20 @@ export class SnBranchInfoComponent {
         // create first group.
         if (groupedHours.length === 0) {
           groupedHours.push({
-            text: `${hoursEnum[res][language]}`,
+            text: `${hoursEnum[res][this.language]}`,
             hours: branchSchedule[res]
           });
         } else {
           // if same hours, add to the previous group
           if (JSON.stringify(groupedHours[index].hours) === JSON.stringify(branchSchedule[res])) {
-            groupedHours[index].text = `${groupedHours[index].text.split(' - ')[0]} - ${hoursEnum[res][language]}`;
+            groupedHours[index].text = `${groupedHours[index].text.split(' - ')[0]} - ${hoursEnum[res][this.language]}`;
           } else {
             // else, create a new group
             groupedHours.push({
-              text: `${hoursEnum[res][language]}`,
+              text: `${hoursEnum[res][this.language]}`,
               hours: branchSchedule[res]
             });
-            index ++;
+            index++;
           }
         }
       }
@@ -94,4 +195,7 @@ export class SnBranchInfoComponent {
     return groupedHours;
   }
 
+  emitClick() {
+    this.branchInfoClicked.emit();
+  }
 }

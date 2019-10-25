@@ -1,6 +1,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 
 import { GeoPositionService } from './geo-position.service';
+import { MapsAPILoader } from '@agm/core';
 
 
 const position: Position = {
@@ -19,12 +20,8 @@ const position: Position = {
 const windowRefOK = {
   navigator: {
     geolocation: {
-      watchPosition: (callback, error) => {
-        return callback(position);
-      },
-      getCurrentPosition: (callback, error) => {
-        return callback(position);
-      }
+      watchPosition: callback => callback(position),
+      getCurrentPosition: callback => callback(position)
     }
   }
 };
@@ -32,26 +29,27 @@ const windowRefOK = {
 const windowRefKO = {
   navigator: {
     geolocation: {
-      watchPosition: (callback, error) => {
-        return error();
-      },
-      getCurrentPosition: (callback, error) => {
-        return error();
-      }
+      watchPosition: (callback, error) => error(),
+      getCurrentPosition: (callback, error) =>  error()
     }
   }
+};
+const MapsAPILoaderMock = {
+  load: () => new Promise(() => true)
 };
 
 describe('GeoPositionService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
-      { provide: 'WINDOW', useValue: windowRefOK }
+      { provide: 'WINDOW', useValue: windowRefOK },
+      { provide: MapsAPILoader, useValue: MapsAPILoaderMock }
     ]
   }));
 
   it('should be created', () => {
     const service: GeoPositionService = TestBed.get(GeoPositionService);
     expect(service).toBeTruthy();
+    expect(service.geolocation).toBeDefined();
   });
 
   it('When watchPosition is called Then return an observable Position', async(
@@ -82,21 +80,23 @@ describe('GeoPositionService', () => {
 describe('GeoPositionService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
-      { provide: 'WINDOW', useValue: windowRefKO }
+      { provide: 'WINDOW', useValue: windowRefKO },
+      { provide: MapsAPILoader, useValue: MapsAPILoaderMock }
     ]
   }));
 
 
-  it('When watchPosition is called Then return an error observable', async(
-    inject([GeoPositionService], (nameService) => {
+  it('When watchPosition is called Then return an error observable', (
+    inject([GeoPositionService], (service) => {
 
       spyOn(navigator.geolocation, 'watchPosition').and.returnValue(undefined);
 
-      nameService.watchPosition().subscribe((pos: Position) => {
-
-      }, (error) => {
-        expect(error).toBeUndefined();
+      service.watchPosition().subscribe(
+        () => {},
+        (error) => {
+          expect(error).toBeUndefined();
       });
+
     }))
   );
 
@@ -107,7 +107,6 @@ describe('GeoPositionService', () => {
       nameService.getCurrentPosition().subscribe((pos: Position) => {
 
       }, (error) => {
-        console.log(error);
         expect(error).toBeUndefined();
       });
     }))

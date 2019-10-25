@@ -1,18 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader, NoOpMapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
-import { IconModule, OptionListModule, SnTabModule } from 'sn-common-lib';
-import { SnDrawerComponent } from '../sn-drawer/sn-drawer.component';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
+import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
+
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
-import { DrawerState } from '../sn-drawer/models/sn-drawer-state.model';
+
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
-import { BranchSearchInputModule } from '../branch-search-input';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { Branch } from '../../models/branch.model';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
+import { branchMock } from '../../helpers/branch.mock';
+import { environment } from 'src/environments/environment';
+import { ENV_CONFIG } from '@globile/mobile-services';
+import { BranchSearchInputModule } from '../branch-search/branch-search.module';
+import { FormBuilder } from '@angular/forms';
+import { Platform, NoopPlatform } from '../../services/platform/platform.service';
 
 
 const MapsAPILoaderMock = {
@@ -29,11 +34,6 @@ const windowRef = {
     }
   }
 };
-const GeoPositionServiceMock = {
-  watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
-  getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
-};
-
 const mapBounds = {
   getNorthEast: () => ({
     lat: () => 123,
@@ -47,78 +47,12 @@ const mapBounds = {
   })
 };
 
-const branchMock: Branch = {
-  id: '5d8b6968048ccee51add3042',
-  code: 'Santander_UK_UK_B798',
-  entityCode: 'Santander_UK',
-  name: 'Milton Keynes GG',
-  action: null,
-  poiStatus: 'ACTIVE',
-  objectType: {
-      multi: {
-          default: 'BRANCH',
-          es: 'BRANCH'
-      },
-      code: 'BRANCH'
-  },
-  subType: null,
-  specialType: null,
-  description: null,
-  status: null,
-  location: {
-      type: 'Point',
-      coordinates: [-0.77027524, 52.037222],
-      address: 'Santander House, 201, Grafton Gate East, Milton Keynes, Buckinghamshire, MK9 1AN',
-      zipcode: 'MK9 1AN',
-      city: 'Milton Keynes',
-      country: 'UK',
-      locationDetails: null,
-      parking: null,
-      geoCoords: { latitude: 52.037222, longitude: -0.77027524},
-      urlPhoto: null,
-      descriptionPhoto: null
-  },
-  distanceInKm: 0.39915483283281106,
-  distanceInMiles: 0.6386477325324977,
-  contactData: null,
-  socialData: {
-      youtubeLink: 'https://www.youtube.com/user/UKSantander',
-      facebookLink: 'https://www.facebook.com/santanderuk/',
-      twitterLink: 'https://twitter.com/santanderuk',
-      linkedinLink: 'https://www.linkedin.com/company/santander-uk-corporate-&-commercial',
-      instagramLink: null,
-      googleLink: null
-  },
-  appointment: {
-      waitingTimeTeller: null,
-      waitingTimeSpecialist: null,
-      branchAppointment: 'https://www.santander.co.uk/uk/book-an-appointment'
-  },
-  schedule: {
-      workingDay: {
-        WEDNESDAY: ['09:30-17:00'],
-        MONDAY: ['09:30-17:00'],
-        THURSDAY: ['09:30-17:00'],
-        SUNDAY: [],
-        TUESDAY: ['09:30-17:00'],
-        FRIDAY: ['09:30-17:00'],
-        SATURDAY: []},
-      specialDay: []
-  },
-  comercialProducts: [],
-  banner: null,
-  spokenlanguages: ['EN'],
-  attrib: [],
-  richTexts: [],
-  people: null,
-  events: null,
-  store: '',
-  urlDetailPage: '',
-  dialogAttribute: null,
-  updatedTime: 1569417528615,
-  hideURLDetail: 'NO',
-  poicode: 'B798'
+
+const GeoPositionServiceMock = {
+  watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
+  getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
 };
+
 
 describe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
@@ -130,10 +64,10 @@ describe('SnBranchLocatorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SnBranchLocatorComponent,
-        SnDrawerComponent,
         SnBranchInfoComponent
       ],
       imports: [
+        DrawerModule,
         IconModule,
         SnTabModule,
         BranchSearchInputModule,
@@ -141,13 +75,18 @@ describe('SnBranchLocatorComponent', () => {
         HttpClientModule,
         TranslateModule.forRoot(),
         AgmCoreModule.forRoot({
-          apiKey: 'aaa'
+          apiKey: 'demo',
+          libraries: ['places']
         })
       ],
       providers: [
         { provide: 'WINDOW', useValue: windowRef },
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
-        { provide: GeoPositionService, useValue: GeoPositionServiceMock  }
+        { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
+        {provide: ENV_CONFIG, useValue: environment},
+        {provide : Platform, useClass: NoopPlatform},
+        SnBranchLocatorService,
+        FormBuilder,
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -172,11 +111,18 @@ describe('SnBranchLocatorComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should set userPosition', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
+    fixture.detectChanges();
+    component.tilesLoaded();
+    expect(component).toBeDefined();
+  });
+
   it('map clicked reset with a selected branch', () => {
     // tslint:disable-next-line: no-string-literal
     component['selectedMarker'] = new SnMarkerDirective({} as MarkerManager);
     // tslint:disable-next-line: no-string-literal
-    component['selectedMarker'].markerManager.updateIcon = (aux) => null;
+    component['selectedMarker']['_markerManager'].updateIcon = () => null;
     component.mapClick({} as any);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toBeUndefined();
@@ -232,17 +178,17 @@ describe('SnBranchLocatorComponent', () => {
 
   it('marker selected', () => {
     component.branchMarkerList = [
-      {id: () => 1, clickable: true, iconUrl : undefined, markerManager:  {updateIcon : (marker: any) => undefined}},
-      {id: () => 2, clickable: true, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined}},
-      {id: () => 3, clickable: false, iconUrl : undefined, markerManager: {updateIcon : (marker: any) => undefined }}
+      {id: () => 1, clickable: true, iconUrl : undefined, _markerManager:  {updateIcon : () => undefined}},
+      {id: () => 2, clickable: true, iconUrl : undefined, _markerManager: {updateIcon : () => undefined}},
+      {id: () => 3, clickable: false, iconUrl : undefined, _markerManager: {updateIcon : () => undefined }}
     ] as any;
     const selected = {
       id: () => 1,
       clickable: true,
       iconUrl: undefined,
-      markerManager: {
-        updateIcon: (marker: any) => undefined,
-        getNativeMarker: (marker: any) => new Promise((resolve) => {
+      _markerManager: {
+        updateIcon: () => undefined,
+        getNativeMarker: () => new Promise((resolve) => {
           resolve({ position: { lat: () => undefined, lng: () => undefined}});
         })
       }
@@ -254,11 +200,120 @@ describe('SnBranchLocatorComponent', () => {
 
 
   it('place change', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     const eventValue: LatLngLiteral = {lat: 9, lng: 33};
-
     component.placeChange(eventValue);
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
+  describe('getBranchesByCoordinates()', () => {
+    it('should return a list of branches', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      spyOn(component, 'selectBranch');
+      component.getBranchesByCoordinates({lat: 1, lng: 2});
+      expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({lat: 1, lng: 2});
+      expect(component.selectBranch).not.toHaveBeenCalled();
+    });
 
+    it('should call API with userPosition as param', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      component.userPosition = {lat: 2, lng: 3};
+      component.getBranchesByCoordinates();
+      expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith(component.userPosition);
+    });
+
+    it('should return error and set isLoading equal false', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.callFake(() => {
+        return throwError(new Error('Fake error'));
+      });
+      component.getBranchesByCoordinates();
+      expect(component.isLoading).toBeFalsy();
+    });
+
+  });
+
+  describe('centerMapToUser()', () => {
+    it('should call getBranchesByCoordinates with params', () => {
+      spyOn(component, 'getBranchesByCoordinates').and.returnValue(of([branchMock, branchMock]));
+      component.userPosition = {lat: 38.7376049, lng: -9.1654431};
+      component.centerMapToUser();
+      expect(component.getBranchesByCoordinates).toHaveBeenCalledWith(component.userPosition, false);
+    });
+
+    it('should call selectBranch', () => {
+      spyOn(component, 'selectBranch');
+      component.branchesList = [branchMock];
+      component.centerMapToUser(false, true);
+      expect(component.selectBranch).toHaveBeenCalled();
+      expect(component.showNearest).toBeTruthy();
+    });
+  });
+
+
+  describe('tabsChanged()', () => {
+    it('should set selectedTabIndex to 0', () => {
+      component.tabsChanged({tabIndex: 0});
+      expect(component['selectedTabIndex']).toBe(0);
+    });
+    it('should set selectedTabIndex to 1 and call clearSelectedMarker', () => {
+      spyOn<any>(component, 'clearSelectedMarker');
+      component.tabsChanged({tabIndex: 1});
+      expect(component['selectedTabIndex']).toBe(1);
+      expect(component['clearSelectedMarker']).toHaveBeenCalled();
+    });
+  });
+
+  describe('mapReady()', () => {
+    it('should set userPosition', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      spyOn(component['service'], 'getCurrentPosition').and.callThrough();
+      component.mapReady();
+      expect(component.userPosition).toBeDefined();
+    });
+  });
+
+
+  describe('closeInfo()', () => {
+    it('should return true', () => {
+      component.showDrawer = false;
+      component.closeInfo();
+      expect(component.showDrawer).toBeTruthy();
+    });
+    it('should return false', () => {
+      component.showDrawer = true;
+      component.closeInfo();
+      expect(component.showDrawer).toBeFalsy();
+    });
+  });
+
+  it('onFilterApply() should set filterCounts to 1', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
+    component.onFilterApply({count: 1});
+    expect(component.filterCounts).toBe(1);
+  });
+
+  describe('showFilter()', () => {
+    beforeEach(() => {
+      component.filterView = {open: () => null} as any;
+    });
+    it('should call filterView.open', () => {
+      spyOn(component.filterView, 'open');
+      component.showFilter();
+      expect(component.filterView.open).toHaveBeenCalled();
+    });
+  });
+
+  describe('selectBranch()', () => {
+
+    // const markerFound = this.branchMarkerList['_results'].find(marker => marker.title === branch.id);
+    // this.markerSelected(markerFound, branch);
+    // this.selectedTabIndex = 0;
+    it('should call markerselect', () => {
+      // component.branchMarkerList['_results'] = [{title: '1'}];
+      spyOn(component, 'markerSelected').and.returnValue(null);
+      // branchMock.id = '1';
+      component.selectBranch(branchMock);
+      expect(component.selectedTabIndex).toEqual(0);
+    });
+  });
 });

@@ -2,81 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OptionListModule, IconModule, SnTabModule } from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from './sn-branch-info.component';
-import { Branch } from '../../models/branch.model';
-
-
-const branchMock: Branch = {
-  id: '5d8b6968048ccee51add3042',
-  code: 'Santander_UK_UK_B798',
-  entityCode: 'Santander_UK',
-  name: 'Milton Keynes GG',
-  action: null,
-  poiStatus: 'ACTIVE',
-  objectType: {
-      multi: {
-          default: 'BRANCH',
-          es: 'BRANCH'
-      },
-      code: 'BRANCH'
-  },
-  subType: null,
-  specialType: null,
-  description: null,
-  status: null,
-  location: {
-      type: 'Point',
-      coordinates: [-0.77027524, 52.037222],
-      address: 'Santander House, 201, Grafton Gate East, Milton Keynes, Buckinghamshire, MK9 1AN',
-      zipcode: 'MK9 1AN',
-      city: 'Milton Keynes',
-      country: 'UK',
-      locationDetails: null,
-      parking: null,
-      geoCoords: { latitude: 52.037222, longitude: -0.77027524},
-      urlPhoto: null,
-      descriptionPhoto: null
-  },
-  distanceInKm: 0.39915483283281106,
-  distanceInMiles: 0.6386477325324977,
-  contactData: null,
-  socialData: {
-      youtubeLink: 'https://www.youtube.com/user/UKSantander',
-      facebookLink: 'https://www.facebook.com/santanderuk/',
-      twitterLink: 'https://twitter.com/santanderuk',
-      linkedinLink: 'https://www.linkedin.com/company/santander-uk-corporate-&-commercial',
-      instagramLink: null,
-      googleLink: null
-  },
-  appointment: {
-      waitingTimeTeller: null,
-      waitingTimeSpecialist: null,
-      branchAppointment: 'https://www.santander.co.uk/uk/book-an-appointment'
-  },
-  schedule: {
-      workingDay: {
-        WEDNESDAY: ['09:30-17:00'],
-        MONDAY: ['09:30-17:00'],
-        THURSDAY: ['09:30-17:00'],
-        SUNDAY: [],
-        TUESDAY: ['09:30-17:00'],
-        FRIDAY: ['09:30-17:00'],
-        SATURDAY: []},
-      specialDay: []
-  },
-  comercialProducts: [],
-  banner: null,
-  spokenlanguages: ['EN'],
-  attrib: [],
-  richTexts: [],
-  people: null,
-  events: null,
-  store: '',
-  urlDetailPage: '',
-  dialogAttribute: null,
-  updatedTime: 1569417528615,
-  hideURLDetail: 'NO',
-  poicode: 'B798'
-};
+import { branchMock } from '../../helpers/branch.mock';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('SnBranchInfoComponent', () => {
   let component: SnBranchInfoComponent;
@@ -89,6 +16,7 @@ describe('SnBranchInfoComponent', () => {
         SnTabModule,
         IconModule,
         OptionListModule,
+        TranslateModule.forRoot()
       ]
     })
     .compileComponents();
@@ -97,18 +25,61 @@ describe('SnBranchInfoComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SnBranchInfoComponent);
     component = fixture.componentInstance;
-    component.branch = branchMock;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('parseHours()', () => {
+  describe('branch()', () => {
+    it('should set isbranch as true', () => {
+      expect(component.isBranch).toBeTruthy();
+    });
+
+    it('should set isbranch as false', () => {
+      component.branch = Object.assign({}, branchMock, {objectType: {code: 'atm'}});
+      expect(component.isBranch).toBeFalsy();
+    });
+
+    it('should define products and attributes', () => {
+      component.branch = branchMock;
+      expect(component.branch.attributes[0]).toEqual('Cash withdraw');
+      expect(component.branch.attributes[1]).toEqual('CONTACTLESS');
+      expect(component.branch.attributes[2]).toEqual('LOW_DENOMINATION_BILL');
+      expect(component.branch.products[0]).toEqual('investment');
+      expect(component.branch.hasAccesibility).toBeTruthy();
+    });
+
+    it('should define products and attributes for atm', () => {
+      branchMock.atm = [Object.assign({}, branchMock, {objectType: {code: 'atm'}})];
+      component.branch = branchMock;
+      expect(component.branch.atm[0].attributes[0]).toEqual('Cash withdraw');
+      expect(component.branch.atm[0].attributes[1]).toEqual('CONTACTLESS');
+      expect(component.branch.atm[0].attributes[2]).toEqual('LOW_DENOMINATION_BILL');
+      expect(component.branch.atm[0].products[0]).toEqual('investment');
+      expect(component.branch.atm[0].hasAccesibility).toBeTruthy();
+      expect(component.isBranch).toBeTruthy();
+    });
+
+    it('should return empty arrays for products and attributes', () => {
+      branchMock.attrib = null;
+      branchMock.comercialProducts = null;
+      component.branch = branchMock;
+      expect(component.branch.attributes.length).toBe(0);
+      expect(component.branch.products.length).toBe(0);
+    });
+  });
+
+  describe('parseSchedule()', () => {
+    beforeEach(() => {
+      component.branch = branchMock;
+      component.language = 'en';
+      fixture.detectChanges();
+    });
+
     it('should return an array with one object', () => {
       // tslint:disable-next-line: no-string-literal
-      expect(component['parseHours'](branchMock.schedule.workingDay).length).toBe(1);
+      expect(component['parseSchedule'](branchMock.schedule.workingDay).length).toBe(1);
     });
 
 
@@ -123,8 +94,7 @@ describe('SnBranchInfoComponent', () => {
         SATURDAY: []
       };
       // tslint:disable-next-line: no-string-literal
-      const result = component['parseHours'](branchMock.schedule.workingDay);
-
+      const result = component['parseSchedule'](branchMock.schedule.workingDay);
       expect(result.length).toBe(3);
       expect(result[0].text).toBe('Mon');
       expect(result[0].hours[0]).toBe('09:30-17:00');
@@ -145,7 +115,8 @@ describe('SnBranchInfoComponent', () => {
         SATURDAY: []
       };
       // tslint:disable-next-line: no-string-literal
-      expect(component['parseHours'](branchMock.schedule.workingDay).length).toBe(3);
+      expect(component['parseSchedule'](branchMock.schedule.workingDay).length).toBe(3);
     });
   });
+
 });

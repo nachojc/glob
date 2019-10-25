@@ -1,0 +1,43 @@
+<div class="search-box">
+  <div class="search-input-wrapper">
+    <div class="search-input-button" >
+      <button (click)="search($event)" aria-label="Search">
+        <sn-icon icon="sn-FUNC071"></sn-icon>
+      </button>
+    </div>
+    <div class="search-input-input">
+      <input
+        #in
+        type="search"
+        [placeholder]="'branchlocator.searchinput.placeholder' | translate"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="off"
+      />
+    </div>
+    <div  class="search-input-center-button">
+        <button *ngIf="showReCenter" (click)="reCenter.emit($event)">
+            <sn-icon icon="sn-SYS028"></sn-icon>
+          </button>
+    </div>
+  </div>
+
+
+  <div class="filter-button-container">
+    <button class="filter-button" (click)="callFilter.emit($event)" aria-label="Filter">
+      <div class="filter-button-wrapper">
+        <div class="filter-button-label">
+          {{'branchlocator.searchinput.filterbutton' | translate}}
+        </div>
+        <div class="filter-button-icon">
+          <sn-icon icon="sn-FUNC035" *ngIf="!filterCount"></sn-icon>
+          <div class="filter-button-notification" *ngIf="filterCount">
+            <div class="filter-button-notification-wrapper">
+              {{ filterCount }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
+  </div>
+</div>

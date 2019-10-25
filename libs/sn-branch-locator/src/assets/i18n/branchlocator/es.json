@@ -1,8 +1,59 @@
 {
-    "branchlocator":{
+    "branchlocator": {
         "title": {
-            "map" :"Mapa",
+            "map": "Mapa",
             "list": "Listado"
+        },
+        "searchinput": {
+            "placeholder": "Busque aquí",
+            "filterbutton": "Filtrar"
+        },
+        "filters": {
+            "applyfilter": "APLICAR FILTROS",
+            "filters": "FILTROS",
+            "buttondeleteall": "Eliminar todos",
+            "select": "Select",
+            "private": "Banca Privada",
+            "pyme": "Pyme",
+            "workcafe": "Workcafe",
+            "business": "Empresas",
+            "universities": "Universidades",
+            "popular": "Clientes Popular", 
+            "pastor": "Clientes Pastor",
+            "banefe": "Clientes Banefe",
+            "residents": "Residentes",
+            "superficies": "Grandes superficies",
+            "agcolaboradores": "AG Colaboradores",
+            "agfinancieros": "AG Financieros",
+            "correspondents": "Corresponsales",
+            "eleven": "Eleven",
+            "circlek": "Circle K",
+            "tiendaextra": "Tienda Extra",
+            "tiendak": "Tienda K",
+            "telecomm": "Telecomm",
+            "super": "Super7 24",
+            "oxxo": "Oxxo",
+            "otheratm": "Otros"
+        },
+        "shared": {
+            "branch": "Agencia",
+            "atm": "Cajeros automáticos"
+        },
+        "details": {
+            "neartitle": "Resultado más cercano",
+            "today": "Hoy",
+            "atminfo": "Retiros de efectivo gratis",
+            "contact": "Número de contacto",
+            "contactbutton": "llamar",
+            "schedule": "Horas de oficina ",
+            "services": "Servicios adicionales",
+            "servicesfinancial": "Financiero",
+            "servicesnofinancial": "No Financiero",
+            "accessibility": "Accesibilidad",
+            "accessibilitymessage": "Acceso para discapacitados",
+            "open": "Abierto",
+            "closed": "Cerrado",
+            "closing": "Cerrando en"
         }
     }
 }

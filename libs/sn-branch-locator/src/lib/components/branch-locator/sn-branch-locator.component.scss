@@ -1,94 +1,79 @@
+@import "~sn-common-lib/styles/settings/colors";
+
 :host {
-
-  .branch-locator-tabs-wrapper {
-    flex: 0;
-  }
-
-  .branch-locator-map-wrapper {
-    flex: 1;
-  }
-
-  .locator-content {
-    position: relative;
+  ::ng-deep agm-map {
     height: 100%;
-
-    ::ng-deep agm-map {
-      height: 100%;
-    }
-    ::ng-deep sn-drawer .drawer-content {
-      height: calc(100% - (4px + 8px + 2px));
-    }
-    
-
-    .locator-search {
+  }
+  
+  .locator-content {
+    height: 100%;
+    .locator-center {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 8px;
-
-      button.center-map-user {
-        float: right;
-        margin-top: 8px;
-        height: 32px;
-        width: 32px;
-        background-color: white;
+      right: 0.5rem;
+      top: 0.5rem;
+      button {
+        background-color: $color-primary-white;
         border-radius: 2.7px;
-        box-shadow: 0px 1px 2px 0px rgb(118, 118, 118);
+        box-shadow: 0px 1px 2px 0px $color-secondary-mediumgray;
+        border: 0;
+        font-size: 1.5rem;
+        height: 2rem;
+        width: 2rem;
         padding: 0;
-
         ::ng-deep sn-icon {
+          line-height: 1;
+          display: block;
           i {
-            font-size: 2em;
             line-height: 1;
           }
         }
       }
-
-      .locator-search-container {
-        position: relative;
-        margin: 0;
-      }
     }
-  }
-
-  .locator-search-container {
-    margin: 8px;
-  }
+  }  
 
   .result-list-wrapper {
-    // margin-top: calc(48px + 16px); // input-search height + margin
-    height: calc(100% - 64px);
-    overflow: scroll;
+    height: 100%;
+    overflow-y:auto;
+    margin-top: 4rem;
+  }
 
-    sn-option-item {
-      padding: .5rem 1rem .5rem 1.5rem;
+  .locator-search {
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
 
-      .name {
-        font-weight: bold;
-        color: #ec0000; // change to variable
-        font-size: 1rem;
-        line-height: 1.5;
-        padding-bottom: .5rem;
-      }
-
-      .address {
-        font-size: 1rem;
-        line-height: 1.075;
-        font-weight: 300;
-        color: rgb(118, 118, 118);
-      }
-
-      .distance {
-        font-size: 1rem;
-        font-weight: 300;
-        color: rgb(118, 118, 118);
-      }
-
-      sn-icon {
-        display: flex;
-      }
+    .locator-search-container {
+      position: relative;
+      margin: 0;
     }
   }
 
+  sn-tab {
+    overflow: hidden; //TODO: add this style to common-lib
+    .locator-content {
+      position: relative;
+      height: 100%;
+  
+      
+      ::ng-deep sn-drawer .drawer-content {
+        height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
+      }
+  
+      .locator-center {
+        top: 4rem;
+      }
+    }
+    //TODO: refactor sn-loading compomnent. Need input type to full and to block . Full will use fixed. Block will use absolute
+    
+  }
+
+  sn-loading {
+    position: absolute !important;
+    background-color: rgba(white, 0.75) !important;
+    user-select: none;
+    pointer-events: all;
+    touch-action: none;
+  }
 }

@@ -1,17 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { SnBranchLocatorModule} from 'sn-branch-locator';
 
-
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
+import { environment } from 'src/environments/environment';
+import { AgmCoreModule } from '@agm/core';
 
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, '/assets/i18n/branchlocator/', '.json');
+// TODO: path Update EnvironmentConfigModel
+export function HttpLoaderFactory(http: HttpClient, path: any) {
+  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/', '.json');
 }
 
 @NgModule({
@@ -26,11 +29,20 @@ export function HttpLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
+        deps: [HttpClient, ENV_CONFIG]
       }
-    })
+    }),
+    AgmCoreModule.forRoot({
+      apiKey: environment.api.BranchLocator.googleApiKey,
+      libraries: environment.api.BranchLocator.googleApiLibs || []
+    }),
   ],
-
+  providers: [
+    { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
+    { provide: APP_BASE_HREF, useValue: './' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: 'WINDOW', useValue: window }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
