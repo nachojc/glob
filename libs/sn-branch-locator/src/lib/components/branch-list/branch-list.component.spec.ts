@@ -26,26 +26,26 @@ describe('BranchListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit on click' , () => {
+  // it('should emit on click' , () => {
 
-    const branch: Branch = {} as Branch;
-    component.isLoading = false;
-    component.branchesList = [branch, branch];
-    fixture.detectChanges();
-    const mainElement = fixture.debugElement.nativeElement;
-    const snOptionList = mainElement.querySelector('sn-option-list');
-    const snOptionItem = snOptionList.firstElementChild;
-    component.branchSelected.subscribe(resp => {
-      expect(resp).toEqual(branch);
-    });
+  //   const branch: Branch = {} as Branch;
+  //   component.isLoading = false;
+  //   component.branchesList = [branch, branch];
+  //   fixture.detectChanges();
+  //   const mainElement = fixture.debugElement.nativeElement;
+  //   const snOptionList = mainElement.querySelector('sn-option-list');
+  //   const snOptionItem = snOptionList.firstElementChild;
+  //   component.branchSelected.subscribe(resp => {
+  //     expect(resp).toEqual(branch);
+  //   });
 
-    snOptionList.click();
+  //   snOptionList.click();
 
-    // Extra line just for the coverage
-    const callbranchSelected = spyOn(component, 'selectBranch').and.callThrough();
-    component.selectBranch({} as Branch);
-    expect(callbranchSelected).toHaveBeenCalled();
-  });
+  //   // Extra line just for the coverage
+  //   const callbranchSelected = spyOn(component, 'selectBranch').and.callThrough();
+  //   component.selectBranch({} as Branch);
+  //   expect(callbranchSelected).toHaveBeenCalled();
+  // });
 
   it('should show loading', () => {
     component.isLoading = true;
