@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: DEVTEAM-ns
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: APPNAME
+  namespace: DEVTEAM-ns
+  labels:
+    app: APPNAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: APPNAME
+    spec:
+      containers:
+        - name: APPNAME
+          image: globiledevopsrgi.azurecr.io/IMAGENAME:APPVERSION
+          imagePullPolicy: "IfNotPresent"
+          ports:
+          - containerPort: 80
+            name: http
+          - containerPort: 443
+            name: https
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: APPNAME-service
+  namespace: DEVTEAM-ns
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: APPNAME
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: APPNAME-ingress
+  namespace: DEVTEAM-ns
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    url: PUBLICURLAPP
+spec:
+  tls:
+  - hosts:
+    - PUBLICURLAPP
+    secretName: aks-ingress-globile-tls
+  rules:
+  - host: PUBLICURLAPP
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: APPNAME-service
+          servicePort: 80

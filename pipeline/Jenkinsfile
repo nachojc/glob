@@ -1,0 +1,51 @@
+library "pipeline-globile@master"
+
+def pipelineParams
+
+if (params.OVERRIDE_JOB_PARAMETERS) {
+    pipelineParams = params
+} else {
+    pipelineParams = [
+        AGENT: 'compiler-angular',
+        SKIP_UPDATE_SUBMODULES: true,
+        UPDATE_SUBMODULES_COMMAND: 'git submodule init && git submodule update',
+        SKIP_COMPILE: false,
+        SKIP_INSTALL_DEPENDECIES: false,
+        INSTALL_DEPENDENCIES_COMMAND: 'npm i',
+        COMPILE_COMMAND: 'npm run build',
+        SKIP_TEST: true,
+        TEST_COMMAND: 'npm run test-lib-prod',
+        SKIP_SONAR: true, //Using Jenkins methods to be executed
+        SONAR_COMMAND: '', //Not implemented yet
+        SONAR_PROJECT_NAME: 'angular-branch-locator',
+        SONAR_NAME:'angular-branch-locator',
+        PUBLISH_TO_MAVEN: true,
+        SKIP_RELEASE: false,
+        SKIP_CLEAN: false, //Clean up Jenkins workspace
+
+        SKIP_DEPLOYDOCKER: true, //Docker Build and Push
+        SKIP_TAGLATEST: true, //Docker tag as latest
+        SKIP_DISTRIBUTE: true, //Distribute in kubernete cluster
+        DOCKER_BUILD_TAG: '0.0.1',
+        DOCKER_BUILD_NAME: 'angular-branch-locator',
+        PROJECT_NAME: 'angular-branch-locator',
+
+        //Public URL
+        //URLPUBLICDEPLOYMENT: 'angular-branch-locator.blue4sky.com',
+        //Extra options to build a Docker
+        //DOCKER_BUILD_ARGS: ''
+
+        PUBLISH_EMAIL: 'globile@santander.com',
+        PUBLISH_REPO_CREDENTIALS: 'demo-nexus-user',
+        //The repo must finish with /
+        PUBLISH_REPO_RELEASE_URL: 'https://nexus.devops.blue4sky.com/repository/npm-releases/',
+        VERSION_FILE: 'package.json',
+        LIBRARY_BRANCH: 'master',
+        RELEASE_JOB: '../Angular-branch-locator-release',
+        USE_AUTOMATIC_VERSION_GENERATION: true,
+        PUBLISH_REPO_CREDENTIALS: 'demo-nexus-user',
+        TYPE_RELEASE: 'patch'
+  ]
+}
+
+compileAngularApp pipelineParams
