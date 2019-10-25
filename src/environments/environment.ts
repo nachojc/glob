@@ -7,9 +7,11 @@ export const environment = {
   api: {
     BranchLocator: {
       apiURL: 'https://back-weu.azurewebsites.net/branch-locator',
-      googleApiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      // googleApiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      googleApiKey: 'AIzaSyAW6Ayoy5LzilIIwr84WfQFTybSV8P9Ifo',
       // googleApiKey: 'AIzaSyA62x0solApP7TErm0JoNFwHSiBKBongdA',
-      googleApiLibs: ['places'],
+      // googleApiLibs: ['places'],
+      googleApiLibs: ['weather', 'geometry', 'visualization', 'places'],
       languages: './'
     }
   }
