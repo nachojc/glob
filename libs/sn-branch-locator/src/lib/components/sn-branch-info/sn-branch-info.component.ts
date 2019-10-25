@@ -120,10 +120,6 @@ export class SnBranchInfoComponent {
     }
   }
 
-  getAccesibility(attributes): boolean {
-    return attributes ? attributes.find(attr => attr.code && attr.code.toUpperCase() === 'ACCESIBILITY') ? true : false : false;
-  }
-
 
   getTodayTimeInformation(branchSchedule: any) {
     const auxHours = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];

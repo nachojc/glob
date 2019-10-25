@@ -4,6 +4,7 @@ import { FilterComponent } from './filter.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IconModule, CheckboxModule } from 'sn-common-lib';
 import { FilterService } from '../../services/filter/filter.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 describe('SnFilterComponent', () => {
@@ -19,7 +20,8 @@ describe('SnFilterComponent', () => {
         ReactiveFormsModule,
         FormsModule,
         IconModule,
-        CheckboxModule
+        CheckboxModule,
+        TranslateModule.forRoot()
       ],
       providers: [
         FilterService

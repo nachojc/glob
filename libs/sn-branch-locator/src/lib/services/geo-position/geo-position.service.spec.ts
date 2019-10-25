@@ -49,6 +49,7 @@ describe('GeoPositionService', () => {
   it('should be created', () => {
     const service: GeoPositionService = TestBed.get(GeoPositionService);
     expect(service).toBeTruthy();
+    expect(service.geolocation).toBeDefined();
   });
 
   it('When watchPosition is called Then return an observable Position', async(
@@ -106,7 +107,6 @@ describe('GeoPositionService', () => {
       nameService.getCurrentPosition().subscribe((pos: Position) => {
 
       }, (error) => {
-        console.error(error);
         expect(error).toBeUndefined();
       });
     }))

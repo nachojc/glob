@@ -59,13 +59,13 @@ describe('SnFilterService', () => {
     service.initForm();
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
-    service.form.get('personal').setValue(true);
+    service.form.get('BRANCH').get('SELECT').setValue(true);
     service.applyChanges();
     expect(formpatchValueSpy).not.toHaveBeenCalled();
     expect(formupdateValueAndValidityValueSpy).toHaveBeenCalled();
     service.startFilter();
     expect(service.filterParams).not.toBeUndefined();
-    expect(service.form.get('personal').value).toBeTruthy();
+    expect(service.form.get('BRANCH').get('SELECT').value).toBeTruthy();
     expect(service.count).toEqual(0);
   });
 
@@ -76,7 +76,7 @@ describe('SnFilterService', () => {
     const formResetSpy =  spyOn(service.form, 'reset');
     service.initForm();
     service.startFilter();
-    service.form.get('personal').setValue(true);
+    service.form.get('BRANCH').get('SELECT').setValue(true);
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
     expect(service.count).toEqual(0);
@@ -90,10 +90,10 @@ describe('SnFilterService', () => {
     const formResetSpy =  spyOn(service.form, 'reset');
     service.initForm();
     service.startFilter();
-    service.form.get('personal').setValue(true);
+    service.form.get('BRANCH').get('SELECT').setValue(true);
     service.startFilter();
     service.applyChanges();
-    service.form.get('personal').setValue(false);
+    service.form.get('BRANCH').get('SELECT').setValue(false);
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
     expect(service.count).toEqual(1);
