@@ -59,10 +59,51 @@ export const branchMock: Branch = {
           SATURDAY: []},
         specialDay: []
     },
-    comercialProducts: [],
+    comercialProducts: [
+        {
+            default: 'investment',
+            br: 'investimentos'
+        }
+    ],
     banner: null,
     spokenlanguages: ['EN'],
-    attrib: [],
+    attrib: [
+        {
+            multi: {
+                br: 'YES',
+                default: 'YES'
+            },
+            code: 'ACCESIBILITY'
+        },
+        {
+            multi: {
+                br: 'NO',
+                default: 'NO'
+            },
+            code: 'ATM'
+        },
+        {
+            multi: {
+                br: 'Sacar dinheiro',
+                default: 'Cash withdraw'
+            },
+            code: 'CASH_WITHDRAW'
+        },
+        {
+            multi: {
+                default: 'SI'
+            },
+            code: 'CONTACTLESS'
+        },
+        {
+            multi: null,
+            code: 'LOW_DENOMINATION_BILL'
+        },
+        {
+            multi: null,
+            code: ''
+        }
+    ],
     richTexts: [],
     people: null,
     events: null,

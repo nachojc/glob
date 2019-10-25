@@ -103,7 +103,7 @@ export class SnBranchLocatorComponent implements OnInit {
       }
     }, err => {
       // TODO: Add error handler
-      console.error(err);
+      // console.error(err);
       this.isLoading = false;
     });
   }

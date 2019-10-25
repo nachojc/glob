@@ -69,20 +69,26 @@ export class Branch {
     };
     comercialProducts: Array<{
         default: string;
-        es: string
+        es?: string;
+        br?: string;
+        pt?: string;
+        en?: string;
     }>;
     products?: string[];
     banner: null;
     spokenlanguages: string[];
     attrib: Array<{
-        multi: {
+        multi?: {
             default: string;
-            es: string;
+            es?: string;
+            br?: string;
+            pt?: string;
+            en?: string;
         };
         code: string;
     }>;
     attributes?: string[];
-    hasAccesibility?: boolean = false;
+    hasAccesibility?: boolean ;
     richTexts: Array<{
         multi: {
             default: string;

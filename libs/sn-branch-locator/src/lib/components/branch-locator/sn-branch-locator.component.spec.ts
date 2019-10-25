@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
 import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
@@ -8,7 +8,7 @@ import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.componen
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
@@ -54,7 +54,7 @@ const GeoPositionServiceMock = {
 };
 
 
-fdescribe('SnBranchLocatorComponent', () => {
+describe('SnBranchLocatorComponent', () => {
   let component: SnBranchLocatorComponent;
   let fixture: ComponentFixture<SnBranchLocatorComponent>;
 
@@ -112,6 +112,7 @@ fdescribe('SnBranchLocatorComponent', () => {
   });
 
   it('should set userPosition', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     fixture.detectChanges();
     component.tilesLoaded();
     expect(component).toBeDefined();
@@ -199,33 +200,41 @@ fdescribe('SnBranchLocatorComponent', () => {
 
 
   it('place change', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     const eventValue: LatLngLiteral = {lat: 9, lng: 33};
-
     component.placeChange(eventValue);
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
   describe('getBranchesByCoordinates()', () => {
-    it('should return a list of branches', async(() => {
+    it('should return a list of branches', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component, 'selectBranch');
       component.getBranchesByCoordinates({lat: 1, lng: 2});
       expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({lat: 1, lng: 2});
       expect(component.selectBranch).not.toHaveBeenCalled();
-    }));
+    });
 
     it('should call API with userPosition as param', () => {
-      spyOn(component['branchService'], 'getBranchesByCoords').and.callThrough();
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       component.userPosition = {lat: 2, lng: 3};
       component.getBranchesByCoordinates();
       expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith(component.userPosition);
+    });
+
+    it('should return error and set isLoading equal false', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.callFake(() => {
+        return throwError(new Error('Fake error'));
+      });
+      component.getBranchesByCoordinates();
+      expect(component.isLoading).toBeFalsy();
     });
 
   });
 
   describe('centerMapToUser()', () => {
     it('should call getBranchesByCoordinates with params', () => {
-      spyOn(component, 'getBranchesByCoordinates');
+      spyOn(component, 'getBranchesByCoordinates').and.returnValue(of([branchMock, branchMock]));
       component.userPosition = {lat: 38.7376049, lng: -9.1654431};
       component.centerMapToUser();
       expect(component.getBranchesByCoordinates).toHaveBeenCalledWith(component.userPosition, false);
@@ -256,6 +265,7 @@ fdescribe('SnBranchLocatorComponent', () => {
 
   describe('mapReady()', () => {
     it('should set userPosition', () => {
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['service'], 'getCurrentPosition').and.callThrough();
       component.mapReady();
       expect(component.userPosition).toBeDefined();
@@ -263,6 +273,47 @@ fdescribe('SnBranchLocatorComponent', () => {
   });
 
 
+  describe('closeInfo()', () => {
+    it('should return true', () => {
+      component.showDrawer = false;
+      component.closeInfo();
+      expect(component.showDrawer).toBeTruthy();
+    });
+    it('should return false', () => {
+      component.showDrawer = true;
+      component.closeInfo();
+      expect(component.showDrawer).toBeFalsy();
+    });
+  });
 
+  it('onFilterApply() should set filterCounts to 1', () => {
+    spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
+    component.onFilterApply({count: 1});
+    expect(component.filterCounts).toBe(1);
+  });
 
+  describe('showFilter()', () => {
+    beforeEach(() => {
+      component.filterView = {open: () => null} as any;
+    });
+    it('should call filterView.open', () => {
+      spyOn(component.filterView, 'open');
+      component.showFilter();
+      expect(component.filterView.open).toHaveBeenCalled();
+    });
+  });
+
+  describe('selectBranch()', () => {
+
+    // const markerFound = this.branchMarkerList['_results'].find(marker => marker.title === branch.id);
+    // this.markerSelected(markerFound, branch);
+    // this.selectedTabIndex = 0;
+    it('should call markerselect', () => {
+      // component.branchMarkerList['_results'] = [{title: '1'}];
+      spyOn(component, 'markerSelected').and.returnValue(null);
+      // branchMock.id = '1';
+      component.selectBranch(branchMock);
+      expect(component.selectedTabIndex).toEqual(0);
+    });
+  });
 });

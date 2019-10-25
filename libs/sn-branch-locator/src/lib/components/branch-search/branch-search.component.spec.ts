@@ -85,4 +85,16 @@ describe('BranchSearchInputComponent', () => {
     expect(component.placeChange.emit).toHaveBeenCalled();
   });
 
+  it('should call focus', () => {
+    component.inputElementRef.nativeElement = {
+      focus: () => null
+    } as any;
+    component['windowRef'].google.maps.event = {
+      trigger: () => null
+    } as any;
+    spyOn(component.inputElementRef.nativeElement, 'focus');
+    component.search(null);
+    expect(component.inputElementRef.nativeElement.focus).toHaveBeenCalled();
+  });
+
 });
