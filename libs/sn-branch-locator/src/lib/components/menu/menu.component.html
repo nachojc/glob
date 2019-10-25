@@ -1,4 +1,12 @@
-<div class="panel panel-visible">
+
+<div class="panel panel-visible" [@menuTrigger]="currentState" (@menuTrigger.done)="animationEnd($event)">
+    <div class="close-button-wrapper">
+        <button (click)="changeState()" class="menu-toggle">
+            <sn-icon *ngIf="currentState === 'menuOpened'" icon="sn-SYS017"></sn-icon>
+            <sn-icon *ngIf="currentState === 'menuClosed'" icon="sn-SYS016"></sn-icon>
+       </button>
+           
+    </div>
   <section class="panel-wrapper">
     <div class="search-input-wrapper">
       <ng-content select="sn-branch-search"></ng-content>
