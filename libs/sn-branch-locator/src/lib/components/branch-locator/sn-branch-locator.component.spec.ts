@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
-import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
+import { IconModule, OptionListModule, DrawerState,  DrawerModule} from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 
@@ -18,6 +18,7 @@ import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
 import { Platform, NoopPlatform } from '../../services/platform/platform.service';
+import { SnTabModule } from '../tabs/sn-tab.module';
 
 
 const MapsAPILoaderMock = {
