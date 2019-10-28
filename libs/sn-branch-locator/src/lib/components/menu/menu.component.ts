@@ -1,4 +1,4 @@
-import { Component, ContentChild, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, ContentChild, Output, EventEmitter} from '@angular/core';
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 import { MenuAnimations} from './menu.animations';
 
@@ -17,8 +17,13 @@ export class MenuComponent {
   currentState = 'menuOpened';
 
 
+
   changeState() {
     this.currentState = this.currentState === 'menuOpened' ? 'menuClosed' : 'menuOpened';
+  }
+
+  open() {
+    this.currentState = 'menuOpened';
   }
 
   animationEnd(event) {
