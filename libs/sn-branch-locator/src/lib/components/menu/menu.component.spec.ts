@@ -4,7 +4,7 @@ import { MenuComponent } from './menu.component';
 import { IconModule } from 'sn-common-lib';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('MenuComponent', () => {
+describe('MenuComponent', () => {
   let component: MenuComponent;
   let fixture: ComponentFixture<MenuComponent>;
 
