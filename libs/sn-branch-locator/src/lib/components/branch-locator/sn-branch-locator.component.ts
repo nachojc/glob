@@ -12,6 +12,7 @@ import { FilterComponent } from '../filter/filter.component';
 import { DrawerState } from 'sn-common-lib';
 import { ClusterStyle } from '@agm/js-marker-clusterer/services/google-clusterer-types';
 import { Platform } from '../../services/platform/platform.service';
+import { MenuComponent } from '../menu/menu.component';
 
 
 
@@ -28,6 +29,7 @@ export class SnBranchLocatorComponent implements OnInit {
   @ViewChild(SnMapDirective) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
   @ViewChild(FilterComponent) filterView: FilterComponent;
+  @ViewChild(MenuComponent) menuComponent: MenuComponent;
 
   isLoading: boolean = true;
   lat: number;
@@ -127,9 +129,15 @@ export class SnBranchLocatorComponent implements OnInit {
     selected['_markerManager'].updateIcon(selected);
     this.selectedMarker = selected;
     this.selectedBranch = branch;
-
+    this.openMenu();
     this.openDrawer();
 
+  }
+
+  openMenu() {
+    if (this.menuComponent && this.menuComponent.currentState === 'menuClosed') {
+      this.menuComponent.open();
+    }
   }
 
   mapClick(event: MouseEvent): void {
