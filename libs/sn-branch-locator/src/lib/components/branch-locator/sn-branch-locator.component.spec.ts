@@ -65,7 +65,7 @@ describe('SnBranchLocatorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SnBranchLocatorComponent,
-        SnBranchInfoComponent
+        SnBranchInfoComponent,
       ],
       imports: [
         DrawerModule,
