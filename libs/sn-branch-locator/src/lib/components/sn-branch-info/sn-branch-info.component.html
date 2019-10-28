@@ -96,13 +96,13 @@
         </div>
       </sn-tab>
         
-      <sn-tab label="ATM" class="tab-branch-info" *ngIf="false"> <!--*ngIf="(isBranch && branch.atm && branch.atm[0])"-->
+      <sn-tab label="ATM" class="tab-branch-info" *ngIf="(isBranch && branch.atm && branch.atm[0])"> <!--*ngIf="false"-->
           <div class="branch-info-wrapper">
             <sn-option-list>
               <sn-option-item border *ngIf="branch.atm[0].schedule?.timeToClose">
                 <div class="close-warning">
-                  <div class="Type-5_Light-Style">{{branch.atm[0].schedule?.timeToClose}}</div>
-                  <div class="signal"></div>
+                  <div class="Type-5_Light-Style">{{branch.atm[0].schedule?.timeToClose.text}}</div>
+                  <div class="signal {{branch.schedule.timeToClose.mode}}"></div>
                 </div>
               </sn-option-item>
               <sn-option-item border *ngIf="branch.atm && branch.atm[0].contactData?.phoneNumber">

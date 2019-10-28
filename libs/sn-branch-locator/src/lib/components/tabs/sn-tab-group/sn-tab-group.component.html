@@ -1,0 +1,10 @@
+<div class="tab-wrapper">
+    <ul>
+        <li *ngFor="let item of tabslabel; let i=index" (click)="tabClick(i)">
+            {{item}}
+        </li>
+    </ul>
+    <div class="fill" [ngStyle]="getPosition"></div>
+</div>
+
+<ng-content></ng-content>
