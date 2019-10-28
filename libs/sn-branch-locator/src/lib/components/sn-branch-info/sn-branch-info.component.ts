@@ -48,7 +48,6 @@ export class SnBranchInfoComponent {
     poi.attributes = this.getAttributes(poi);
     poi.schedule.preview = this.parseSchedule(poi.schedule.workingDay);
     poi.schedule.timeToClose = this.getHoursToClose(poi.schedule.workingDay);
-    console.log(poi);
     return poi;
   }
 
