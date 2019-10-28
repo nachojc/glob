@@ -43,7 +43,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/sn-common-lib/styles/styles.scss"
+              "node_modules/sn-common-lib/styles/styles.scss",
+              "node_modules/prismjs/themes/prism-coy.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

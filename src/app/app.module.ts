@@ -11,6 +11,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
 import { environment } from 'src/environments/environment';
 import { AgmCoreModule } from '@agm/core';
+import { PrismModule } from './components/prism copy/prism.module';
+import { SampleComponent } from './components/sample/sample.component';
+import { DocumentationComponent } from './components/documentation/documentation.component';
+import { AppRoutingModule } from './app-routing.module';
 
 // TODO: path Update EnvironmentConfigModel
 export function HttpLoaderFactory(http: HttpClient, path: any) {
@@ -19,7 +23,9 @@ export function HttpLoaderFactory(http: HttpClient, path: any) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SampleComponent,
+    DocumentationComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +42,8 @@ export function HttpLoaderFactory(http: HttpClient, path: any) {
       apiKey: environment.api.BranchLocator.googleApiKey,
       libraries: environment.api.BranchLocator.googleApiLibs || []
     }),
+    PrismModule,
+    AppRoutingModule
   ],
   providers: [
     { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
