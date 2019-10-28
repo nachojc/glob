@@ -74,13 +74,14 @@ export class SnBranchLocatorComponent implements OnInit {
   showDrawer: boolean;
   showNearest: boolean = false;
   isMobile: boolean;
+  openNearest: boolean;
 
   constructor(
-    private service: GeoPositionService,
+    private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform
   ) {
-    this.service.watchPosition()
+    this.geoPosition.watchPosition()
       .pipe(first()).subscribe(
         (pos: Position) => {
           this.userPosition = {
@@ -93,25 +94,27 @@ export class SnBranchLocatorComponent implements OnInit {
 
   ngOnInit(): void {
     this.isMobile = this.platform.isMobile;
-  }
 
-  getBranchesByCoordinates(coords: LatLngLiteral = this.userPosition, openNearest: boolean = false) {
-    this.isLoading = true;
-    this.branchService.getBranchesByCoords(coords ? coords : this.userPosition).subscribe(res => {
+    this.branchService.branchesObservable.subscribe(res => {
       this.clearSelectedMarker();
       this.branchesList = res;
       this.isLoading = false;
-      if (openNearest) {
+      if (this.openNearest) {
         setTimeout(() => {
           this.selectBranch(this.branchesList[0]);
           this.showNearest = true;
         });
       }
     }, err => {
-      // TODO: Add error handler
-      // console.error(err);
+      console.error(err);
       this.isLoading = false;
     });
+  }
+
+  getBranchesByCoordinates(coords: LatLngLiteral = this.userPosition, openNearest: boolean = false) {
+    this.isLoading = true;
+    this.openNearest = openNearest;
+    this.branchService.getBranchesByCoords(coords ? coords : this.userPosition);
   }
 
   tabsChanged(event: any) {
@@ -152,7 +155,7 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
   mapReady(): void {
-    this.service.getCurrentPosition()
+    this.geoPosition.getCurrentPosition()
       .subscribe((pos: Position) => {
         this.userPosition = {
           lat: pos.coords.latitude,
@@ -249,22 +252,14 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   getBranchesByBounds() {
-    from(this.map.api.getBounds()).pipe(
-      switchMap((mapBounds: LatLngBounds) => {
+    from(this.map.api.getBounds()).
+      subscribe((mapBounds: LatLngBounds) => {
         const northEast = { lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng() };
         const southWest = { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() };
         this.mapBounds.emit({northEast, southWest});
         this.isLoading = true;
-        return this.branchService.getBranchesByBounds(northEast, southWest);
-      })
-    ).subscribe(res => {
-      this.clearSelectedMarker();
-      this.branchesList = res;
-      this.isLoading = false;
-    }, (error) => {
-      // TODO: Add error handler
-      console.error(error);
-      this.isLoading = false;
-    });
+        this.openNearest = false;
+        this.branchService.getBranchesByBounds(northEast, southWest);
+      });
   }
 }

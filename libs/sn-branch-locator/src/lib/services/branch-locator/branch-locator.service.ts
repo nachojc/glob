@@ -1,10 +1,10 @@
 import { Injectable, Inject} from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of, Subject } from 'rxjs';
 
 import { Branch } from '../../models/branch.model';
 import { LatLngLiteral } from '@agm/core';
-import { map, reduce } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { FilterService } from '../filter/filter.service';
@@ -13,10 +13,9 @@ import { FilterService } from '../filter/filter.service';
   providedIn: 'root'
 })
 export class SnBranchLocatorService {
+  private _observer$ = new Subject<Branch[]>();
   private _initPosition: LatLngLiteral;
   branchLocator: EnvBranchLocatorModel;
-
-  // TODO:For now we using "any" because mobile service still not updated. Change to EnvironmentConfigModel after.
 
   constructor(
     @Inject(ENV_CONFIG) envConfig: any,
@@ -32,27 +31,27 @@ export class SnBranchLocatorService {
    * @Returns {Observable<Branch[]>}
    * @memberOf SnBranchLocatorService
    */
-  public getBranchesByCoords(coords: LatLngLiteral): Observable<any> {
+  public getBranchesByCoords(coords: LatLngLiteral): void {
     if (!coords) {
-      return of([]);
+      this._observer$.next([]);
     }
     if (!this._initPosition) {
       this._initPosition = coords;
     }
 
     const configVal = encodeURI(`{"coords":[${coords.lat},${coords.lng}]}`);
-    return this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?config=${configVal}`)
-      .pipe(map(resp => this.groupAtmToBranch(resp)));
+    this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?config=${configVal}`)
+    .pipe(map(resp => this.groupAtmToBranch(resp))).subscribe((resp) => this._observer$.next(resp));
   }
 
-  public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): Observable<Branch[]> {
+  public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): void {
     const params = this.filterservice.filterParams as any;
     const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
-    return this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?northEast=${configVal}`, { params})
+    this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?northEast=${configVal}`, { params})
       .pipe(
         map(resp => this._changeDistance(resp)),
         map(resp => this.groupAtmToBranch(resp))
-      );
+      ).subscribe((resp) => this._observer$.next(resp));
   }
 
   private groupAtmToBranch(array: Branch[]): Branch[] {
@@ -115,5 +114,10 @@ export class SnBranchLocatorService {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d;
+  }
+
+
+   get branchesObservable(): Observable<Branch[]> {
+    return this._observer$.asObservable();
   }
 }
