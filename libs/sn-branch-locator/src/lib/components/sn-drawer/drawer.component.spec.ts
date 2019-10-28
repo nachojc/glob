@@ -11,12 +11,12 @@ describe('DrawerComponent', () => {
     let fixture: ComponentFixture<DrawerComponent>;
     let checkboxNativeEl: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [DrawerComponent],
             providers: [{provide: HAMMER_GESTURE_CONFIG, useClass: DrawerCustomHammerConfig}]
         }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DrawerComponent);
@@ -33,28 +33,24 @@ describe('DrawerComponent', () => {
       it('Pan Event biger then window heigh, additionalEvent panup', () => {
         fixture.detectChanges();
         spyOn(component, 'drawerPan').and.callThrough();
-        const drawer = fixture.debugElement.triggerEventHandler('pan', {center : {y: 50}, additionalEvent : 'panup'});
-        fixture.whenStable().then(() => {
-          expect(component.drawerPan).toHaveBeenCalled();
-        });
+        fixture.debugElement.triggerEventHandler('pan', {center : {y: 50}, additionalEvent : 'panup'});
+        expect(component.drawerPan).toHaveBeenCalled();
       });
 
       it('Pan Event biger then window heigh, additionalEvent pandown', () => {
         fixture.detectChanges();
         spyOn(component, 'drawerPan').and.callThrough();
         fixture.debugElement.triggerEventHandler('pan', {center : {y: 50}, additionalEvent : 'pandown'});
-        fixture.whenStable().then(() => {
-          expect(component.drawerPan).toHaveBeenCalled();
-        });
+        expect(component.drawerPan).toHaveBeenCalled();
       });
 
       it('Pan Event smaller then window heigh', () => {
         fixture.detectChanges();
         spyOn(component, 'drawerPan').and.callThrough();
         fixture.debugElement.triggerEventHandler('pan', {center : {y: 0}});
-        fixture.whenStable().then(() => {
-          expect(component.drawerPan).toHaveBeenCalled();
-        });
+        // fixture.whenStable().then(() => {
+        expect(component.drawerPan).toHaveBeenCalled();
+        // });
       });
 
       it('Pan Event should call _setTranslateY with 20', () => {
@@ -108,6 +104,7 @@ describe('DrawerComponent', () => {
 
     it('Pan end Event', () => {
       fixture.detectChanges();
+      spyOn(component, 'drawerPanEnd').and.callThrough();
       fixture.debugElement.triggerEventHandler('panend', {});
       fixture.whenStable().then(() => {
         expect(component.drawerPanEnd).toHaveBeenCalled();
@@ -116,7 +113,7 @@ describe('DrawerComponent', () => {
 
     it('Pan start Event', () => {
       fixture.detectChanges();
-      // spyOn(component, 'drawerPanStart');
+      spyOn(component, 'drawerPanStart').and.callThrough();
       fixture.debugElement.triggerEventHandler('panstart', {});
       fixture.whenStable().then(() => {
         expect(component.drawerPanStart).toHaveBeenCalled();
@@ -155,7 +152,7 @@ describe('DrawerComponent', () => {
       it('Pan end Event deltaY  smaller then BOUNCE_DELTA and state is top', () => {
         component.state = DrawerState.Top;
         fixture.detectChanges();
-        spyOn(component, 'drawerPanEnd');
+        spyOn(component, 'drawerPanEnd').and.callThrough();
         // tslint:disable-next-line: no-string-literal
         const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 0});
 
@@ -167,7 +164,7 @@ describe('DrawerComponent', () => {
       it('Pan end Event deltaY  bigger then BOUNCE_DELTA and state is bottom', () => {
         component.state = DrawerState.Bottom;
         fixture.detectChanges();
-        spyOn(component, 'drawerPanEnd');
+        spyOn(component, 'drawerPanEnd').and.callThrough();
         // tslint:disable-next-line: no-string-literal
         const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: -50});
 
@@ -180,7 +177,6 @@ describe('DrawerComponent', () => {
         component.state = DrawerState.Top;
         fixture.detectChanges();
         spyOn(component, 'drawerPanEnd');
-        // tslint:disable-next-line: no-string-literal
         const drawer = fixture.debugElement.triggerEventHandler('panend', {isFinal: true, deltaY: 50});
 
         fixture.whenStable().then(() => {

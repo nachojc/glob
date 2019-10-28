@@ -13,10 +13,18 @@ export class AppComponent {
     ) {
 
     translate.setDefaultLang('en');
-    translate.use('es');
+    translate.use('pt');
   }
 
   search(event) {
+    console.log(event);
+  }
+
+  markerSelected(event) {
+    console.log(event);
+  }
+
+  mapBounds(event) {
     console.log(event);
   }
 

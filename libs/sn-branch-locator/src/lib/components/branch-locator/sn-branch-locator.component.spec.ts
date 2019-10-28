@@ -194,7 +194,7 @@ describe('SnBranchLocatorComponent', () => {
         })
       }
     } as any;
-    component.markerSelected(selected, branchMock);
+    component.markerSelect(selected, branchMock);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toEqual(selected);
   });
@@ -311,7 +311,7 @@ describe('SnBranchLocatorComponent', () => {
     // this.selectedTabIndex = 0;
     it('should call markerselect', () => {
       // component.branchMarkerList['_results'] = [{title: '1'}];
-      spyOn(component, 'markerSelected').and.returnValue(null);
+      spyOn(component, 'markerSelect').and.returnValue(null);
       // branchMock.id = '1';
       component.selectBranch(branchMock);
       expect(component.selectedTabIndex).toEqual(0);

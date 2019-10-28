@@ -2,7 +2,7 @@
     <div #header class="branch-summary-wrapper" (click)="emitClick()">
         <h6 class="branch-title" *ngIf="isNearestMarker">{{ 'branchlocator.details.neartitle' | translate }}</h6>
         <section class="branch-summary">
-            <h6 class="branch-name" style="min-height: 48px;">{{((branch && branch?.name)? branch.name + ' - ': '') + branch?.location.city}}</h6>
+            <h6 class="branch-name" style="min-height: 48px;">{{(branch && branch?.name)? branch.name : ''}}{{branch.location?.city? ' - ' + branch?.location?.city: ''}}</h6>
             <div class="body-medium" *ngIf="branch.subType?.multi">{{branch.subType?.multi.default}}</div>
         </section>
         <section class="branch-location">
@@ -102,7 +102,7 @@
               <sn-option-item border *ngIf="branch.atm[0].schedule?.timeToClose">
                 <div class="close-warning">
                   <div class="Type-5_Light-Style">{{branch.atm[0].schedule?.timeToClose.text}}</div>
-                  <div class="signal {{branch.schedule.timeToClose.mode}}"></div>
+                  <div class="signal {{branch.atm[0].schedule?.timeToClose.mode}}"></div>
                 </div>
               </sn-option-item>
               <sn-option-item border *ngIf="branch.atm && branch.atm[0].contactData?.phoneNumber">
