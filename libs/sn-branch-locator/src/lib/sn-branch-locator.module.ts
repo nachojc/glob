@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { IconModule,
   ButtonModule,
   OptionListModule,
-  SnTabModule,
   LoadingModule,
   LoaderModule
 } from 'sn-common-lib';
@@ -23,6 +22,9 @@ import { FilterModule } from './components/filter/filter.module';
 import { DrawerModule } from './components/sn-drawer';
 import { BranchListComponent } from './components/branch-list/branch-list.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { SnTabModule } from './components/tabs/sn-tab.module';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
@@ -59,6 +61,9 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
     LoadingModule,
     LoaderModule,
     AgmJsMarkerClustererModule,
+    BrowserModule,
+    BrowserAnimationsModule
+
   ],
   exports: [
     SnBranchLocatorComponent,

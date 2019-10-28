@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
-import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
+import { IconModule, OptionListModule, DrawerState,  DrawerModule} from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 
@@ -18,6 +18,7 @@ import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
 import { Platform, NoopPlatform } from '../../services/platform/platform.service';
+import { SnTabModule } from '../tabs/sn-tab.module';
 
 
 const MapsAPILoaderMock = {
@@ -64,7 +65,7 @@ describe('SnBranchLocatorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SnBranchLocatorComponent,
-        SnBranchInfoComponent
+        SnBranchInfoComponent,
       ],
       imports: [
         DrawerModule,
@@ -193,7 +194,7 @@ describe('SnBranchLocatorComponent', () => {
         })
       }
     } as any;
-    component.markerSelected(selected, branchMock);
+    component.markerSelect(selected, branchMock);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toEqual(selected);
   });
@@ -310,7 +311,7 @@ describe('SnBranchLocatorComponent', () => {
     // this.selectedTabIndex = 0;
     it('should call markerselect', () => {
       // component.branchMarkerList['_results'] = [{title: '1'}];
-      spyOn(component, 'markerSelected').and.returnValue(null);
+      spyOn(component, 'markerSelect').and.returnValue(null);
       // branchMock.id = '1';
       component.selectBranch(branchMock);
       expect(component.selectedTabIndex).toEqual(0);
