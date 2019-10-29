@@ -43,7 +43,7 @@
                 <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.contact' | translate }}</div>
                 <div class="Type-5_Regular-Style">{{branch.contactData.phoneNumber}}</div>
               </div>
-              <div right-text>
+              <div item-end>
                 <button (click)="contactBranch(branch.contactData.phoneNumber)" class="call-button">{{ 'branchlocator.details.contactbutton' | translate }}</button>
               </div>
             </sn-option-item>
@@ -111,7 +111,7 @@
                   <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.contact' | translate }}</div>
                   <div class="Type-5_Regular-Style">{{branch.atm[0].contactData.phoneNumber}}</div>
                 </div>
-                <div right-text>
+                <div item-end>
                   <button (click)="contactBranch(branch.atm[0].contactData.phoneNumber)" class="call-button">{{ 'branchlocator.details.contactbutton' | translate }}</button>
                 </div>
               </sn-option-item>
@@ -162,7 +162,7 @@
   
             </sn-option-list>
           </div>
-          
+
         </sn-tab>
     </sn-tab-group>
   </div>
