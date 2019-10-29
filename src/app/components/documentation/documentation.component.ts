@@ -38,7 +38,8 @@ export class DocumentationComponent implements OnInit {
         apiURL: 'your api service url',
         googleApiKey: 'Google Api Key here',
         googleApiLibs: ['places'],
-        languages: './'
+        languages: './',
+        hasFilters: true,
       }
       ...
     }

@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { WindowRef } from '../../models/window-ref';
+import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
+
 
 @Component({
   selector: 'sn-branch-search',
@@ -17,10 +19,12 @@ export class BranchSearchInputComponent implements OnInit {
 
   @ViewChild('in') public inputElementRef: ElementRef<HTMLInputElement>;
   searchBox: google.maps.places.SearchBox;
+  hasFilters: boolean;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject('WINDOW') private windowRef: WindowRef
+    @Inject('WINDOW') private windowRef: WindowRef,
+    @Inject(ENV_CONFIG) private env
   ) { }
 
 
@@ -29,6 +33,8 @@ export class BranchSearchInputComponent implements OnInit {
       .then(() => {
           this.initSearchBox();
       });
+
+    this.hasFilters = this.env.api.BranchLocator.hasFilters;
 
   }
 

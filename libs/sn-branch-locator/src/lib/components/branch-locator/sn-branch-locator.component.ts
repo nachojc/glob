@@ -137,7 +137,6 @@ export class SnBranchLocatorComponent implements OnInit {
 
     this.openMenu();
     this.openDrawer();
-
   }
 
   openMenu() {
