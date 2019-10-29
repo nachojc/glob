@@ -5,6 +5,7 @@ import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, AgmCoreModule } from '@agm/core';
 import { ElementRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ENV_CONFIG } from '@globile/mobile-services';
 
 const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
@@ -45,6 +46,14 @@ const windowRef = {
   }
 };
 
+const env = {
+  api: {
+    BranchLocator: {
+      hasFilters: true,
+    }
+  }
+};
+
 
 describe('BranchSearchInputComponent', () => {
   let component: BranchSearchInputComponent;
@@ -60,7 +69,8 @@ describe('BranchSearchInputComponent', () => {
       ],
       providers: [
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
-        { provide: 'WINDOW', useValue: windowRef }
+        { provide: 'WINDOW', useValue: windowRef },
+        { provide: ENV_CONFIG, useValue: env}
       ]
     })
       .compileComponents();

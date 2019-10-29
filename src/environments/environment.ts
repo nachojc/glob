@@ -12,7 +12,8 @@ export const environment = {
       // googleApiKey: 'AIzaSyA62x0solApP7TErm0JoNFwHSiBKBongdA',
       // googleApiLibs: ['places'],
       googleApiLibs: ['weather', 'geometry', 'visualization', 'places'],
-      languages: './'
+      languages: './',
+      hasFilters: true,
     }
   }
 };
