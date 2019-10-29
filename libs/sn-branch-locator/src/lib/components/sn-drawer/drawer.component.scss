@@ -21,22 +21,29 @@
 	$margin-bottom-handler: 2px;
 	$height-handler: 4px;
 	.drawer-handle {
-		position: absolute;
-		top: $margin-top-handler;
-		left: 50%;
-		height: $height-handler;
-		width: 24px;
-		border-radius: 2px;
-		background-color: rgb(214, 214, 214);
+		position: relative;
+		left: 0;
+		top: 0;
+		height: 16px;
+		width: 100%;
 		cursor: pointer;
 		touch-action: none;
 		user-select: none;
+
+		.handler {
+			position: absolute;
+			background-color: rgb(214, 214, 214);
+			top: $margin-top-handler;
+			left: 50%;
+			height: $height-handler;
+			width: 24px;
+			border-radius: 2px;
+		}
 	}
   
 	.drawer-content{
 		touch-action: pan-y;
-		max-height: calc(100% - (#{$height-handler} + #{$margin-top-handler} + #{$margin-bottom-handler}));
-		margin-top: calc(#{$height-handler} + #{$margin-top-handler} + #{$margin-bottom-handler}); // height of drawer-handler
+		max-height: 100%;
 	}
 }
 }

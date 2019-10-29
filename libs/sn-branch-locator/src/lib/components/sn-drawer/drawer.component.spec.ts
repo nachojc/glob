@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { DebugElement, ElementRef} from '@angular/core';
 import { By, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
@@ -58,6 +58,7 @@ describe('DrawerComponent', () => {
         spyOn(component['elementRef'].nativeElement.parentElement, 'clientHeight').and.returnValue(30);
         spyOn<any>(component, '_setTranslateY');
         component['startPositionTop'] = 10;
+        component.panArea = true;
         fixture.debugElement.triggerEventHandler('pan', {center : {y: 1}, additionalEvent: 'panup', deltaY: 10});
         expect(component['_setTranslateY']).toHaveBeenCalledWith('20px');
       });
@@ -68,6 +69,7 @@ describe('DrawerComponent', () => {
         spyOn<any>(component, '_setTranslateY');
         component['startPositionTop'] = 10;
         component.distanceTop = 30;
+        component.panArea = true;
         fixture.debugElement.triggerEventHandler('pan', {center : {y: 1}, additionalEvent: 'pandown', deltaY: 10});
         expect(component['_setTranslateY']).toHaveBeenCalledWith('30px');
       });
@@ -261,10 +263,11 @@ describe('DrawerComponent', () => {
 
 
     describe('ngOnChanges()', () => {
-      it('should set drawer state to docked', () => {
+      it('should set drawer state to docked', fakeAsync(() => {
         component.ngOnChanges({state: {currentValue: DrawerState.Docked}});
+        tick(100);
         expect(component.state).toBe(DrawerState.Docked);
-      });
+      }));
     });
 
     describe('handlePanEnd()', () => {
