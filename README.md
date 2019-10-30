@@ -24,28 +24,91 @@
 
 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
 
-## Development server
+## Download
+Need to install agm/core:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```npm
+npm install @agm/core --save
+```
+Then add in the main module the following imports and providers:
 
-## Code scaffolding
+```typescript
+import { SnBranchLocatorModule} from 'sn-branch-locator';
+import { AgmCoreModule } from '@agm/core';
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```js
+imports: [
+    ...
+    SnBranchLocatorModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.api.BranchLocator.googleApiKey,
+      libraries: environment.api.BranchLocator.googleApiLibs || []
+    }),
+    ...
+  ],
+  providers: [
+    ...
+    { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
+    { provide: 'WINDOW', useValue: window },
+    ...
+  ],
+```
+## Config EnvironmentConfigModel in enviroment.ts
 
-## Build
+The environments needs to been setup by the EnvironmentConfigModel
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+```js
+export const environment = {
+    ...
+    api: {
+      ...
+      BranchLocator: {
+        apiURL: 'your api service url',
+        googleApiKey: 'Google Api Key here',
+        googleApiLibs: ['places'],
+        languages: './',
+        hasFilters: true,
+      }
+      ...
+    }
+  };
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Getting Started
+How to use branch locator component:
 
-## Running end-to-end tests
+```html
+    ...
+   <sn-branch-locator></sn-branch-locator>
+    ...
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Outputs
+Optional outputs for branch locator
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```html
+<sn-branch-locator  (markerSelected)="markerSelected($event)" (mapBounds)="mapBounds($event)"></sn-branch-locator>
+```
+Emits everytime user selects a marker on the map and return an object with information about the marker and user position:
+
+```js
+ markerSelected(event: OutputMarkerSelected) {
+    OutputMarkerSelected = {
+      marker: Details about the selected Marker,
+      userPosition: User Position in LatLng
+  }
+```
+
+Emits everytime user move the map and return an object with the new map bounds
+
+```js
+mapBounds(event: OutputMapBounds) {
+    OutputMapBounds = {
+      northEast: LatLngLiteral;
+      southWest: LatLngLiteral;
+  }
+```
