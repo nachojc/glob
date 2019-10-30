@@ -34,6 +34,7 @@ export class SnBranchLocatorService {
   public getBranchesByCoords(coords: LatLngLiteral): void {
     if (!coords) {
       this._observer$.next([]);
+      return;
     }
     if (!this._initPosition) {
       this._initPosition = coords;
@@ -41,7 +42,7 @@ export class SnBranchLocatorService {
 
     const configVal = encodeURI(`{"coords":[${coords.lat},${coords.lng}]}`);
     this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?config=${configVal}`)
-    .pipe(map(resp => this.groupAtmToBranch(resp))).subscribe((resp) => this._observer$.next(resp));
+    .pipe(map(resp => this.groupAtmToBranch(resp))).subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
   }
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): void {
@@ -51,7 +52,7 @@ export class SnBranchLocatorService {
       .pipe(
         map(resp => this._changeDistance(resp)),
         map(resp => this.groupAtmToBranch(resp))
-      ).subscribe((resp) => this._observer$.next(resp));
+      ).subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
   }
 
   private groupAtmToBranch(array: Branch[]): Branch[] {

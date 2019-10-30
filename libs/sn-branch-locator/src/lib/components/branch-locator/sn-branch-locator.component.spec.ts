@@ -17,8 +17,9 @@ import { environment } from 'src/environments/environment';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
-import { Platform, NoopPlatform } from '../../services/platform/platform.service';
+import { Platform } from '../../services/platform/platform.service';
 import { SnTabModule } from '../tabs/sn-tab.module';
+import { NoopPlatform } from '../../services/platform/noop-platform.class';
 
 
 const MapsAPILoaderMock = {
@@ -85,7 +86,7 @@ describe('SnBranchLocatorComponent', () => {
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
         {provide: ENV_CONFIG, useValue: environment},
-        {provide : Platform, useClass: NoopPlatform},
+        {provide : Platform, useValue: NoopPlatform},
         SnBranchLocatorService,
         FormBuilder,
       ],
@@ -227,8 +228,10 @@ describe('SnBranchLocatorComponent', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.callFake(() => {
         return throwError(new Error('Fake error'));
       });
+      component['branchService'].branchesObservable.subscribe(() => {}, () => {
+        expect(component.isLoading).toBeFalsy();
+      });
       component.getBranchesByCoordinates();
-      expect(component.isLoading).toBeFalsy();
     });
 
   });
@@ -267,7 +270,7 @@ describe('SnBranchLocatorComponent', () => {
   describe('mapReady()', () => {
     it('should set userPosition', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
-      spyOn(component['service'], 'getCurrentPosition').and.callThrough();
+      spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
       component.mapReady();
       expect(component.userPosition).toBeDefined();
     });
