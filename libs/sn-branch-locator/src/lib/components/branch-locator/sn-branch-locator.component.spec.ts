@@ -228,7 +228,7 @@ describe('SnBranchLocatorComponent', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.callFake(() => {
         return throwError(new Error('Fake error'));
       });
-      component['branchService'].branchesObservable.subscribe(() => {}, () => {
+      component['branchService'].onChange.subscribe(() => {}, () => {
         expect(component.isLoading).toBeFalsy();
       });
       component.getBranchesByCoordinates();

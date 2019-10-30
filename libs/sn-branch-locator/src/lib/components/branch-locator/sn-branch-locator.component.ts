@@ -95,7 +95,7 @@ export class SnBranchLocatorComponent implements OnInit {
   ngOnInit(): void {
     this.isMobile = this.platform.isMobile;
 
-    this.branchService.branchesObservable.subscribe(res => {
+    this.branchService.onChange.subscribe(res => {
       this.clearSelectedMarker();
       this.branchesList = res;
       this.isLoading = false;
@@ -258,7 +258,7 @@ export class SnBranchLocatorComponent implements OnInit {
         this.mapBounds.emit({northEast, southWest});
         this.isLoading = true;
         this.openNearest = false;
-        this.branchService.getBranchesByBounds(northEast, southWest);
+        this.branchService.getBranchesByBounds(northEast, southWest, this.userPosition);
       });
   }
 }

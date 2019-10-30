@@ -13,6 +13,7 @@ import { FilterService } from '../filter/filter.service';
   providedIn: 'root'
 })
 export class SnBranchLocatorService {
+  private URL: string;
   private _observer$ = new Subject<Branch[]>();
   private _initPosition: LatLngLiteral;
   branchLocator: EnvBranchLocatorModel;
@@ -25,6 +26,9 @@ export class SnBranchLocatorService {
     this.branchLocator = envConfig.api.BranchLocator;
   }
 
+  get onChange(): Observable<Branch[]> {
+    return this._observer$.asObservable();
+  }
 
   /**
    * @description Returns a list of points of interest
@@ -38,17 +42,22 @@ export class SnBranchLocatorService {
     }
     if (!this._initPosition) {
       this._initPosition = coords;
+      this.setApiURL();
     }
 
     const configVal = encodeURI(`{"coords":[${coords.lat},${coords.lng}]}`);
-    this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?config=${configVal}`)
+    this.http.get<Branch[]>(`${this.URL}/find/defaultView?config=${configVal}`)
     .pipe(map(resp => this.groupAtmToBranch(resp))).subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
   }
 
-  public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral): void {
+  public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral, coords?: LatLngLiteral): void {
+    if (!this._initPosition) {
+      this._initPosition = coords;
+      this.setApiURL();
+    }
     const params = this.filterservice.filterParams as any;
     const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
-    this.http.get<Branch[]>(`${this.branchLocator.apiURL}/find/defaultView?northEast=${configVal}`, { params})
+    this.http.get<Branch[]>(`${this.URL}/find/defaultView?northEast=${configVal}`, { params})
       .pipe(
         map(resp => this._changeDistance(resp)),
         map(resp => this.groupAtmToBranch(resp))
@@ -116,9 +125,9 @@ export class SnBranchLocatorService {
     const d = R * c;
     return d;
   }
-
-
-   get branchesObservable(): Observable<Branch[]> {
-    return this._observer$.asObservable();
+  private setApiURL() {
+    const pos0 = this.getDistance(this.branchLocator.endpoints[0]);
+    const pos1 = this.getDistance(this.branchLocator.endpoints[1]);
+    this.URL = (pos0 < pos1) ? this.branchLocator.endpoints[0].URL : this.branchLocator.endpoints[1].URL;
   }
 }

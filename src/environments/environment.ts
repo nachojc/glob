@@ -6,23 +6,22 @@ export const environment = {
   production: false,
   api: {
     BranchLocator: {
-      apiURL: 'https://back-weu.azurewebsites.net/branch-locator',
-      // googleApiKey: 'AIzaSyAqG_sh5WdfA_ebgJLySpBejISPlNQPDl0',
+      endpoints: [
+        {
+          URL: 'https://back-scus.azurewebsites.net/branch-locator',
+          lat: 29.4247,
+          lng: -98.4935
+        },
+        {
+          URL: 'https://back-weu.azurewebsites.net/branch-locator',
+          lat: 52.35,
+          lng: 4.9167
+        },
+      ],
       googleApiKey: 'AIzaSyAW6Ayoy5LzilIIwr84WfQFTybSV8P9Ifo',
-      // googleApiKey: 'AIzaSyA62x0solApP7TErm0JoNFwHSiBKBongdA',
-      // googleApiLibs: ['places'],
       googleApiLibs: ['weather', 'geometry', 'visualization', 'places'],
       languages: './',
       hasFilters: true,
     }
   }
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
