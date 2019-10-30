@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { SnBranchLocatorService } from './branch-locator.service';
 import { branchMock } from '../../helpers/branch.mock';
@@ -76,24 +76,36 @@ describe('SnBranchLocatorService', () => {
   describe('getBranchesByBounds()', () => {
     it('should return an array with 1 length', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock, branchMock]));
-      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}).subscribe(res => {
+      service.branchesObservable.subscribe(res => {
         expect(res.length).toBe(1);
       });
+      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4});
     });
 
     it('should return an array with 1 length', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
-      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}).subscribe(res => {
+      service.branchesObservable.subscribe(res => {
         expect(res.length).toBe(2);
       });
+      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4});
     });
 
     it('should call get function passing: API_URL/find/defaultView?config={"coords":[1,2]}', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
       const apiUrl = encodeURI(`${service.branchLocator.apiURL}/find/defaultView?northEast=1,2&southWest=3,4`);
-      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}).subscribe(res => {
+      service.branchesObservable.subscribe(res => {
         expect(service.http.get).toHaveBeenCalledWith(apiUrl, { params: filterserviceMock.filterParams });
       });
+      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4});
+
+    });
+
+    it('should throwError', () => {
+      spyOn(service.http, 'get').and.returnValue(throwError(new Error('Fake Error')));
+      service.branchesObservable.subscribe(() => {
+      }, (err) => expect(err).toBeDefined());
+      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4});
+
     });
   });
 
@@ -101,25 +113,37 @@ describe('SnBranchLocatorService', () => {
   describe('getBranchesByCoords()', () => {
     it('should return an array with length equal to 1', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock, branchMock]));
-      service.getBranchesByCoords({lat: 1, lng: 2}).subscribe(res => {
+      service.branchesObservable.subscribe(res => {
         expect(res.length).toBe(1);
       });
+      service.getBranchesByCoords({lat: 1, lng: 2});
     });
 
     it('should return an array with length equal to 2', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
-      service.getBranchesByCoords({lat: 1, lng: 2}).subscribe(res => {
+      service.branchesObservable.subscribe(res => {
         expect(res.length).toBe(2);
       });
+      service.getBranchesByCoords({lat: 1, lng: 2});
+    });
+
+
+    it('should throwError', () => {
+      spyOn(service.http, 'get').and.returnValue(throwError(new Error('Fake Error')));
+      service.branchesObservable.subscribe(() => {
+      }, (err) => expect(err).toBeDefined());
+      service.getBranchesByCoords({lat: 1, lng: 2});
     });
 
 
     it('should call get function passing: API_URL/find/defaultView?config={"coords":[1,2]}', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
       const apiUrl = encodeURI(`${service.branchLocator.apiURL}/find/defaultView?config={"coords":[1,2]}`);
-      service.getBranchesByCoords({lat: 1, lng: 2}).subscribe(res => {
+      service.branchesObservable.subscribe(res => {
         expect(service.http.get).toHaveBeenCalledWith(apiUrl);
       });
+      service.getBranchesByCoords({lat: 1, lng: 2});
+
     });
   });
 
