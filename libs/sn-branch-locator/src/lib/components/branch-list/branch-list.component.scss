@@ -2,10 +2,8 @@
 
 
 :host{
-  sn-option-item {
-    cursor: pointer; //TODO : need to use button[sn-option-item] for clickcable list
-    padding: .5rem 1rem .5rem 1.5rem;
-
+  button[sn-option-item] {
+    width: 100%;
     .name {
       font-weight: bold;
       color: $color-primary-santander; 
@@ -25,10 +23,6 @@
       font-size: 1rem;
       font-weight: 300;
       color: $color-secondary-mediumgray;
-    }
-
-    sn-icon {
-      display: flex;
     }
   }
 }
