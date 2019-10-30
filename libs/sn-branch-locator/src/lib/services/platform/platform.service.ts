@@ -38,22 +38,3 @@ export class Platform {
 
 }
 
-export class NoopPlatform {
-  get orientation(): ScreenOrientation {
-    return {} as ScreenOrientation;
-  }
-  get isMobile(): boolean {
-    return true;
-  }
-  get isDesktop(): boolean {
-    return true;
-  }
-  get orientationChange(): Observable<ScreenOrientation> {
-    return of(this.orientation);
-  }
-  get screen(): Screen {
-    return {} as Screen;
-  }
-
-
-}

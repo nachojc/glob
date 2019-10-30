@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { isObject, isNumber } from 'util';
 import { FilterParams } from '../../models/default-view-request';
 
@@ -14,7 +14,7 @@ export class FilterService {
   private _previousValues: { [key: string]: any };
   private _filterParams: FilterParams;
 
-  private appliedFiltersSubject = new BehaviorSubject<FilterParams>({});
+  private _observer$ = new Subject<FilterParams>();
   public form: FormGroup;
 
 
@@ -72,7 +72,7 @@ export class FilterService {
    * Listens to when values are applied and returns the filter values
    */
   public get filterParamsChanges(): Observable<any> {
-    return this.appliedFiltersSubject.asObservable();
+    return this._observer$.asObservable();
   }
 
 
@@ -110,7 +110,7 @@ export class FilterService {
   public applyChanges(): void {
     this._filterCount = this.resetActiveFilterCount(this.form.value);
     this._filterParams = this.generateParams(this.form.value);
-    this.appliedFiltersSubject.next(this._filterParams);
+    this._observer$.next(this._filterParams);
     this._previousValues = this.form.value;
   }
 
