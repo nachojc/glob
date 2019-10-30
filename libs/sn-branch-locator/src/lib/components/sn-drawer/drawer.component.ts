@@ -9,6 +9,7 @@ import {
   SimpleChanges,
   Renderer2,
   HostListener,
+  ViewChild,
 } from '@angular/core';
 
 import * as Hammer from 'hammerjs';
@@ -35,6 +36,7 @@ export class DrawerCustomHammerConfig extends HammerGestureConfig {
   providers: [{ provide: HAMMER_GESTURE_CONFIG, useClass: DrawerCustomHammerConfig }]
 })
 export class DrawerComponent implements AfterViewInit, OnChanges {
+  @ViewChild('content') contentElement: ElementRef;
 
   @Input() dockedHeight = 50;
   @Input() shouldBounce = true;
@@ -49,6 +51,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
   private startPositionTop: number;
   private readonly _BOUNCE_DELTA = 30;
+  public panArea: boolean = false;
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
@@ -56,33 +59,56 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   ) { }
 
    @HostListener('pan', ['$event']) drawerPan(event) {
-    if (!this.disableDrag) {
+    if (!this.disableDrag && this.panArea) {
       this._handlePan(event);
     }
   }
 
-  @HostListener('panstart') drawerPanStart() {
-    if (!this.disableDrag) {
+  @HostListener('panstart', ['$event']) drawerPanStart(event) {
+    const header = event.srcEvent.path.find(elem => elem instanceof HTMLElement && elem.getAttribute('draggable') !== null);
+    if (header) {
+      this.panArea = true;
+    }
+    if (!this.disableDrag && this.panArea) {
       this.handlePanStart();
     }
   }
 
   @HostListener('panend', ['$event']) drawerPanEnd(event) {
-    if (!this.disableDrag) {
+    if (!this.disableDrag && this.panArea) {
       this.handlePanEnd(event);
     }
+    this.panArea = false;
   }
 
   ngAfterViewInit(): void {
-    this.setDrawerState(this.state);
+    // this.setDrawerState(this.state);
   }
 
+  getHeaderElement(children): any {
+    const size = children.length;
+    for (let i = 0; i < size; i++) {
+      if (children[i].getAttribute('header') !== null) {
+        return children[i];
+      }
+      if (children[i].children) {
+        return this.getHeaderElement(children[i].children);
+      }
+    }
+  }
 
-
-
+  setDynamicHeight(children) {
+    const header = this.getHeaderElement(children);
+    if (header) {
+      this.dockedHeight = header.offsetHeight;
+    }
+  }
 
   ngOnChanges(changes: any): void {
-    this.setDrawerState(changes.state.currentValue);
+    setTimeout(() => {
+      this.setDynamicHeight(this.contentElement.nativeElement.children);
+      this.setDrawerState(changes.state.currentValue);
+    }, 0);
   }
 
   setDrawerState(state: DrawerState) {
