@@ -41,8 +41,7 @@ export class SnBranchLocatorService {
       return;
     }
     if (!this._initPosition) {
-      this._initPosition = coords;
-      this.setApiURL();
+      this.setApiURL(coords);
     }
 
     const configVal = encodeURI(`{"coords":[${coords.lat},${coords.lng}]}`);
@@ -52,8 +51,7 @@ export class SnBranchLocatorService {
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral, coords?: LatLngLiteral): void {
     if (!this._initPosition) {
-      this._initPosition = coords;
-      this.setApiURL();
+      this.setApiURL(coords);
     }
     const params = this.filterservice.filterParams as any;
     const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
@@ -125,7 +123,8 @@ export class SnBranchLocatorService {
     const d = R * c;
     return d;
   }
-  private setApiURL() {
+  private setApiURL(coords?: LatLngLiteral) {
+    this._initPosition = coords;
     const pos0 = this.getDistance(this.branchLocator.endpoints[0]);
     const pos1 = this.getDistance(this.branchLocator.endpoints[1]);
     this.URL = (pos0 < pos1) ? this.branchLocator.endpoints[0].URL : this.branchLocator.endpoints[1].URL;

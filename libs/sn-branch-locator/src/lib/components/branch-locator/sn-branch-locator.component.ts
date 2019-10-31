@@ -4,8 +4,8 @@ import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
 // import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
-import { from } from 'rxjs';
-import { switchMap, first } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { switchMap, first, map } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { FilterComponent } from '../filter/filter.component';
@@ -258,7 +258,24 @@ export class SnBranchLocatorComponent implements OnInit {
         this.mapBounds.emit({northEast, southWest});
         this.isLoading = true;
         this.openNearest = false;
-        this.branchService.getBranchesByBounds(northEast, southWest, this.userPosition);
+        this.position
+          .subscribe(pos => {
+            this.branchService.getBranchesByBounds(northEast, southWest, pos);
+          });
       });
+  }
+  private get position(): Observable<LatLngLiteral> {
+    if (this.userPosition) {
+      return of(this.userPosition);
+    } else {
+      return this.geoPosition.getCurrentPosition()
+      .pipe( map((pos: Position) => {
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+        return this.userPosition;
+      }));
+    }
   }
 }
