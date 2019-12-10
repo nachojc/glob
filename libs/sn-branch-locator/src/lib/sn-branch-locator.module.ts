@@ -7,7 +7,7 @@ import { IconModule,
   LoaderModule
 } from 'sn-common-lib';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
@@ -64,6 +64,9 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
     BrowserModule,
     BrowserAnimationsModule
 
+  ],
+  providers: [
+    TranslateService
   ],
   exports: [
     SnBranchLocatorComponent,

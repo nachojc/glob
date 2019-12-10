@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { SnBranchLocatorModule} from 'sn-branch-locator';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
 import { environment } from 'src/environments/environment';
@@ -18,7 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 // TODO: path Update EnvironmentConfigModel
 export function HttpLoaderFactory(http: HttpClient, path: any) {
-  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/', '.json');
+  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'], '.json');
 }
 
 @NgModule({

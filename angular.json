@@ -37,8 +37,8 @@
               },
               {
                 "glob": "**/*",
-                "input": "libs/sn-branch-locator/src/assets/i18n/",
-                "output": "assets/i18n/"
+                "input": "libs/sn-branch-locator/i18n/branchlocator/",
+                "output": "i18n/branchlocator/"
               }
             ],
             "styles": [
