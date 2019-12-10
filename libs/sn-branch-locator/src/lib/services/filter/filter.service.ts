@@ -18,9 +18,7 @@ export class FilterService {
   public form: FormGroup;
 
 
-  constructor(private fb: FormBuilder) {
-
-  }
+  constructor(private fb: FormBuilder) { }
 
 
   /**

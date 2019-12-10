@@ -1,20 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF } from '@angular/common';
 
-import { AppComponent } from './app.component';
-import { SnBranchLocatorModule} from 'sn-branch-locator';
+import { NgModule } from '@angular/core';
+import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF, CommonModule } from '@angular/common';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
-import { environment } from 'src/environments/environment';
 import { AgmCoreModule } from '@agm/core';
-import { PrismModule } from './components/prism copy/prism.module';
-import { SampleComponent } from './components/sample/sample.component';
+import { environment } from 'src/environments/environment';
+import { AppComponent } from './app.component';
+import { PrismModule } from './components/prism/prism.module';
+
 import { DocumentationComponent } from './components/documentation/documentation.component';
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // TODO: path Update EnvironmentConfigModel
 export function HttpLoaderFactory(http: HttpClient, path: any) {
@@ -24,13 +25,13 @@ export function HttpLoaderFactory(http: HttpClient, path: any) {
 @NgModule({
   declarations: [
     AppComponent,
-    SampleComponent,
     DocumentationComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    SnBranchLocatorModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

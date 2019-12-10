@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AgmCoreModule } from '@agm/core';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { IconModule,
   ButtonModule,
   OptionListModule,
   LoadingModule,
   LoaderModule
 } from 'sn-common-lib';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { AgmCoreModule } from '@agm/core';
-import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { ENV_CONFIG } from '@globile/mobile-services';
 
 import { SnMapDirective } from './directives/sn-map/sn-map.directive';
@@ -22,9 +22,8 @@ import { FilterModule } from './components/filter/filter.module';
 import { DrawerModule } from './components/sn-drawer';
 import { BranchListComponent } from './components/branch-list/branch-list.component';
 import { MenuComponent } from './components/menu/menu.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
 import { SnTabModule } from './components/tabs/sn-tab.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
@@ -38,13 +37,16 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
     SnBranchInfoComponent,
     SnMarkerDirective,
     MenuComponent,
-    BranchListComponent],
+    BranchListComponent
+  ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    AgmCoreModule,
+    AgmJsMarkerClustererModule,
     OptionListModule,
     IconModule,
     ButtonModule,
-    HttpClientModule,
     SnTabModule,
     BranchSearchInputModule,
     OptionListModule,
@@ -55,15 +57,10 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
         deps: [HttpClient, ENV_CONFIG]
       }
     }),
-    AgmCoreModule,
     DrawerModule,
     FilterModule,
     LoadingModule,
     LoaderModule,
-    AgmJsMarkerClustererModule,
-    BrowserModule,
-    BrowserAnimationsModule
-
   ],
   providers: [
     TranslateService

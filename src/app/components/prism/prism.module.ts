@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PrismComponent } from './prism/prism.component';
+import { PrismComponent } from './prism.component';
 
 @NgModule({
   declarations: [PrismComponent],
