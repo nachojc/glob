@@ -63,6 +63,7 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   ];
 
+  private _initialPosition: LatLngLiteral;
   userPosition: LatLngLiteral;
   zoom = 13;
   showReCenter: boolean;
@@ -82,14 +83,17 @@ export class SnBranchLocatorComponent implements OnInit {
     private platform: Platform
   ) {
     this.geoPosition.watchPosition()
-      .pipe(first()).subscribe(
-        (pos: Position) => {
-          this.userPosition = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          };
-        }
-      );
+      .pipe(first())
+      .subscribe((pos: Position) => {
+        this._initialPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+      });
   }
 
   ngOnInit(): void {

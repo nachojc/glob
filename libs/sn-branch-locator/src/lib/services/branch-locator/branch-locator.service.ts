@@ -44,8 +44,8 @@ export class SnBranchLocatorService {
       this.setApiURL(coords);
     }
 
-    const configVal = encodeURI(`{"coords":[${coords.lat},${coords.lng}]}`);
-    this.http.get<Branch[]>(`${this.URL}/find/defaultView?config=${configVal}`)
+    const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
+    this.http.get<Branch[]>(`${this.URL}/find/defaultView?${configVal}`)
     .pipe(map(resp => this.groupAtmToBranch(resp))).subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
   }
 
@@ -54,8 +54,10 @@ export class SnBranchLocatorService {
       this.setApiURL(coords);
     }
     const params = this.filterservice.filterParams as any;
-    const configVal = encodeURI(`${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
-    this.http.get<Branch[]>(`${this.URL}/find/defaultView?northEast=${configVal}`, { params})
+    const configInit = encodeURI(`config={"coords":[${this._initPosition.lat},${this._initPosition.lng}]}`);
+    const configVal = encodeURI(`northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
+
+    this.http.get<Branch[]>(`${this.URL}/find/defaultView?${configInit}&${configVal}`, { params})
       .pipe(
         map(resp => this._changeDistance(resp)),
         map(resp => this.groupAtmToBranch(resp))
