@@ -24,6 +24,12 @@
       ],
       "sn-branch-locator/*": [
         "dist/sn-branch-locator/*"
+      ],
+      "@globile/branch-locator": [
+        "dist/sn-branch-locator"
+      ],
+      "@globile/branch-locator/*": [
+        "dist/sn-branch-locator/*"
       ]
     }
   }
