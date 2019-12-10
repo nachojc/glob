@@ -1,6 +1,6 @@
 {
   "name": "@globile/branch-locator",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "publishConfig": {
     "registry": "https://nexus.devops.blue4sky.com/repository/npm-private"
   },
