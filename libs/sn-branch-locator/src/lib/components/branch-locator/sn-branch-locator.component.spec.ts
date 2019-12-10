@@ -18,10 +18,8 @@ import { environment } from 'src/environments/environment';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
-import { Platform } from '../../services/platform/platform.service';
+
 import { SnTabModule } from '../tabs/sn-tab.module';
-import { NoopPlatform } from '../../services/platform/noop-platform.class';
-import { AgmMarkerCluster } from '@agm/js-marker-clusterer';
 
 
 
@@ -93,7 +91,6 @@ describe('SnBranchLocatorComponent', () => {
         { provide: MapsAPILoader, useClass: MockMapsAPILoader},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
         {provide: ENV_CONFIG, useValue: environment},
-        {provide : Platform, useValue: NoopPlatform},
         SnBranchLocatorService,
         FormBuilder,
       ],
