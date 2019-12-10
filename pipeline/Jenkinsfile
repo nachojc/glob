@@ -36,7 +36,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
                 //COMPILE_COMMAND: "npm run build-lib && npm run build",
 
             //4. Unit Test
-            SKIP_TEST: false,
+            SKIP_TEST: true,
                 //[DEPRECATED]TEST_COMMAND: 'npm run test-headless',
                 CMD_TEST: 'npm run test-lib-prod',
 
