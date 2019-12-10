@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
+
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core/esm2015';
 import { IconModule, OptionListModule, DrawerState,  DrawerModule} from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
@@ -20,11 +21,17 @@ import { FormBuilder } from '@angular/forms';
 import { Platform } from '../../services/platform/platform.service';
 import { SnTabModule } from '../tabs/sn-tab.module';
 import { NoopPlatform } from '../../services/platform/noop-platform.class';
+import { AgmMarkerCluster } from '@agm/js-marker-clusterer';
 
 
-const MapsAPILoaderMock = {
-  load: () => new Promise(() => true)
-};
+
+export class MockMapsAPILoader {
+  public load(): Promise<boolean> {
+    return new Promise(() => {
+      return true;
+    });
+  }
+}
 const windowRef = {
   google: {
     maps : {
@@ -64,10 +71,6 @@ describe('SnBranchLocatorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SnBranchLocatorComponent,
-        SnBranchInfoComponent,
-      ],
       imports: [
         DrawerModule,
         IconModule,
@@ -81,9 +84,13 @@ describe('SnBranchLocatorComponent', () => {
           libraries: ['places']
         })
       ],
+      declarations: [
+        SnBranchLocatorComponent,
+        SnBranchInfoComponent,
+      ],
       providers: [
         { provide: 'WINDOW', useValue: windowRef },
-        { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
+        { provide: MapsAPILoader, useClass: MockMapsAPILoader},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
         {provide: ENV_CONFIG, useValue: environment},
         {provide : Platform, useValue: NoopPlatform},
