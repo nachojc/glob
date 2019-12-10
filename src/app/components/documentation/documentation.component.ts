@@ -7,14 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentationComponent implements OnInit {
   title = 'Branch Locator';
-  externalDependencies = `npm install @agm/core --save`;
+  externalDependencies = `npm install @agm/core -S
+npm install @agm/js-marker-clusterer -S
+npm install js-marker-clusterer -D`;
   dependencies = `
-  import { SnBranchLocatorModule} from 'sn-branch-locator';
   import { AgmCoreModule } from '@agm/core';
 
   imports: [
     ...
-    SnBranchLocatorModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: environment.api.BranchLocator.googleApiKey,
       libraries: environment.api.BranchLocator.googleApiLibs || []
