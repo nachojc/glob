@@ -1,6 +1,6 @@
 {
   "name": "branch-locator",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "scripts": {
     "preversion": "npm run patch-lib && git add .",
     "preversion-new": "node ./tools/readme-coverage.js && npm run patch-lib && git add .",
