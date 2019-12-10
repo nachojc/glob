@@ -14,7 +14,7 @@
     -webkit-transform: translateX(0px);
     transform: translateX(0px);
     transition-property: -webkit-transform, transform, opacity;
-    transition-duration: 0.2s;
+    transition-duration:0.2s;
     transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
     background-color: white;
   }
@@ -24,6 +24,15 @@
     height: 100%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   }
+
+  .menu-toggle {
+    position: absolute;
+    right: -28px;
+    top: .75rem;
+    height: 40px;
+    box-shadow: 7px 1px 9px 0px rgba(60,64,67,.28);
+  }
+ 
 
   .panel-wrapper {
     display: -webkit-flex;

@@ -6,45 +6,109 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
     pipelineParams = params
 } else {
     pipelineParams = [
-        AGENT: 'compiler-angular',
-        SKIP_UPDATE_SUBMODULES: true,
-        UPDATE_SUBMODULES_COMMAND: 'git submodule init && git submodule update',
-        SKIP_COMPILE: false,
-        SKIP_INSTALL_DEPENDECIES: false,
-        INSTALL_DEPENDENCIES_COMMAND: 'npm i',
-        COMPILE_COMMAND: 'npm run build',
-        SKIP_TEST: true,
-        TEST_COMMAND: 'npm run test-lib-prod',
-        SKIP_SONAR: true, //Using Jenkins methods to be executed
-        SONAR_COMMAND: '', //Not implemented yet
-        SONAR_PROJECT_NAME: 'angular-branch-locator',
-        SONAR_NAME:'angular-branch-locator',
-        PUBLISH_TO_MAVEN: true,
-        SKIP_RELEASE: false,
-        SKIP_CLEAN: false, //Clean up Jenkins workspace
-
-        SKIP_DEPLOYDOCKER: true, //Docker Build and Push
-        SKIP_TAGLATEST: true, //Docker tag as latest
-        SKIP_DISTRIBUTE: true, //Distribute in kubernete cluster
-        DOCKER_BUILD_TAG: '0.0.1',
-        DOCKER_BUILD_NAME: 'angular-branch-locator',
+        AGENT: 'docker-slave',
         PROJECT_NAME: 'angular-branch-locator',
-
-        //Public URL
-        //URLPUBLICDEPLOYMENT: 'angular-branch-locator.blue4sky.com',
-        //Extra options to build a Docker
-        //DOCKER_BUILD_ARGS: ''
-
-        PUBLISH_EMAIL: 'globile@santander.com',
-        PUBLISH_REPO_CREDENTIALS: 'demo-nexus-user',
-        //The repo must finish with /
-        PUBLISH_REPO_RELEASE_URL: 'https://nexus.devops.blue4sky.com/repository/npm-releases/',
-        VERSION_FILE: 'package.json',
-        LIBRARY_BRANCH: 'master',
-        RELEASE_JOB: '../Angular-branch-locator-release',
         USE_AUTOMATIC_VERSION_GENERATION: true,
-        PUBLISH_REPO_CREDENTIALS: 'demo-nexus-user',
-        TYPE_RELEASE: 'patch'
+        //Obtain the version of the package and the docker
+        VERSION_FILE: 'package.json',
+
+
+        //Steps
+            //1. Verify options
+              //Automatically check the variables in Jenkins and show messages
+
+            //2. Checkout: Checkout the project and install submodules if needed
+            SKIP_UPDATE_SUBMODULES: true,
+                CMD_UPDATE_SUBMODULES: 'git submodule init && git submodule update',
+                //[DEPRECATED - OLD COMMAND UPDATE_SUBMODULES_COMMAND]
+                UPDATE_SUBMODULES_COMMAND: 'git submodule init && git submodule update',
+
+            //3. Compile
+            SKIP_COMPILE: false,
+                //3.1 Install Dependencies
+                SKIP_INSTALL_DEPENDECIES: false,
+                    CMD_DEPENDENCIES: 'npm i',
+                    //[DEPRECATED - OLD COMMAND INSTALL_DEPENDENCIES_COMMAND]
+                    //INSTALL_DEPENDENCIES_COMMAND: "npm install && npm install npm-cli-login publish",
+
+                CMD_COMPILE: 'npm run build',
+                //[DEPRECATED - OLD COMMAND]
+                //COMPILE_COMMAND: "npm run build-lib && npm run build",
+
+            //4. Unit Test
+            SKIP_TEST: false,
+                //[DEPRECATED]TEST_COMMAND: 'npm run test-headless',
+                CMD_TEST: 'npm run test-lib-prod',
+
+            //5. Sonar test:
+            SKIP_SONAR: true, //Using Jenkins methods to be executed
+                SONAR_COMMAND: '', //Not implemented yet
+                SONAR_PROJECT_NAME: 'angular-sn-branch-locator-mod',
+                SONAR_NAME:'angular-sn-branch-locator-mod',
+
+            //6. Execute SAST Test
+            PERFORM_SAST: false,
+              //Don't change
+              PERFORM_KIUWAN_PATH: '/opt/tools/kiuwan/KiuwanLocalAnalyzer/bin',
+              //--
+                //-Paralell 1 Execute KIUWAN test
+                PERFORM_KIUWAN_ANALYSIS: false,
+
+            //7. DEPLOYDOCKER: Build Docker and push Registry
+            SKIP_DEPLOYDOCKER: true,
+              //Variables
+              DOCKER_BUILD_NAME: 'angular-branch-locator',
+
+              //Docker TAG, if not present it's used VERSION_FILE version with build number
+              //DOCKER_BUILD_TAG: '0.0.1',
+
+              //*DOCKER_BUILD_ARGS: Extra options to build a Docker 'docker build... $DOCKER_BUILD_ARGS'
+              //[Optional]DOCKER_BUILD_ARGS: ''
+
+                //Build with lastest tag too
+                SKIP_TAGLATEST: true,
+
+            //8. Distribute: Deploy Yaml file in kubernetes cluster
+            SKIP_DISTRIBUTE: true, //Distribute in kubernete cluster
+
+              //[OPTIONAL*]
+              //URLPUBLICDEPLOYMENT: 'angular-sn-branch-locator-mod.blue4sky.com',
+                //Only available in master deployment, if its develop the URL is PROJECT_NAME.develop.blue4sky.com
+              //[OPTIONAL]IP_ADDRESS_AKS: '1.1.1.1',
+                //This option is disabled for now
+
+
+            //9. RELEASE: Lunch release pipeline with all the componetes
+            SKIP_RELEASE: false,
+
+              //Variables
+              //RELEASE_JOB: '../Angular-branch-locator-release', //Name of the job release
+              LIBRARY_BRANCH: 'master',  // [OPTIONAL]
+                CMD_RELEASE: 'npm version patch',
+
+                //9.1 Publish to maven: Publish in nexus
+                PUBLISH_TO_MAVEN: true,
+                    //Variables
+                    PUBLISH_EMAIL: 'globile@santander.com',
+                    PUBLISH_REPO_CREDENTIALS: 'demo-nexus-user',
+                      //secret in jenkins to access nexus URL
+                    PUBLISH_REPO_RELEASE_URL: 'https://nexus.devops.blue4sky.com',
+                    //The repo must finish with /
+
+            //10. Notifications: Send Notifications
+            SKIP_NOTIFICATIONS: true,
+                SKIP_NOTIFICATIONS_EMAIL: true,
+
+                  //[Optional]CMD_NOTIFICATIONS_EMAIL: '',
+                  //List emails with ,
+                  VAR_NOTIFICATIONS_EMAIL_LIST: '',
+                SKIP_NOTIFICATIONS_SLACK: true,
+                  //[Optional]CMD_NOTIFICATIONS_SLACK: '',
+                  //Slack Channel ,
+                  VAR_NOTIFICATIONS_SLACK_CHANNEL: '',
+
+            //11. CLEAN: Clean up Jenkins workspace
+            SKIP_CLEAN: false, //Clean up Jenkins workspace
   ]
 }
 

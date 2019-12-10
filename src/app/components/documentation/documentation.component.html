@@ -1,0 +1,33 @@
+<div class="doc-header">
+  <h2>
+    {{ title }}
+  </h2>  
+  <a [routerLink]="[ '/sample' ]">Go To Demo</a>
+</div>
+
+<div class="doc-body">
+  <h3>Dependencies</h3>
+  <p>Need to install agm/core:</p>
+  <sn-prism language="ts">{{externalDependencies}}</sn-prism>
+  <p>Then add in the main module the following imports and providers:</p>
+  <sn-prism language="ts">{{dependencies}}</sn-prism>
+  <br>
+
+  <h3>Config EnvironmentConfigModel in enviroment.ts</h3>
+  <p>The environments needs to been setup by the EnvironmentConfigModel</p>
+  <sn-prism language="ts">{{enviroment}}</sn-prism>
+  <br>
+  <h3>Getting Started</h3>
+  <p>How to use branch locator component:</p>
+  <sn-prism language="ts">{{example}}</sn-prism>
+  <br>
+  <h3>Outputs</h3>
+  <p>Optional outputs for branch locator</p>
+  <sn-prism language="ts">{{outputs}}</sn-prism>
+  <br>
+  <p>Emits everytime user selects a marker on the map and return an object with information about the marker and user position:</p>
+  <sn-prism language="ts">{{outputExample1}}</sn-prism>
+  <br>
+  <p>Emits everytime user move the map and return an object with the new map bounds</p>
+  <sn-prism language="ts">{{outputExample2}}</sn-prism>
+</div>

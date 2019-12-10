@@ -13,6 +13,7 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@agm/js-marker-clusterer": "^1.0.0",
-    "js-marker-clusterer": "^1.0.0"
+    "js-marker-clusterer": "^1.0.0",
+    "@types/googlemaps": "^3.37.7"
   }
 }

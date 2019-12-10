@@ -1,6 +1,8 @@
 <div class="sn-drawer-content">
-	<div class="drawer-handle" (click)="changeState()"></div>
-	<div class="drawer-content">
+	<div class="drawer-handle" (click)="changeState()" draggable>
+		<div class="handler"></div>
+	</div>
+	<div class="drawer-content" #content>
 		<ng-content></ng-content>
 	</div>
 </div>

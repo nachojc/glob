@@ -23,7 +23,7 @@
   </div>
 
 
-  <div class="filter-button-container">
+  <div class="filter-button-container" *ngIf="hasFilters">
     <button class="filter-button" (click)="callFilter.emit($event)" aria-label="Filter">
       <div class="filter-button-wrapper">
         <div class="filter-button-label">

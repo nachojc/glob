@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager, LatLngBounds } from '@agm/core';
-import { IconModule, OptionListModule, SnTabModule, DrawerState,  DrawerModule} from 'sn-common-lib';
+import { IconModule, OptionListModule, DrawerState,  DrawerModule} from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 
@@ -17,7 +17,9 @@ import { environment } from 'src/environments/environment';
 import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
-import { Platform, NoopPlatform } from '../../services/platform/platform.service';
+import { Platform } from '../../services/platform/platform.service';
+import { SnTabModule } from '../tabs/sn-tab.module';
+import { NoopPlatform } from '../../services/platform/noop-platform.class';
 
 
 const MapsAPILoaderMock = {
@@ -64,7 +66,7 @@ describe('SnBranchLocatorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SnBranchLocatorComponent,
-        SnBranchInfoComponent
+        SnBranchInfoComponent,
       ],
       imports: [
         DrawerModule,
@@ -84,7 +86,7 @@ describe('SnBranchLocatorComponent', () => {
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock},
         { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
         {provide: ENV_CONFIG, useValue: environment},
-        {provide : Platform, useClass: NoopPlatform},
+        {provide : Platform, useValue: NoopPlatform},
         SnBranchLocatorService,
         FormBuilder,
       ],
@@ -193,7 +195,7 @@ describe('SnBranchLocatorComponent', () => {
         })
       }
     } as any;
-    component.markerSelected(selected, branchMock);
+    component.markerSelect(selected, branchMock);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toEqual(selected);
   });
@@ -226,8 +228,10 @@ describe('SnBranchLocatorComponent', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.callFake(() => {
         return throwError(new Error('Fake error'));
       });
+      component['branchService'].onChange.subscribe(() => {}, () => {
+        expect(component.isLoading).toBeFalsy();
+      });
       component.getBranchesByCoordinates();
-      expect(component.isLoading).toBeFalsy();
     });
 
   });
@@ -266,7 +270,7 @@ describe('SnBranchLocatorComponent', () => {
   describe('mapReady()', () => {
     it('should set userPosition', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
-      spyOn(component['service'], 'getCurrentPosition').and.callThrough();
+      spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
       component.mapReady();
       expect(component.userPosition).toBeDefined();
     });
@@ -310,7 +314,7 @@ describe('SnBranchLocatorComponent', () => {
     // this.selectedTabIndex = 0;
     it('should call markerselect', () => {
       // component.branchMarkerList['_results'] = [{title: '1'}];
-      spyOn(component, 'markerSelected').and.returnValue(null);
+      spyOn(component, 'markerSelect').and.returnValue(null);
       // branchMock.id = '1';
       component.selectBranch(branchMock);
       expect(component.selectedTabIndex).toEqual(0);
