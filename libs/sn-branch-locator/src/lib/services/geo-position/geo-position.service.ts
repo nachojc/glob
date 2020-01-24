@@ -55,8 +55,8 @@ export class GeoPositionService {
     return this._position$.asObservable().pipe(first());
   }
 
-  private _readyMaps(): Observable<void> {
-    return this._readyMaps ? of(true) : Observable.create(obs => {
+  private _readyMaps(): Observable<unknown> {
+    return this._readyMaps ? of(true) : new Observable(obs => {
       this.mapsAPILoader.load()
       .then( () => { this.mapLoaded = true; obs.next(); });
     }).pipe(first());

@@ -30,10 +30,10 @@ export class SnBranchLocatorComponent implements OnInit {
 
   private selectedMarker: AgmMarker;
 
-  @ViewChild(SnMapDirective) map: SnMapDirective;
+  @ViewChild(SnMapDirective, {static: false}) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
-  @ViewChild(FilterComponent) filterView: FilterComponent;
-  @ViewChild(MenuComponent) menuComponent: MenuComponent;
+  @ViewChild(FilterComponent, {static: false}) filterView: FilterComponent;
+  @ViewChild(MenuComponent, {static: false}) menuComponent: MenuComponent;
 
   isLoading: boolean = true;
   lat: number;

@@ -17,7 +17,7 @@ export class BranchSearchInputComponent implements OnInit {
   @Output() callFilter = new EventEmitter<MouseEvent>();
   @Input() filterCount: number;
 
-  @ViewChild('in') public inputElementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('in', {static: false}) public inputElementRef: ElementRef<HTMLInputElement>;
   searchBox: google.maps.places.SearchBox;
   hasFilters: boolean;
 
