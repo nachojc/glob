@@ -1,13 +1,15 @@
 import { Injectable, Inject} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { map, flatMap, find } from 'rxjs/operators';
+import { LatLngLiteral } from '@agm/core';
+import { ENV_CONFIG } from '@globile/mobile-services';
 
 import { Branch } from '../../models/branch.model';
-import { LatLngLiteral } from '@agm/core';
-import { map } from 'rxjs/operators';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
-import { ENV_CONFIG } from '@globile/mobile-services';
 import { FilterService } from '../filter/filter.service';
+import { WindowRef } from '../../models/window-ref';
+import { GeoPositionService } from '../geo-position/geo-position.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,9 @@ export class SnBranchLocatorService {
   constructor(
     @Inject(ENV_CONFIG) envConfig: any,
     public http: HttpClient,
-    private filterservice: FilterService
+    private filterservice: FilterService,
+    @Inject('WINDOW') public windowRef: WindowRef,
+    private geoPositionService: GeoPositionService,
   ) {
     this.branchLocator = envConfig.api.BranchLocator;
   }
@@ -45,8 +49,8 @@ export class SnBranchLocatorService {
     }
 
     const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
-    this.http.get<Branch[]>(`${this.URL}/find/defaultView?${configVal}`)
-    .pipe(map(resp => this.groupAtmToBranch(resp))).subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
+    this.getBranches(`${this.URL}/find/defaultView?${configVal}`)
+      .subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
   }
 
   public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral, coords?: LatLngLiteral): void {
@@ -56,12 +60,29 @@ export class SnBranchLocatorService {
     const params = this.filterservice.filterParams as any;
     const configInit = encodeURI(`config={"coords":[${this._initPosition.lat},${this._initPosition.lng}]}`);
     const configVal = encodeURI(`northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
+    this.getBranches(`${this.URL}/find/defaultView?${configInit}&${configVal}`, { params})
+      .subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
+  }
 
-    this.http.get<Branch[]>(`${this.URL}/find/defaultView?${configInit}&${configVal}`, { params})
-      .pipe(
-        map(resp => this._changeDistance(resp)),
-        map(resp => this.groupAtmToBranch(resp))
-      ).subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
+  public getClosestBranchByTextQuery(text: string) {
+    return this.geoPositionService.getPositionByText(text).pipe(
+      flatMap(coords => {
+        const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
+        if (!this._initPosition) {
+          this.setApiURL({lat: coords.lat, lng: coords.lng});
+        }
+        return this.getBranches(`${this.URL}/find/defaultView?${configVal}`);
+      }),
+      map(branches => branches.find(branch => branch.objectType.code.toLowerCase() === 'branch'))
+    );
+  }
+
+  private getBranches(url: string, params = {}): Observable<Branch[]> {
+    return this.http.get<Branch[]>(url, params)
+    .pipe(
+      map(resp => this._changeDistance(resp)),
+      map(resp => this.groupAtmToBranch(resp))
+    );
   }
 
   private groupAtmToBranch(array: Branch[]): Branch[] {
