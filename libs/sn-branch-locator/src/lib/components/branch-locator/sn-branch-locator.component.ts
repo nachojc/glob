@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
@@ -15,6 +15,7 @@ import { Platform } from '../../services/platform/platform.service';
 import { OutputMarkerSelected } from '../../models/output-marker-selected';
 import { OutputMapBounds } from '../../models/output-map-bounds';
 import { MenuComponent } from '../menu/menu.component';
+import { IStartingPosition } from '../../models/starting-position.interface';
 
 
 
@@ -24,7 +25,7 @@ import { MenuComponent } from '../menu/menu.component';
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent implements OnInit {
-
+  @Input() startingPosition: IStartingPosition;
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<OutputMarkerSelected>();
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
@@ -164,8 +165,13 @@ export class SnBranchLocatorComponent implements OnInit {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         };
-        // this.getBranchesByCoordinates();
-        this.goToUserPositon();
+        if (this.startingPosition && this.startingPosition.text) {
+          this.geoPosition.getPositionByText(this.startingPosition.text).subscribe(coords => this.placeChange(coords));
+        } else if (this.startingPosition && this.startingPosition.coordinates) {
+          this.placeChange(this.startingPosition.coordinates);
+        } else {
+          this.goToUserPositon();
+        }
       });
   }
 
@@ -202,6 +208,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   placeChange(place: LatLngLiteral) {
+    console.log('placeChange:', place);
     this.clearSelectedMarker();
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom)))
@@ -257,15 +264,17 @@ export class SnBranchLocatorComponent implements OnInit {
   getBranchesByBounds() {
     from(this.map.api.getBounds()).
       subscribe((mapBounds: LatLngBounds) => {
-        const northEast = { lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng() };
-        const southWest = { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() };
-        this.mapBounds.emit({northEast, southWest});
-        this.isLoading = true;
-        this.openNearest = false;
-        this.position
-          .subscribe(pos => {
-            this.branchService.getBranchesByBounds(northEast, southWest, pos);
-          });
+        if (mapBounds) {
+          const northEast = { lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng() };
+          const southWest = { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() };
+          this.mapBounds.emit({northEast, southWest});
+          this.isLoading = true;
+          this.openNearest = false;
+          this.position
+            .subscribe(pos => {
+              this.branchService.getBranchesByBounds(northEast, southWest, pos);
+            });
+          }
       });
   }
   private get position(): Observable<LatLngLiteral> {
