@@ -29,7 +29,8 @@ const  mockMapsAPILoader = {
       return true;
     });
   }
-}
+};
+
 const windowRef = {
   google: {
     maps : {
