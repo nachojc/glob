@@ -264,6 +264,7 @@ describe('DrawerComponent', () => {
 
     describe('ngOnChanges()', () => {
       it('should set drawer state to docked', fakeAsync(() => {
+        fixture.detectChanges();
         component.ngOnChanges({state: {currentValue: DrawerState.Docked}});
         tick(100);
         expect(component.state).toBe(DrawerState.Docked);

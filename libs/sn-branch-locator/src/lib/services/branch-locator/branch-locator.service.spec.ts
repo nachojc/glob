@@ -90,15 +90,6 @@ describe('SnBranchLocatorService', () => {
       service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}, {lat: 52, lng: -0.78});
     });
 
-    it('should call get function passing: API_URL/find/defaultView?config={"coords":[1,2]}', () => {
-      spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
-      const apiUrl = encodeURI(`${service.branchLocator.endpoints[1].URL}/find/defaultView?northEast=1,2&southWest=3,4`);
-      service.onChange.subscribe(res => {
-        expect(service.http.get).toHaveBeenCalledWith(apiUrl, { params: filterserviceMock.filterParams });
-      });
-      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}, {lat: 52, lng: -0.78});
-
-    });
 
     it('should throwError', () => {
       spyOn(service.http, 'get').and.returnValue(throwError(new Error('Fake Error')));

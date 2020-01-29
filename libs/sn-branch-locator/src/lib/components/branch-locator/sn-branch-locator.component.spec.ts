@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core/esm2015';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core';
 import { IconModule, OptionListModule, DrawerState,  DrawerModule} from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 
 import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
@@ -23,13 +23,14 @@ import { SnTabModule } from '../tabs/sn-tab.module';
 
 
 
-export class MockMapsAPILoader {
-  public load(): Promise<boolean> {
+const  mockMapsAPILoader = {
+  load(): Promise<boolean> {
     return new Promise(() => {
       return true;
     });
   }
-}
+};
+
 const windowRef = {
   google: {
     maps : {
@@ -39,6 +40,14 @@ const windowRef = {
           getPlace: () => ({geometry: null})
         })}
     }
+  },
+  screen: {
+    orientation: {
+
+    }
+  },
+  navigator: {
+    userAgent: ''
   }
 };
 const mapBounds = {
@@ -88,13 +97,14 @@ describe('SnBranchLocatorComponent', () => {
       ],
       providers: [
         { provide: 'WINDOW', useValue: windowRef },
-        { provide: MapsAPILoader, useClass: MockMapsAPILoader},
-        { provide: GeoPositionService, useValue: GeoPositionServiceMock  },
-        {provide: ENV_CONFIG, useValue: environment},
+        { provide: GeoPositionService, useValue: GeoPositionServiceMock },
+        { provide: MapsAPILoader, useValue: mockMapsAPILoader},
+        { provide: ENV_CONFIG, useValue: environment },
         SnBranchLocatorService,
         FormBuilder,
       ],
       schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
         NO_ERRORS_SCHEMA
       ]
     })
@@ -109,7 +119,7 @@ describe('SnBranchLocatorComponent', () => {
       setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
       getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
     }} as any;
-    placeChangeSpy =  spyOn(component, 'placeChange').and.callThrough();
+    placeChangeSpy =  spyOn<SnBranchLocatorComponent>(component, 'placeChange').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -118,6 +128,11 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   it('should set userPosition', () => {
+    component.map = { api: {
+      panTo: () => new Promise((panToresolve) => panToresolve()),
+      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+    }} as any;
     spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     fixture.detectChanges();
     component.tilesLoaded();
@@ -206,6 +221,11 @@ describe('SnBranchLocatorComponent', () => {
 
 
   it('place change', () => {
+    component.map = { api: {
+      panTo: () => new Promise((panToresolve) => panToresolve()),
+      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+    }} as any;
     spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     const eventValue: LatLngLiteral = {lat: 9, lng: 33};
     component.placeChange(eventValue);
@@ -241,6 +261,14 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   describe('centerMapToUser()', () => {
+    beforeEach(() => {
+      component.map = { api: {
+        panTo: () => new Promise((panToresolve) => panToresolve()),
+        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+      }} as any;
+    });
+
     it('should call getBranchesByCoordinates with params', () => {
       spyOn(component, 'getBranchesByCoordinates').and.returnValue(of([branchMock, branchMock]));
       component.userPosition = {lat: 38.7376049, lng: -9.1654431};
@@ -273,6 +301,11 @@ describe('SnBranchLocatorComponent', () => {
 
   describe('mapReady()', () => {
     it('should set userPosition', () => {
+      component.map = { api: {
+        panTo: () => new Promise((panToresolve) => panToresolve()),
+        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+      }} as any;
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
       component.mapReady();
@@ -295,6 +328,12 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   it('onFilterApply() should set filterCounts to 1', () => {
+
+    component.map = { api: {
+      panTo: () => new Promise((panToresolve) => panToresolve()),
+      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+    }} as any;
     spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     component.onFilterApply({count: 1});
     expect(component.filterCounts).toBe(1);
