@@ -98,7 +98,7 @@
         
       <sn-tab label="ATM" class="tab-branch-info" *ngIf="(isBranch && branch.atm && branch.atm[0])"> <!--*ngIf="false"-->
           <div class="branch-info-wrapper">
-            <sn-option-list>
+            <sn-option-list lines="full">
               <sn-option-item  *ngIf="branch.atm[0].schedule?.timeToClose">
                 <div class="close-warning">
                   <div class="Type-5_Light-Style">{{branch.atm[0].schedule?.timeToClose.text}}</div>

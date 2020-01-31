@@ -102,8 +102,11 @@
   padding: 1rem;
   overflow-y: auto;
 
-  sn-option-item {
+  ::ng-deep sn-option-item .item-native {
     padding: .5rem 0 1rem 0;
+  }
+  
+  sn-option-item {
 
     sn-icon {
       font-size: 2rem;
