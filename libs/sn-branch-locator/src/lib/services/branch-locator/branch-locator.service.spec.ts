@@ -2,12 +2,40 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { ENV_CONFIG } from '@globile/mobile-services';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { MapsAPILoader } from '@agm/core';
+
+import { FilterService } from '../filter/filter.service';
 import { SnBranchLocatorService } from './branch-locator.service';
 import { branchMock } from '../../helpers/branch.mock';
 import { Branch } from '../../models/branch.model';
 import { environment } from 'src/environments/environment';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FilterService } from '../filter/filter.service';
+
+
+const windowRef = {
+  google: {
+    maps : {
+      places: {
+        Autocomplete : () => ({
+          addListener: () => {},
+          getPlace: () => ({geometry: null})
+        })}
+    }
+  },
+  screen: {
+    orientation: {
+
+    }
+  },
+  navigator: {
+    userAgent: ''
+  }
+};
+
+const MapsAPILoaderMock = {
+  load: () => new Promise((resolve) => resolve())
+};
 
 describe('SnBranchLocatorService', () => {
   let httpTestingController: HttpTestingController;
@@ -24,8 +52,14 @@ describe('SnBranchLocatorService', () => {
       ReactiveFormsModule
     ],
     providers: [
+      { provide: 'WINDOW', useValue: windowRef },
       { provide: ENV_CONFIG, useValue: environment },
-      { provide: FilterService, useValue: filterserviceMock }
+      { provide: FilterService, useValue: filterserviceMock },
+      { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
+    ],
+    schemas: [
+      CUSTOM_ELEMENTS_SCHEMA,
+      NO_ERRORS_SCHEMA
     ]
   }));
 
@@ -131,7 +165,7 @@ describe('SnBranchLocatorService', () => {
       spyOn(service.http, 'get').and.returnValue(of([branchMock, branchMock2, atmMock]));
       const apiUrl = encodeURI(`${service.branchLocator.endpoints[1].URL}/find/defaultView?config={"coords":[1,2]}`);
       service.onChange.subscribe(res => {
-        expect(service.http.get).toHaveBeenCalledWith(apiUrl);
+        expect(service.http.get).toHaveBeenCalledWith(apiUrl, {});
       });
       service.getBranchesByCoords({lat: 1, lng: 2});
 
