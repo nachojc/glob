@@ -11,7 +11,7 @@ import { MenuAnimations} from './menu.animations';
 export class MenuComponent {
 
   @Output() closeInfo = new EventEmitter<MouseEvent>();
-  @ContentChild(SnBranchInfoComponent) info: SnBranchInfoComponent;
+  @ContentChild(SnBranchInfoComponent, {static: false}) info!: SnBranchInfoComponent;
   @Output() menuDidOpen = new EventEmitter<boolean>();
   @Output() menuDidClose = new EventEmitter<boolean>();
   currentState = 'menuOpened';

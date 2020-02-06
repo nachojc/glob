@@ -12,7 +12,7 @@ import 'prismjs/components/prism-json';
   styleUrls: ['./prism.component.scss']
 })
 export class PrismComponent implements AfterViewInit {
-  @ViewChild('code') codeEl: ElementRef;
+  @ViewChild('code', {static: false}) codeEl: ElementRef;
 
 
   _language: string;
