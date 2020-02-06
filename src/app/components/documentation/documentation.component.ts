@@ -72,7 +72,23 @@ npm install js-marker-clusterer -D`;
   }
   `;
 
-  constructor() { }
+  serviceExample = `
+  import { SnBranchLocatorService } from '@globile/branch-locator';
+  constructor(
+    ...
+    private branchLocatorService: SnBranchLocatorService,
+  ) { }
+
+    this.branchLocatorService.getClosestBranchByTextQuery('Address or postal code').subscribe((res: Branch) => {
+      ...
+    }, err => {
+      ...
+    });
+  `;
+
+  constructor(
+  ) {
+  }
 
   ngOnInit() {
   }

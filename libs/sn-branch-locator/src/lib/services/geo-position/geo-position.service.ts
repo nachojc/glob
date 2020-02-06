@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, Subject, of } from 'rxjs';
-import { MapsAPILoader } from '@agm/core';
-import { first } from 'rxjs/operators';
+import { Observable, Subject, of, from } from 'rxjs';
+import { MapsAPILoader, LatLngLiteral } from '@agm/core';
+import { first, map } from 'rxjs/operators';
 import { WindowRef } from '../../models/window-ref';
 
+declare const google: any;
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,22 @@ export class GeoPositionService {
 
   get geolocation(): Geolocation {
     return this.windowRef.navigator.geolocation;
+  }
+
+  public getPositionByText(text: string): Observable<LatLngLiteral> {
+
+    return new Observable(obs => {
+      this._readyMaps().subscribe(() => {
+        const geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({address: text}, (result) => {
+          const lat = result[0].geometry.location.lat();
+          const lng = result[0].geometry.location.lng();
+          obs.next({lat, lng});
+          obs.complete();
+        });
+      });
+    });
   }
 
   public watchPosition(): Observable<Position> {
@@ -56,9 +73,12 @@ export class GeoPositionService {
   }
 
   private _readyMaps(): Observable<unknown> {
-    return this._readyMaps ? of(true) : new Observable(obs => {
-      this.mapsAPILoader.load()
-      .then( () => { this.mapLoaded = true; obs.next(); });
-    }).pipe(first());
+    if (this.mapLoaded) {
+      return of(true);
+    }
+    return from(this.mapsAPILoader.load()).pipe(
+      map(() => this.mapLoaded = true),
+      first()
+    );
   }
 }
