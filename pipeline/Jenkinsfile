@@ -72,7 +72,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
             SKIP_DISTRIBUTE: true, //Distribute in kubernete cluster
 
               //[OPTIONAL*]
-              URLPUBLICDEPLOYMENT: 'branch-locator.blue4sky.com',
+              URLPUBLICDEPLOYMENT: 'branch-locator.develop.blue4sky.com',
                 //Only available in master deployment, if its develop the URL is PROJECT_NAME.develop.blue4sky.com
               //[OPTIONAL]IP_ADDRESS_AKS: '1.1.1.1',
                 //This option is disabled for now
