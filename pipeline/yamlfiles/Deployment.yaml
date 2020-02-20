@@ -1,0 +1,161 @@
+# apiVersion: extensions/v1beta1
+# kind: Deployment
+# metadata:
+#   name: {{VAR["kube_app_name"]}}-oauth2-proxy
+#   namespace: {{VAR["kube_team_name"]}}-ns
+#   labels:
+#     k8s-app: {{VAR["kube_app_name"]}}-oauth2-proxy
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       k8s-app: {{VAR["kube_app_name"]}}-oauth2-proxy
+#   template:
+#     metadata:
+#       labels:
+#         k8s-app: {{VAR["kube_app_name"]}}-oauth2-proxy
+#     spec:
+#       containers:
+#       - args:
+#         - --provider=github
+#         - --email-domain=*
+#         - --upstream=file:///dev/null
+#         - --http-address=0.0.0.0:4180
+#         - --github-org=globile-software
+#         # Register a new application
+#         # https://github.com/settings/applications/new
+#         env:
+#         - name: OAUTH2_PROXY_CLIENT_ID
+#           value: 13acc7ac7e5680954c5a
+#         - name: OAUTH2_PROXY_CLIENT_SECRET
+#           value: 81db8621120bae17ae55ecbc8d4cf8bb770bcfa0
+#         # docker run -ti --rm python:3-alpine python -c 'import secrets,base64; print(base64.b64encode(base64.b64encode(secrets.token_bytes(16))));'
+#         - name: OAUTH2_PROXY_COOKIE_SECRET
+#           value: OUxqUjl1b0lvWllYVVh4RzI2ZEMvZz09
+#         image: docker.io/colemickens/oauth2_proxy:latest
+#         imagePullPolicy: Always
+#         name: {{VAR["kube_app_name"]}}-oauth2-proxy
+#         ports:
+#         - containerPort: 4180
+#           protocol: TCP
+
+# ---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{VAR["kube_app_name"]}}-oauth2-service
+#   namespace: {{VAR["kube_team_name"]}}-ns
+#   labels:
+#     k8s-app: {{VAR["kube_app_name"]}}-oauth2-proxy
+# spec:
+#   ports:
+#   - name: http
+#     port: 4180
+#     protocol: TCP
+#     targetPort: 4180
+#   selector:
+#     k8s-app: {{VAR["kube_app_name"]}}-oauth2-proxy
+
+
+# ---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{VAR["kube_app_name"]}}
+  namespace: {{VAR["kube_team_name"]}}-ns
+  labels:
+    app: {{VAR["kube_app_name"]}}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{VAR["kube_app_name"]}}
+    spec:
+      containers:
+        - name: {{VAR["kube_app_name"]}}
+          image: {{VAR["docker_registry"]}}/{{VAR["docker_name"]}}:{{VAR["docker_tag"]}}
+          imagePullPolicy: "Always"
+          ports:
+          - containerPort: 80
+            name: http
+          - containerPort: 443
+            name: https
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{VAR["kube_app_name"]}}-service
+  namespace: {{VAR["kube_team_name"]}}-ns
+  labels:
+    app: {{VAR["kube_app_name"]}}
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: {{VAR["kube_app_name"]}}
+
+---
+
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{VAR["kube_app_name"]}}-ingress
+  namespace: {{VAR["kube_team_name"]}}-ns
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
+    # nginx.ingress.kubernetes.io/auth-url: https://$host/oauth2/auth
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    url: {{VAR["kube_url_name"]}}
+  labels:
+    app: {{VAR["kube_app_name"]}}
+spec:
+  tls:
+  - hosts:
+    - {{VAR["kube_url_name"]}}
+    # secretName: OUxqUjl1b0lvWllYVVh4RzI2ZEMvZz09
+  rules:
+  - host: {{VAR["kube_url_name"]}}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{VAR["kube_app_name"]}}-service
+          servicePort: 80
+
+# ---
+
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: {{VAR["kube_app_name"]}}-oauth2-proxy
+#   namespace: {{VAR["kube_team_name"]}}-ns
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#     #nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
+#     #nginx.ingress.kubernetes.io/auth-url: https://$host/oauth2/auth
+#     nginx.ingress.kubernetes.io/rewrite-target: /oauth2
+#     url: {{VAR["kube_url_name"]}}
+#   labels:
+#     app: {{VAR["kube_app_name"]}}
+# spec:
+#   rules:
+#   - host: {{VAR["kube_url_name"]}}
+#     http:
+#       paths:
+#       - backend:
+#           serviceName: {{VAR["kube_app_name"]}}-oauth2-service
+#           servicePort: 4180
+#         path: /oauth2
+#   tls:
+#   - hosts:
+#     - {{VAR["kube_url_name"]}}
+#     secretName: OUxqUjl1b0lvWllYVVh4RzI2ZEMvZz09
