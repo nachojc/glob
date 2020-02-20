@@ -1,4 +1,5 @@
 library "pipeline-globile@master"
+//library "pipeline-globile@feat-pr-var-angular-gcl"
 
 def pipelineParams
 
@@ -11,7 +12,8 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
         USE_AUTOMATIC_VERSION_GENERATION: true,
         //Obtain the version of the package and the docker
         VERSION_FILE: 'package.json',
-
+        DISTRIBUTION_BRANCHES: 'feat-fix-devops-integration',
+        VAR_JAVA_ENV: 'sandbox',
 
         //Steps
             //1. Verify options
@@ -32,6 +34,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
                     //INSTALL_DEPENDENCIES_COMMAND: "npm install && npm install npm-cli-login publish",
 
                 CMD_COMPILE: 'npm run build',
+                //  && git rev-parse HEAD | awk \'{print "<!-- Last commit hash: "$1" -->"}\' >> dist/branch-locator/index.html && date | awk \'{print "<!-- Last build datetime: "$0" -->"}\' >> dist/branch-locator/index.html
                 //[DEPRECATED - OLD COMMAND]
                 //COMPILE_COMMAND: "npm run build-lib && npm run build",
 
@@ -43,8 +46,8 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
             //5. Sonar test:
             SKIP_SONAR: true, //Using Jenkins methods to be executed
                 SONAR_COMMAND: '', //Not implemented yet
-                SONAR_PROJECT_NAME: 'angular-sn-branch-locator-mod',
-                SONAR_NAME:'angular-sn-branch-locator-mod',
+                SONAR_PROJECT_NAME: 'sonar',
+                SONAR_NAME:'Add name here',
 
             //6. Execute SAST Test
             PERFORM_SAST: false,
@@ -55,7 +58,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
                 PERFORM_KIUWAN_ANALYSIS: false,
 
             //7. DEPLOYDOCKER: Build Docker and push Registry
-            SKIP_DEPLOYDOCKER: true,
+            SKIP_DEPLOYDOCKER: false,
               //Variables
               DOCKER_BUILD_NAME: 'angular-branch-locator',
 
@@ -69,9 +72,8 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
                 SKIP_TAGLATEST: true,
 
             //8. Distribute: Deploy Yaml file in kubernetes cluster
-            SKIP_DISTRIBUTE: true, //Distribute in kubernete cluster
+            SKIP_DISTRIBUTE: false, //Distribute in kubernete cluster
 
-              //[OPTIONAL*]
               URLPUBLICDEPLOYMENT: 'branch-locator.blue4sky.com',
                 //Only available in master deployment, if its develop the URL is PROJECT_NAME.develop.blue4sky.com
               //[OPTIONAL]IP_ADDRESS_AKS: '1.1.1.1',
