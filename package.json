@@ -4,7 +4,7 @@
   "scripts": {
     "preversion": "node ./tools/readme-coverage.js && npm run patch-lib && git add .",
     "start": "ng serve --open",
-    "build": "npm run test-lib-prod && npm run build-lib",
+    "build": "npm run build-lib && ng build",
     "build-dev": "npm run test-lib-dev && npm run build-lib",
     "build-local": "ng build --base-href /",
     "build-aot": "ng build --aot --base-href /",
