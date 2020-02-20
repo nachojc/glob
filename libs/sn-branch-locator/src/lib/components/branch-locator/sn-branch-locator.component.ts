@@ -26,6 +26,7 @@ import { IStartingPosition } from '../../models/starting-position.interface';
 })
 export class SnBranchLocatorComponent implements OnInit {
   @Input() startingPosition: IStartingPosition;
+  @Input() optionalBranding: boolean;
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<OutputMarkerSelected>();
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
