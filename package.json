@@ -1,6 +1,6 @@
 {
   "name": "branch-locator",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "scripts": {
     "preversion": "node ./tools/readme-coverage.js && npm run patch-lib && git add .",
     "start": "ng serve --open",
@@ -11,7 +11,6 @@
     "build-lib": "ng lint sn-branch-locator && ng build sn-branch-locator && node tools/assets-fix.js",
     "dev-lib": "ng lint sn-branch-locator && ng build sn-branch-locator --watch",
     "test": "ng test",
-    "aligne-develop": "git checkout develop && git reset --hard && git pull",
     "test-lib": "ng test sn-branch-locator",
     "test-lib-prod": "npm run lint-lib && BROWSER=NONE ng test sn-branch-locator --watch=false",
     "test-lib-dev": "npm run lint-lib && SET BROWSER=NONE && ng test sn-branch-locator --watch=true",
@@ -70,8 +69,8 @@
     "karma": "~4.1.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~1.1.2",
-    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
     "ng-packagr": "^5.7.1",
     "prismjs": "^1.17.1",
     "protractor": "~5.4.0",

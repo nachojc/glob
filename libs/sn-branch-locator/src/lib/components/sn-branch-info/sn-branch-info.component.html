@@ -3,6 +3,10 @@
         <h6 class="branch-title" *ngIf="isNearestMarker">{{ 'branchlocator.details.neartitle' | translate }}</h6>
         <section class="branch-summary">
             <h6 class="branch-name" style="min-height: 48px;">{{(branch && branch?.name)? branch.name : ''}}{{branch.location?.city? ' - ' + branch?.location?.city: ''}}</h6>
+            <a class="branch-appointment" *ngIf="branch.appointment && branch.appointment.branchAppointment" [href]=branch.appointment.branchAppointment target="_blank">
+              Make an appointment
+              <sn-icon color="primary" icon="sn-SERV005"></sn-icon>
+            </a>
             <div class="body-medium" *ngIf="branch.subType?.multi">{{branch.subType?.multi.default}}</div>
         </section>
         <section class="branch-location">
@@ -95,7 +99,7 @@
           </sn-option-list>
         </div>
       </sn-tab>
-        
+
       <sn-tab label="ATM" class="tab-branch-info" *ngIf="(isBranch && branch.atm && branch.atm[0])"> <!--*ngIf="false"-->
           <div class="branch-info-wrapper">
             <sn-option-list lines="full">
@@ -159,7 +163,7 @@
                 <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.accessibility' | translate }}</div>
                 <h1 class="title">{{ 'branchlocator.details.accessibilitymessage' | translate }}</h1>
               </sn-option-item>
-  
+
             </sn-option-list>
           </div>
 

@@ -9,7 +9,7 @@
               </div>
                 <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
                 [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
-                (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
+                (mapReady)="mapReady()" (mapClick)="mapClick()" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
                     <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
                         [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
                     <agm-marker-cluster [styles]="clusterStyles" [maxZoom]="'15'" [minimumClusterSize]="5" [averageCenter]="true">
@@ -72,7 +72,7 @@
       </div>
       <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
         [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
-        (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
+        (mapReady)="mapReady()" (mapClick)="mapClick()" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()" [fullscreenControl]="_optionalFullScreen" [fullscreenControlOptions]="branchIcon">
             <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
                 [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false" ></agm-marker>
             <agm-marker-cluster [styles]="clusterStyles" [maxZoom]="'15'" [minimumClusterSize]="5" [averageCenter]="true">

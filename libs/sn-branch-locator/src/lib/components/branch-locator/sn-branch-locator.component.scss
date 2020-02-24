@@ -24,8 +24,8 @@
     height: 100%;
     .locator-center {
       position: absolute;
-      right: 0.5rem;
-      top: 0.5rem;
+      right: 4rem;
+      top: 0.6rem;
       button {
         background-color: $color-primary-white;
         border-radius: 2.7px;
@@ -92,3 +92,4 @@
     touch-action: none;
   }
 }
+

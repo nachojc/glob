@@ -3,7 +3,6 @@ import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
-// import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { from, Observable, of } from 'rxjs';
 import { switchMap, first, map } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
@@ -26,11 +25,19 @@ import { IStartingPosition } from '../../models/starting-position.interface';
 })
 export class SnBranchLocatorComponent implements OnInit {
   @Input() startingPosition: IStartingPosition;
+  @Input()
+  get optionalFullScreenControl(): boolean {
+    return this._optionalFullScreen;
+  }
+  set optionalFullScreenControl(value: boolean) {
+    this._optionalFullScreen = value !== null && value !== undefined && `${value}` !== 'false';
+  }
   @Input() optionalBranding: boolean;
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<OutputMarkerSelected>();
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
   private selectedMarker: AgmMarker;
+  public _optionalFullScreen = false;
 
   @ViewChild(SnMapDirective, {static: false}) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
@@ -154,7 +161,7 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-  mapClick(event: MouseEvent): void {
+  mapClick(): void {
     if (this.selectedMarker) {
       this.clearSelectedMarker();
     }
@@ -293,3 +300,4 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 }
+
