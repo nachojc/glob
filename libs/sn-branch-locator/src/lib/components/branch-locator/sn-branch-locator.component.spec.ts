@@ -232,6 +232,17 @@ describe('SnBranchLocatorComponent', () => {
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
+  it( 'should get optionalFullScreenControl value from default _optionalFullScreen value',  () => {
+    component._optionalFullScreen = false;
+    expect(component.optionalFullScreenControl).toBe(component._optionalFullScreen);
+  } );
+
+  it( 'should set optionalFullScreenControl value from property value', () => {
+    component._optionalFullScreen = false;
+    component.optionalFullScreenControl = true;
+    expect(component._optionalFullScreen).toBe(true);
+  } );
+
   describe('getBranchesByCoordinates()', () => {
     it('should return a list of branches', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));

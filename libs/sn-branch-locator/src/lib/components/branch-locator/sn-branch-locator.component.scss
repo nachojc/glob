@@ -9,13 +9,13 @@
   ::ng-deep agm-map {
     height: 100%;
   }
-  
+
   .locator-content {
     height: 100%;
     .locator-center {
       position: absolute;
-      right: 0.5rem;
-      top: 0.5rem;
+      right: 4rem;
+      top: 0.6rem;
       button {
         background-color: $color-primary-white;
         border-radius: 2.7px;
@@ -34,7 +34,7 @@
         }
       }
     }
-  }  
+  }
 
   .result-list-wrapper {
     height: 100%;
@@ -60,18 +60,18 @@
     .locator-content {
       position: relative;
       height: 100%;
-  
-      
+
+
       ::ng-deep sn-drawer .drawer-content {
         height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
       }
-  
+
       .locator-center {
         top: 4rem;
       }
     }
     //TODO: refactor sn-loading compomnent. Need input type to full and to block . Full will use fixed. Block will use absolute
-    
+
   }
 
   sn-loading {
@@ -82,3 +82,4 @@
     touch-action: none;
   }
 }
+

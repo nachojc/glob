@@ -5,7 +5,7 @@
             <section  class="locator-content">
                 <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
                 [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
-                (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
+                (mapReady)="mapReady()" (mapClick)="mapClick()" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
                     <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
                         [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false"></agm-marker>
                     <agm-marker-cluster [styles]="clusterStyles" [maxZoom]="'15'" [minimumClusterSize]="5" [averageCenter]="true">
@@ -22,7 +22,7 @@
                 <sn-drawer #drawer [dockedHeight]="220" [state]="(showDrawer)? 1 : 0" [distanceTop]="64" (stateChange)="drawerStageChange($event)">
                     <sn-branch-info *ngIf="selectedBranch" [branch]="selectedBranch" (branchInfoClicked)="drawer.changeState()" [isNearestMarker]="showNearest"></sn-branch-info>
                 </sn-drawer>
-                
+
                 <sn-loading *ngIf="isLoading" full="true"></sn-loading>
             </section>
         </sn-tab>
@@ -54,7 +54,7 @@
         <sn-branch-list [isLoading]="isLoading" [branchesList]="branchesList" (branchSelected)="selectBranch($event)"></sn-branch-list>
 
         <sn-branch-info
-            *ngIf="showDrawer" 
+            *ngIf="showDrawer"
             [branch]="selectedBranch"
             [isNearestMarker]="showNearest"></sn-branch-info>
         <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
@@ -64,7 +64,7 @@
     <section class="locator-content">
         <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
         [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
-        (mapReady)="mapReady()" (mapClick)="mapClick($event)" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
+        (mapReady)="mapReady()" (mapClick)="mapClick()" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()" [fullscreenControl]="_optionalFullScreen" [fullscreenControlOptions]="branchIcon">
             <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
                 [iconUrl]="usericon" [markerClickable]="false" [openInfoWindow]="false" ></agm-marker>
             <agm-marker-cluster [styles]="clusterStyles" [maxZoom]="'15'" [minimumClusterSize]="5" [averageCenter]="true">
