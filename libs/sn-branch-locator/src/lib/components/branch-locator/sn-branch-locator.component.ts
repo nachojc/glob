@@ -32,12 +32,20 @@ export class SnBranchLocatorComponent implements OnInit {
   set optionalFullScreenControl(value: boolean) {
     this._optionalFullScreen = value !== null && value !== undefined && `${value}` !== 'false';
   }
-  @Input() optionalBranding: boolean;
+
+  @Input()
+  get optionalBranding(): boolean {
+    return this._optionalBranding;
+  }
+  set optionalBranding(value: boolean) {
+    this._optionalBranding = value !== null && value !== undefined && `${value}` !== 'false';
+  }
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<OutputMarkerSelected>();
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
   private selectedMarker: AgmMarker;
   public _optionalFullScreen = false;
+  public _optionalBranding = false;
 
   @ViewChild(SnMapDirective, {static: false}) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
