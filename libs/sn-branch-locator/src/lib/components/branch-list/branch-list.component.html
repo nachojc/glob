@@ -6,8 +6,8 @@
     (click)="selectBranch(branch)"
   >
     <div class="Type-5_Regular-Style name">
-      {{ branch && branch?.name ? branch.name : ""
-      }}{{ branch.location?.city ? " - " + branch?.location?.city : "" }}
+      {{ branch && branch?.name ? branch.name + " - " : ""
+      }}{{ branch.location?.city ? branch?.location?.city : "" }}
     </div>
     <div class="Type-5_Regular-Style address">
       {{ branch?.location?.address }}
