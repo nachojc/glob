@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 import { TranslateService } from '@ngx-translate/core';
+import { LatLngLiteral } from '@agm/core';
 
 @Component({
   selector: 'sn-branch-info',
@@ -34,6 +35,8 @@ export class SnBranchInfoComponent {
 
   // TODO : Temporary fix.
   @Output() branchInfoClicked = new EventEmitter<any>();
+
+  @Output() branchDirection = new EventEmitter<any>();
 
 
 
@@ -74,7 +77,7 @@ export class SnBranchInfoComponent {
             } else if (attr.multi.default === 'YES' || attr.multi.default === 'SI') {
               return attr.code;
             } else {
-              return attr.multi[this.language] ? attr.multi[this.language] :  attr.multi.default;
+              return attr.multi[this.language] ? attr.multi[this.language] : attr.multi.default;
             }
           } else {
             // if there aren't translation display the code
@@ -130,42 +133,42 @@ export class SnBranchInfoComponent {
 
   public parseSchedule(branchSchedule: any): any[] {
     const hoursEnum = {
-        MONDAY: {
-          en: 'Mon',
-          es: 'Seg', // TODO: review translation
-          pt: 'Seg'
-        },
-        TUESDAY: {
-          en: 'Tue',
-          es: 'Ter', // TODO: review translation
-          pt: 'Ter'
-        },
-        WEDNESDAY: {
-          en: 'Wed',
-          es: 'Qua', // TODO: review translation
-          pt: 'Qua'
-        },
-        THURSDAY: {
-          en: 'Thu',
-          es: 'Qui', // TODO: review translation
-          pt: 'Qui'
-        },
-        FRIDAY: {
-          en: 'Fri',
-          es: 'Sex', // TODO: review translation
-          pt: 'Sex'
-        },
-        SATURDAY: {
-          en: 'Sat',
-          es: 'Sab', // TODO: review translation
-          pt: 'Sab'
-        },
-        SUNDAY: {
-          en: 'Sun',
-          es: 'Ter', // TODO: review translation
-          pt: 'Ter'
-        }
-      };
+      MONDAY: {
+        en: 'Mon',
+        es: 'Seg', // TODO: review translation
+        pt: 'Seg'
+      },
+      TUESDAY: {
+        en: 'Tue',
+        es: 'Ter', // TODO: review translation
+        pt: 'Ter'
+      },
+      WEDNESDAY: {
+        en: 'Wed',
+        es: 'Qua', // TODO: review translation
+        pt: 'Qua'
+      },
+      THURSDAY: {
+        en: 'Thu',
+        es: 'Qui', // TODO: review translation
+        pt: 'Qui'
+      },
+      FRIDAY: {
+        en: 'Fri',
+        es: 'Sex', // TODO: review translation
+        pt: 'Sex'
+      },
+      SATURDAY: {
+        en: 'Sat',
+        es: 'Sab', // TODO: review translation
+        pt: 'Sab'
+      },
+      SUNDAY: {
+        en: 'Sun',
+        es: 'Ter', // TODO: review translation
+        pt: 'Ter'
+      }
+    };
 
     const groupedHours = [];
     let index = 0;
@@ -197,5 +200,9 @@ export class SnBranchInfoComponent {
 
   emitClick() {
     this.branchInfoClicked.emit();
+  }
+
+  emitGeoCoords(geoCoords: any) {
+    this.branchDirection.emit(geoCoords);
   }
 }

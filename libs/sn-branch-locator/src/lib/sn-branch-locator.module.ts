@@ -5,7 +5,8 @@ import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
-import { IconModule,
+import {
+  IconModule,
   ButtonModule,
   OptionListModule,
   LoadingModule,
@@ -24,6 +25,7 @@ import { BranchListComponent } from './components/branch-list/branch-list.compon
 import { MenuComponent } from './components/menu/menu.component';
 import { SnTabModule } from './components/tabs/sn-tab.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SnDirectionModule } from './modules/sn-direction/sn-direction.module';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
@@ -61,12 +63,13 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
     FilterModule,
     LoadingModule,
     LoaderModule,
+    SnDirectionModule
   ],
   providers: [
     TranslateService
   ],
   exports: [
-    SnBranchLocatorComponent,
+    SnBranchLocatorComponent
   ]
 })
 export class SnBranchLocatorModule { }

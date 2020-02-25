@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core';
-import { IconModule, OptionListModule, DrawerState,  DrawerModule} from 'sn-common-lib';
+import { IconModule, OptionListModule, DrawerState, DrawerModule } from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 
@@ -20,10 +20,11 @@ import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
 
 import { SnTabModule } from '../tabs/sn-tab.module';
+import { SnDirectionModule } from '../../modules/sn-direction/sn-direction.module';
 
 
 
-const  mockMapsAPILoader = {
+const mockMapsAPILoader = {
   load(): Promise<boolean> {
     return new Promise(() => {
       return true;
@@ -33,12 +34,13 @@ const  mockMapsAPILoader = {
 
 const windowRef = {
   google: {
-    maps : {
+    maps: {
       places: {
-        Autocomplete : () => ({
-          addListener: () => {},
-          getPlace: () => ({geometry: null})
-        })}
+        Autocomplete: () => ({
+          addListener: () => { },
+          getPlace: () => ({ geometry: null })
+        })
+      }
     }
   },
   screen: {
@@ -65,8 +67,8 @@ const mapBounds = {
 
 
 const GeoPositionServiceMock = {
-  watchPosition: () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}}),
-  getCurrentPosition : () => of({coords: {latitude: 38.7376049, longitude: -9.2654431}})
+  watchPosition: () => of({ coords: { latitude: 38.7376049, longitude: -9.2654431 } }),
+  getCurrentPosition: () => of({ coords: { latitude: 38.7376049, longitude: -9.2654431 } })
 };
 
 
@@ -89,7 +91,8 @@ describe('SnBranchLocatorComponent', () => {
         AgmCoreModule.forRoot({
           apiKey: 'demo',
           libraries: ['places']
-        })
+        }),
+        SnDirectionModule
       ],
       declarations: [
         SnBranchLocatorComponent,
@@ -98,7 +101,7 @@ describe('SnBranchLocatorComponent', () => {
       providers: [
         { provide: 'WINDOW', useValue: windowRef },
         { provide: GeoPositionService, useValue: GeoPositionServiceMock },
-        { provide: MapsAPILoader, useValue: mockMapsAPILoader},
+        { provide: MapsAPILoader, useValue: mockMapsAPILoader },
         { provide: ENV_CONFIG, useValue: environment },
         SnBranchLocatorService,
         FormBuilder,
@@ -114,12 +117,14 @@ describe('SnBranchLocatorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SnBranchLocatorComponent);
     component = fixture.componentInstance;
-    component.map = { api: {
-      panTo: () => new Promise((panToresolve) => panToresolve()),
-      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
-      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
-    }} as any;
-    placeChangeSpy =  spyOn<SnBranchLocatorComponent>(component, 'placeChange').and.callThrough();
+    component.map = {
+      api: {
+        panTo: () => new Promise((panToresolve) => panToresolve()),
+        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+      }
+    } as any;
+    placeChangeSpy = spyOn<SnBranchLocatorComponent>(component, 'placeChange').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -128,11 +133,13 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   it('should set userPosition', () => {
-    component.map = { api: {
-      panTo: () => new Promise((panToresolve) => panToresolve()),
-      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
-      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
-    }} as any;
+    component.map = {
+      api: {
+        panTo: () => new Promise((panToresolve) => panToresolve()),
+        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+      }
+    } as any;
     spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
     fixture.detectChanges();
     component.tilesLoaded();
@@ -159,8 +166,8 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   it('call recenter map when user position is diferente from the center of the map', () => {
-    component.userPosition = {lat: 38.7376049, lng: -9.2654431};
-    const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
+    component.userPosition = { lat: 38.7376049, lng: -9.2654431 };
+    const center: LatLngLiteral = { lat: 38.7376049, lng: -9.1654431 };
     component.centerChange(center);
 
     fixture.detectChanges();
@@ -169,15 +176,15 @@ describe('SnBranchLocatorComponent', () => {
 
   it(`call recenter map when user position is undefined`, () => {
     component.userPosition = undefined;
-    const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
+    const center: LatLngLiteral = { lat: 38.7376049, lng: -9.1654431 };
     component.centerChange(center);
     expect(component.showReCenter).not.toBeTruthy();
   });
 
 
   it('call recenter map when user position is equal to center of the map', () => {
-    component.userPosition = {lat: 38.7376049, lng: -9.1654431};
-    const center: LatLngLiteral = {lat: 38.7376049, lng: -9.1654431};
+    component.userPosition = { lat: 38.7376049, lng: -9.1654431 };
+    const center: LatLngLiteral = { lat: 38.7376049, lng: -9.1654431 };
     component.centerChange(center);
     expect(component.showReCenter).not.toBeTruthy();
   });
@@ -199,9 +206,9 @@ describe('SnBranchLocatorComponent', () => {
 
   it('marker selected', () => {
     component.branchMarkerList = [
-      {id: () => 1, clickable: true, iconUrl : undefined, _markerManager:  {updateIcon : () => undefined}},
-      {id: () => 2, clickable: true, iconUrl : undefined, _markerManager: {updateIcon : () => undefined}},
-      {id: () => 3, clickable: false, iconUrl : undefined, _markerManager: {updateIcon : () => undefined }}
+      { id: () => 1, clickable: true, iconUrl: undefined, _markerManager: { updateIcon: () => undefined } },
+      { id: () => 2, clickable: true, iconUrl: undefined, _markerManager: { updateIcon: () => undefined } },
+      { id: () => 3, clickable: false, iconUrl: undefined, _markerManager: { updateIcon: () => undefined } }
     ] as any;
     const selected = {
       id: () => 1,
@@ -210,7 +217,7 @@ describe('SnBranchLocatorComponent', () => {
       _markerManager: {
         updateIcon: () => undefined,
         getNativeMarker: () => new Promise((resolve) => {
-          resolve({ position: { lat: () => undefined, lng: () => undefined}});
+          resolve({ position: { lat: () => undefined, lng: () => undefined } });
         })
       }
     } as any;
@@ -221,13 +228,15 @@ describe('SnBranchLocatorComponent', () => {
 
 
   it('place change', () => {
-    component.map = { api: {
-      panTo: () => new Promise((panToresolve) => panToresolve()),
-      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
-      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
-    }} as any;
+    component.map = {
+      api: {
+        panTo: () => new Promise((panToresolve) => panToresolve()),
+        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+      }
+    } as any;
     spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
-    const eventValue: LatLngLiteral = {lat: 9, lng: 33};
+    const eventValue: LatLngLiteral = { lat: 9, lng: 33 };
     component.placeChange(eventValue);
     expect(placeChangeSpy).toHaveBeenCalled();
   });
@@ -236,14 +245,14 @@ describe('SnBranchLocatorComponent', () => {
     it('should return a list of branches', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component, 'selectBranch');
-      component.getBranchesByCoordinates({lat: 1, lng: 2});
-      expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({lat: 1, lng: 2});
+      component.getBranchesByCoordinates({ lat: 1, lng: 2 });
+      expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith({ lat: 1, lng: 2 });
       expect(component.selectBranch).not.toHaveBeenCalled();
     });
 
     it('should call API with userPosition as param', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
-      component.userPosition = {lat: 2, lng: 3};
+      component.userPosition = { lat: 2, lng: 3 };
       component.getBranchesByCoordinates();
       expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith(component.userPosition);
     });
@@ -252,7 +261,7 @@ describe('SnBranchLocatorComponent', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.callFake(() => {
         return throwError(new Error('Fake error'));
       });
-      component['branchService'].onChange.subscribe(() => {}, () => {
+      component['branchService'].onChange.subscribe(() => { }, () => {
         expect(component.isLoading).toBeFalsy();
       });
       component.getBranchesByCoordinates();
@@ -262,16 +271,18 @@ describe('SnBranchLocatorComponent', () => {
 
   describe('centerMapToUser()', () => {
     beforeEach(() => {
-      component.map = { api: {
-        panTo: () => new Promise((panToresolve) => panToresolve()),
-        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
-        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
-      }} as any;
+      component.map = {
+        api: {
+          panTo: () => new Promise((panToresolve) => panToresolve()),
+          setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+          getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+        }
+      } as any;
     });
 
     it('should call getBranchesByCoordinates with params', () => {
       spyOn(component, 'getBranchesByCoordinates').and.returnValue(of([branchMock, branchMock]));
-      component.userPosition = {lat: 38.7376049, lng: -9.1654431};
+      component.userPosition = { lat: 38.7376049, lng: -9.1654431 };
       component.centerMapToUser();
       expect(component.getBranchesByCoordinates).toHaveBeenCalledWith(component.userPosition, false);
     });
@@ -288,12 +299,12 @@ describe('SnBranchLocatorComponent', () => {
 
   describe('tabsChanged()', () => {
     it('should set selectedTabIndex to 0', () => {
-      component.tabsChanged({tabIndex: 0});
+      component.tabsChanged({ tabIndex: 0 });
       expect(component['selectedTabIndex']).toBe(0);
     });
     it('should set selectedTabIndex to 1 and call clearSelectedMarker', () => {
       spyOn<any>(component, 'clearSelectedMarker');
-      component.tabsChanged({tabIndex: 1});
+      component.tabsChanged({ tabIndex: 1 });
       expect(component['selectedTabIndex']).toBe(1);
       expect(component['clearSelectedMarker']).toHaveBeenCalled();
     });
@@ -301,11 +312,13 @@ describe('SnBranchLocatorComponent', () => {
 
   describe('mapReady()', () => {
     it('should set userPosition', () => {
-      component.map = { api: {
-        panTo: () => new Promise((panToresolve) => panToresolve()),
-        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
-        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
-      }} as any;
+      component.map = {
+        api: {
+          panTo: () => new Promise((panToresolve) => panToresolve()),
+          setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+          getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+        }
+      } as any;
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
       component.mapReady();
@@ -329,19 +342,21 @@ describe('SnBranchLocatorComponent', () => {
 
   it('onFilterApply() should set filterCounts to 1', () => {
 
-    component.map = { api: {
-      panTo: () => new Promise((panToresolve) => panToresolve()),
-      setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
-      getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
-    }} as any;
+    component.map = {
+      api: {
+        panTo: () => new Promise((panToresolve) => panToresolve()),
+        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+      }
+    } as any;
     spyOn(component['branchService'], 'getBranchesByBounds').and.returnValue(of([branchMock, branchMock]));
-    component.onFilterApply({count: 1});
+    component.onFilterApply({ count: 1 });
     expect(component.filterCounts).toBe(1);
   });
 
   describe('showFilter()', () => {
     beforeEach(() => {
-      component.filterView = {open: () => null} as any;
+      component.filterView = { open: () => null } as any;
     });
     it('should call filterView.open', () => {
       spyOn(component.filterView, 'open');
