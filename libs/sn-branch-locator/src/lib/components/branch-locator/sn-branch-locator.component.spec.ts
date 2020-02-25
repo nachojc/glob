@@ -151,7 +151,7 @@ describe('SnBranchLocatorComponent', () => {
     component['selectedMarker'] = new SnMarkerDirective({} as MarkerManager);
     // tslint:disable-next-line: no-string-literal
     component['selectedMarker']['_markerManager'].updateIcon = () => null;
-    component.mapClick({} as any);
+    component.mapClick();
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toBeUndefined();
   });
@@ -160,7 +160,7 @@ describe('SnBranchLocatorComponent', () => {
   it('map clicked reset without a selected branch', () => {
     // tslint:disable-next-line: no-string-literal
     component['selectedMarker'] = undefined;
-    component.mapClick({} as any);
+    component.mapClick();
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toBeUndefined();
   });
@@ -240,6 +240,27 @@ describe('SnBranchLocatorComponent', () => {
     component.placeChange(eventValue);
     expect(placeChangeSpy).toHaveBeenCalled();
   });
+
+  it( 'should get optionalFullScreenControl value from default _optionalFullScreen value',  () => {
+    component._optionalFullScreen = false;
+    expect(component.optionalFullScreenControl).toBe(component._optionalFullScreen);
+  } );
+
+  it( 'should set optionalFullScreenControl value from property value', () => {
+    component._optionalFullScreen = false;
+    component.optionalFullScreenControl = true;
+    expect(component._optionalFullScreen).toBe(true);
+  } );
+  it( 'should get optionalBranding value from default _optionalBranding value',  () => {
+    component._optionalBranding = false;
+    expect(component.optionalBranding).toBe(component._optionalBranding);
+  } );
+
+  it( 'should set optionalBranding value from property value', () => {
+    component._optionalBranding = false;
+    component.optionalBranding = true;
+    expect(component._optionalBranding).toBe(true);
+  } );
 
   describe('getBranchesByCoordinates()', () => {
     it('should return a list of branches', () => {

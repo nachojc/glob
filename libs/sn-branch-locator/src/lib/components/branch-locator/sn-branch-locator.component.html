@@ -6,6 +6,10 @@
   >
     <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
       <section class="locator-content">
+        <div class="locator-santander-brand" *ngIf="optionalBranding">
+          <h2>Santander</h2>
+          <h4>Branch Locator</h4>
+        </div>
         <agm-map
           [gestureHandling]="'greedy'"
           [showDefaultInfoWindow]="false"
@@ -136,6 +140,10 @@
   <!-- End Side Menu -->
 
   <section class="locator-content">
+    <div class="locator-santander-brand" *ngIf="_optionalBranding">
+      <h2>Santander</h2>
+      <h4>Branch Locator</h4>
+    </div>
     <agm-map
       [gestureHandling]="'greedy'"
       [showDefaultInfoWindow]="false"
