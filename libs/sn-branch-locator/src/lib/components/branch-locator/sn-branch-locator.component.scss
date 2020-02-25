@@ -10,6 +10,16 @@
     height: 100%;
   }
 
+  .locator-santander-brand {
+    position: absolute;
+    top: 1%;
+    left: 80%;
+    z-index: 6;
+    width: 175px;
+    height: 75px;
+    background-color: $color-primary-sky;
+  }
+
   .locator-content {
     height: 100%;
     .locator-center {

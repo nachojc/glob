@@ -3,6 +3,10 @@
     <sn-tab-group [selectIndex]="selectedTabIndex" (selectedTab)='tabsChanged($event)'>
         <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
             <section  class="locator-content">
+              <div class="locator-santander-brand" *ngIf="optionalBranding">
+                <h2>Santander</h2>
+                <h4>Branch Locator</h4>
+              </div>
                 <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
                 [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
                 (mapReady)="mapReady()" (mapClick)="mapClick()" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()">
@@ -14,7 +18,7 @@
                             [markerClickable]="true" [openInfoWindow]="false"></agm-marker>
                     </agm-marker-cluster>
                 </agm-map>
-                <section class="locator-center">
+              <section class="locator-center">
                     <button class="center-map-user" (click)="centerMapToUser(false, false)">
                         <sn-icon icon="sn-SYS029"></sn-icon>
                     </button>
@@ -62,7 +66,11 @@
     <!-- End Side Menu -->
 
     <section class="locator-content">
-        <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
+      <div class="locator-santander-brand" *ngIf="_optionalBranding">
+        <h2>Santander</h2>
+        <h4>Branch Locator</h4>
+      </div>
+      <agm-map [gestureHandling]="'greedy'" [showDefaultInfoWindow]="false" [disableDefaultUI]="true"
         [controlSize]="false" [panControl]="false" [streetViewControl]="false" [zoomControl]="false" [zoom]="zoom"
         (mapReady)="mapReady()" (mapClick)="mapClick()" (centerChange)="centerChange($event)" (tilesLoaded)="tilesLoaded()" [fullscreenControl]="_optionalFullScreen" [fullscreenControlOptions]="branchIcon">
             <agm-marker [agmFitBounds]="true" [latitude]="userPosition?.lat" [longitude]="userPosition?.lng"
