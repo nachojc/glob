@@ -1,10 +1,14 @@
-<sn-option-list [style.display]=" isLoading? 'none' : 'initial'" lines="full">
+<sn-option-list [style.display]="isLoading ? 'none' : 'initial'" lines="full">
   <!-- TODO: replace sn-option-item and use button[sn-option-item] for clicable list items -->
-  <button sn-option-item
+  <button
+    sn-option-item
     *ngFor="let branch of branchesList"
     (click)="selectBranch(branch)"
   >
-    <div class="Type-5_Regular-Style name">{{(branch && branch?.name)? branch.name : ''}}{{branch.location?.city? ' - ' + branch?.location?.city: ''}}</div>
+    <div class="Type-5_Regular-Style name">
+      {{ branch && branch?.name ? branch.name : ""
+      }}{{ branch.location?.city ? " - " + branch?.location?.city : "" }}
+    </div>
     <div class="Type-5_Regular-Style address">
       {{ branch?.location?.address }}
     </div>

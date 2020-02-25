@@ -20,6 +20,12 @@
           (centerChange)="centerChange($event)"
           (tilesLoaded)="tilesLoaded()"
         >
+          <sn-direction
+            *ngIf="isVisibleRoute"
+            [origin]="origin"
+            [destination]="destination"
+            [travelMode]="travelMode"
+          ></sn-direction>
           <agm-marker
             [agmFitBounds]="true"
             [latitude]="userPosition?.lat"
@@ -72,8 +78,6 @@
             (branchDirection)="drawDirection($event)"
           ></sn-branch-info>
         </sn-drawer>
-
-        <sn-loading *ngIf="isLoading" full="true"></sn-loading>
       </section>
     </sn-tab>
     <sn-tab label="{{ 'branchlocator.title.list' | translate }}">
@@ -187,7 +191,6 @@
         <sn-icon icon="sn-SYS029"></sn-icon>
       </button>
     </section>
-    <sn-loading *ngIf="isLoading" full="true"></sn-loading>
   </section>
 </ng-container>
 <!-- End Desktop -->

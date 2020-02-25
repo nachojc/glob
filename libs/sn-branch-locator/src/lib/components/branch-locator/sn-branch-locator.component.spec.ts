@@ -20,7 +20,7 @@ import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
 
 import { SnTabModule } from '../tabs/sn-tab.module';
-import { SnDirectionModule } from '../../modules/sn-direction/sn-direction.module';
+import { SnDirectionModule } from '../../directives/sn-direction/sn-direction.module';
 
 
 

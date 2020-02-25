@@ -105,6 +105,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.isMobile = this.platform.isMobile;
 
     this.branchService.onChange.subscribe(res => {
+      this.closeDrawer();
       this.clearSelectedMarker();
       this.branchesList = res;
       this.isLoading = false;
@@ -129,6 +130,7 @@ export class SnBranchLocatorComponent implements OnInit {
   tabsChanged(event: any) {
     this.selectedTabIndex = event.tabIndex;
     if (this.selectedTabIndex === 1) {
+      this.closeDrawer();
       this.clearSelectedMarker();
     }
   }
@@ -140,6 +142,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   markerSelect(selected: AgmMarker, branch: Branch) {
+    this.closeDrawer();
     this.clearSelectedMarker();
     selected.iconUrl = this.branchSelectedIcon as any;
     selected['_markerManager'].updateIcon(selected);
@@ -158,9 +161,10 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   mapClick(event: MouseEvent): void {
-    if (this.selectedMarker) {
+    /* if (this.selectedMarker) {
+      this.closeDrawer();
       this.clearSelectedMarker();
-    }
+    } */
   }
   mapReady(): void {
     this.geoPosition.getCurrentPosition()
@@ -201,6 +205,7 @@ export class SnBranchLocatorComponent implements OnInit {
 
   drawerStageChange(state: DrawerState): void {
     if (state === DrawerState.Bottom) {
+      this.closeDrawer();
       this.clearSelectedMarker();
     } else {
       this.openDrawer();
@@ -208,13 +213,16 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeInfo() {
-    this.isVisibleRoute = !this.isVisibleRoute;
-    this.isVisibleMarkers = !this.isVisibleMarkers;
+    this.isVisibleRoute = false;
+    this.isVisibleMarkers = true;
+    this.clearSelectedMarker();
+    this.getBranchesByBounds();
     this.showDrawer = !this.showDrawer;
   }
 
   placeChange(place: LatLngLiteral) {
     console.log('placeChange:', place);
+    this.closeDrawer();
     this.clearSelectedMarker();
     from(this.map.api.panTo(place)).pipe(
       switchMap(() => from(this.map.api.setZoom(this.zoom)))
@@ -229,6 +237,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   showFilter() {
+    this.closeDrawer();
     this.clearSelectedMarker();
     this.filterView.open();
   }
@@ -239,7 +248,6 @@ export class SnBranchLocatorComponent implements OnInit {
 
   private clearSelectedMarker(): void {
     this.showNearest = false;
-    this.closeDrawer();
     if (this.selectedMarker) {
       this.selectedMarker.iconUrl = this.branchIcon as any;
       this.selectedMarker['_markerManager'].updateIcon(this.selectedMarker);
@@ -302,6 +310,7 @@ export class SnBranchLocatorComponent implements OnInit {
 
   drawDirection(branchDirection: OutputDirection) {
     console.log('branchDirection :', branchDirection);
+    this.menuComponent.close();
 
     this.travelMode = branchDirection.travelMode;
 

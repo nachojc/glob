@@ -1,6 +1,6 @@
-import { Component, ContentChild, Output, EventEmitter} from '@angular/core';
+import { Component, ContentChild, Output, EventEmitter } from '@angular/core';
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
-import { MenuAnimations} from './menu.animations';
+import { MenuAnimations } from './menu.animations';
 
 @Component({
   selector: 'sn-menu',
@@ -11,7 +11,7 @@ import { MenuAnimations} from './menu.animations';
 export class MenuComponent {
 
   @Output() closeInfo = new EventEmitter<MouseEvent>();
-  @ContentChild(SnBranchInfoComponent, {static: false}) info!: SnBranchInfoComponent;
+  @ContentChild(SnBranchInfoComponent, { static: false }) info!: SnBranchInfoComponent;
   @Output() menuDidOpen = new EventEmitter<boolean>();
   @Output() menuDidClose = new EventEmitter<boolean>();
   currentState = 'menuOpened';
@@ -24,6 +24,10 @@ export class MenuComponent {
 
   open() {
     this.currentState = 'menuOpened';
+  }
+
+  close() {
+    this.currentState = 'menuClosed';
   }
 
   animationEnd(event) {

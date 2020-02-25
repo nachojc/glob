@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { SnDirectionDirective } from '../../directives/sn-direction/sn-direction.directive';
+import { SnDirectionDirective } from './sn-direction.directive';
 
-export * from '../../directives/sn-direction/sn-direction.directive';
+export * from './sn-direction.directive';
 
 @NgModule({
   imports: [],

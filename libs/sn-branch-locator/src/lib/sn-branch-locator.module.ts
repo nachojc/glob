@@ -25,7 +25,7 @@ import { BranchListComponent } from './components/branch-list/branch-list.compon
 import { MenuComponent } from './components/menu/menu.component';
 import { SnTabModule } from './components/tabs/sn-tab.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SnDirectionModule } from './modules/sn-direction/sn-direction.module';
+import { SnDirectionModule } from './directives/sn-direction/sn-direction.module';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
