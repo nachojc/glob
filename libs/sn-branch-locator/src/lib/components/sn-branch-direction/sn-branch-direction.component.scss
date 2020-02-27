@@ -1,0 +1,71 @@
+@import "~sn-common-lib/styles/settings/colors";
+:host {
+  .branch-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .branch-location {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 20px;
+
+      .branch-address {
+        margin-bottom: 20px;
+
+        p {
+          font-weight: normal;
+          font-size: 16px;
+          color: $color-secondary-mediumgray;
+          flex-grow: 1;
+          margin: 0;
+        }
+      }
+
+      .branch-directions {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        ::ng-deep {
+          i {
+            color: #fff;
+          }
+        }
+
+        div {
+          display: flex;
+          width: 35px;
+          height: 35px;
+          background-color: $color-primary-santander;
+          border-radius: 50%;
+          margin-right: 5px;
+          margin-left: 5px;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          transition: ease-in-out opacity 300ms;
+
+          &:hover {
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+
+    .branch-routes-wrapper {
+      overflow: auto;
+
+      .branch-direction {
+        padding: 10px;
+        border: 1px solid #000;
+        border-bottom: 0;
+
+        &:last-child {
+          border-bottom: 1px solid #000;
+        }
+      }
+    }
+  }
+}

@@ -22,63 +22,13 @@
       </div>
     </section>
     <section class="branch-location">
-      <p class="branch-address" style="min-height: 72px;">
-        {{ branch.location.address }}
-      </p>
+      <div class="branch-address">
+        <p>
+          {{ branch.location.address }}
+        </p>
+      </div>
       <div class="branch-directions">
-        <div>
-          <sn-icon
-            color="primary"
-            icon="sn-SERV051"
-            (click)="
-              emitGeoCoords({
-                geoCoords: branch.location.geoCoords,
-                travelMode: 'DRIVING'
-              })
-            "
-          >
-          </sn-icon>
-        </div>
-        <div>
-          <sn-icon
-            color="primary"
-            icon="sn-SERV053"
-            (click)="
-              emitGeoCoords({
-                geoCoords: branch.location.geoCoords,
-                travelMode: 'BICYCLING'
-              })
-            "
-          >
-          </sn-icon>
-        </div>
-        <div>
-          <sn-icon
-            color="primary"
-            icon="sn-SERV054"
-            (click)="
-              emitGeoCoords({
-                geoCoords: branch.location.geoCoords,
-                travelMode: 'TRANSIT'
-              })
-            "
-          >
-          </sn-icon>
-        </div>
-        <div>
-          <sn-icon
-            color="primary"
-            icon="sn-FUNC059"
-            (click)="
-              emitGeoCoords({
-                geoCoords: branch.location.geoCoords,
-                travelMode: 'WALKING'
-              })
-            "
-          >
-          </sn-icon>
-        </div>
-        <button>{{ branch.distanceInKm | number: "0.0-2" }} km</button>
+        <button (click)="emitOpenDirectionsPanel()">Open Directions</button>
       </div>
     </section>
     <section class="branch-schedule">

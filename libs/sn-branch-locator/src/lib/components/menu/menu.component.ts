@@ -1,5 +1,6 @@
 import { Component, ContentChild, Output, EventEmitter } from '@angular/core';
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
+import { SnBranchDirectionComponent } from '../sn-branch-direction/sn-branch-direction.component';
 import { MenuAnimations } from './menu.animations';
 
 @Component({
@@ -11,12 +12,12 @@ import { MenuAnimations } from './menu.animations';
 export class MenuComponent {
 
   @Output() closeInfo = new EventEmitter<MouseEvent>();
+  @Output() closeDirectionsPanel = new EventEmitter<MouseEvent>();
   @ContentChild(SnBranchInfoComponent, { static: false }) info!: SnBranchInfoComponent;
+  @ContentChild(SnBranchDirectionComponent, { static: false }) direction!: SnBranchDirectionComponent;
   @Output() menuDidOpen = new EventEmitter<boolean>();
   @Output() menuDidClose = new EventEmitter<boolean>();
   currentState = 'menuOpened';
-
-
 
   changeState() {
     this.currentState = this.currentState === 'menuOpened' ? 'menuClosed' : 'menuOpened';

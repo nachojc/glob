@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader, MarkerManager } from '@agm/core';
+import { AgmCoreModule, LatLngLiteral, MapsAPILoader } from '@agm/core';
 import { IconModule, OptionListModule, DrawerState, DrawerModule } from 'sn-common-lib';
 
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 
-import { SnMarkerDirective } from '../../directives/sn-marker/sn-marker.directive';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
@@ -146,25 +145,6 @@ describe('SnBranchLocatorComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('map clicked reset with a selected branch', () => {
-    // tslint:disable-next-line: no-string-literal
-    component['selectedMarker'] = new SnMarkerDirective({} as MarkerManager);
-    // tslint:disable-next-line: no-string-literal
-    component['selectedMarker']['_markerManager'].updateIcon = () => null;
-    component.mapClick();
-    // tslint:disable-next-line: no-string-literal
-    expect(component['selectedMarker']).toBeUndefined();
-  });
-
-
-  it('map clicked reset without a selected branch', () => {
-    // tslint:disable-next-line: no-string-literal
-    component['selectedMarker'] = undefined;
-    component.mapClick();
-    // tslint:disable-next-line: no-string-literal
-    expect(component['selectedMarker']).toBeUndefined();
-  });
-
   it('call recenter map when user position is diferente from the center of the map', () => {
     component.userPosition = { lat: 38.7376049, lng: -9.2654431 };
     const center: LatLngLiteral = { lat: 38.7376049, lng: -9.1654431 };
@@ -241,26 +221,26 @@ describe('SnBranchLocatorComponent', () => {
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
-  it( 'should get optionalFullScreenControl value from default _optionalFullScreen value',  () => {
+  it('should get optionalFullScreenControl value from default _optionalFullScreen value', () => {
     component._optionalFullScreen = false;
     expect(component.optionalFullScreenControl).toBe(component._optionalFullScreen);
-  } );
+  });
 
-  it( 'should set optionalFullScreenControl value from property value', () => {
+  it('should set optionalFullScreenControl value from property value', () => {
     component._optionalFullScreen = false;
     component.optionalFullScreenControl = true;
     expect(component._optionalFullScreen).toBe(true);
-  } );
-  it( 'should get optionalBranding value from default _optionalBranding value',  () => {
+  });
+  it('should get optionalBranding value from default _optionalBranding value', () => {
     component._optionalBranding = false;
     expect(component.optionalBranding).toBe(component._optionalBranding);
-  } );
+  });
 
-  it( 'should set optionalBranding value from property value', () => {
+  it('should set optionalBranding value from property value', () => {
     component._optionalBranding = false;
     component.optionalBranding = true;
     expect(component._optionalBranding).toBe(true);
-  } );
+  });
 
   describe('getBranchesByCoordinates()', () => {
     it('should return a list of branches', () => {
@@ -349,13 +329,26 @@ describe('SnBranchLocatorComponent', () => {
 
 
   describe('closeInfo()', () => {
+    const map = {
+      api: {
+        panTo: () => new Promise((panToresolve) => panToresolve()),
+        setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+        getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+      }
+    } as any;
     it('should return true', () => {
+      component.map = map;
       component.showDrawer = false;
+      component.isVisibleRoute = false;
+      component.isVisibleMarkers = true;
       component.closeInfo();
       expect(component.showDrawer).toBeTruthy();
     });
     it('should return false', () => {
+      component.map = map;
       component.showDrawer = true;
+      component.isVisibleRoute = false;
+      component.isVisibleMarkers = true;
       component.closeInfo();
       expect(component.showDrawer).toBeFalsy();
     });

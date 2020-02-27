@@ -20,7 +20,6 @@
           [zoomControl]="false"
           [zoom]="zoom"
           (mapReady)="mapReady()"
-          (mapClick)="mapClick($event)"
           (centerChange)="centerChange($event)"
           (tilesLoaded)="tilesLoaded()"
         >
@@ -79,7 +78,7 @@
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
-            (branchDirection)="drawDirection($event)"
+            (branchDirection)="drawDirections($event)"
           ></sn-branch-info>
         </sn-drawer>
       </section>
@@ -112,7 +111,10 @@
 <!-- Desktop -->
 <ng-container *ngIf="!isMobile">
   <!-- Side Menu -->
-  <sn-menu (closeInfo)="closeInfo()">
+  <sn-menu
+    (closeInfo)="closeInfo()"
+    (closeDirectionsPanel)="closeDirectionsPanel()"
+  >
     <sn-branch-search
       #test
       [showReCenter]="showReCenter"
@@ -133,8 +135,17 @@
       *ngIf="showDrawer"
       [branch]="selectedBranch"
       [isNearestMarker]="showNearest"
-      (branchDirection)="drawDirection($event)"
+      (branchDirection)="drawDirections($event)"
+      (openDirectionsPanel)="openDirectionsPanel()"
     ></sn-branch-info>
+
+    <sn-branch-direction
+      *ngIf="showDirectionsPanel"
+      [branch]="selectedBranch"
+      (branchDirection)="drawDirections($event)"
+      [routes]="routes"
+    ></sn-branch-direction>
+
     <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
   </sn-menu>
   <!-- End Side Menu -->
@@ -154,7 +165,6 @@
       [zoomControl]="false"
       [zoom]="zoom"
       (mapReady)="mapReady()"
-      (mapClick)="mapClick($event)"
       (centerChange)="centerChange($event)"
       (tilesLoaded)="tilesLoaded()"
     >
@@ -163,6 +173,7 @@
         [origin]="origin"
         [destination]="destination"
         [travelMode]="travelMode"
+        (_onResponse)="onDirectionsResponse($event)"
       ></sn-direction>
       <agm-marker
         [agmFitBounds]="true"

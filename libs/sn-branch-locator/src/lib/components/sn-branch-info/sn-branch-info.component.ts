@@ -1,7 +1,6 @@
-import { Component, Input, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 import { TranslateService } from '@ngx-translate/core';
-import { LatLngLiteral } from '@agm/core';
 
 @Component({
   selector: 'sn-branch-info',
@@ -10,7 +9,7 @@ import { LatLngLiteral } from '@agm/core';
 })
 export class SnBranchInfoComponent {
   private _branch: Branch;
-  public isBranch: boolean = true;
+  public isBranch = true;
   public todayHours: string;
   public language = this.translate.getDefaultLang();
 
@@ -38,6 +37,8 @@ export class SnBranchInfoComponent {
 
   @Output() branchDirection = new EventEmitter<any>();
 
+  @Output() openDirectionsPanel = new EventEmitter<any>();
+
 
 
   constructor(public translate: TranslateService) {
@@ -49,8 +50,10 @@ export class SnBranchInfoComponent {
   private setPOIInformation(poi: Branch): Branch {
     poi.products = this.getProducts(poi);
     poi.attributes = this.getAttributes(poi);
-    poi.schedule.preview = this.parseSchedule(poi.schedule.workingDay);
-    poi.schedule.timeToClose = this.getHoursToClose(poi.schedule.workingDay);
+    if (poi.schedule !== null) {
+      poi.schedule.preview = this.parseSchedule(poi.schedule.workingDay);
+      poi.schedule.timeToClose = this.getHoursToClose(poi.schedule.workingDay);
+    }
     return poi;
   }
 
@@ -123,13 +126,11 @@ export class SnBranchInfoComponent {
     }
   }
 
-
   getTodayTimeInformation(branchSchedule: any) {
     const auxHours = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
     const now = new Date().getDay();
     return branchSchedule[auxHours[now]][0];
   }
-
 
   public parseSchedule(branchSchedule: any): any[] {
     const hoursEnum = {
@@ -202,7 +203,16 @@ export class SnBranchInfoComponent {
     this.branchInfoClicked.emit();
   }
 
-  emitGeoCoords(geoCoords: any) {
+  emitDirectionCoords(geoCoords: any) {
     this.branchDirection.emit(geoCoords);
+  }
+
+  emitOpenDirectionsPanel() {
+    this.emitDirectionCoords({
+      geoCoords: this._branch.location.geoCoords,
+      travelMode: 'DRIVING'
+    });
+
+    this.openDirectionsPanel.emit();
   }
 }

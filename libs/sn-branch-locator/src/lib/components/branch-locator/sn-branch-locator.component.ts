@@ -89,6 +89,7 @@ export class SnBranchLocatorComponent implements OnInit {
   filterCounts: number;
   drawerState: DrawerState;
   showDrawer: boolean;
+  showDirectionsPanel: boolean;
   showNearest: boolean = false;
   isMobile: boolean;
   openNearest: boolean;
@@ -98,6 +99,7 @@ export class SnBranchLocatorComponent implements OnInit {
   destination: LatLngLiteral;
   origin: LatLngLiteral;
   travelMode: string;
+  routes = [];
 
   constructor(
     private geoPosition: GeoPositionService,
@@ -177,12 +179,6 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-  mapClick(event: MouseEvent): void {
-    /* if (this.selectedMarker) {
-      this.closeDrawer();
-      this.clearSelectedMarker();
-    } */
-  }
   mapReady(): void {
     this.geoPosition.getCurrentPosition()
       .subscribe((pos: Position) => {
@@ -237,8 +233,46 @@ export class SnBranchLocatorComponent implements OnInit {
     this.showDrawer = !this.showDrawer;
   }
 
+  closeDirectionsPanel(): void {
+    this.showDirectionsPanel = false;
+    this.openDrawer();
+  }
+
+  openDirectionsPanel(): void {
+    this.showDirectionsPanel = true;
+    this.closeDrawer();
+  }
+
+  onDirectionsResponse(event: any) {
+    const steps = event.routes[0].legs[0].steps;
+    this.routes = [];
+    for (let i = 0; i < steps.length; i++) {
+      const _instruction = steps[i].instructions;
+      const _distance = steps[i].distance.text;
+      const _time = steps[i].duration.text;
+      this.routes.push({
+        id: i + 1,
+        instructions: _instruction,
+        distance: _distance,
+        time: _time
+      });
+    }
+  }
+
+  drawDirections(branchDirection: OutputDirection) {
+    this.travelMode = branchDirection.travelMode;
+
+    this.destination = {
+      lng: branchDirection.geoCoords.longitude,
+      lat: branchDirection.geoCoords.latitude
+    };
+    this.origin = this.userPosition;
+
+    this.isVisibleRoute = true;
+    this.isVisibleMarkers = false;
+  }
+
   placeChange(place: LatLngLiteral) {
-    console.log('placeChange:', place);
     this.closeDrawer();
     this.clearSelectedMarker();
     from(this.map.api.panTo(place)).pipe(
@@ -287,7 +321,6 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-
   tilesLoaded() {
     this.getBranchesByBounds();
   }
@@ -324,22 +357,4 @@ export class SnBranchLocatorComponent implements OnInit {
         }));
     }
   }
-
-  drawDirection(branchDirection: OutputDirection) {
-    console.log('branchDirection :', branchDirection);
-    this.menuComponent.close();
-
-    this.travelMode = branchDirection.travelMode;
-
-    this.destination = {
-      lng: branchDirection.geoCoords.longitude,
-      lat: branchDirection.geoCoords.latitude
-    };
-    this.origin = this.userPosition;
-
-    this.isVisibleRoute = true;
-    this.isVisibleMarkers = false;
-
-  }
 }
-
