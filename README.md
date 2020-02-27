@@ -2,22 +2,22 @@
 
 
 <a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Build" src="https://img.shields.io/badge/Build-OK-green.svg" alt="build"></a>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Version" src="https://img.shields.io/badge/Version-1.0.2-green.svg" alt="version"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Version" src="https://img.shields.io/badge/Version-1.0.3-green.svg" alt="version"></a>
 
 <table id="Coverage">
 <tr><td>Statements</td><td>Branches</td><td>Functions</td><td>Lines</td></tr>
 <tr>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Statements" src="https://img.shields.io/badge/Coverage-91.35%25-green.svg" alt="statements coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Statements" src="https://img.shields.io/badge/Coverage-91.3%25-green.svg" alt="statements coverage"></a>
 </td>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Branches" src="https://img.shields.io/badge/Coverage-76.78%25-green.svg" alt="branches coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Branches" src="https://img.shields.io/badge/Coverage-76.21%25-green.svg" alt="branches coverage"></a>
 </td>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Functions" src="https://img.shields.io/badge/Coverage-85.85%25-green.svg" alt="functions coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Functions" src="https://img.shields.io/badge/Coverage-85.92%25-green.svg" alt="functions coverage"></a>
 </td>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Lines" src="https://img.shields.io/badge/Coverage-91.08%25-green.svg" alt="lines coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Lines" src="https://img.shields.io/badge/Coverage-91.03%25-green.svg" alt="lines coverage"></a>
 </td>
 </tr>
 </table>
