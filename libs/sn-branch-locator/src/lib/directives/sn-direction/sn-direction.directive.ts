@@ -3,6 +3,7 @@ import { GoogleMapsAPIWrapper } from '@agm/core';
 import { InfoWindow, GoogleMap, Marker } from '@agm/core/services/google-maps-types';
 
 declare var google: any;
+
 @Directive({
   selector: '[snDirection], sn-direction'
 })
@@ -236,9 +237,9 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
     if (typeof this.destinationMarker !== 'undefined') {
       this.destinationMarker.setMap(null);
     }
-    this.waypointsMarker.forEach((w: any) => {
-      if (typeof w !== 'undefined') {
-        w.setMap(null);
+    this.waypointsMarker.forEach((waypoint: any) => {
+      if (typeof waypoint !== 'undefined') {
+        waypoint.setMap(null);
       }
     });
   }

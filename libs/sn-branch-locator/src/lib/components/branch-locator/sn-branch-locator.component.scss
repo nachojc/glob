@@ -48,7 +48,7 @@
 
   .result-list-wrapper {
     height: 100%;
-    overflow-y:auto;
+    overflow-y: auto;
     margin-top: 4rem;
   }
 
@@ -71,7 +71,6 @@
       position: relative;
       height: 100%;
 
-
       ::ng-deep sn-drawer .drawer-content {
         height: calc(100% - (4px + 8px + 2px)); // TODO: why ???
       }
@@ -81,7 +80,6 @@
       }
     }
     //TODO: refactor sn-loading compomnent. Need input type to full and to block . Full will use fixed. Block will use absolute
-
   }
 
   sn-loading {
@@ -92,4 +90,3 @@
     touch-action: none;
   }
 }
-
