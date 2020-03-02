@@ -12,10 +12,19 @@ export class BranchListComponent {
   @Input() isLoading: boolean;
   @Output() branchSelected = new EventEmitter<Branch>();
 
+  public maxBranchesToLoad = 10;
+  public incrementRange = this.maxBranchesToLoad;
+
   selectBranch(branch: Branch) {
     this.branchSelected.emit(branch);
   }
 
-
-
+  loadMoreResults() {
+    const remainigBranches = this.branchesList.length - this.maxBranchesToLoad;
+    if (remainigBranches >= this.incrementRange ) {
+      this.maxBranchesToLoad = this.maxBranchesToLoad + this.incrementRange;
+    } else {
+      this.maxBranchesToLoad = this.branchesList.length;
+    }
+  }
 }
