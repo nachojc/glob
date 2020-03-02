@@ -10,8 +10,8 @@ import { Routes } from '../../models/routes.model';
 })
 export class SnBranchDirectionComponent {
 
-  public _branch: Branch;
-  public _routes: Array<Routes>;
+  private _branch: Branch;
+  private _routes: Array<Routes>;
   public isBranch = true;
 
   @Input()

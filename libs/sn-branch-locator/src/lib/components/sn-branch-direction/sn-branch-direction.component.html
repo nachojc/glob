@@ -51,7 +51,7 @@
       </div>
     </div>
   </section>
-  <section class="branch-routes-wrapper">
+  <section class="branch-routes-wrapper" *ngIf="routes">
     <div class="branch-direction" *ngFor="let route of routes">
       <div [innerHTML]="route.instructions | safe: 'html'"></div>
     </div>

@@ -97,11 +97,9 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
         this.directionsService = new google.maps.DirectionsService();
       }
 
-      if (typeof this.panel === 'undefined') {
-        this.directionsDisplay.setPanel(null);
-      } else {
-        this.directionsDisplay.setPanel(this.panel);
-      }
+      this.directionsDisplay.setPanel(
+        (typeof this.panel === 'undefined') ? null : this.panel
+      );
 
       if (typeof this.renderRoute === 'object' && this.renderRoute !== null) {
         this.directionsDisplay.setDirections(this.renderRoute);

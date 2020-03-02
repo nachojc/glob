@@ -44,7 +44,7 @@ export class SnBranchLocatorComponent implements OnInit {
 
   private selectedMarker: AgmMarker;
   public _optionalFullScreen = false;
-  public _optionalBranding = false;
+  private _optionalBranding = false;
 
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
@@ -243,7 +243,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.closeDrawer();
   }
 
-  onDirectionsResponse(event: any) {
+  onDirectionsResponse(event: any): void {
     const steps = event.routes[0].legs[0].steps;
     this.routes = [];
     for (let i = 0; i < steps.length; i++) {
@@ -259,7 +259,7 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-  drawDirections(branchDirection: OutputDirection) {
+  drawDirections(branchDirection: OutputDirection): void {
     this.travelMode = branchDirection.travelMode;
 
     this.destination = {

@@ -36,23 +36,23 @@ describe('SnBranchDirectionComponent', () => {
   });
 
   it('should get the branch', () => {
-    component._branch = branchMock;
-    expect(component.branch).toBe(component._branch);
+    (component as any)._branch = branchMock;
+    expect(component.branch).toBe((component as any)._branch);
   });
 
   it('should set the branch', async(() => {
     component.branch = branchMock;
-    expect(component._branch).toBe(branchMock);
+    expect((component as any)._branch).toBe(branchMock);
   }));
 
   it('should get the routes', () => {
-    component._routes = routesMock;
-    expect(component.routes).toBe(component._routes);
+    (component as any)._routes = routesMock;
+    expect(component.routes).toBe((component as any)._routes);
   });
 
   it('should set the routes', async(() => {
     component.routes = routesMock;
-    expect(component._routes).toBe(routesMock);
+    expect((component as any)._routes).toBe(routesMock);
   }));
 
   it('should emit geoCoords when click on route type', () => {
