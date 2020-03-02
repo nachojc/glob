@@ -20,6 +20,7 @@ import { FormBuilder } from '@angular/forms';
 
 import { SnTabModule } from '../tabs/sn-tab.module';
 import { SnDirectionModule } from '../../directives/sn-direction/sn-direction.module';
+import { OutputDirection } from '../../models/output-direction';
 
 
 
@@ -251,6 +252,19 @@ describe('SnBranchLocatorComponent', () => {
       expect(component.selectBranch).not.toHaveBeenCalled();
     });
 
+    it('should return a list of branched regarding user position', () => {
+      const userPosition = {
+        lat: 34,
+        lng: -3.4
+      };
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      spyOn(component, 'selectBranch');
+      component.userPosition = userPosition;
+      component.getBranchesByCoordinates(null);
+      expect(component['branchService'].getBranchesByCoords).toHaveBeenCalledWith(userPosition);
+      expect(component.selectBranch).not.toHaveBeenCalled();
+    });
+
     it('should call API with userPosition as param', () => {
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       component.userPosition = { lat: 2, lng: 3 };
@@ -312,7 +326,7 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   describe('mapReady()', () => {
-    it('should set userPosition', () => {
+    it('should set userPosition by only text in starting position', () => {
       component.map = {
         api: {
           panTo: () => new Promise((panToresolve) => panToresolve()),
@@ -320,6 +334,26 @@ describe('SnBranchLocatorComponent', () => {
           getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
         }
       } as any;
+      component.startingPosition = {
+        text: ''
+      };
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
+      component.mapReady();
+      expect(component.userPosition).toBeDefined();
+    });
+
+    it('should set userPosition by only coordinates in starting position', () => {
+      component.map = {
+        api: {
+          panTo: () => new Promise((panToresolve) => panToresolve()),
+          setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+          getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+        }
+      } as any;
+      component.startingPosition = {
+        coordinates: { lat: 10, lng: 3 }
+      };
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
       component.mapReady();
@@ -390,6 +424,124 @@ describe('SnBranchLocatorComponent', () => {
       // branchMock.id = '1';
       component.selectBranch(branchMock);
       expect(component.selectedTabIndex).toEqual(0);
+    });
+  });
+
+  describe('closeDirectionsPanel()', () => {
+    it('should set show directions panel to false and call openDrawer', () => {
+      const spy = spyOn<any>((component as any), 'openDrawer');
+      component.closeDirectionsPanel();
+      expect(component.showDirectionsPanel).toBeFalsy();
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('openDirectionsPanel()', () => {
+    it('should set show directions panel to true and call closeDrawer', () => {
+      const spy = spyOn<any>((component as any), 'closeDrawer');
+      component.openDirectionsPanel();
+      expect(component.showDirectionsPanel).toBeTruthy();
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('onDirectionsResponse()', () => {
+    it('should build routes with event values on directions response', () => {
+      const event = {
+        routes: [
+          {
+            legs: [
+              {
+                steps: [{
+                  instructions: '',
+                  distance: {
+                    text: ''
+                  },
+                  duration: {
+                    text: ''
+                  }
+                }]
+              }
+            ],
+            push: () => { }
+          },
+        ]
+      };
+      const routes = [{
+        id: 1,
+        instructions: '',
+        distance: '',
+        time: ''
+      }];
+
+      component.routes = [];
+      component.onDirectionsResponse(event);
+      expect(component.routes).toEqual(routes);
+    });
+  });
+
+  describe('drawDirections()', () => {
+    it('should set destination and origin coords, travel mode and display visible route plus hide markers', () => {
+      const branchDirection = {
+        geoCoords: {
+          latitude: 48,
+          longitude: -3.5
+        },
+        travelMode: 'DRIVING'
+      } as OutputDirection;
+      const destination = {
+        lat: 48,
+        lng: -3.5,
+      };
+      const userPosition = {
+        lat: 10,
+        lng: 10
+      };
+      component.userPosition = userPosition;
+      component.travelMode = '';
+      component.isVisibleRoute = false;
+      component.isVisibleMarkers = true;
+      component.drawDirections(branchDirection);
+      expect(component.destination).toEqual(destination);
+      expect(component.origin).toEqual(userPosition);
+      expect(component.isVisibleRoute).toBeTruthy();
+      expect(component.isVisibleMarkers).toBeFalsy();
+    });
+  });
+
+  describe('clearSelectedMarker()', () => {
+    it('should clean selected marker and selected branch if selected marker is already defined', () => {
+      const selectedMarker = {
+        iconUrl: {},
+        _markerManager: {
+          updateIcon: () => { }
+        }
+      };
+      const branchIcon = {
+        url: '',
+        scaledSize: {
+          height: 40,
+          width: 40
+        }
+      };
+      component.branchIcon = branchIcon;
+      (component as any).selectedMarker = selectedMarker;
+      (component as any).clearSelectedMarker();
+      expect((component as any).selectedMarker).toBeUndefined();
+      expect(component.selectedBranch).toBeUndefined();
+    });
+  });
+
+  describe('openMenu()', () => {
+    it('should open menu component when menu is already closed and it exists', () => {
+      const menuComponent = {
+        currentState: 'menuClosed',
+        open: () => { }
+      };
+      (component as any).menuComponent = menuComponent;
+      const spy = spyOn<any>((component as any).menuComponent, 'open');
+      component.openMenu();
+      expect(spy).toHaveBeenCalled();
     });
   });
 });
