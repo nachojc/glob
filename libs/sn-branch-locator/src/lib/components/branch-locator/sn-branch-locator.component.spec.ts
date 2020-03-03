@@ -428,10 +428,14 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   describe('closeDirectionsPanel()', () => {
-    it('should set show directions panel to false and call openDrawer', () => {
+    it('should set show directions panel to false, clear routes and call openDrawer', () => {
       const spy = spyOn<any>((component as any), 'openDrawer');
+      const route = { id: 0, instructions: 'Head to', distance: '0.3 km', time: '1 min' };
+      const routes = [route, route, route];
+      component.routes = routes;
       component.closeDirectionsPanel();
       expect(component.showDirectionsPanel).toBeFalsy();
+      expect(component.routes).toEqual([]);
       expect(spy).toHaveBeenCalled();
     });
   });

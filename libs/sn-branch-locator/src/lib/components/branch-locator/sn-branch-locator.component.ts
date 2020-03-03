@@ -234,6 +234,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeDirectionsPanel(): void {
+    this.routes = [];
     this.showDirectionsPanel = false;
     this.openDrawer();
   }
