@@ -18,7 +18,6 @@ export class BranchListComponent implements OnChanges {
   public incrementRange = this.numberOfBranchesToLoad;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes: ', changes);
     if (typeof (changes.branchesList) !== 'undefined' &&
       changes.branchesList.previousValue !== changes.branchesList.currentValue) {
       this.maxBranchesToLoad = this.numberOfBranchesToLoad;
