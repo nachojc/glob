@@ -179,7 +179,10 @@
             "main": "libs/sn-branch-locator/src/test.ts",
             "tsConfig": "libs/sn-branch-locator/tsconfig.spec.json",
             "karmaConfig": "libs/sn-branch-locator/karma.conf.js",
-            "codeCoverage": true
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "libs/sn-branch-locator/src/lib/directives/sn-direction/sn-direction.module.ts"
+            ]
           }
         },
         "lint": {
