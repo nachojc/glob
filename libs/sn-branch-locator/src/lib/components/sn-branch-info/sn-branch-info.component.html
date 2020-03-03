@@ -1,65 +1,121 @@
 <div class="branch-wrapper">
-    <div header draggable class="branch-summary-wrapper" (click)="emitClick()">
-        <h6 class="branch-title" *ngIf="isNearestMarker">{{ 'branchlocator.details.neartitle' | translate }}</h6>
-        <section class="branch-summary">
-            <h6 class="branch-name" style="min-height: 48px;">{{(branch && branch?.name)? branch.name : ''}}{{branch.location?.city? ' - ' + branch?.location?.city: ''}}</h6>
-            <a class="branch-appointment" *ngIf="branch.appointment && branch.appointment.branchAppointment" [href]=branch.appointment.branchAppointment target="_blank">
-              Make an appointment
-              <sn-icon color="primary" icon="sn-SERV005"></sn-icon>
-            </a>
-            <div class="body-medium" *ngIf="branch.subType?.multi">{{branch.subType?.multi.default}}</div>
-        </section>
-        <section class="branch-location">
-          <p class="branch-address" style="min-height: 72px;">
-            {{branch.location.address}}
-          </p>
-          <div class="branch-directions">
-            <button>{{branch.distanceInKm | number:'0.0-2'}} km</button>
-          </div>
-        </section>
+  <div header draggable class="branch-summary-wrapper" (click)="emitClick()">
+    <h6 class="branch-title" *ngIf="isNearestMarker">
+      {{ "branchlocator.details.neartitle" | translate }}
+    </h6>
+    <section class="branch-summary">
+      <h6 class="branch-name" style="min-height: 48px;">
+        {{ branch && branch?.name ? branch.name : ""
+        }}{{ branch.location?.city ? " - " + branch?.location?.city : "" }}
+      </h6>
+      <a
+        class="branch-appointment"
+        *ngIf="branch.appointment && branch.appointment.branchAppointment"
+        [href]="branch.appointment.branchAppointment"
+        target="_blank"
+      >
+        Make an appointment
+        <sn-icon color="primary" icon="sn-SERV005"></sn-icon>
+      </a>
+      <div class="body-medium" *ngIf="branch.subType?.multi">
+        {{ branch.subType?.multi.default }}
+      </div>
+    </section>
+    <section class="branch-location">
+      <div class="branch-address">
+        <p>
+          {{ branch.location.address }}
+        </p>
+      </div>
+      <div class="branch-directions">
+        <button (click)="emitOpenDirectionsPanel()">Open Directions</button>
+      </div>
+    </section>
     <section class="branch-schedule">
       <div class="branch-hours" *ngIf="isBranch && todayHours">
-        <div>{{ 'branchlocator.shared.branch' | translate }}</div>
-        <div>{{ 'branchlocator.details.today' | translate }}, {{todayHours}}</div>
+        <div>{{ "branchlocator.shared.branch" | translate }}</div>
+        <div>
+          {{ "branchlocator.details.today" | translate }}, {{ todayHours }}
+        </div>
       </div>
       <!-- [ngClass]="{hidden: branch?.atm?.length === 0}" -->
       <div class="atm-hours" *ngIf="!isBranch || (branch.atm && branch.atm[0])">
-        <div>{{ 'branchlocator.shared.atm' | translate }}</div>
-        <div>{{ 'branchlocator.details.atminfo' | translate }}</div>
+        <div>{{ "branchlocator.shared.atm" | translate }}</div>
+        <div>{{ "branchlocator.details.atminfo" | translate }}</div>
       </div>
     </section>
   </div>
 
-  <div class="tab-group-wrapper" [class.hide-tabs]="(isBranch && !(branch.atm?.length > 0)) || !isBranch">
-    <sn-tab-group [ngClass]="{both: isBranch && branch?.atm?.length}">
-      <sn-tab [label]="isBranch?translate.instant('branchlocator.shared.branch'):translate.instant('branchlocator.shared.atm')" class="tab-branch-info">
+  <div
+    class="tab-group-wrapper"
+    [class.hide-tabs]="(isBranch && !(branch.atm?.length > 0)) || !isBranch"
+  >
+    <sn-tab-group [ngClass]="{ both: isBranch && branch?.atm?.length }">
+      <sn-tab
+        [label]="
+          isBranch
+            ? translate.instant('branchlocator.shared.branch')
+            : translate.instant('branchlocator.shared.atm')
+        "
+        class="tab-branch-info"
+      >
         <div class="branch-info-wrapper">
           <sn-option-list lines="full">
-            <sn-option-item  *ngIf="branch.schedule?.timeToClose">
+            <sn-option-item *ngIf="branch.schedule?.timeToClose">
               <div class="close-warning">
-                <div class="Type-5_Light-Style">{{branch.schedule.timeToClose.text}}</div>
-                <div class="signal {{branch.schedule.timeToClose.mode}}"></div>
+                <div class="Type-5_Light-Style">
+                  {{ branch.schedule.timeToClose.text }}
+                </div>
+                <div
+                  class="signal {{ branch.schedule.timeToClose.mode }}"
+                ></div>
               </div>
             </sn-option-item>
-            <sn-option-item  *ngIf="branch.contactData?.phoneNumber">
-              <sn-icon color="primary" icon="sn-CHAN025" item-start align-start></sn-icon>
+            <sn-option-item *ngIf="branch.contactData?.phoneNumber">
+              <sn-icon
+                color="primary"
+                icon="sn-CHAN025"
+                item-start
+                align-start
+              ></sn-icon>
               <div>
-                <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.contact' | translate }}</div>
-                <div class="Type-5_Regular-Style">{{branch.contactData.phoneNumber}}</div>
+                <div class="Type-5_Regular-Style section-title">
+                  {{ "branchlocator.details.contact" | translate }}
+                </div>
+                <div class="Type-5_Regular-Style">
+                  {{ branch.contactData.phoneNumber }}
+                </div>
               </div>
               <div item-end>
-                <button (click)="contactBranch(branch.contactData.phoneNumber)" class="call-button">{{ 'branchlocator.details.contactbutton' | translate }}</button>
+                <button
+                  (click)="contactBranch(branch.contactData.phoneNumber)"
+                  class="call-button"
+                >
+                  {{ "branchlocator.details.contactbutton" | translate }}
+                </button>
               </div>
             </sn-option-item>
-            <sn-option-item  *ngIf="branch.schedule?.preview?.length > 0">
-              <sn-icon color="primary" icon="sn-DOC022" item-start align-start></sn-icon>
-              <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.schedule' | translate }}</div>
-              <div class="Type-5_Regular-Style hours-wrapper" *ngFor="let schedule of branch.schedule.preview">
+            <sn-option-item *ngIf="branch.schedule?.preview?.length > 0">
+              <sn-icon
+                color="primary"
+                icon="sn-DOC022"
+                item-start
+                align-start
+              ></sn-icon>
+              <div class="Type-5_Regular-Style section-title">
+                {{ "branchlocator.details.schedule" | translate }}
+              </div>
+              <div
+                class="Type-5_Regular-Style hours-wrapper"
+                *ngFor="let schedule of branch.schedule.preview"
+              >
                 <div class="weekdays">
-                  <h1 class="title">{{schedule.text}}:</h1>
+                  <h1 class="title">{{ schedule.text }}:</h1>
                 </div>
                 <div class="hours">
-                  <div *ngFor="let workingHour of schedule.hours">{{workingHour}}<br /></div>
+                  <div *ngFor="let workingHour of schedule.hours">
+                    {{ workingHour }}<br />
+                  </div>
                 </div>
               </div>
             </sn-option-item>
@@ -74,64 +130,132 @@
                 Sorry for the inconvenience
               </div>
             </sn-option-item> -->
-            <sn-option-item  *ngIf="branch.attributes?.length > 0 || branch.products?.length > 0">
-              <sn-icon color="primary" icon="sn-BAN089" item-start align-start></sn-icon>
-              <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.services' | translate }}</div>
-              <div class="Type-5_Regular-Style" *ngIf="branch.products.length > 0">
-                  <h1 class="title">{{ 'branchlocator.details.servicesfinancial' | translate }}</h1>
-                  <ul type="none">
-                    <li *ngFor="let attr of branch.products">{{attr}}</li>
-                  </ul>
+            <sn-option-item
+              *ngIf="
+                branch.attributes?.length > 0 || branch.products?.length > 0
+              "
+            >
+              <sn-icon
+                color="primary"
+                icon="sn-BAN089"
+                item-start
+                align-start
+              ></sn-icon>
+              <div class="Type-5_Regular-Style section-title">
+                {{ "branchlocator.details.services" | translate }}
               </div>
-              <div class="Type-5_Regular-Style" *ngIf="branch.attributes.length > 0">
-                  <h1 class="title">{{ 'branchlocator.details.servicesnofinancial' | translate }}</h1>
+              <div
+                class="Type-5_Regular-Style"
+                *ngIf="branch.products.length > 0"
+              >
+                <h1 class="title">
+                  {{ "branchlocator.details.servicesfinancial" | translate }}
+                </h1>
                 <ul type="none">
-                  <li *ngFor="let attr of branch.attributes">{{attr}}</li>
+                  <li *ngFor="let attr of branch.products">{{ attr }}</li>
+                </ul>
+              </div>
+              <div
+                class="Type-5_Regular-Style"
+                *ngIf="branch.attributes.length > 0"
+              >
+                <h1 class="title">
+                  {{ "branchlocator.details.servicesnofinancial" | translate }}
+                </h1>
+                <ul type="none">
+                  <li *ngFor="let attr of branch.attributes">{{ attr }}</li>
                 </ul>
               </div>
             </sn-option-item>
             <sn-option-item *ngIf="branch.hasAccesibility">
-              <sn-icon color="primary" icon="sn-FUNC094" item-start align-start></sn-icon>
-              <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.accessibility' | translate }}</div>
-              <h1 class="title">{{ 'branchlocator.details.accessibilitymessage' | translate }}</h1>
+              <sn-icon
+                color="primary"
+                icon="sn-FUNC094"
+                item-start
+                align-start
+              ></sn-icon>
+              <div class="Type-5_Regular-Style section-title">
+                {{ "branchlocator.details.accessibility" | translate }}
+              </div>
+              <h1 class="title">
+                {{ "branchlocator.details.accessibilitymessage" | translate }}
+              </h1>
             </sn-option-item>
-
           </sn-option-list>
         </div>
       </sn-tab>
 
-      <sn-tab label="ATM" class="tab-branch-info" *ngIf="(isBranch && branch.atm && branch.atm[0])"> <!--*ngIf="false"-->
-          <div class="branch-info-wrapper">
-            <sn-option-list lines="full">
-              <sn-option-item  *ngIf="branch.atm[0].schedule?.timeToClose">
-                <div class="close-warning">
-                  <div class="Type-5_Light-Style">{{branch.atm[0].schedule?.timeToClose.text}}</div>
-                  <div class="signal {{branch.atm[0].schedule?.timeToClose.mode}}"></div>
+      <sn-tab
+        label="ATM"
+        class="tab-branch-info"
+        *ngIf="isBranch && branch.atm && branch.atm[0]"
+      >
+        <!--*ngIf="false"-->
+        <div class="branch-info-wrapper">
+          <sn-option-list lines="full">
+            <sn-option-item *ngIf="branch.atm[0].schedule?.timeToClose">
+              <div class="close-warning">
+                <div class="Type-5_Light-Style">
+                  {{ branch.atm[0].schedule?.timeToClose.text }}
                 </div>
-              </sn-option-item>
-              <sn-option-item  *ngIf="branch.atm && branch.atm[0].contactData?.phoneNumber">
-                <sn-icon color="primary" icon="sn-CHAN025" item-start align-start></sn-icon>
-                <div>
-                  <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.contact' | translate }}</div>
-                  <div class="Type-5_Regular-Style">{{branch.atm[0].contactData.phoneNumber}}</div>
+                <div
+                  class="signal {{ branch.atm[0].schedule?.timeToClose.mode }}"
+                ></div>
+              </div>
+            </sn-option-item>
+            <sn-option-item
+              *ngIf="branch.atm && branch.atm[0].contactData?.phoneNumber"
+            >
+              <sn-icon
+                color="primary"
+                icon="sn-CHAN025"
+                item-start
+                align-start
+              ></sn-icon>
+              <div>
+                <div class="Type-5_Regular-Style section-title">
+                  {{ "branchlocator.details.contact" | translate }}
                 </div>
-                <div item-end>
-                  <button (click)="contactBranch(branch.atm[0].contactData.phoneNumber)" class="call-button">{{ 'branchlocator.details.contactbutton' | translate }}</button>
+                <div class="Type-5_Regular-Style">
+                  {{ branch.atm[0].contactData.phoneNumber }}
                 </div>
-              </sn-option-item>
-              <sn-option-item  *ngIf="branch.atm && branch.atm[0].schedule?.preview?.length > 0">
-                <sn-icon color="primary" icon="sn-DOC022" item-start align-start></sn-icon>
-                <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.schedule' | translate }}</div>
-                <div class="Type-5_Regular-Style hours-wrapper" *ngFor="let schedule of branch.atm[0].schedule.preview">
-                  <div class="weekdays">
-                    <h1 class="title">{{schedule.text}}:</h1>
+              </div>
+              <div item-end>
+                <button
+                  (click)="contactBranch(branch.atm[0].contactData.phoneNumber)"
+                  class="call-button"
+                >
+                  {{ "branchlocator.details.contactbutton" | translate }}
+                </button>
+              </div>
+            </sn-option-item>
+            <sn-option-item
+              *ngIf="branch.atm && branch.atm[0].schedule?.preview?.length > 0"
+            >
+              <sn-icon
+                color="primary"
+                icon="sn-DOC022"
+                item-start
+                align-start
+              ></sn-icon>
+              <div class="Type-5_Regular-Style section-title">
+                {{ "branchlocator.details.schedule" | translate }}
+              </div>
+              <div
+                class="Type-5_Regular-Style hours-wrapper"
+                *ngFor="let schedule of branch.atm[0].schedule.preview"
+              >
+                <div class="weekdays">
+                  <h1 class="title">{{ schedule.text }}:</h1>
+                </div>
+                <div class="hours">
+                  <div *ngFor="let workingHour of schedule.hours">
+                    {{ workingHour }}<br />
                   </div>
-                  <div class="hours">
-                    <div *ngFor="let workingHour of schedule.hours">{{workingHour}}<br /></div>
-                  </div>
                 </div>
-              </sn-option-item>
-              <!-- <sn-option-item >
+              </div>
+            </sn-option-item>
+            <!-- <sn-option-item >
                 <sn-icon color="primary" icon="sn-SYS004" item-start align-start></sn-icon>
                 <div class="Type-5_Regular-Style section-title">Notices and news</div>
                 <div class="Type-5_Regular-Style">
@@ -142,32 +266,66 @@
                   Sorry for the inconvenience
                 </div>
               </sn-option-item> -->
-              <sn-option-item  *ngIf="branch.atm && (branch.atm[0].attributes?.length > 0 || branch.atm[0].products?.length > 0)">
-                <sn-icon color="primary" icon="sn-BAN089" item-start align-start></sn-icon>
-                <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.services' | translate }}</div>
-                <div class="Type-5_Regular-Style" *ngIf="branch.atm[0].products.length > 0">
-                  <h1 class="title">{{ 'branchlocator.details.servicesfinancial' | translate }}</h1>
-                  <ul type="none">
-                    <li *ngFor="let attr of branch.atm[0].products">{{attr}}</li>
-                  </ul>
-                </div>
-                <div class="Type-5_Regular-Style" *ngIf="branch.atm[0].attributes.length > 0">
-                  <h1 class="title">{{ 'branchlocator.details.servicesnofinancial' | translate }}</h1>
-                  <ul type="none">
-                    <li *ngFor="let attr of branch.atm[0].attributes">{{attr}}</li>
-                  </ul>
-                </div>
-              </sn-option-item>
-              <sn-option-item *ngIf="branch.atm[0].hasAccesibility">
-                <sn-icon color="primary" icon="sn-FUNC094" item-start align-start></sn-icon>
-                <div class="Type-5_Regular-Style section-title">{{ 'branchlocator.details.accessibility' | translate }}</div>
-                <h1 class="title">{{ 'branchlocator.details.accessibilitymessage' | translate }}</h1>
-              </sn-option-item>
-
-            </sn-option-list>
-          </div>
-
-        </sn-tab>
+            <sn-option-item
+              *ngIf="
+                branch.atm &&
+                (branch.atm[0].attributes?.length > 0 ||
+                  branch.atm[0].products?.length > 0)
+              "
+            >
+              <sn-icon
+                color="primary"
+                icon="sn-BAN089"
+                item-start
+                align-start
+              ></sn-icon>
+              <div class="Type-5_Regular-Style section-title">
+                {{ "branchlocator.details.services" | translate }}
+              </div>
+              <div
+                class="Type-5_Regular-Style"
+                *ngIf="branch.atm[0].products.length > 0"
+              >
+                <h1 class="title">
+                  {{ "branchlocator.details.servicesfinancial" | translate }}
+                </h1>
+                <ul type="none">
+                  <li *ngFor="let attr of branch.atm[0].products">
+                    {{ attr }}
+                  </li>
+                </ul>
+              </div>
+              <div
+                class="Type-5_Regular-Style"
+                *ngIf="branch.atm[0].attributes.length > 0"
+              >
+                <h1 class="title">
+                  {{ "branchlocator.details.servicesnofinancial" | translate }}
+                </h1>
+                <ul type="none">
+                  <li *ngFor="let attr of branch.atm[0].attributes">
+                    {{ attr }}
+                  </li>
+                </ul>
+              </div>
+            </sn-option-item>
+            <sn-option-item *ngIf="branch.atm[0].hasAccesibility">
+              <sn-icon
+                color="primary"
+                icon="sn-FUNC094"
+                item-start
+                align-start
+              ></sn-icon>
+              <div class="Type-5_Regular-Style section-title">
+                {{ "branchlocator.details.accessibility" | translate }}
+              </div>
+              <h1 class="title">
+                {{ "branchlocator.details.accessibilitymessage" | translate }}
+              </h1>
+            </sn-option-item>
+          </sn-option-list>
+        </div>
+      </sn-tab>
     </sn-tab-group>
   </div>
 </div>

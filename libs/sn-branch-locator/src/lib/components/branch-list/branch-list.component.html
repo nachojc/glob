@@ -1,12 +1,15 @@
-<sn-option-list [style.display]=" isLoading? 'none' : 'initial'" lines="full">
+<sn-option-list [style.display]="isLoading ? 'none' : 'initial'" lines="full">
   <!-- TODO: replace sn-option-item and use button[sn-option-item] for clicable list items -->
-
-  <ng-container *ngFor="let branch of branchesList let i=index">
-    <button sn-option-item
-            (click)="selectBranch(branch)"
-            *ngIf="i < maxBranchesToLoad"
+  <ng-container *ngFor="let branch of branchesList; let i = index">
+    <button
+      sn-option-item
+      (click)="selectBranch(branch)"
+      *ngIf="i < maxBranchesToLoad"
     >
-      <div class="Type-5_Regular-Style name">{{(branch && branch?.name)? branch.name : ''}}{{branch.location?.city? ' - ' + branch?.location?.city: ''}}</div>
+      <div class="Type-5_Regular-Style name">
+        {{ branch && branch?.name ? branch.name + " - " : ""
+        }}{{ branch.location?.city ? branch?.location?.city : "" }}
+      </div>
       <div class="Type-5_Regular-Style address">
         {{ branch?.location?.address }}
       </div>
@@ -16,6 +19,14 @@
     </button>
   </ng-container>
 </sn-option-list>
-<button sn-button-secondary class="bl-load-result-button" (click)="loadMoreResults()" [style.display]=" isLoading? 'none' : 'initial'">Load more results</button>
+<button
+  sn-button-secondary
+  class="bl-load-result-button"
+  (click)="loadMoreResults()"
+  [style.display]="isLoading ? 'none' : 'initial'"
+  *ngIf="branchesList && branchesList.length > 0"
+>
+  Load more results
+</button>
 
 <sn-loader *ngIf="isLoading"></sn-loader>
