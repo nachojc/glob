@@ -1,13 +1,17 @@
-import { async,
+import {
+  async,
   ComponentFixture,
-  TestBed } from '@angular/core/testing';
+  TestBed
+} from '@angular/core/testing';
 
 import { BranchListComponent } from './branch-list.component';
 import { Branch } from '../../models/branch.model';
-import { IconModule,
+import {
+  IconModule,
   OptionListModule,
-  LoaderModule } from 'sn-common-lib';
-import { DebugElement } from '@angular/core';
+  LoaderModule
+} from 'sn-common-lib';
+import { DebugElement, SimpleChanges, SimpleChange } from '@angular/core';
 
 
 const mockBranchList: Branch = {
@@ -17,23 +21,24 @@ const mockBranchList: Branch = {
   name: null,
   action: null,
   poiStatus: 'ACTIVE',
-  objectType: {multi:
-      {
-        default: 'CAJERO',
-        es: 'CAJERO'
-      },
+  objectType: {
+    multi:
+    {
+      default: 'CAJERO',
+      es: 'CAJERO'
+    },
     code: 'ATM'
   },
   subType: {
     multi: '',
     code: 'NON_SANTANDER_ATM'
   },
-    specialType: '',
-    description: null,
-    status: null,
-    location: {
-      type: 'Point',
-      coordinates: [-3.810933,
+  specialType: '',
+  description: null,
+  status: null,
+  location: {
+    type: 'Point',
+    coordinates: [-3.810933,
       40.455844],
     address: 'C/ ENRIQUE GRANADOS,' +
       ' 1',
@@ -43,11 +48,12 @@ const mockBranchList: Branch = {
     locationDetails: null,
     parking: null,
     geoCoords: {
-        latitude: 40.455844,
-      longitude: -3.810933},
-      urlPhoto: null,
-      descriptionPhoto: null
+      latitude: 40.455844,
+      longitude: -3.810933
     },
+    urlPhoto: null,
+    descriptionPhoto: null
+  },
   distanceInKm: 0.73,
   distanceInMiles: 0.45,
   contactData: null,
@@ -55,28 +61,40 @@ const mockBranchList: Branch = {
   appointment: {
     waitingTimeTeller: null,
     waitingTimeSpecialist: null,
-    branchAppointment: null},
-  schedule: {workingDay: {
-    WEDNESDAY: [],
+    branchAppointment: null
+  },
+  schedule: {
+    workingDay: {
+      WEDNESDAY: [],
       MONDAY: [],
       THURSDAY: [],
       SUNDAY: [],
       TUESDAY: [],
       FRIDAY: [],
-      SATURDAY: []},
-    specialDay: []},
+      SATURDAY: []
+    },
+    specialDay: []
+  },
   comercialProducts: [{
     default: 'BILLETES DE: 20-50',
-    es: 'BILLETES DE: 20-50'}],
+    es: 'BILLETES DE: 20-50'
+  }],
   banner: null,
   spokenlanguages: null,
-  attrib: [{multi: {
-    default: 'SI',
-      es: 'SI'},
-    code: 'WITHDRAW'}],
-  richTexts: [{multi: {default: 'Cajero Interior',
-      es: 'Cajero Interior'},
-    code: ''}],
+  attrib: [{
+    multi: {
+      default: 'SI',
+      es: 'SI'
+    },
+    code: 'WITHDRAW'
+  }],
+  richTexts: [{
+    multi: {
+      default: 'Cajero Interior',
+      es: 'Cajero Interior'
+    },
+    code: ''
+  }],
   people: null,
   events: null,
   store: 'POIBean [id=null,' +
@@ -135,10 +153,10 @@ describe('BranchListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BranchListComponent ],
+      declarations: [BranchListComponent],
       imports: [IconModule, OptionListModule, LoaderModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -151,13 +169,13 @@ describe('BranchListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it( 'should load more results', () => {
+  it('should load more results', () => {
     component.branchesList = [];
     const spy = spyOn(component, 'loadMoreResults').and.callThrough();
     component.loadMoreResults();
     expect(spy).toHaveBeenCalled();
-  } );
-  it( 'should increment load more variable', () => {
+  });
+  it('should increment load more variable', () => {
     component.branchesList = [
       mockBranchList, mockBranchList, mockBranchList,
       mockBranchList, mockBranchList, mockBranchList,
@@ -171,28 +189,7 @@ describe('BranchListComponent', () => {
     const spy = spyOn(component, 'loadMoreResults').and.callThrough();
     component.loadMoreResults();
     expect(component.maxBranchesToLoad).toBeGreaterThan(10);
-  } );
-
-  // it('should emit on click' , () => {
-
-  //   const branch: Branch = {} as Branch;
-  //   component.isLoading = false;
-  //   component.branchesList = [branch, branch];
-  //   fixture.detectChanges();
-  //   const mainElement = fixture.debugElement.nativeElement;
-  //   const snOptionList = mainElement.querySelector('sn-option-list');
-  //   const snOptionItem = snOptionList.firstElementChild;
-  //   component.branchSelected.subscribe(resp => {
-  //     expect(resp).toEqual(branch);
-  //   });
-
-  //   snOptionList.click();
-
-  //   // Extra line just for the coverage
-  //   const callbranchSelected = spyOn(component, 'selectBranch').and.callThrough();
-  //   component.selectBranch({} as Branch);
-  //   expect(callbranchSelected).toHaveBeenCalled();
-  // });
+  });
 
   it('should show loading', () => {
     component.isLoading = true;
@@ -212,5 +209,44 @@ describe('BranchListComponent', () => {
 
     expect(mainElement.querySelector('sn-loader')).toBeNull();
     expect(snOptionList.style.display).not.toEqual('none');
+  });
+
+  describe('ngOnChanges()', () => {
+    it('should maxBranchesToLoad to be reset when branch list change with numberOfBranchesToLoad', () => {
+      const changes = {
+        branchesList: {
+          previousValue: [mockBranchList],
+          currentValue: [mockBranchList, mockBranchList, mockBranchList],
+          firstChange: false
+        } as SimpleChange
+      } as SimpleChanges;
+      component.branchesList = [mockBranchList];
+      fixture.detectChanges();
+      component.ngOnChanges(changes);
+      expect(component.maxBranchesToLoad).toBe((component as any).numberOfBranchesToLoad);
+    });
+
+    it('shouldn`t maxBranchesToLoad to be reset when branch list doesn`t change', () => {
+      const changes = {
+        branchesList: undefined
+      } as SimpleChanges;
+      component.branchesList = [
+        mockBranchList, mockBranchList, mockBranchList,
+        mockBranchList, mockBranchList, mockBranchList,
+        mockBranchList, mockBranchList, mockBranchList,
+        mockBranchList, mockBranchList, mockBranchList];
+      fixture.detectChanges();
+      component.ngOnChanges(changes);
+      const isMaxBranchesToLoadReset = component.maxBranchesToLoad === (component as any).numberOfBranchesToLoad ? false : true;
+      expect(isMaxBranchesToLoadReset).toBeFalsy();
+    });
+  });
+
+  describe('selectBranch()', () => {
+    it('should emit branchSelected on selectBranch call', () => {
+      const spy = spyOn<any>(component.branchSelected, 'emit');
+      component.selectBranch(mockBranchList);
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });
