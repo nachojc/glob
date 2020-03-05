@@ -9,7 +9,7 @@
     "build-local": "ng build --base-href /",
     "build-aot": "ng build --aot --base-href /",
     "build-lib": "ng lint sn-branch-locator && ng build sn-branch-locator && node tools/assets-fix.js",
-    "build-blgroup": "npm run build-lib && ng build BL-group",
+    "build-blgroup": "npm run build-lib && ng build BL-group && node tools/assets-fix.js",
     "dev-lib": "ng lint sn-branch-locator && ng build sn-branch-locator --watch",
     "test": "ng test",
     "test-lib": "ng test sn-branch-locator",

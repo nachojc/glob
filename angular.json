@@ -219,11 +219,31 @@
             "aot": false,
             "assets": [
               "projects/BL-group/src/favicon.ico",
-              "projects/BL-group/src/assets"
+              "projects/BL-group/src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/sn-common-lib/assets/fonts/",
+                "output": "assets/fonts/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/sn-branch-locator/src/assets/branchlocator/",
+                "output": "assets/branchlocator/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/sn-branch-locator/i18n/branchlocator/",
+                "output": "i18n/branchlocator/"
+              }
             ],
             "styles": [
-              "projects/BL-group/src/styles.scss"
+              "projects/BL-group/src/styles.scss",
+              "node_modules/sn-common-lib/styles/styles.scss",
+              "node_modules/prismjs/themes/prism-coy.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["/node_modules"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -286,9 +306,7 @@
               "projects/BL-group/src/favicon.ico",
               "projects/BL-group/src/assets"
             ],
-            "styles": [
-              "projects/BL-group/src/styles.scss"
-            ],
+            "styles": ["projects/BL-group/src/styles.scss"],
             "scripts": []
           }
         },
@@ -300,9 +318,7 @@
               "projects/BL-group/tsconfig.spec.json",
               "projects/BL-group/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
