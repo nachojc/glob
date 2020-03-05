@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Branch } from '../../models/branch.model';
-import { max } from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-list',

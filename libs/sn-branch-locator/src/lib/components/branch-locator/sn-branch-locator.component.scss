@@ -46,10 +46,14 @@
     }
   }
 
-  .result-list-wrapper {
-    height: 100%;
-    overflow-y: auto;
+  .tab-branches-list {
     margin-top: 4rem;
+
+    .result-list-wrapper {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
   }
 
   .locator-search {

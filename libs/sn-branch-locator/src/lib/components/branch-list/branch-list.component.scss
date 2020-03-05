@@ -1,7 +1,6 @@
-@import '~sn-common-lib/styles/settings/colors';
+@import "~sn-common-lib/styles/settings/colors";
 
-
-:host{
+:host {
   button[sn-option-item] {
     width: 100%;
     .name {
@@ -9,7 +8,7 @@
       color: $color-primary-santander;
       font-size: 1rem;
       line-height: 1.5;
-      padding-bottom: .5rem;
+      padding-bottom: 0.5rem;
     }
 
     .address {
@@ -27,7 +26,6 @@
   }
   .bl-load-result-button {
     position: relative;
-    left: 50%;
     margin: 15px;
   }
 }

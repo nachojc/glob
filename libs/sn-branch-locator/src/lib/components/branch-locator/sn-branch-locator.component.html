@@ -79,11 +79,21 @@
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
             (branchDirection)="drawDirections($event)"
+            (openDirectionsPanel)="openDirectionsPanel()"
           ></sn-branch-info>
+          <sn-branch-direction
+            *ngIf="showDirectionsPanel"
+            [branch]="selectedBranch"
+            (branchDirection)="drawDirections($event)"
+            [routes]="routes"
+          ></sn-branch-direction>
         </sn-drawer>
       </section>
     </sn-tab>
-    <sn-tab label="{{ 'branchlocator.title.list' | translate }}">
+    <sn-tab
+      class="tab-branches-list"
+      label="{{ 'branchlocator.title.list' | translate }}"
+    >
       <section class="result-list-wrapper">
         <sn-branch-list
           [isLoading]="isLoading"

@@ -245,18 +245,20 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   onDirectionsResponse(event: any): void {
-    const steps = event.routes[0].legs[0].steps;
-    this.routes = [];
-    for (let i = 0; i < steps.length; i++) {
-      const _instruction = steps[i].instructions;
-      const _distance = steps[i].distance.text;
-      const _time = steps[i].duration.text;
-      this.routes.push({
-        id: i + 1,
-        instructions: _instruction,
-        distance: _distance,
-        time: _time
-      });
+    if (typeof (event.routes) !== 'undefined' && event.routes.length > 0) {
+      const steps = event.routes[0].legs[0].steps;
+      this.routes = [];
+      for (let i = 0; i < steps.length; i++) {
+        const _instruction = steps[i].instructions;
+        const _distance = steps[i].distance.text;
+        const _time = steps[i].duration.text;
+        this.routes.push({
+          id: i + 1,
+          instructions: _instruction,
+          distance: _distance,
+          time: _time
+        });
+      }
     }
   }
 
