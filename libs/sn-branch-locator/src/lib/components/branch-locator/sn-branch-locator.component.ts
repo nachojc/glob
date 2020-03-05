@@ -23,6 +23,13 @@ import { IStartingPosition } from '../../models/starting-position.interface';
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent implements OnInit {
+  @Input()
+  get coordinates(): any {
+    return this._coordinates;
+  }
+  set coordinates(value: any) {
+    this._coordinates = value !== null && value !== undefined ? value : null;
+  }
   @Input() startingPosition: IStartingPosition;
   @Input()
   get optionalFullScreenControl(): boolean {
@@ -45,6 +52,7 @@ export class SnBranchLocatorComponent implements OnInit {
   private selectedMarker: AgmMarker;
   public _optionalFullScreen = false;
   private _optionalBranding = false;
+  private _coordinates: any;
 
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
@@ -121,6 +129,8 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('coordinates are here: ', this.coordinates);
+
     this.isMobile = this.platform.isMobile;
 
     this.branchService.onChange.subscribe(res => {

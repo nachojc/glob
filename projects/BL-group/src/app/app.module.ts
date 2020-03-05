@@ -12,6 +12,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrismModule } from './components/prism/prism.module';
+import { RouterModule } from '@angular/router';
 
 export function HttpLoaderFactory(http: HttpClient, path: any) {
   return new TranslateHttpLoader(http, path.api.BranchLocator['languages'], '.json');
@@ -40,6 +41,7 @@ export function HttpLoaderFactory(http: HttpClient, path: any) {
         deps: [HttpClient, ENV_CONFIG]
       }
     }),
+    RouterModule.forRoot([])
   ],
   providers: [
     { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
