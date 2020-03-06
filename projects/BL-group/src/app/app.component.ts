@@ -1,50 +1,30 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscriber, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { QueryParamsService } from './services/query-params.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent {
+
+  public coordinates: string;
+  public address: string;
+  public defaultLang: string;
+
   constructor(
     private translate: TranslateService,
-    private route: ActivatedRoute
+    private queryParamsService: QueryParamsService
   ) {
     translate.setDefaultLang('en');
     translate.use('pt');
 
-    this.sub = this.route
-      .queryParams
-      .subscribe(params => {
-        console.log(params);
-        this.coordinates = params['coordinates'];
-      });
-
-    // this.coordinates = this.route.snapshot.queryParamMap.get('coordinates');
+    this.queryParamsService.parametersWatcher.subscribe(param => {
+      this.coordinates = param['coordinates'];
+      this.address = param['address'];
+      this.defaultLang = param['defaultLang'];
+    });
   }
 
-  private sub: any;
-  id: string;
-
-  coordinates: any;
-
-  ngOnInit() {
-    /*
-    console.log(this.route);
-    this.coordinates = this.route.snapshot.queryParamMap.get('coordinates');
-    */
-
-    /* const defaultLang = this.route.snapshot.queryParamMap.get('defaultLang');
-    const address = this.route.snapshot.queryParamMap.get('address');
-    const coordinates = this.route.snapshot.queryParamMap.get('coordinates');
-    console.log(defaultLang, address, coordinates); */
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
 }

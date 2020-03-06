@@ -29,7 +29,25 @@ export class SnBranchLocatorComponent implements OnInit {
   }
   set coordinates(value: any) {
     this._coordinates = value !== null && value !== undefined ? value : null;
+    this.myTest();
   }
+  @Input()
+  get defaultLang(): any {
+    return this._defaultLang;
+  }
+  set defaultLang(value: any) {
+    this._defaultLang = value !== null && value !== undefined ? value : null;
+    this.myTest();
+  }
+  @Input()
+  get address(): any {
+    return this._address;
+  }
+  set address(value: any) {
+    this._address = value !== null && value !== undefined ? value : null;
+    this.myTest();
+  }
+
   @Input() startingPosition: IStartingPosition;
   @Input()
   get optionalFullScreenControl(): boolean {
@@ -52,7 +70,9 @@ export class SnBranchLocatorComponent implements OnInit {
   private selectedMarker: AgmMarker;
   public _optionalFullScreen = false;
   private _optionalBranding = false;
-  private _coordinates: any;
+  private _coordinates: string;
+  private _address: string;
+  private _defaultLang: string;
 
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
@@ -128,8 +148,13 @@ export class SnBranchLocatorComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
+  myTest() {
     console.log('coordinates are here: ', this.coordinates);
+    console.log('address are here: ', this.address);
+    console.log('defaultLang are here: ', this.defaultLang);
+  }
+
+  ngOnInit(): void {
 
     this.isMobile = this.platform.isMobile;
 
