@@ -108,6 +108,7 @@
       <sn-branch-search
         [showReCenter]="showReCenter"
         [filterCount]="filterCounts"
+        [address]="address"
         (placeChange)="placeChange($event)"
         (reCenter)="centerMapToUser(true, true)"
         (callFilter)="showFilter()"
@@ -129,6 +130,7 @@
       #test
       [showReCenter]="showReCenter"
       [filterCount]="filterCounts"
+      [address]="address"
       (placeChange)="placeChange($event)"
       (reCenter)="centerMapToUser(true, true)"
       (callFilter)="showFilter()"

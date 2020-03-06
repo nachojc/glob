@@ -1,6 +1,6 @@
-import { Component, ViewChild, ViewChildren, QueryList, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, OnInit, EventEmitter, Output, Input, NgZone } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
+import { LatLngLiteral, LatLngBounds, AgmMarker, MapsAPILoader } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
 import { from, Observable, of } from 'rxjs';
@@ -16,7 +16,9 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
+import { BranchSearchInputComponent } from '../branch-search/branch-search.component';
 
+declare const google: any;
 @Component({
   selector: 'sn-branch-locator',
   templateUrl: 'sn-branch-locator.component.html',
@@ -29,7 +31,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
   set coordinates(value: any) {
     this._coordinates = value !== null && value !== undefined ? value : null;
-    this.myTest();
   }
   @Input()
   get defaultLang(): any {
@@ -37,7 +38,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
   set defaultLang(value: any) {
     this._defaultLang = value !== null && value !== undefined ? value : null;
-    this.myTest();
   }
   @Input()
   get address(): any {
@@ -45,7 +45,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
   set address(value: any) {
     this._address = value !== null && value !== undefined ? value : null;
-    this.myTest();
+    this.searchAddress(this._address);
   }
 
   @Input() startingPosition: IStartingPosition;
@@ -78,26 +78,27 @@ export class SnBranchLocatorComponent implements OnInit {
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
   @ViewChild(FilterComponent, { static: false }) filterView: FilterComponent;
   @ViewChild(MenuComponent, { static: false }) menuComponent: MenuComponent;
+  @ViewChild(BranchSearchInputComponent, { static: false }) branchSearchInputComponent: BranchSearchInputComponent;
 
-  isLoading: boolean = true;
-  lat: number;
-  lng: number;
-  branchIcon = {
+  public isLoading: boolean = true;
+  public lat: number;
+  public lng: number;
+  public branchIcon = {
     url: 'assets/branchlocator/touchpointIcon.svg',
     scaledSize: { height: 40, width: 40 }
   };
-  branchSelectedIcon = {
+  public branchSelectedIcon = {
     url: 'assets/branchlocator/santanderTouchpointSelected.svg',
     scaledSize: { height: 56, width: 56 }
   };
-  usericon = {
+  public usericon = {
     url: 'assets/branchlocator/pinVoce.svg',
     scaledSize: { height: 90, width: 90 }
   };
-  branchesList: Branch[];
+  public branchesList: Branch[];
 
 
-  clusterStyles: ClusterStyle[] = [
+  public clusterStyles: ClusterStyle[] = [
     {
       textColor: '#000000',
       url: 'assets/branchlocator/coffeeBlank.svg',
@@ -108,31 +109,33 @@ export class SnBranchLocatorComponent implements OnInit {
   ];
 
   private _initialPosition: LatLngLiteral;
-  userPosition: LatLngLiteral;
-  zoom = 13;
-  showReCenter: boolean;
+  public userPosition: LatLngLiteral;
+  public zoom = 13;
+  public showReCenter: boolean;
 
-  selectedBranch: Branch;
-  selectedTabIndex: number;
-  filterCounts: number;
-  drawerState: DrawerState;
-  showDrawer: boolean;
-  showDirectionsPanel: boolean;
-  showNearest: boolean = false;
-  isMobile: boolean;
-  openNearest: boolean;
+  public selectedBranch: Branch;
+  public selectedTabIndex: number;
+  public filterCounts: number;
+  public drawerState: DrawerState;
+  public showDrawer: boolean;
+  public showDirectionsPanel: boolean;
+  public showNearest: boolean = false;
+  public isMobile: boolean;
+  public openNearest: boolean;
 
-  isVisibleMarkers = true;
-  isVisibleRoute = false;
-  destination: LatLngLiteral;
-  origin: LatLngLiteral;
-  travelMode: string;
-  routes = [];
+  public isVisibleMarkers = true;
+  public isVisibleRoute = false;
+  public destination: LatLngLiteral;
+  public origin: LatLngLiteral;
+  public travelMode: string;
+  public routes = [];
 
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
-    private platform: Platform
+    private platform: Platform,
+    private ngZone: NgZone,
+    private mapsAPILoader: MapsAPILoader
   ) {
     this.geoPosition.watchPosition()
       .pipe(first())
@@ -148,14 +151,8 @@ export class SnBranchLocatorComponent implements OnInit {
       });
   }
 
-  myTest() {
-    console.log('coordinates are here: ', this.coordinates);
-    console.log('address are here: ', this.address);
-    console.log('defaultLang are here: ', this.defaultLang);
-  }
-
   ngOnInit(): void {
-
+    console.log(BranchSearchInputComponent);
     this.isMobile = this.platform.isMobile;
 
     this.branchService.onChange.subscribe(res => {
@@ -173,6 +170,11 @@ export class SnBranchLocatorComponent implements OnInit {
       console.error(err);
       this.isLoading = false;
     });
+  }
+
+  searchAddress(address: string): void {
+    console.log('address', address);
+
   }
 
   getBranchesByCoordinates(coords: LatLngLiteral = this.userPosition, openNearest: boolean = false) {

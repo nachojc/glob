@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { WindowRef } from '../../models/window-ref';
-import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
+import { ENV_CONFIG } from '@globile/mobile-services';
 
 
 @Component({
@@ -16,8 +16,9 @@ export class BranchSearchInputComponent implements OnInit {
   @Output() placeChange = new EventEmitter<LatLngLiteral>();
   @Output() callFilter = new EventEmitter<MouseEvent>();
   @Input() filterCount: number;
+  @Input() address: string;
 
-  @ViewChild('in', {static: false}) public inputElementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('in', { static: false }) public inputElementRef: ElementRef<HTMLInputElement>;
   searchBox: google.maps.places.SearchBox;
   hasFilters: boolean;
 
@@ -27,17 +28,14 @@ export class BranchSearchInputComponent implements OnInit {
     @Inject(ENV_CONFIG) private env
   ) { }
 
-
   ngOnInit(): void {
     this.mapsAPILoader.load()
       .then(() => {
-          this.initSearchBox();
+        this.initSearchBox();
       });
 
     this.hasFilters = this.env.api.BranchLocator.hasFilters;
-
   }
-
 
   initSearchBox(): void {
     this.searchBox = new this.windowRef.google.maps.places.SearchBox(this.inputElementRef.nativeElement);
@@ -53,23 +51,12 @@ export class BranchSearchInputComponent implements OnInit {
         }
       }
     });
-
-
   }
 
-
-  search(event: MouseEvent): void {
+  search(): void {
     this.inputElementRef.nativeElement.focus();
     this.windowRef.google.maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
       keyCode: 13
     });
-
   }
-
-
-
-
-
-
-
 }
