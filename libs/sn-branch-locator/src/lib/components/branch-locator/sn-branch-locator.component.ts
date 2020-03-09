@@ -1,6 +1,6 @@
-import { Component, ViewChild, ViewChildren, QueryList, OnInit, EventEmitter, Output, Input, NgZone } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, OnInit, EventEmitter, Output, Input, Inject, ElementRef } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral, LatLngBounds, AgmMarker, MapsAPILoader } from '@agm/core';
+import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
 import { from, Observable, of } from 'rxjs';
@@ -17,6 +17,7 @@ import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
 import { BranchSearchInputComponent } from '../branch-search/branch-search.component';
+import { WindowRef } from '../../models/window-ref';
 
 declare const google: any;
 @Component({
@@ -78,7 +79,6 @@ export class SnBranchLocatorComponent implements OnInit {
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
   @ViewChild(FilterComponent, { static: false }) filterView: FilterComponent;
   @ViewChild(MenuComponent, { static: false }) menuComponent: MenuComponent;
-  @ViewChild(BranchSearchInputComponent, { static: false }) branchSearchInputComponent: BranchSearchInputComponent;
 
   public isLoading: boolean = true;
   public lat: number;
@@ -130,12 +130,13 @@ export class SnBranchLocatorComponent implements OnInit {
   public travelMode: string;
   public routes = [];
 
+  public addressLat: number;
+  public addressLng: number;
+
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
-    private platform: Platform,
-    private ngZone: NgZone,
-    private mapsAPILoader: MapsAPILoader
+    private platform: Platform
   ) {
     this.geoPosition.watchPosition()
       .pipe(first())
@@ -152,7 +153,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(BranchSearchInputComponent);
     this.isMobile = this.platform.isMobile;
 
     this.branchService.onChange.subscribe(res => {
@@ -173,8 +173,13 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   searchAddress(address: string): void {
-    console.log('address', address);
-
+    if (address !== null) {
+      this.geoPosition.getPositionByText(address).subscribe(coords => {
+        this.zoom = 15;
+        this.addressLat = coords.lat;
+        this.addressLng = coords.lng;
+      });
+    }
   }
 
   getBranchesByCoordinates(coords: LatLngLiteral = this.userPosition, openNearest: boolean = false) {

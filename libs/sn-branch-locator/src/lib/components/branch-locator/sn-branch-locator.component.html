@@ -179,6 +179,8 @@
       (mapReady)="mapReady()"
       (centerChange)="centerChange($event)"
       (tilesLoaded)="tilesLoaded()"
+      [latitude]="addressLat"
+      [longitude]="addressLng"
     >
       <sn-direction
         *ngIf="isVisibleRoute"
