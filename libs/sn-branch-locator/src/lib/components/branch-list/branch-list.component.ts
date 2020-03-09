@@ -15,11 +15,13 @@ export class BranchListComponent implements OnChanges {
   private numberOfBranchesToLoad = 10;
   public maxBranchesToLoad = this.numberOfBranchesToLoad;
   public incrementRange = this.numberOfBranchesToLoad;
+  public isMoreBranchesToLoad = true;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (typeof (changes.branchesList) !== 'undefined' &&
       changes.branchesList.previousValue !== changes.branchesList.currentValue) {
       this.maxBranchesToLoad = this.numberOfBranchesToLoad;
+      this.isMoreBranchesToLoad = true;
     }
   }
 
@@ -33,6 +35,7 @@ export class BranchListComponent implements OnChanges {
       this.maxBranchesToLoad = this.maxBranchesToLoad + this.incrementRange;
     } else {
       this.maxBranchesToLoad = this.branchesList.length;
+      this.isMoreBranchesToLoad = false;
     }
   }
 }

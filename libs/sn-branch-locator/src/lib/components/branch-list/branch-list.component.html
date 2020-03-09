@@ -25,11 +25,7 @@
   class="bl-load-result-button"
   (click)="loadMoreResults()"
   [style.display]="isLoading ? 'none' : 'initial'"
-  *ngIf="
-    branchesList &&
-    branchesList.length > 0 &&
-    this.maxBranchesToLoad < this.branchesList.length
-  "
+  *ngIf="branchesList && branchesList.length > 0 && isMoreBranchesToLoad"
 >
   Load more results
 </button>

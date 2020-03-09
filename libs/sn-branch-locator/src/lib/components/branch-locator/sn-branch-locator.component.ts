@@ -31,21 +31,21 @@ export class SnBranchLocatorComponent implements OnInit {
     return this._coordinates;
   }
   set coordinates(value: any) {
-    this._coordinates = value !== null && value !== undefined ? value : null;
+    this._coordinates = value;
   }
   @Input()
   get defaultLang(): any {
     return this._defaultLang;
   }
   set defaultLang(value: any) {
-    this._defaultLang = value !== null && value !== undefined ? value : null;
+    this._defaultLang = value;
   }
   @Input()
   get address(): any {
     return this._address;
   }
   set address(value: any) {
-    this._address = value !== null && value !== undefined ? value : null;
+    this._address = value;
     this.searchAddress(this._address);
   }
 
