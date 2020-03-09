@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Branch } from '../../models/branch.model';
-import { max } from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-list',
@@ -16,12 +15,13 @@ export class BranchListComponent implements OnChanges {
   private numberOfBranchesToLoad = 10;
   public maxBranchesToLoad = this.numberOfBranchesToLoad;
   public incrementRange = this.numberOfBranchesToLoad;
+  public isMoreBranchesToLoad = true;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes: ', changes);
     if (typeof (changes.branchesList) !== 'undefined' &&
       changes.branchesList.previousValue !== changes.branchesList.currentValue) {
       this.maxBranchesToLoad = this.numberOfBranchesToLoad;
+      this.isMoreBranchesToLoad = true;
     }
   }
 
@@ -35,6 +35,7 @@ export class BranchListComponent implements OnChanges {
       this.maxBranchesToLoad = this.maxBranchesToLoad + this.incrementRange;
     } else {
       this.maxBranchesToLoad = this.branchesList.length;
+      this.isMoreBranchesToLoad = false;
     }
   }
 }

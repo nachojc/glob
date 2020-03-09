@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { QueryParamsService } from './services/query-params.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'BL-group';
+
+  public coordinates: string;
+  public address: string;
+  public defaultLang: string;
+
+  constructor(
+    private translate: TranslateService,
+    private queryParamsService: QueryParamsService
+  ) {
+    translate.setDefaultLang('en');
+    translate.use('pt');
+
+    this.queryParamsService.parametersWatcher.subscribe(param => {
+      this.coordinates = param['coordinates'];
+      this.address = param['address'];
+      this.defaultLang = param['defaultLang'];
+    });
+  }
+
 }

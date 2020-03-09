@@ -18,7 +18,9 @@ export class SnBranchInfoComponent {
   @Input()
   set branch(value: Branch) {
     this._branch = this.setPOIInformation(value);
-    this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
+    if (this._branch.schedule !== null) {
+      this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
+    }
     this.isBranch = true;
     if (this._branch.objectType.code.toUpperCase() === 'ATM') {
       this._branch.atm = [this.setPOIInformation(value)];
