@@ -24,8 +24,13 @@
       color: $color-secondary-mediumgray;
     }
   }
-  .bl-load-result-button {
-    position: relative;
-    margin: 15px;
+  .bl-load-result-container {
+    text-align: center;
+    color: $color-secondary-darkturquoise;
+    font-size: 14px;
+    &__text {
+      margin: 44px 0px 32px 0px;
+    }
+
   }
 }

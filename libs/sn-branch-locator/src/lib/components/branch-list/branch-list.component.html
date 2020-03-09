@@ -20,14 +20,12 @@
   </ng-container>
 </sn-option-list>
 
-<button
-  sn-button-secondary
-  class="bl-load-result-button"
-  (click)="loadMoreResults()"
-  [style.display]="isLoading ? 'none' : 'initial'"
-  *ngIf="branchesList && branchesList.length > 0 && isMoreBranchesToLoad"
->
-  Load more results
-</button>
+<div class="bl-load-result-container"
+     (click)="loadMoreResults()"
+     [style.display]="isLoading ? 'none' : 'initial'"
+     *ngIf="branchesList && branchesList.length > 0 && isMoreBranchesToLoad">
+  <p class="bl-load-result-container__text">Load more results</p>
+</div>
+
 
 <sn-loader *ngIf="isLoading"></sn-loader>
