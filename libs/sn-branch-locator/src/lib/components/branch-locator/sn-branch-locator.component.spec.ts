@@ -222,6 +222,60 @@ describe('SnBranchLocatorComponent', () => {
     expect(placeChangeSpy).toHaveBeenCalled();
   });
 
+  it('should get coordinates value input', () => {
+    (component as any)._coordinates = 'lng:12,lat:23';
+    expect(component.coordinates).toBe((component as any)._coordinates);
+  });
+
+  it('should set coordinates value from property value', () => {
+    (component as any)._coordinates = '';
+    component.coordinates = 'lng:12,lat:23';
+    expect((component as any).coordinates).toBe('lng:12,lat:23');
+  });
+
+  it('should set coordinates to null value if there is not value provided', () => {
+    component.coordinates = null;
+    expect((component as any).coordinates).toBe(null);
+  });
+
+  it('should get defaultLang value input', () => {
+    (component as any)._defaultLang = 'en';
+    expect(component.defaultLang).toBe((component as any)._defaultLang);
+  });
+
+  it('should set defaultLang value from property value', () => {
+    (component as any)._defaultLang = '';
+    component.defaultLang = 'en';
+    expect((component as any)._defaultLang).toBe('en');
+  });
+
+  it('should set defaultLang to null value if there is not value provided', () => {
+    component.defaultLang = null;
+    expect((component as any)._defaultLang).toBe(null);
+  });
+
+  it('should get address value input', () => {
+    (component as any)._address = 'Calle Madrid';
+    expect(component.address).toBe((component as any)._address);
+  });
+
+  it('should set address value from property value and must call searchAddress function', () => {
+    const geoPosition = {
+      getPositionByText: () => { }
+    };
+    const spy = spyOn<any>(component, 'searchAddress');
+    (component as any).geoPosition = geoPosition;
+    (component as any)._address = '';
+    component.address = 'Calle Madrid';
+    expect((component as any)._address).toBe('Calle Madrid');
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should set address to null value if there is not value provided', () => {
+    component.address = null;
+    expect((component as any)._address).toBe(null);
+  });
+
   it('should get optionalFullScreenControl value from default _optionalFullScreen value', () => {
     component._optionalFullScreen = false;
     expect(component.optionalFullScreenControl).toBe(component._optionalFullScreen);
