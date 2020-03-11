@@ -1,4 +1,4 @@
-import { Injectable, Inject} from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map, flatMap, find } from 'rxjs/operators';
@@ -25,7 +25,7 @@ export class SnBranchLocatorService {
     public http: HttpClient,
     private filterservice: FilterService,
     @Inject('WINDOW') public windowRef: WindowRef,
-    private geoPositionService: GeoPositionService,
+    private geoPositionService: GeoPositionService
   ) {
     this.branchLocator = envConfig.api.BranchLocator;
   }
@@ -49,19 +49,33 @@ export class SnBranchLocatorService {
     }
 
     const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
-    this.getBranches(`${this.URL}/find/defaultView?${configVal}`)
-      .subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
+    this.getBranches(`${this.URL}/find/defaultView?${configVal}`).subscribe(
+      resp => this._observer$.next(resp),
+      err => this._observer$.error(err)
+    );
   }
 
-  public getBranchesByBounds(northEast: LatLngLiteral, southWest: LatLngLiteral, coords?: LatLngLiteral): void {
+  public getBranchesByBounds(
+    northEast: LatLngLiteral,
+    southWest: LatLngLiteral,
+    coords?: LatLngLiteral
+  ): void {
     if (!this._initPosition) {
       this.setApiURL(coords);
     }
     const params = this.filterservice.filterParams as any;
-    const configInit = encodeURI(`config={"coords":[${this._initPosition.lat},${this._initPosition.lng}]}`);
-    const configVal = encodeURI(`northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`);
-    this.getBranches(`${this.URL}/find/defaultView?${configInit}&${configVal}`, { params})
-      .subscribe((resp) => this._observer$.next(resp), (err) => this._observer$.error(err));
+    const configInit = encodeURI(
+      `config={"coords":[${this._initPosition.lat},${this._initPosition.lng}]}`
+    );
+    const configVal = encodeURI(
+      `northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`
+    );
+    this.getBranches(`${this.URL}/find/defaultView?${configInit}&${configVal}`, {
+      params
+    }).subscribe(
+      resp => this._observer$.next(resp),
+      err => this._observer$.error(err)
+    );
   }
 
   public getClosestBranchByTextQuery(text: string) {
@@ -69,17 +83,22 @@ export class SnBranchLocatorService {
       flatMap(coords => {
         const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
         if (!this._initPosition) {
-          this.setApiURL({lat: coords.lat, lng: coords.lng});
+          this.setApiURL({ lat: coords.lat, lng: coords.lng });
         }
         return this.getBranches(`${this.URL}/find/defaultView?${configVal}`);
       }),
-      map(branches => branches.find(branch => branch.objectType.code.toLowerCase() === 'branch'))
+      map(branches => {
+        branches = [];
+        branches.sort((a, b) =>
+          a.distanceInKm > b.distanceInKm ? 1 : b.distanceInKm > a.distanceInKm ? -1 : 0
+        );
+        return branches[0];
+      })
     );
   }
 
   private getBranches(url: string, params = {}): Observable<Branch[]> {
-    return this.http.get<Branch[]>(url, params)
-    .pipe(
+    return this.http.get<Branch[]>(url, params).pipe(
       map(resp => this._changeDistance(resp)),
       map(resp => this.groupAtmToBranch(resp))
     );
@@ -87,7 +106,9 @@ export class SnBranchLocatorService {
 
   private groupAtmToBranch(array: Branch[]): Branch[] {
     return array.reduce((poiArray, currentValue) => {
-      const index = poiArray.findIndex(el => el.distanceInKm.toFixed(2) === currentValue.distanceInKm.toFixed(2));
+      const index = poiArray.findIndex(
+        el => el.distanceInKm.toFixed(2) === currentValue.distanceInKm.toFixed(2)
+      );
       if (index >= 0) {
         if (poiArray[index].objectType.code.toUpperCase() === 'BRANCH') {
           if (poiArray[index].atm) {
@@ -126,22 +147,24 @@ export class SnBranchLocatorService {
     return array.map(ele => {
       if (!ele.distanceDone && this._initPosition) {
         const p = ele.location.geoCoords;
-        ele.distanceInKm = parseFloat( this.getDistance(
-          {lat: p.latitude, lng: p.longitude}).toFixed(2));
-        ele.distanceInMiles = parseFloat( (ele.distanceInKm / 1.609).toFixed(2));
+        ele.distanceInKm = parseFloat(
+          this.getDistance({ lat: p.latitude, lng: p.longitude }).toFixed(2)
+        );
+        ele.distanceInMiles = parseFloat((ele.distanceInKm / 1.609).toFixed(2));
         ele.distanceDone = true;
       }
       return ele;
     });
   }
-  private  getDistance(p2: LatLngLiteral): number {
+  private getDistance(p2: LatLngLiteral): number {
     const p1 = this._initPosition;
-    const rad = (x) => x * Math.PI / 180;
+    const rad = x => (x * Math.PI) / 180;
     const R = 6378.137;
-    const dLat = rad( p2.lat - p1.lat );
-    const dLong = rad( p2.lng - p1.lng );
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-      + Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    const dLat = rad(p2.lat - p1.lat);
+    const dLong = rad(p2.lng - p1.lng);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d;
@@ -150,6 +173,7 @@ export class SnBranchLocatorService {
     this._initPosition = coords;
     const pos0 = this.getDistance(this.branchLocator.endpoints[0]);
     const pos1 = this.getDistance(this.branchLocator.endpoints[1]);
-    this.URL = (pos0 < pos1) ? this.branchLocator.endpoints[0].URL : this.branchLocator.endpoints[1].URL;
+    this.URL =
+      pos0 < pos1 ? this.branchLocator.endpoints[0].URL : this.branchLocator.endpoints[1].URL;
   }
 }
