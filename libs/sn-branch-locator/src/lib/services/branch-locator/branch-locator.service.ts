@@ -88,7 +88,6 @@ export class SnBranchLocatorService {
         return this.getBranches(`${this.URL}/find/defaultView?${configVal}`);
       }),
       map(branches => {
-        branches = [];
         branches.sort((a, b) =>
           a.distanceInKm > b.distanceInKm ? 1 : b.distanceInKm > a.distanceInKm ? -1 : 0
         );
