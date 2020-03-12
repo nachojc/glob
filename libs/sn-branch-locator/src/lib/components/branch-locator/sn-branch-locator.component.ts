@@ -1,4 +1,15 @@
-import { Component, ViewChild, ViewChildren, QueryList, OnInit, EventEmitter, Output, Input, Inject, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ViewChildren,
+  QueryList,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  Inject,
+  ElementRef
+} from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
@@ -65,7 +76,9 @@ export class SnBranchLocatorComponent implements OnInit {
   set optionalBranding(value: boolean) {
     this._optionalBranding = value !== null && value !== undefined && `${value}` !== 'false';
   }
-  @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<OutputMarkerSelected>();
+  @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
+    OutputMarkerSelected
+  >();
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
   private selectedMarker: AgmMarker;
@@ -96,7 +109,6 @@ export class SnBranchLocatorComponent implements OnInit {
     scaledSize: { height: 90, width: 90 }
   };
   public branchesList: Branch[];
-
 
   public clusterStyles: ClusterStyle[] = [
     {
@@ -138,7 +150,8 @@ export class SnBranchLocatorComponent implements OnInit {
     private branchService: SnBranchLocatorService,
     private platform: Platform
   ) {
-    this.geoPosition.watchPosition()
+    this.geoPosition
+      .watchPosition()
       .pipe(first())
       .subscribe((pos: Position) => {
         this._initialPosition = {
@@ -155,21 +168,26 @@ export class SnBranchLocatorComponent implements OnInit {
   ngOnInit(): void {
     this.isMobile = this.platform.isMobile;
 
-    this.branchService.onChange.subscribe(res => {
-      this.closeDrawer();
-      this.clearSelectedMarker();
-      this.branchesList = res;
-      this.isLoading = false;
-      if (this.openNearest) {
-        setTimeout(() => {
-          this.selectBranch(this.branchesList[0]);
-          this.showNearest = true;
-        });
+    this.branchService.onChange.subscribe(
+      res => {
+        this.closeDrawer();
+        this.clearSelectedMarker();
+        this.branchesList = res.sort((a, b) =>
+          a.distanceInKm > b.distanceInKm ? 1 : b.distanceInKm > a.distanceInKm ? -1 : 0
+        );
+        this.isLoading = false;
+        if (this.openNearest) {
+          setTimeout(() => {
+            this.selectBranch(this.branchesList[0]);
+            this.showNearest = true;
+          });
+        }
+      },
+      err => {
+        console.error(err);
+        this.isLoading = false;
       }
-    }, err => {
-      console.error(err);
-      this.isLoading = false;
-    });
+    );
   }
 
   searchAddress(address: string): void {
@@ -182,7 +200,10 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-  getBranchesByCoordinates(coords: LatLngLiteral = this.userPosition, openNearest: boolean = false) {
+  getBranchesByCoordinates(
+    coords: LatLngLiteral = this.userPosition,
+    openNearest: boolean = false
+  ) {
     this.isLoading = true;
     this.openNearest = openNearest;
     this.branchService.getBranchesByCoords(coords ? coords : this.userPosition);
@@ -197,7 +218,9 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   selectBranch = (branch: Branch) => {
-    const markerFound = this.branchMarkerList['_results'].find(marker => marker.label && marker.label.text === branch.id);
+    const markerFound = this.branchMarkerList['_results'].find(
+      marker => marker.label && marker.label.text === branch.id
+    );
     this.markerSelect(markerFound, branch);
     this.selectedTabIndex = 0;
   }
@@ -209,7 +232,10 @@ export class SnBranchLocatorComponent implements OnInit {
     selected['_markerManager'].updateIcon(selected);
     this.selectedMarker = selected;
     this.selectedBranch = branch;
-    this.markerSelected.emit({ userPosition: this.userPosition, marker: this.selectedBranch });
+    this.markerSelected.emit({
+      userPosition: this.userPosition,
+      marker: this.selectedBranch
+    });
 
     this.openMenu();
     this.openDrawer();
@@ -222,27 +248,28 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   mapReady(): void {
-    this.geoPosition.getCurrentPosition()
-      .subscribe((pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-        if (this.startingPosition && this.startingPosition.text) {
-          this.geoPosition.getPositionByText(this.startingPosition.text).subscribe(coords => this.placeChange(coords));
-        } else if (this.startingPosition && this.startingPosition.coordinates) {
-          this.placeChange(this.startingPosition.coordinates);
-        } else {
-          this.goToUserPositon();
-        }
-      });
+    this.geoPosition.getCurrentPosition().subscribe((pos: Position) => {
+      this.userPosition = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      };
+      if (this.startingPosition && this.startingPosition.text) {
+        this.geoPosition
+          .getPositionByText(this.startingPosition.text)
+          .subscribe(coords => this.placeChange(coords));
+      } else if (this.startingPosition && this.startingPosition.coordinates) {
+        this.placeChange(this.startingPosition.coordinates);
+      } else {
+        this.goToUserPositon();
+      }
+    });
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
     if (this.userPosition && this.userPosition.lng && this.userPosition.lat) {
-      this.showReCenter = (
-        this.roundCordinates(this.userPosition.lng) !== this.roundCordinates(mapCenter.lng)
-        || this.roundCordinates(this.userPosition.lat) !== this.roundCordinates(mapCenter.lat));
+      this.showReCenter =
+        this.roundCordinates(this.userPosition.lng) !== this.roundCordinates(mapCenter.lng) ||
+        this.roundCordinates(this.userPosition.lat) !== this.roundCordinates(mapCenter.lat);
     } else {
       this.showReCenter = false;
     }
@@ -287,7 +314,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   onDirectionsResponse(event: any): void {
-    if (typeof (event.routes) !== 'undefined' && event.routes.length > 0) {
+    if (typeof event.routes !== 'undefined' && event.routes.length > 0) {
       const steps = event.routes[0].legs[0].steps;
       this.routes = [];
       for (let i = 0; i < steps.length; i++) {
@@ -320,11 +347,11 @@ export class SnBranchLocatorComponent implements OnInit {
   placeChange(place: LatLngLiteral) {
     this.closeDrawer();
     this.clearSelectedMarker();
-    from(this.map.api.panTo(place)).pipe(
-      switchMap(() => from(this.map.api.setZoom(this.zoom)))
-    ).subscribe(res => {
-      this.getBranchesByBounds();
-    });
+    from(this.map.api.panTo(place))
+      .pipe(switchMap(() => from(this.map.api.setZoom(this.zoom))))
+      .subscribe(res => {
+        this.getBranchesByBounds();
+      });
   }
 
   onFilterApply(event) {
@@ -372,34 +399,39 @@ export class SnBranchLocatorComponent implements OnInit {
 
   getBranchesByBounds() {
     if (!this.isVisibleRoute) {
-      from(this.map.api.getBounds()).
-        subscribe((mapBounds: LatLngBounds) => {
-          if (mapBounds) {
-            const northEast = { lat: mapBounds.getNorthEast().lat(), lng: mapBounds.getNorthEast().lng() };
-            const southWest = { lat: mapBounds.getSouthWest().lat(), lng: mapBounds.getSouthWest().lng() };
-            this.mapBounds.emit({ northEast, southWest });
-            this.isLoading = true;
-            this.openNearest = false;
-            this.position
-              .subscribe(pos => {
-                this.branchService.getBranchesByBounds(northEast, southWest, pos);
-              });
-          }
-        });
+      from(this.map.api.getBounds()).subscribe((mapBounds: LatLngBounds) => {
+        if (mapBounds) {
+          const northEast = {
+            lat: mapBounds.getNorthEast().lat(),
+            lng: mapBounds.getNorthEast().lng()
+          };
+          const southWest = {
+            lat: mapBounds.getSouthWest().lat(),
+            lng: mapBounds.getSouthWest().lng()
+          };
+          this.mapBounds.emit({ northEast, southWest });
+          this.isLoading = true;
+          this.openNearest = false;
+          this.position.subscribe(pos => {
+            this.branchService.getBranchesByBounds(northEast, southWest, pos);
+          });
+        }
+      });
     }
   }
   private get position(): Observable<LatLngLiteral> {
     if (this.userPosition) {
       return of(this.userPosition);
     } else {
-      return this.geoPosition.getCurrentPosition()
-        .pipe(map((pos: Position) => {
+      return this.geoPosition.getCurrentPosition().pipe(
+        map((pos: Position) => {
           this.userPosition = {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude
           };
           return this.userPosition;
-        }));
+        })
+      );
     }
   }
 }
