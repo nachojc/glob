@@ -47,11 +47,9 @@ const windowRef = {
 };
 
 const env = {
-  api: {
-    BranchLocator: {
+    branchLocator: {
       hasFilters: true,
     }
-  }
 };
 
 
