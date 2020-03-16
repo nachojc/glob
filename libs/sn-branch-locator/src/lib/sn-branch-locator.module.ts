@@ -12,7 +12,7 @@ import {
   LoadingModule,
   LoaderModule
 } from 'sn-common-lib';
-import { ENV_CONFIG } from '@globile/mobile-services';
+import { ENV_CONFIG, BridgeAnalyticService } from '@globile/mobile-services';
 
 import { SnMapDirective } from './directives/sn-map/sn-map.directive';
 import { SnMarkerDirective } from './directives/sn-marker/sn-marker.directive';
@@ -31,7 +31,11 @@ import { SafePipe } from './pipes/safe.pipe';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
-  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/', '.json');
+  return new TranslateHttpLoader(
+    http,
+    path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/',
+    '.json'
+  );
 }
 
 @NgModule({
@@ -69,11 +73,7 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
     LoaderModule,
     SnDirectionModule
   ],
-  providers: [
-    TranslateService
-  ],
-  exports: [
-    SnBranchLocatorComponent
-  ]
+  providers: [TranslateService, BridgeAnalyticService],
+  exports: [SnBranchLocatorComponent]
 })
-export class SnBranchLocatorModule { }
+export class SnBranchLocatorModule {}

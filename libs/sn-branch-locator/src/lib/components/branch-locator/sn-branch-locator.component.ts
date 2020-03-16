@@ -27,6 +27,14 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
+import {
+  BridgeAnalyticService,
+  AnalyticsChannelEnum,
+  AnalyticsInitModel,
+  ComponentParamsModel,
+  NativeAnalyticsInitModel,
+  WebAnalyticsInitModel
+} from '@globile/mobile-services';
 
 declare const google: any;
 @Component({
@@ -146,7 +154,8 @@ export class SnBranchLocatorComponent implements OnInit {
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
-    private platform: Platform
+    private platform: Platform,
+    private analyticsService: BridgeAnalyticService
   ) {
     this.geoPosition
       .watchPosition()
@@ -431,5 +440,38 @@ export class SnBranchLocatorComponent implements OnInit {
         })
       );
     }
+  }
+
+  private initAnalytics() {
+    const analyticsConfig: AnalyticsInitModel = {
+      account: 'santander',
+      profile: 'globile',
+      environment: 'prod'
+    };
+    // TODO: Chnag to native whene have inplementation by core team
+    const channelConfig: WebAnalyticsInitModel = {
+      externalTealium: false
+    };
+    const componentParams: ComponentParamsModel = {
+      Component: 'payments',
+      ComponentVersion: '0.0.1',
+      AppType: 'Internal',
+      AppName: 'santander globile internal',
+      AppVersion: '0.0.1',
+      Language: 'spanish',
+      Country: 'ES'
+    };
+    // this.analyticsService.setInitValues(
+    //   // TODO: Chnag to native whene have inplementation by core team
+    //   AnalyticsChannelEnum.WEB,
+    //   analyticsConfig,
+    //   channelConfig,
+    //   componentParams
+    // );
+
+    console.log('AnalyticsChannelEnum.WEB', AnalyticsChannelEnum.WEB);
+    console.log('analyticsConfig', analyticsConfig);
+    console.log('channelConfig', channelConfig);
+    console.log('componentParam', componentParams);
   }
 }
