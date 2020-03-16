@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IconModule } from 'sn-common-lib';
 import { BranchSearchInputComponent } from './branch-search.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { WindowRefService } from '@globile/mobile-services';
 
 @NgModule({
   declarations: [BranchSearchInputComponent],
@@ -13,7 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   exports: [BranchSearchInputComponent],
   providers: [
-    {provide: 'WINDOW', useValue: window}
+    {provide: WindowRefService, useValue: window}
   ]
 
 })

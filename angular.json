@@ -42,7 +42,6 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
               "node_modules/sn-common-lib/styles/styles.scss",
               "node_modules/prismjs/themes/prism-coy.css"
             ],
@@ -119,8 +118,13 @@
               },
               {
                 "glob": "**/*",
-                "input": "libs/sn-branch-locator/src/assets/branchlocator",
+                "input": "libs/sn-branch-locator/src/assets/branchlocator/",
                 "output": "assets/branchlocator/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/sn-branch-locator/i18n/branchlocator/",
+                "output": "i18n/branchlocator/"
               }
             ]
           }
@@ -182,6 +186,26 @@
             "codeCoverage": true,
             "codeCoverageExclude": [
               "libs/sn-branch-locator/src/lib/directives/sn-direction/sn-direction.module.ts"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/sn-common-lib/assets/fonts/",
+                "output": "assets/fonts/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/sn-branch-locator/src/assets/branchlocator/",
+                "output": "assets/branchlocator/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/sn-branch-locator/i18n/branchlocator/",
+                "output": "i18n/branchlocator/"
+              }
+            ],
+            "styles": [
+              "node_modules/sn-common-lib/styles/styles.scss",
             ]
           }
         },

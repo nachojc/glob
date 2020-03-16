@@ -6,16 +6,16 @@ import { AppComponent } from './app.component';
 import { SnBranchLocatorModule } from '@globile/branch-locator';
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
-import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrismModule } from './components/prism/prism.module';
 import { RouterModule } from '@angular/router';
+import { GlobileSettingsService } from '@globile/mobile-services';
 
-export function HttpLoaderFactory(http: HttpClient, path: any) {
-  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'], '.json');
+export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
+  return new TranslateHttpLoader(http, globileSettings.branchLocator.languages, '.json');
 }
 
 @NgModule({
@@ -31,23 +31,21 @@ export function HttpLoaderFactory(http: HttpClient, path: any) {
     SnBranchLocatorModule,
     PrismModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.api.BranchLocator.googleApiKey,
-      libraries: environment.api.BranchLocator.googleApiLibs || []
+      apiKey: environment.branchLocator.googleApiKey,
+      libraries: environment.branchLocator.googleApiLibs || []
     }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient, ENV_CONFIG]
+        deps: [HttpClient, GlobileSettingsService]
       }
     }),
     RouterModule.forRoot([])
   ],
   providers: [
-    { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
     { provide: APP_BASE_HREF, useValue: './' },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: 'WINDOW', useValue: window }
   ],
   bootstrap: [AppComponent]
 })

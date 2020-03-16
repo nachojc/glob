@@ -28,6 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SnDirectionModule } from './directives/sn-direction/sn-direction.module';
 import { SnBranchDirectionComponent } from './components/sn-branch-direction/sn-branch-direction.component';
 import { SafePipe } from './pipes/safe.pipe';
+import { GlobileSettingsService } from '@globile/mobile-services';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, path: any) {
@@ -64,7 +65,7 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
       loader: {
         provide: TranslateLoader,
         useFactory: LocalLoaderFactory,
-        deps: [HttpClient, ENV_CONFIG]
+        deps: [HttpClient, GlobileSettingsService]
       }
     }),
     DrawerModule,
@@ -76,4 +77,4 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
   providers: [TranslateService, BridgeAnalyticService],
   exports: [SnBranchLocatorComponent]
 })
-export class SnBranchLocatorModule {}
+export class SnBranchLocatorModule { }

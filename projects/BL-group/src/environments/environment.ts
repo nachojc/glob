@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  api: {
-    BranchLocator: {
+    branchLocator: {
       endpoints: [
         {
           URL: 'https://back-scus.azurewebsites.net/branch-locator',
@@ -24,7 +23,7 @@ export const environment = {
       languages: '/i18n/branchlocator/',
       hasFilters: true,
     }
-  }
+  
 };
 
 /*

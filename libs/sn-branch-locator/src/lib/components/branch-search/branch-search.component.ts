@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
-import { WindowRef } from '../../models/window-ref';
-import { ENV_CONFIG } from '@globile/mobile-services';
+import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
 
 
 @Component({
@@ -24,8 +23,8 @@ export class BranchSearchInputComponent implements OnInit {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject('WINDOW') private windowRef: WindowRef,
-    @Inject(ENV_CONFIG) private env
+    private windowRef: WindowRefService,
+    private globileSettings: GlobileSettingsService
   ) { }
 
   ngOnInit(): void {
@@ -34,11 +33,11 @@ export class BranchSearchInputComponent implements OnInit {
         this.initSearchBox();
       });
 
-    this.hasFilters = this.env.api.BranchLocator.hasFilters;
+    this.hasFilters = this.globileSettings.branchLocator.hasFilters;
   }
 
   initSearchBox(): void {
-    this.searchBox = new this.windowRef.google.maps.places.SearchBox(this.inputElementRef.nativeElement);
+    this.searchBox = new this.windowRef['google'].maps.places.SearchBox(this.inputElementRef.nativeElement);
     this.searchBox.addListener('places_changed', () => {
 
       const places = this.searchBox.getPlaces();
@@ -55,7 +54,7 @@ export class BranchSearchInputComponent implements OnInit {
 
   search(): void {
     this.inputElementRef.nativeElement.focus();
-    this.windowRef.google.maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
+    this.windowRef['google'].maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
       keyCode: 13
     });
   }
