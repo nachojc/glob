@@ -3,6 +3,7 @@ import { Observable, Subject, of, from } from 'rxjs';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { first, map } from 'rxjs/operators';
 import { WindowRef } from '../../models/window-ref';
+import { WindowRefService } from '@globile/mobile-services';
 
 declare const google: any;
 @Injectable({
@@ -15,7 +16,7 @@ export class GeoPositionService {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject('WINDOW') private windowRef: WindowRef
+    private windowRef: WindowRefService
   ) { }
 
   get geolocation(): Geolocation {

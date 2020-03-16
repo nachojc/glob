@@ -12,7 +12,6 @@ import {
   LoadingModule,
   LoaderModule
 } from 'sn-common-lib';
-import { ENV_CONFIG } from '@globile/mobile-services';
 
 import { SnMapDirective } from './directives/sn-map/sn-map.directive';
 import { SnMarkerDirective } from './directives/sn-marker/sn-marker.directive';
@@ -28,10 +27,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SnDirectionModule } from './directives/sn-direction/sn-direction.module';
 import { SnBranchDirectionComponent } from './components/sn-branch-direction/sn-branch-direction.component';
 import { SafePipe } from './pipes/safe.pipe';
+import { GlobileSettingsService } from '@globile/mobile-services';
 
-// TODO: path Update EnvironmentConfigModel
-export function LocalLoaderFactory(http: HttpClient, path: any) {
-  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/', '.json');
+export function LocalLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
+  return new TranslateHttpLoader(http, globileSettings.branchLocator.languages, '.json');
 }
 
 @NgModule({
@@ -60,7 +59,7 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
       loader: {
         provide: TranslateLoader,
         useFactory: LocalLoaderFactory,
-        deps: [HttpClient, ENV_CONFIG]
+        deps: [HttpClient, GlobileSettingsService]
       }
     }),
     DrawerModule,
@@ -68,9 +67,6 @@ export function LocalLoaderFactory(http: HttpClient, path: any) {
     LoadingModule,
     LoaderModule,
     SnDirectionModule
-  ],
-  providers: [
-    TranslateService
   ],
   exports: [
     SnBranchLocatorComponent
