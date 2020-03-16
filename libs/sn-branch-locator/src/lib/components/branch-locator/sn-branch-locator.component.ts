@@ -6,10 +6,7 @@ import {
   OnInit,
   EventEmitter,
   Output,
-  Input,
-  Inject,
-  ElementRef
-} from '@angular/core';
+  Input} from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
@@ -27,10 +24,7 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
-import { BranchSearchInputComponent } from '../branch-search/branch-search.component';
-import { WindowRef } from '../../models/window-ref';
 
-declare const google: any;
 @Component({
   selector: 'sn-branch-locator',
   templateUrl: 'sn-branch-locator.component.html',
@@ -120,7 +114,6 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   ];
 
-  private _initialPosition: LatLngLiteral;
   public userPosition: LatLngLiteral;
   public zoom = 13;
   public showReCenter: boolean;
@@ -154,10 +147,6 @@ export class SnBranchLocatorComponent implements OnInit {
       .watchPosition()
       .pipe(first())
       .subscribe((pos: Position) => {
-        this._initialPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
         this.userPosition = {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
@@ -349,7 +338,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.clearSelectedMarker();
     from(this.map.api.panTo(place))
       .pipe(switchMap(() => from(this.map.api.setZoom(this.zoom))))
-      .subscribe(res => {
+      .subscribe(() => {
         this.getBranchesByBounds();
       });
   }

@@ -12,6 +12,8 @@ npm install @agm/js-marker-clusterer -S
 npm install js-marker-clusterer -D`;
   dependencies = `
   import { AgmCoreModule } from '@agm/core';
+  import {  GlobileModule } from '@globile/mobile-services';
+
 
   imports: [
     ...
@@ -22,30 +24,32 @@ npm install js-marker-clusterer -D`;
       apiKey: environment.api.BranchLocator.googleApiKey,
       libraries: environment.api.BranchLocator.googleApiLibs || []
     }),
+    GlobileModule.forRoot({
+      modulesRoutes: [
+        {
+          path: ModuleId.BRANCHLOCATOR,
+          loadChildren: () => import('./modules/branch-locator/branch-locator-wrapper.module').then(m => m.BranchLocatorModule)
+        }],
+      nativeModules: [],
+      notFoundRoute: ModuleId.BRANCHLOCATOR,
+      startRoute: ModuleId.BRANCHLOCATOR
+    }, environment),
     ...
   ],
-  providers: [
-    ...
-    { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
-    { provide: 'WINDOW', useValue: window },
-    ...
-  ],
+  ...
    `;
 
  enviroment = `
  export const environment = {
     ...
-    api: {
-      ...
-      BranchLocator: {
+    branchLocator: {
         apiURL: 'your api service url',
         googleApiKey: 'Google Api Key here',
         googleApiLibs: ['places'],
         languages: './',
         hasFilters: true,
-      }
-      ...
     }
+    ...
   };
  `;
 

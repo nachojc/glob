@@ -14,13 +14,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { branchMock } from '../../helpers/branch.mock';
 import { environment } from 'src/environments/environment';
-import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
 
 import { SnTabModule } from '../tabs/sn-tab.module';
 import { SnDirectionModule } from '../../directives/sn-direction/sn-direction.module';
 import { OutputDirection } from '../../models/output-direction';
+import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
 
 
 
@@ -99,10 +99,10 @@ describe('SnBranchLocatorComponent', () => {
         SnBranchInfoComponent,
       ],
       providers: [
-        { provide: 'WINDOW', useValue: windowRef },
+        { provide: WindowRefService, useValue: windowRef },
         { provide: GeoPositionService, useValue: GeoPositionServiceMock },
         { provide: MapsAPILoader, useValue: mockMapsAPILoader },
-        { provide: ENV_CONFIG, useValue: environment },
+        { provide: GlobileSettingsService, useValue: environment },
         SnBranchLocatorService,
         FormBuilder,
       ],
