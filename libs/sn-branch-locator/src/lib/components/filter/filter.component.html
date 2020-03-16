@@ -19,27 +19,27 @@
               </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="BANCAPRIVADA" icon="sn-BAN005">
+              <sn-checkbox formControlName="BANCAPRIVADA" icon="sn-SERV008">
                 {{ 'branchlocator.filters.private' | translate }}
               </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="PYME" icon="sn-BAN005">
+              <sn-checkbox formControlName="PYME" icon="sn-BAN023">
                 {{ 'branchlocator.filters.pyme' | translate }} <!-- TODO: review translation -->
               </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="WORKCAFE" icon="sn-BAN005">
+              <sn-checkbox formControlName="WORKCAFE" icon="sn-FUNC136">
                 {{ 'branchlocator.filters.workcafe' | translate }}
               </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="EMPRESAS" icon="sn-BAN005">
+              <sn-checkbox formControlName="EMPRESAS" icon="sn-SERV006">
                 {{ 'branchlocator.filters.business' | translate }}
               </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="UNIVERSIDADES" icon="sn-BAN005">
+              <sn-checkbox formControlName="UNIVERSIDADES" icon="sn-SERV049">
                 {{ 'branchlocator.filters.universities' | translate }}
               </sn-checkbox>
             </div>
@@ -74,7 +74,7 @@
               </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="AG_FINANCIEROS" icon="sn-BAN005">
+              <sn-checkbox formControlName="AG_FINANCIEROS" icon="sn-BAN040">
                 {{ 'branchlocator.filters.agfinancieros' | translate }} <!-- TODO: review translation -->
               </sn-checkbox>
             </div>
@@ -82,7 +82,7 @@
         </div>
       </div>
       <div formGroupName="ATM">
-        <h2 class="title">{{ 'branchlocator.shared.atm' | translate }}</h2>
+        <h2 class="sub-title">{{ 'branchlocator.shared.atm' | translate }}</h2>
         <div class="filters-list-wrapper">
           <div class="filters-list">
             <div class="filter-item">
@@ -91,7 +91,7 @@
               </sn-checkbox>
             </div>
             <div class="filter-item">
-              <sn-checkbox formControlName="NON_SANTANDER_ATM" icon="sn-BAN005">
+              <sn-checkbox formControlName="NON_SANTANDER_ATM" icon="sn-FUNC019C">
                 {{ 'branchlocator.filters.otheratm' | translate }}
               </sn-checkbox>
             </div>
@@ -150,4 +150,3 @@
       <button sn-button type="submit">{{ 'branchlocator.filters.applyfilter' | translate }}</button>
     </div>
   </form>
-  
