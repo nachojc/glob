@@ -17,7 +17,10 @@ export class Platform {
 
   get isMobile(): boolean {
     // tslint:disable-next-line: max-line-length
-    return !(this.orientation.angle === 0 && this.orientation.type === 'landscape-primary') && this.windowRef.navigator.userAgent.toLowerCase().includes('mobile');
+    // TODO: make it with width size of own component
+    return !(this.orientation.angle === 0 &&
+      this.orientation.type === 'landscape-primary') &&
+      this.windowRef.navigator.userAgent.toLowerCase().includes('mobile');
   }
 
   get isDesktop(): boolean {
@@ -26,9 +29,9 @@ export class Platform {
 
   get orientationChange(): Observable<ScreenOrientation> {
     return fromEvent(this.orientation, 'change')
-    .pipe(
-      map(() => this.orientation)
-    );
+      .pipe(
+        map(() => this.orientation)
+      );
   }
 
 

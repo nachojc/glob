@@ -21,7 +21,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
             SKIP_UPDATE_SUBMODULES: true,
                 CMD_UPDATE_SUBMODULES: 'git submodule init && git submodule update',
                 //[DEPRECATED - OLD COMMAND UPDATE_SUBMODULES_COMMAND]
-                UPDATE_SUBMODULES_COMMAND: 'git submodule init && git submodule update',
+                //UPDATE_SUBMODULES_COMMAND: 'git submodule init && git submodule update',
 
             //3. Compile
             SKIP_COMPILE: false,
@@ -36,7 +36,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
                 //COMPILE_COMMAND: "npm run build-lib && npm run build",
 
             //4. Unit Test
-            SKIP_TEST: true,
+            SKIP_TEST: false,
                 //[DEPRECATED]TEST_COMMAND: 'npm run test-headless',
                 CMD_TEST: 'npm run test-lib-prod',
 
@@ -72,7 +72,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
             SKIP_DISTRIBUTE: true, //Distribute in kubernete cluster
 
               //[OPTIONAL*]
-              //URLPUBLICDEPLOYMENT: 'angular-sn-branch-locator-mod.blue4sky.com',
+              URLPUBLICDEPLOYMENT: 'branch-locator.develop.blue4sky.com',
                 //Only available in master deployment, if its develop the URL is PROJECT_NAME.develop.blue4sky.com
               //[OPTIONAL]IP_ADDRESS_AKS: '1.1.1.1',
                 //This option is disabled for now

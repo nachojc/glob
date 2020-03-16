@@ -1,29 +1,40 @@
-
-<div class="panel panel-visible" [@menuTrigger]="currentState" (@menuTrigger.done)="animationEnd($event)">
-    <div class="close-button-wrapper">
-        <button (click)="changeState()" class="menu-toggle">
-            <sn-icon *ngIf="currentState === 'menuOpened'" icon="sn-SYS017"></sn-icon>
-            <sn-icon *ngIf="currentState === 'menuClosed'" icon="sn-SYS016"></sn-icon>
-       </button>
-           
-    </div>
+<div
+  class="panel panel-visible"
+  [@menuTrigger]="currentState"
+  (@menuTrigger.done)="animationEnd($event)"
+>
   <section class="panel-wrapper">
-    <div class="search-input-wrapper">
+    <div class="search-input-wrapper" [ngClass]="{ closed: direction }">
       <ng-content select="sn-branch-search"></ng-content>
     </div>
 
-    <div class="search-results-wrapper" [ngClass]="{'closed': !!info }">
+    <div
+      class="search-results-wrapper"
+      [ngClass]="{ closed: !!info || !!direction }"
+    >
       <ng-content select="sn-branch-list"></ng-content>
     </div>
-    <div class="info-wrapper" [ngClass]="{'closed': !info }">
+    <div class="info-wrapper" [ngClass]="{ closed: !info }">
       <div class="info-close-button-wrapper">
         <button class="info-close-button" (click)="closeInfo.emit($event)">
           <sn-icon icon="sn-SYS022"></sn-icon>
         </button>
       </div>
-        <ng-content select="sn-branch-info"></ng-content>
+      <ng-content select="sn-branch-info"></ng-content>
+    </div>
+
+    <div class="direction-wrapper" [ngClass]="{ closed: !direction }">
+      <div class="info-close-button-wrapper">
+        <button
+          class="info-close-button"
+          (click)="closeDirectionsPanel.emit($event)"
+        >
+          <sn-icon icon="sn-SYS022"></sn-icon>
+        </button>
+      </div>
+      <ng-content select="sn-branch-direction"></ng-content>
     </div>
   </section>
+
   <ng-content select="sn-filter"></ng-content>
 </div>
-

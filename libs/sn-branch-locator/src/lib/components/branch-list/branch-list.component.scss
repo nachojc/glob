@@ -1,28 +1,99 @@
-@import '~sn-common-lib/styles/settings/colors';
+@import "~sn-common-lib/styles/settings/colors";
 
-
-:host{
+:host {
   button[sn-option-item] {
     width: 100%;
+    .delete-line-top {
+      ::ng-deep {
+        .item-native {
+          border-top: none;
+        }
+      }
+    }
+    ::ng-deep {
+      .input-wrapper {
+        display: flex;
+      }
+
+      .item-native {
+        padding-left: 0px;
+        border-bottom: none;
+        border-top: 1px solid $color-primary-mediumsky;
+      }
+
+    }
     .name {
       font-weight: bold;
-      color: $color-primary-santander; 
-      font-size: 1rem;
+      color: $color-secondary-gray;
+      font-size: 15px;
       line-height: 1.5;
-      padding-bottom: .5rem;
+      padding-bottom: 0.5rem;
+      text-transform: capitalize;
+      margin-top: 16px;
+    }
+    .branch-address-container {
+      width: 252px;
+      .address {
+        font-size: 14px;
+        line-height: 1.075;
+        font-weight: 300;
+        text-transform: capitalize;
+        color: $color-secondary-mediumgray;
+      }
     }
 
-    .address {
-      font-size: 1rem;
-      line-height: 1.075;
-      font-weight: 300;
-      color: $color-secondary-mediumgray;
+    .menu-toggle-container {
+      margin: 22px 13px 22px 23px;
+      text-align: center;
+      .toggle-button-wrapper{
+        margin-bottom: 8px;
+        .menu-toggle {
+          color: $color-primary-santander;
+
+          ::ng-deep {
+            sn-icon {
+              font-size: 10px;
+              padding: 10px 12px;
+              border-radius: 20px;
+              border: 1px solid $color-primary-santander;
+              &:hover {
+                color: $color-primary-white;
+                background-color: $color-primary-santander;
+              }
+            }
+          }
+        }
+      }
     }
+
 
     .distance {
-      font-size: 1rem;
+      font-size: 14px;
       font-weight: 300;
       color: $color-secondary-mediumgray;
+      width: 41px;
+    }
+  }
+  .bl-load-result-container {
+    text-align: center;
+    color: $color-secondary-darkturquoise;
+    font-size: 14px;
+    cursor: pointer;
+    &__text {
+      margin: 44px 0px 32px 0px;
+    }
+  }
+  .branch-dinamic-icon-container {
+    color: $color-primary-santander;
+    font-size: 20px;
+    max-height: 24px;
+    max-width: 24px;
+    text-align: center;
+    margin: 16px 12px 68px;
+    ::ng-deep {
+      sn-icon {
+        font-size: 20px;
+      }
     }
   }
 }

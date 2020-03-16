@@ -15,7 +15,13 @@ export const branchMock: Branch = {
         },
         code: 'BRANCH'
     },
-    subType: null,
+    subType:  {
+      multi: {
+        default: 'BRANCH',
+        es: 'BRANCH'
+      },
+      code: 'PARTICULARES'
+    },
     specialType: null,
     description: null,
     status: null,

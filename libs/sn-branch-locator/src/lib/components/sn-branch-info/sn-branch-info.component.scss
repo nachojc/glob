@@ -1,4 +1,4 @@
-@import '~sn-common-lib/styles/settings/colors';
+@import "~sn-common-lib/styles/settings/colors";
 
 .branch-wrapper {
   display: flex;
@@ -19,7 +19,6 @@
   }
 
   .branch-summary {
-
     .branch-name {
       font-weight: bold;
       color: $color-secondary-mediumgray;
@@ -31,36 +30,41 @@
       font-weight: lighter;
       color: $color-secondary-mediumgray;
     }
+    .branch-appointment {
+      text-decoration: none;
+      font-size: 24px;
+      color: $color-primary-santander;
+      sn-icon {
+        vertical-align: sub;
+      }
+    }
   }
 
   .branch-location {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    flex-direction: row;
 
     .branch-address {
-      font-weight: normal;
-      font-size: 16px;
-      color: $color-secondary-mediumgray;
-      flex-grow: 1;
-    }
+      margin-bottom: 20px;
 
-    .branch-directions {
-      button {
-        background: $color-secondary-blue;
-        color: $color-primary-white;
-        text-align: center;
-        border-radius: 16px;
-        width: 103px;
-        height: 32px;
+      p {
         font-weight: normal;
-        font-size: 1em;
-
-        line-height: 1em;
+        font-size: 16px;
+        color: $color-secondary-mediumgray;
+        flex-grow: 1;
+        margin: 0;
       }
     }
 
+    .branch-directions {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
   }
+
   .branch-schedule {
     font-size: 14px;
     color: $color-secondary-gray;
@@ -80,13 +84,11 @@
 
     .atm-hours {
       text-align: right;
-      &:first-child{
+      &:first-child {
         text-align: left;
       }
     }
-
   }
-
 }
 
 .tab-group-wrapper {
@@ -102,9 +104,11 @@
   padding: 1rem;
   overflow-y: auto;
 
-  sn-option-item {
-    padding: .5rem 0 1rem 0;
+  ::ng-deep sn-option-item .item-native {
+    padding: 0.5rem 0 1rem 0;
+  }
 
+  sn-option-item {
     sn-icon {
       font-size: 2rem;
     }
@@ -126,13 +130,13 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-  
+
       .signal {
         width: 1rem;
         height: 1rem;
         border-radius: 100%;
         background-color: $color-secondary-yellow;
-        margin: auto auto auto .5rem;
+        margin: auto auto auto 0.5rem;
 
         &.OPEN {
           background-color: green;
@@ -150,18 +154,18 @@
       & > div {
         width: 50%;
         & > div {
-          margin-top: .2em;
+          margin-top: 0.2em;
         }
       }
     }
 
-    .title{
+    .title {
       font-size: 1rem;
       line-height: 1.5rem;
       color: $color-secondary-gray;
       font-weight: 600;
       margin-bottom: 0;
-      margin-top: .2rem;
+      margin-top: 0.2rem;
       font-size: 1rem;
       line-height: 1.5rem;
     }
@@ -172,24 +176,17 @@
 
       &.section-title {
         color: $color-secondary-mediumgray;
-        margin-top: .25rem;
-        
+        margin-top: 0.25rem;
       }
 
       ul {
         padding: 0;
         margin: 0;
 
-        li>ul {
+        li > ul {
           padding-left: 1rem;
         }
       }
-      
     }
   }
-
-
-  
-
-
 }

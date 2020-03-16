@@ -10,7 +10,6 @@
     box-shadow: 0px 1px 2px 0px $color-secondary-mediumgray;
     padding-left: 8px;
     padding-right: 8px;
-    width: 100%;
     height: 48px;
     line-height: 48px;
 
@@ -44,7 +43,7 @@
                         }
                     }
                 }
-               
+
             }
             .search-input-input{
                 margin-left: 8px;
@@ -71,20 +70,20 @@
                     -webkit-rtl-ordering: logical;
                     -webkit-user-select: text;
                     cursor: auto;
-            
+
                     /* clears the 'X' from Internet Explorer */
                     &::-ms-clear {
                         display: none;
                         width: 0;
                         height: 0;
                     }
-            
+
                     &::-ms-reveal {
                         display: none;
                         width: 0;
                         height: 0;
                     }
-            
+
                     /* clears the 'X' from Chrome */
                     &::-webkit-search-decoration,
                     &::-webkit-search-cancel-button,
@@ -111,16 +110,16 @@
             }
     }
 
-    
 
 
 
-  
+
+
 
     .filter-button-container {
         flex: 0;
         width: auto;
-        
+
         button.filter-button {
             flex: 0;
             text-align: right;
@@ -142,7 +141,7 @@
 
                     .filter-button-notification {
                         display: inline-block;
-        
+
                         .filter-button-notification-wrapper {
                             border-radius: 50%;
                             background-color: $color-primary-santander;
@@ -155,8 +154,8 @@
                 }
             }
 
-            
-            
+
+
         }
     }
 }

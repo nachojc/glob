@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SnBranchLocatorComponent } from '@globile/branch-locator';
+import { BranchLocatorWrapperComponent } from './branch-locator-wrapper.component';
 
 
 
 
 const routes: Routes = [
   {
-    path: '', component: SnBranchLocatorComponent,
+    path: '', component: BranchLocatorWrapperComponent,
     data: {
       header: {
         display: true

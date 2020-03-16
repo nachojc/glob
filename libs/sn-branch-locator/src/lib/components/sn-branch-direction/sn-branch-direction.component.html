@@ -1,0 +1,59 @@
+<div class="branch-wrapper">
+  <section class="branch-location">
+    <div class="branch-directions">
+      <div>
+        <sn-icon
+          icon="sn-SERV051"
+          (click)="
+            emitDirectionCoords({
+              geoCoords: branch.location.geoCoords,
+              travelMode: 'DRIVING'
+            })
+          "
+        >
+        </sn-icon>
+      </div>
+      <div>
+        <sn-icon
+          icon="sn-SERV053"
+          (click)="
+            emitDirectionCoords({
+              geoCoords: branch.location.geoCoords,
+              travelMode: 'BICYCLING'
+            })
+          "
+        >
+        </sn-icon>
+      </div>
+      <div>
+        <sn-icon
+          icon="sn-SERV054"
+          (click)="
+            emitDirectionCoords({
+              geoCoords: branch.location.geoCoords,
+              travelMode: 'TRANSIT'
+            })
+          "
+        >
+        </sn-icon>
+      </div>
+      <div>
+        <sn-icon
+          icon="sn-FUNC059"
+          (click)="
+            emitDirectionCoords({
+              geoCoords: branch.location.geoCoords,
+              travelMode: 'WALKING'
+            })
+          "
+        >
+        </sn-icon>
+      </div>
+    </div>
+  </section>
+  <section class="branch-routes-wrapper" *ngIf="routes">
+    <div class="branch-direction" *ngFor="let route of routes">
+      <div [innerHTML]="route.instructions | safe: 'html'"></div>
+    </div>
+  </section>
+</div>

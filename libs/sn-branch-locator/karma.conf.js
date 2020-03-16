@@ -22,7 +22,10 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins,
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      jasmine: {
+        random: false
+      }
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../../coverage/sn-branch-locator'),

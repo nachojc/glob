@@ -1,10 +1,9 @@
 @import "~sn-common-lib/styles/settings/colors";
 
 :host {
-
   display: block;
   .panel {
-    width: 340px;
+    width: 380px;
     position: absolute;
     top: 0;
     z-index: 3;
@@ -14,7 +13,7 @@
     -webkit-transform: translateX(0px);
     transform: translateX(0px);
     transition-property: -webkit-transform, transform, opacity;
-    transition-duration:0.2s;
+    transition-duration: 0.2s;
     transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
     background-color: white;
   }
@@ -28,11 +27,10 @@
   .menu-toggle {
     position: absolute;
     right: -28px;
-    top: .75rem;
+    top: 0.75rem;
     height: 40px;
-    box-shadow: 7px 1px 9px 0px rgba(60,64,67,.28);
+    box-shadow: 7px 1px 9px 0px rgba(60, 64, 67, 0.28);
   }
- 
 
   .panel-wrapper {
     display: -webkit-flex;
@@ -57,15 +55,15 @@
     box-shadow: inset 0 14px 10px -10px rgba(60, 64, 67, 0.28);
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
-  
-
-  .info-wrapper{
+  .info-wrapper,
+  .direction-wrapper {
     box-shadow: inset 0 14px 10px -10px rgba(60, 64, 67, 0.28);
     flex: 1;
     overflow: hidden;
-    .info-close-button-wrapper{
+    .info-close-button-wrapper {
       // border-top: 1px solid $color-primary-mediumsky;
       // display: flex;
       // flex-direction: row;
@@ -73,15 +71,14 @@
       padding: 8px;
       position: fixed;
       right: 0;
-      button.info-close-button{
+      button.info-close-button {
         font-size: 24px;
       }
     }
     ::ng-deep sn-branch-info {
-      .tab-group-wrapper{
-       
+      .tab-group-wrapper {
         sn-tab-group {
-          sn-tab{
+          sn-tab {
             overflow-y: auto;
           }
         }
@@ -89,8 +86,7 @@
     }
   }
 
-  .closed{
+  .closed {
     display: none;
   }
 }
-

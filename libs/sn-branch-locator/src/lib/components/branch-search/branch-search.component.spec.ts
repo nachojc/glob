@@ -70,7 +70,7 @@ describe('BranchSearchInputComponent', () => {
       providers: [
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
         { provide: 'WINDOW', useValue: windowRef },
-        { provide: ENV_CONFIG, useValue: env}
+        { provide: ENV_CONFIG, useValue: env }
       ]
     })
       .compileComponents();
@@ -103,7 +103,7 @@ describe('BranchSearchInputComponent', () => {
       trigger: () => null
     } as any;
     spyOn(component.inputElementRef.nativeElement, 'focus');
-    component.search(null);
+    component.search();
     expect(component.inputElementRef.nativeElement.focus).toHaveBeenCalled();
   });
 

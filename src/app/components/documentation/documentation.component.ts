@@ -72,7 +72,28 @@ npm install js-marker-clusterer -D`;
   }
   `;
 
-  constructor() { }
+  serviceExample = `
+  import { SnBranchLocatorService } from '@globile/branch-locator';
+  constructor(
+    ...
+    private branchLocatorService: SnBranchLocatorService,
+  ) { }
+
+    this.branchLocatorService.getClosestBranchByTextQuery('Address or postal code').subscribe((res: Branch) => {
+      ...
+    }, err => {
+      ...
+    });
+  `;
+
+  inputs = `
+  <sn-branch-locator [startingPosition]="{coordinates: {lat: -22.800861, lng: -47.08319689999996}}"></sn-branch-locator>
+  <sn-branch-locator [startingPosition]="{text: 'address or postal code'}"></sn-branch-locator>
+  `;
+
+  constructor(
+  ) {
+  }
 
   ngOnInit() {
   }

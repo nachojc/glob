@@ -1,24 +1,22 @@
-(function () {
+(function() {
   let project;
-  const constants = (pro) => {
-    
+  const constants = pro => {
     project = pro || project;
     return {
       project: project,
-      buildFile: './.buildstatus',
+      buildFile: "./.buildstatus",
       karmaFile: `libs/${project}/karma.conf.js`,
-      getBuildUrl: getBuildUrl ,
-      getCoverageUrl: (coverage, color) => 
-        getBuildUrl('Coverage', coverage + encodeURI('%'), color),
+      getBuildUrl: getBuildUrl,
+      getCoverageUrl: (coverage, color) =>
+        getBuildUrl("Coverage", coverage + encodeURI("%"), color),
       jsonCoverageFile: `coverage/${project}/coverage-summary.json`,
-      readmeFile: 'README.md'
+      readmeFile: "README.md"
     };
   };
-  
-  
-    function getBuildUrl(left, right, color) {
-      return `https://img.shields.io/badge/${left}-${right}-${color}.svg`;
-    }
-    
-    module.exports = constants;
-}());
+
+  function getBuildUrl(left, right, color) {
+    return `https://img.shields.io/badge/${left}-${right}-${color}.svg`;
+  }
+
+  module.exports = constants;
+})();

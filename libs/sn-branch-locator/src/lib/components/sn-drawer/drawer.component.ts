@@ -36,7 +36,7 @@ export class DrawerCustomHammerConfig extends HammerGestureConfig {
   providers: [{ provide: HAMMER_GESTURE_CONFIG, useClass: DrawerCustomHammerConfig }]
 })
 export class DrawerComponent implements AfterViewInit, OnChanges {
-  @ViewChild('content') contentElement: ElementRef;
+  @ViewChild('content', {static: false}) contentElement: ElementRef;
 
   @Input() dockedHeight = 50;
   @Input() shouldBounce = true;
