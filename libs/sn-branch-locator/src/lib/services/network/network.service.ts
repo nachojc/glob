@@ -2,13 +2,14 @@ import { Injectable, Inject } from '@angular/core';
 import { WindowRef } from '../../models/window-ref';
 import { fromEvent, merge, of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { WindowRefService } from '@globile/mobile-services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetworkService {
 
-  constructor(@Inject('WINDOW') private windowRef: WindowRef) {
+  constructor(private windowRef: WindowRefService) {
 
   }
 

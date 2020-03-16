@@ -1,14 +1,13 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { map, flatMap, find } from 'rxjs/operators';
+import { map, flatMap } from 'rxjs/operators';
 import { LatLngLiteral } from '@agm/core';
-import { ENV_CONFIG } from '@globile/mobile-services';
+import { GlobileSettingsService, WindowRefService } from '@globile/mobile-services';
 
 import { Branch } from '../../models/branch.model';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
 import { FilterService } from '../filter/filter.service';
-import { WindowRef } from '../../models/window-ref';
 import { GeoPositionService } from '../geo-position/geo-position.service';
 
 @Injectable({
@@ -21,13 +20,13 @@ export class SnBranchLocatorService {
   branchLocator: EnvBranchLocatorModel;
 
   constructor(
-    @Inject(ENV_CONFIG) envConfig: any,
+    globileSettings: GlobileSettingsService,
     public http: HttpClient,
     private filterservice: FilterService,
-    @Inject('WINDOW') public windowRef: WindowRef,
+    public windowRef: WindowRefService,
     private geoPositionService: GeoPositionService
   ) {
-    this.branchLocator = envConfig.api.BranchLocator;
+    this.branchLocator = globileSettings.branchLocator;
   }
 
   get onChange(): Observable<Branch[]> {
