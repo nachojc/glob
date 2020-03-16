@@ -27,8 +27,6 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
-import { BranchSearchInputComponent } from '../branch-search/branch-search.component';
-import { WindowRef } from '../../models/window-ref';
 
 declare const google: any;
 @Component({
@@ -285,7 +283,7 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-  drawerStageChange(state: DrawerState): void {
+  drawerStageChange(state): void {
     if (state === DrawerState.Bottom) {
       this.closeDrawer();
       this.clearSelectedMarker();

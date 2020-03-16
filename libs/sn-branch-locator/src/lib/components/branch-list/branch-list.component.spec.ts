@@ -36,6 +36,10 @@ describe('BranchListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should load icons dinamically', () => {
+    const iconTypesDictionary = (component as any).branchIconTypes;
+    expect(component).toBeTruthy();
+  });
   it('should load more results', () => {
     component.branchesList = [];
     const spy = spyOn(component, 'loadMoreResults').and.callThrough();
@@ -106,6 +110,44 @@ describe('BranchListComponent', () => {
       component.ngOnChanges(changes);
       const isMaxBranchesToLoadReset = component.maxBranchesToLoad === (component as any).numberOfBranchesToLoad ? false : true;
       expect(isMaxBranchesToLoadReset).toBeFalsy();
+    });
+    it( 'should identify kind of icon and create a new Array', () => {
+      const noSubtypeBranchMock = branchMock;
+      noSubtypeBranchMock.subType = null;
+      component.branchesList = [
+        branchMock, branchMock, branchMock,
+        branchMock, branchMock, branchMock,
+        branchMock, branchMock, branchMock,
+        branchMock, branchMock, branchMock,
+        noSubtypeBranchMock
+      ];
+      component.identifyIconType();
+      expect(component.branchIcons.length > 1).toBeTruthy();
+    } );
+    it('should open menu', () => {
+      component.open();
+      fixture.detectChanges();
+      expect(component.currentState).toBe('menuOpened');
+    });
+
+    it('should close menu', () => {
+      component.close();
+      fixture.detectChanges();
+      expect(component.currentState).toBe('menuClosed');
+    });
+
+    it('should change state to closed', () => {
+      component.currentState = 'menuOpened';
+      component.changeState();
+      fixture.detectChanges();
+      expect(component.currentState).toBe('menuClosed');
+    });
+
+    it('should change state to opened', () => {
+      component.currentState = 'menuClosed';
+      component.changeState();
+      fixture.detectChanges();
+      expect(component.currentState).toBe('menuOpened');
     });
   });
 
