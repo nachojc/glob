@@ -84,32 +84,35 @@ export class SnBranchLocatorComponent implements OnInit {
   >();
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
-  private selectedMarker: AgmMarker;
-  public _optionalFullScreen = false;
-  private _optionalBranding = false;
-  private _coordinates: string;
-  private _address: string;
-  private _defaultLang: string;
-
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
   @ViewChild(FilterComponent, { static: false }) filterView: FilterComponent;
   @ViewChild(MenuComponent, { static: false }) menuComponent: MenuComponent;
+
+  private selectedMarker: AgmMarker;
+  private _optionalFullScreen = false;
+  private _optionalBranding = false;
+  private _coordinates: string;
+  private _address: string;
+  private _defaultLang: string;
 
   public isLoading: boolean = true;
   public lat: number;
   public lng: number;
   public branchIcon = {
     url: 'assets/branchlocator/touchpointIcon.svg',
-    scaledSize: { height: 40, width: 40 }
+    scaledSize: { height: 40, width: 40 },
+    anchor: { x: 20, y: 20 }
   };
   public branchSelectedIcon = {
     url: 'assets/branchlocator/santanderTouchpointSelected.svg',
-    scaledSize: { height: 56, width: 56 }
+    scaledSize: { height: 56, width: 56 },
+    anchor: { x: 28, y: 28 }
   };
   public usericon = {
     url: 'assets/branchlocator/pinVoce.svg',
-    scaledSize: { height: 90, width: 90 }
+    scaledSize: { height: 90, width: 90 },
+    anchor: { x: 45, y: 45 }
   };
   public branchesList: Branch[];
 
@@ -146,6 +149,10 @@ export class SnBranchLocatorComponent implements OnInit {
 
   public addressLat: number;
   public addressLng: number;
+
+  currentLat: number;
+  currentLong: number;
+  marker: any;
 
   constructor(
     private geoPosition: GeoPositionService,
@@ -192,7 +199,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   searchAddress(address: string): void {
-    if (address !== null) {
+    if (address !== null || typeof (address) !== 'undefined') {
       this.geoPosition.getPositionByText(address).subscribe(coords => {
         this.zoom = 15;
         this.addressLat = coords.lat;

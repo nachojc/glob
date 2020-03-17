@@ -23,12 +23,12 @@ export class BranchListComponent implements OnChanges {
       bancaprivada: 'sn-SERV008',
       pyme: 'sn-BAN023',
       universidades: 'sn-SERV049',
-      workcafe: 'sn-BAN024B',
+      workcafe: 'sn-FUNC136',
       ag_financieros: 'sn-BAN040',
       empresas: 'sn-SERV006'
     },
     atm: {
-      non_santander_atm: 'sn-FUNC029',
+      non_santander_atm: 'sn-FUNC019C',
       santander_atm: 'sn-FUNC029',
     },
     corresponsales: {

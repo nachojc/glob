@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrismModule } from './components/prism/prism.module';
 import { RouterModule } from '@angular/router';
-import { GlobileSettingsService } from '@globile/mobile-services';
+import { GlobileSettingsService, GlobileModule } from '@globile/mobile-services';
 
 export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
   return new TranslateHttpLoader(http, globileSettings.branchLocator.languages, '.json');
@@ -41,7 +41,8 @@ export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSett
         deps: [HttpClient, GlobileSettingsService]
       }
     }),
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    GlobileModule.forRoot({}, environment),
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: './' },

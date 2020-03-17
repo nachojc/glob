@@ -47,7 +47,8 @@
     "rxjs": "~6.5.4",
     "sn-common-lib": "^0.7.17",
     "tslib": "^1.9.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "core-js": "^2.5.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.802.2",
