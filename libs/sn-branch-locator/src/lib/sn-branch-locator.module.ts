@@ -31,12 +31,8 @@ import { SafePipe } from './pipes/safe.pipe';
 import { GlobileSettingsService } from '@globile/mobile-services';
 
 // TODO: path Update EnvironmentConfigModel
-export function LocalLoaderFactory(http: HttpClient, path: any) {
-  return new TranslateHttpLoader(
-    http,
-    path.api.BranchLocator['languages'] + 'assets/i18n/branchlocator/',
-    '.json'
-  );
+export function LocalLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
+  return new TranslateHttpLoader(http, globileSettings.branchLocator.languages, '.json');
 }
 
 @NgModule({

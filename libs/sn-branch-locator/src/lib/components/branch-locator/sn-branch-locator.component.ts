@@ -6,7 +6,8 @@ import {
   OnInit,
   EventEmitter,
   Output,
-  Input} from '@angular/core';
+  Input
+} from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
@@ -164,6 +165,8 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initAnalytics();
+
     this.isMobile = this.platform.isMobile;
 
     this.branchService.onChange.subscribe(
@@ -444,7 +447,7 @@ export class SnBranchLocatorComponent implements OnInit {
       externalTealium: false
     };
     const componentParams: ComponentParamsModel = {
-      Component: 'payments',
+      Component: 'branch locator',
       ComponentVersion: '0.0.1',
       AppType: 'Internal',
       AppName: 'santander globile internal',
@@ -452,17 +455,13 @@ export class SnBranchLocatorComponent implements OnInit {
       Language: 'spanish',
       Country: 'ES'
     };
-    // this.analyticsService.setInitValues(
-    //   // TODO: Chnag to native whene have inplementation by core team
-    //   AnalyticsChannelEnum.WEB,
-    //   analyticsConfig,
-    //   channelConfig,
-    //   componentParams
-    // );
-
-    console.log('AnalyticsChannelEnum.WEB', AnalyticsChannelEnum.WEB);
-    console.log('analyticsConfig', analyticsConfig);
-    console.log('channelConfig', channelConfig);
-    console.log('componentParam', componentParams);
+    this.analyticsService.setInitValues(
+      // TODO: Chnag to native whene have inplementation by core team
+      AnalyticsChannelEnum.WEB,
+      analyticsConfig,
+      channelConfig,
+      componentParams
+    );
   }
+
 }
