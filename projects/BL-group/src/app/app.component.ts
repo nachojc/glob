@@ -18,7 +18,6 @@ export class AppComponent {
     private queryParamsService: QueryParamsService
   ) {
     translate.setDefaultLang('en');
-    
     this.queryParamsService.parametersWatcher.subscribe(param => {
       this.coordinates = param['coordinates'];
       this.address = param['address'];
