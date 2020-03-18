@@ -9,5 +9,13 @@
       "@agm/core" : "core"
     },
     "styleIncludePaths": ["../../node_modules"]
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "@agm/core",
+    "@agm/js-marker-clusterer",
+    "js-marker-clusterer",
+    "@types/googlemaps",
+    "hammerjs",
+    "sn-common-lib"
+  ]
 }
