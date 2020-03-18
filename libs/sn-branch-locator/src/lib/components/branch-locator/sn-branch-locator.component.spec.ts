@@ -271,20 +271,15 @@ describe('SnBranchLocatorComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should set address to null value if there is not value provided', () => {
-    component.address = null;
-    expect((component as any)._address).toBe(null);
-  });
-
   it('should get optionalFullScreenControl value from default _optionalFullScreen value', () => {
-    component._optionalFullScreen = false;
-    expect(component.optionalFullScreenControl).toBe(component._optionalFullScreen);
+    (component as any)._optionalFullScreen = false;
+    expect(component.optionalFullScreenControl).toBe((component as any)._optionalFullScreen);
   });
 
   it('should set optionalFullScreenControl value from property value', () => {
-    component._optionalFullScreen = false;
+    (component as any)._optionalFullScreen = false;
     component.optionalFullScreenControl = true;
-    expect(component._optionalFullScreen).toBe(true);
+    expect((component as any)._optionalFullScreen).toBe(true);
   });
   it('should get optionalBranding value from default _optionalBranding value', () => {
     (component as any)._optionalBranding = false;
@@ -580,6 +575,10 @@ describe('SnBranchLocatorComponent', () => {
         scaledSize: {
           height: 40,
           width: 40
+        },
+        anchor: {
+          x: 8,
+          y: 8
         }
       };
       component.branchIcon = branchIcon;
