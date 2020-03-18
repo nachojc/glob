@@ -7,27 +7,16 @@
 <tr><td>Statements</td><td>Branches</td><td>Functions</td><td>Lines</td></tr>
 <tr>
 <td>
-<<<<<<< HEAD
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Statements" src="https://img.shields.io/badge/Coverage-91.08%25-green.svg" alt="statements coverage"></a>
-</td>
-<td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Branches" src="https://img.shields.io/badge/Coverage-78.26%25-green.svg" alt="branches coverage"></a>
-=======
 <a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Statements" src="https://img.shields.io/badge/Coverage-91.53%25-green.svg" alt="statements coverage"></a>
 </td>
 <td>
 <a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Branches" src="https://img.shields.io/badge/Coverage-79.08%25-green.svg" alt="branches coverage"></a>
->>>>>>> origin
 </td>
 <td>
 <a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Functions" src="https://img.shields.io/badge/Coverage-85.17%25-green.svg" alt="functions coverage"></a>
 </td>
 <td>
-<<<<<<< HEAD
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Lines" src="https://img.shields.io/badge/Coverage-90.57%25-green.svg" alt="lines coverage"></a>
-=======
 <a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Lines" src="https://img.shields.io/badge/Coverage-91.07%25-green.svg" alt="lines coverage"></a>
->>>>>>> origin
 </td>
 </tr>
 </table>
@@ -43,8 +32,8 @@ npm install @agm/core --save
 Then add in the main module the following imports and providers:
 
 ```typescript
-import { SnBranchLocatorModule } from 'sn-branch-locator';
-import { AgmCoreModule } from '@agm/core';
+import { SnBranchLocatorModule } from "sn-branch-locator";
+import { AgmCoreModule } from "@agm/core";
 ```
 
 ```js
