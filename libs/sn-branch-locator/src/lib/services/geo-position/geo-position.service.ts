@@ -24,7 +24,7 @@ export class GeoPositionService {
   }
 
   public getPositionByText(text: string): Observable<LatLngLiteral> {
-    
+
     return new Observable(obs => {
       this._readyMaps().subscribe(() => {
         const geocoder = new google.maps.Geocoder();

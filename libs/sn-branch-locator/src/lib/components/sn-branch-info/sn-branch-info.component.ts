@@ -138,12 +138,12 @@ export class SnBranchInfoComponent {
     const hoursEnum = {
       MONDAY: {
         en: 'Mon',
-        es: 'Lun', 
+        es: 'Lun',
         pt: 'Seg'
       },
       TUESDAY: {
         en: 'Tue',
-        es: 'Mar', 
+        es: 'Mar',
         pt: 'Ter'
       },
       WEDNESDAY: {
@@ -153,12 +153,12 @@ export class SnBranchInfoComponent {
       },
       THURSDAY: {
         en: 'Thu',
-        es: 'Jue', 
+        es: 'Jue',
         pt: 'Qui'
       },
       FRIDAY: {
         en: 'Fri',
-        es: 'Vie', 
+        es: 'Vie',
         pt: 'Sex'
       },
       SATURDAY: {
@@ -168,7 +168,7 @@ export class SnBranchInfoComponent {
       },
       SUNDAY: {
         en: 'Sun',
-        es: 'Dom', 
+        es: 'Dom',
         pt: 'Dom'
       }
     };

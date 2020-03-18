@@ -36,13 +36,13 @@ export class SnBranchLocatorComponent implements OnInit {
     return this._coordinates;
   }
   set coordinates(value: string) {
-    if(value) {
+    if (value) {
       this._coordinates = value;
       const coorsArray = value.replace('{', '').replace('}', '').split(',');
-      let coors: LatLngLiteral = {
+      const coors = {
         lat: Number(coorsArray[0]),
         lng: Number(coorsArray[1])
-      }
+      };
       this.startingPosition = {
         coordinates: coors
       };
@@ -60,7 +60,7 @@ export class SnBranchLocatorComponent implements OnInit {
     return this._address;
   }
   set address(value: string) {
-    if(value) {
+    if (value) {
       this._address = value;
       this.startingPosition = {
         text: value
