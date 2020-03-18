@@ -32,29 +32,43 @@ import { IStartingPosition } from '../../models/starting-position.interface';
 })
 export class SnBranchLocatorComponent implements OnInit {
   @Input()
-  get coordinates(): any {
+  get coordinates(): string {
     return this._coordinates;
   }
-  set coordinates(value: any) {
-    this._coordinates = value;
+  set coordinates(value: string) {
+    if(value) {
+      this._coordinates = value;
+      const coorsArray = value.replace('{', '').replace('}', '').split(',');
+      let coors: LatLngLiteral = {
+        lat: Number(coorsArray[0]),
+        lng: Number(coorsArray[1])
+      }
+      this.startingPosition = {
+        coordinates: coors
+      };
+    }
   }
   @Input()
-  get defaultLang(): any {
+  get defaultLang(): string {
     return this._defaultLang;
   }
-  set defaultLang(value: any) {
+  set defaultLang(value: string) {
     this._defaultLang = value;
   }
   @Input()
-  get address(): any {
+  get address(): string {
     return this._address;
   }
-  set address(value: any) {
-    this._address = value;
-    this.searchAddress(this._address);
+  set address(value: string) {
+    if(value) {
+      this._address = value;
+      this.startingPosition = {
+        text: value
+      };
+    }
   }
 
-  @Input() startingPosition: IStartingPosition;
+
   @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
@@ -81,7 +95,7 @@ export class SnBranchLocatorComponent implements OnInit {
   @ViewChild(MenuComponent, { static: false }) menuComponent: MenuComponent;
 
   private selectedMarker: AgmMarker;
-  private _optionalFullScreen = false;
+  public _optionalFullScreen = false;
   private _optionalBranding = false;
   private _coordinates: string;
   private _address: string;
@@ -118,6 +132,7 @@ export class SnBranchLocatorComponent implements OnInit {
   ];
 
   public userPosition: LatLngLiteral;
+  public startingPosition: IStartingPosition;
   public zoom = 13;
   public showReCenter: boolean;
 
@@ -180,7 +195,6 @@ export class SnBranchLocatorComponent implements OnInit {
         }
       },
       err => {
-        console.error(err);
         this.isLoading = false;
       }
     );
