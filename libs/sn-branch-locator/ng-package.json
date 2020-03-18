@@ -19,11 +19,9 @@
   "whitelistedNonPeerDependencies": [
     "@agm/core",
     "@agm/js-marker-clusterer",
-    "@globile/mobile-services",
-    "@ngx-translate/core",
-    "@ngx-translate/http-loader",
+    "js-marker-clusterer",
+    "@types/googlemaps",
     "hammerjs",
-    "sn-common-lib",
-    "tslib"
+    "sn-common-lib"
   ]
 }
