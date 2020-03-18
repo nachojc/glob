@@ -148,38 +148,38 @@ export class SnBranchInfoComponent implements OnInit {
     const hoursEnum = {
       MONDAY: {
         en: 'Mon',
-        es: 'Seg', // TODO: review translation
+        es: 'Lun',
         pt: 'Seg'
       },
       TUESDAY: {
         en: 'Tue',
-        es: 'Ter', // TODO: review translation
+        es: 'Mar',
         pt: 'Ter'
       },
       WEDNESDAY: {
         en: 'Wed',
-        es: 'Qua', // TODO: review translation
+        es: 'Mié',
         pt: 'Qua'
       },
       THURSDAY: {
         en: 'Thu',
-        es: 'Qui', // TODO: review translation
+        es: 'Jue',
         pt: 'Qui'
       },
       FRIDAY: {
         en: 'Fri',
-        es: 'Sex', // TODO: review translation
+        es: 'Vie',
         pt: 'Sex'
       },
       SATURDAY: {
         en: 'Sat',
-        es: 'Sab', // TODO: review translation
-        pt: 'Sab'
+        es: 'Sáb',
+        pt: 'Sáb'
       },
       SUNDAY: {
         en: 'Sun',
-        es: 'Ter', // TODO: review translation
-        pt: 'Ter'
+        es: 'Dom',
+        pt: 'Dom'
       }
     };
 

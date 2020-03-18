@@ -4,6 +4,10 @@
             "map": "Mapa",
             "list": "Lista"
         },
+        "brand": {
+            "santander": "Santander",
+            "branchlocator": "Branch Locator_PT"
+        },
         "searchinput": {
             "placeholder": "Pesquise aqui",
             "filterbutton": "Filtro"
@@ -14,7 +18,7 @@
             "buttondeleteall": "Apague tudo",
             "select": "Select",
             "private": "Private",
-            "pyme": "Pyme",
+            "pyme": "Pyme_PT",
             "workcafe": "Workcafe",
             "business": "Empresas",
             "universities": "Universidades",
@@ -22,14 +26,14 @@
             "pastor": "Clientes Pastor",
             "banefe": "Clientes Banefe",
             "residents": "Residentes", 
-            "superficies": "Grandes superficies",
-            "agcolaboradores": "AG Colaboradores",
-            "agfinancieros": "AG Financieros",
+            "departmentstores": "Department stores_PT",
+            "agcollaborators": "AG Collaborators_PT",
+            "agfinancials": "AG Financials_PT",
             "correspondents": "Correspondentes",
-            "eleven": "Eleven",
-            "circlek": "Circle K",
-            "tiendaextra": "Tienda Extra",
-            "tiendak": "Tienda K",
+            "eleven": "Eleven_PT",
+            "circlek": "Circle K_PT",
+            "extrashop": "Extra Shop_PT",
+            "shopk": "Shop K_PT",
             "telecomm": "Telecomm",
             "super": "Super7 24",
             "oxxo": "Oxxo",
@@ -53,7 +57,11 @@
             "accessibilitymessage": "Acesso para deficientes",
             "open": "Aberto",
             "closed": "Fechado",
-            "closing": "Fechando em"
+            "closing": "Fechando em",
+            "opendirections": "Open Directions_PT"
+        },
+        "list": {
+            "moreResults": "Load more results_PT"
         }
     }
 }
