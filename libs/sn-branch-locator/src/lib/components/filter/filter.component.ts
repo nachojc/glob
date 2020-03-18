@@ -1,6 +1,8 @@
 import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FilterService } from '../../services/filter/filter.service';
 import { FormGroup } from '@angular/forms';
+import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
+import { BridgeAnalyticService } from '@globile/mobile-services';
 
 
 @Component({
@@ -18,12 +20,17 @@ export class FilterComponent implements OnInit {
     constructor(
         private snFilterService: FilterService,
         private renderer: Renderer2,
-        private el: ElementRef
+        private el: ElementRef,
+        private analyticsService: BridgeAnalyticService
     ) { }
 
     ngOnInit(): void {
         this.hide();
         this.form = this.snFilterService.initForm();
+
+        const sendView = ViewsAnalyticsVariables.filterScreen;
+        console.log('sendView', sendView);
+        this.analyticsService.sendView(sendView);
     }
 
     private show(): void {

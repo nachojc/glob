@@ -33,6 +33,7 @@ import {
   NativeAnalyticsInitModel,
   WebAnalyticsInitModel
 } from '@globile/mobile-services';
+import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -173,6 +174,10 @@ export class SnBranchLocatorComponent implements OnInit {
 
   ngOnInit(): void {
     this.initAnalytics();
+
+    const sendView = ViewsAnalyticsVariables.mapScreen;
+    console.log('sendView', sendView);
+    this.analyticsService.sendView(sendView);
 
     this.isMobile = this.platform.isMobile;
 
@@ -454,6 +459,7 @@ export class SnBranchLocatorComponent implements OnInit {
       externalTealium: false
     };
     const componentParams: ComponentParamsModel = {
+      tealium_trace_id: 'testbr',
       Component: 'branch locator',
       ComponentVersion: '0.0.1',
       AppType: 'Internal',
@@ -462,6 +468,7 @@ export class SnBranchLocatorComponent implements OnInit {
       Language: 'spanish',
       Country: 'ES'
     };
+
     this.analyticsService.setInitValues(
       // TODO: Chnag to native whene have inplementation by core team
       AnalyticsChannelEnum.WEB,

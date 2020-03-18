@@ -1,13 +1,15 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
+import { BridgeAnalyticService } from '@globile/mobile-services';
 
 @Component({
   selector: 'sn-branch-info',
   templateUrl: './sn-branch-info.component.html',
   styleUrls: ['./sn-branch-info.component.scss']
 })
-export class SnBranchInfoComponent {
+export class SnBranchInfoComponent implements OnInit {
   private _branch: Branch;
   public isBranch = true;
   public todayHours: string;
@@ -43,7 +45,15 @@ export class SnBranchInfoComponent {
 
 
 
-  constructor(public translate: TranslateService) {
+  constructor(
+    public translate: TranslateService,
+    private analyticsService: BridgeAnalyticService
+  ) { }
+
+  ngOnInit(): void {
+    const sendView = ViewsAnalyticsVariables.detailScreen;
+    console.log('sendView', sendView);
+    this.analyticsService.sendView(sendView);
   }
 
   contactBranch(phone: string) {
