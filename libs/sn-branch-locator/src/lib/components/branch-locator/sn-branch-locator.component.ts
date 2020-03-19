@@ -200,15 +200,6 @@ export class SnBranchLocatorComponent implements OnInit {
     );
   }
 
-  searchAddress(address: string): void {
-    if (address !== null || typeof (address) !== 'undefined') {
-      this.geoPosition.getPositionByText(address).subscribe(coords => {
-        this.zoom = 15;
-        this.addressLat = coords.lat;
-        this.addressLng = coords.lng;
-      });
-    }
-  }
 
   getBranchesByCoordinates(
     coords: LatLngLiteral = this.userPosition,
