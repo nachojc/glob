@@ -6,7 +6,8 @@ import {
   OnInit,
   EventEmitter,
   Output,
-  Input} from '@angular/core';
+  Input
+} from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
@@ -63,13 +64,6 @@ export class SnBranchLocatorComponent implements OnInit {
     this._optionalFullScreen = value !== null && value !== undefined && `${value}` !== 'false';
   }
 
-  @Input()
-  get optionalBranding(): boolean {
-    return this._optionalBranding;
-  }
-  set optionalBranding(value: boolean) {
-    this._optionalBranding = value !== null && value !== undefined && `${value}` !== 'false';
-  }
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
     OutputMarkerSelected
   >();
@@ -82,7 +76,6 @@ export class SnBranchLocatorComponent implements OnInit {
 
   private selectedMarker: AgmMarker;
   private _optionalFullScreen = false;
-  private _optionalBranding = false;
   private _coordinates: string;
   private _address: string;
   private _defaultLang: string;

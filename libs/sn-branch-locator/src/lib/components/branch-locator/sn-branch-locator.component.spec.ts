@@ -281,16 +281,6 @@ describe('SnBranchLocatorComponent', () => {
     component.optionalFullScreenControl = true;
     expect((component as any)._optionalFullScreen).toBe(true);
   });
-  it('should get optionalBranding value from default _optionalBranding value', () => {
-    (component as any)._optionalBranding = false;
-    expect(component.optionalBranding).toBe((component as any)._optionalBranding);
-  });
-
-  it('should set optionalBranding value from property value', () => {
-    (component as any)._optionalBranding = false;
-    component.optionalBranding = true;
-    expect((component as any)._optionalBranding).toBe(true);
-  });
 
   describe('getBranchesByCoordinates()', () => {
     it('should return a list of branches', () => {
