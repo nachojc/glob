@@ -49,7 +49,7 @@ export class SnBranchLocatorComponent implements OnInit {
     if (value) {
       this._coordinates = value;
       const coorsArray = value.replace('{', '').replace('}', '').split(',');
-      const coors = {
+      const coors: LatLngLiteral = {
         lat: Number(coorsArray[0]),
         lng: Number(coorsArray[1])
       };

@@ -1,7 +1,7 @@
 <div class="branch-wrapper">
   <div header draggable class="branch-summary-wrapper" (click)="emitClick()">
     <h6 class="branch-title" *ngIf="isNearestMarker">
-      {{ "branchlocator.details.neartitle" | translate }}
+      {{ "branchLocator.details.nearTitle" | translate }}
     </h6>
     <section class="branch-summary">
       <h6 class="branch-name" style="min-height: 48px;">
@@ -28,20 +28,20 @@
         </p>
       </div>
       <div class="branch-directions">
-        <button (click)="emitOpenDirectionsPanel()">{{ "branchlocator.details.opendirections" | translate }}</button>
+        <button (click)="emitOpenDirectionsPanel()">{{ "branchLocator.details.openDirections" | translate }}</button>
       </div>
     </section>
     <section class="branch-schedule">
       <div class="branch-hours" *ngIf="isBranch && todayHours">
-        <div>{{ "branchlocator.shared.branch" | translate }}</div>
+        <div>{{ "branchLocator.shared.branch" | translate }}</div>
         <div>
-          {{ "branchlocator.details.today" | translate }}, {{ todayHours }}
+          {{ "branchLocator.details.today" | translate }}, {{ todayHours }}
         </div>
       </div>
       <!-- [ngClass]="{hidden: branch?.atm?.length === 0}" -->
       <div class="atm-hours" *ngIf="!isBranch || (branch.atm && branch.atm[0])">
-        <div>{{ "branchlocator.shared.atm" | translate }}</div>
-        <div>{{ "branchlocator.details.atminfo" | translate }}</div>
+        <div>{{ "branchLocator.shared.atm" | translate }}</div>
+        <div>{{ "branchLocator.details.atmInfo" | translate }}</div>
       </div>
     </section>
   </div>
@@ -54,8 +54,8 @@
       <sn-tab
         [label]="
           isBranch
-            ? translate.instant('branchlocator.shared.branch')
-            : translate.instant('branchlocator.shared.atm')
+            ? translate.instant('branchLocator.shared.branch')
+            : translate.instant('branchLocator.shared.atm')
         "
         class="tab-branch-info"
       >
@@ -80,7 +80,7 @@
               ></sn-icon>
               <div>
                 <div class="Type-5_Regular-Style section-title">
-                  {{ "branchlocator.details.contact" | translate }}
+                  {{ "branchLocator.details.contact" | translate }}
                 </div>
                 <div class="Type-5_Regular-Style">
                   {{ branch.contactData.phoneNumber }}
@@ -91,7 +91,7 @@
                   (click)="contactBranch(branch.contactData.phoneNumber)"
                   class="call-button"
                 >
-                  {{ "branchlocator.details.contactbutton" | translate }}
+                  {{ "branchLocator.details.contactButton" | translate }}
                 </button>
               </div>
             </sn-option-item>
@@ -103,7 +103,7 @@
                 align-start
               ></sn-icon>
               <div class="Type-5_Regular-Style section-title">
-                {{ "branchlocator.details.schedule" | translate }}
+                {{ "branchLocator.details.schedule" | translate }}
               </div>
               <div
                 class="Type-5_Regular-Style hours-wrapper"
@@ -142,14 +142,14 @@
                 align-start
               ></sn-icon>
               <div class="Type-5_Regular-Style section-title">
-                {{ "branchlocator.details.services" | translate }}
+                {{ "branchLocator.details.services" | translate }}
               </div>
               <div
                 class="Type-5_Regular-Style"
                 *ngIf="branch.products.length > 0"
               >
                 <h1 class="title">
-                  {{ "branchlocator.details.servicesfinancial" | translate }}
+                  {{ "branchLocator.details.servicesFinancial" | translate }}
                 </h1>
                 <ul type="none">
                   <li *ngFor="let attr of branch.products">{{ attr }}</li>
@@ -160,7 +160,7 @@
                 *ngIf="branch.attributes.length > 0"
               >
                 <h1 class="title">
-                  {{ "branchlocator.details.servicesnofinancial" | translate }}
+                  {{ "branchLocator.details.servicesNoFinancial" | translate }}
                 </h1>
                 <ul type="none">
                   <li *ngFor="let attr of branch.attributes">{{ attr }}</li>
@@ -175,10 +175,10 @@
                 align-start
               ></sn-icon>
               <div class="Type-5_Regular-Style section-title">
-                {{ "branchlocator.details.accessibility" | translate }}
+                {{ "branchLocator.details.accessibility" | translate }}
               </div>
               <h1 class="title">
-                {{ "branchlocator.details.accessibilitymessage" | translate }}
+                {{ "branchLocator.details.accessibilityMessage" | translate }}
               </h1>
             </sn-option-item>
           </sn-option-list>
@@ -214,7 +214,7 @@
               ></sn-icon>
               <div>
                 <div class="Type-5_Regular-Style section-title">
-                  {{ "branchlocator.details.contact" | translate }}
+                  {{ "branchLocator.details.contact" | translate }}
                 </div>
                 <div class="Type-5_Regular-Style">
                   {{ branch.atm[0].contactData.phoneNumber }}
@@ -225,7 +225,7 @@
                   (click)="contactBranch(branch.atm[0].contactData.phoneNumber)"
                   class="call-button"
                 >
-                  {{ "branchlocator.details.contactbutton" | translate }}
+                  {{ "branchLocator.details.contactButton" | translate }}
                 </button>
               </div>
             </sn-option-item>
@@ -239,7 +239,7 @@
                 align-start
               ></sn-icon>
               <div class="Type-5_Regular-Style section-title">
-                {{ "branchlocator.details.schedule" | translate }}
+                {{ "branchLocator.details.schedule" | translate }}
               </div>
               <div
                 class="Type-5_Regular-Style hours-wrapper"
@@ -280,14 +280,14 @@
                 align-start
               ></sn-icon>
               <div class="Type-5_Regular-Style section-title">
-                {{ "branchlocator.details.services" | translate }}
+                {{ "branchLocator.details.services" | translate }}
               </div>
               <div
                 class="Type-5_Regular-Style"
                 *ngIf="branch.atm[0].products.length > 0"
               >
                 <h1 class="title">
-                  {{ "branchlocator.details.servicesfinancial" | translate }}
+                  {{ "branchLocator.details.servicesFinancial" | translate }}
                 </h1>
                 <ul type="none">
                   <li *ngFor="let attr of branch.atm[0].products">
@@ -300,7 +300,7 @@
                 *ngIf="branch.atm[0].attributes.length > 0"
               >
                 <h1 class="title">
-                  {{ "branchlocator.details.servicesnofinancial" | translate }}
+                  {{ "branchLocator.details.servicesNoFinancial" | translate }}
                 </h1>
                 <ul type="none">
                   <li *ngFor="let attr of branch.atm[0].attributes">
@@ -317,10 +317,10 @@
                 align-start
               ></sn-icon>
               <div class="Type-5_Regular-Style section-title">
-                {{ "branchlocator.details.accessibility" | translate }}
+                {{ "branchLocator.details.accessibility" | translate }}
               </div>
               <h1 class="title">
-                {{ "branchlocator.details.accessibilitymessage" | translate }}
+                {{ "branchLocator.details.accessibilityMessage" | translate }}
               </h1>
             </sn-option-item>
           </sn-option-list>

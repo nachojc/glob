@@ -115,7 +115,7 @@ export class SnBranchInfoComponent implements OnInit {
       const endDate = new Date(0, 0, 0, Number(end[0]), Number(end[1]), 0);
       if (now.getTime() < startDate.getTime() || now.getTime() > endDate.getTime()) {
         return {
-          text: this.translate.instant('branchlocator.details.closed'),
+          text: this.translate.instant('branchLocator.details.closed'),
           mode: 'CLOSED'
         };
       } else {
@@ -125,13 +125,13 @@ export class SnBranchInfoComponent implements OnInit {
         const minutes = Math.floor(diff / 1000 / 60);
         if (hours <= 0) {
           return {
-            text: `${this.translate.instant('branchlocator.details.closing')} ${(minutes <= 9 ? '0' : '')}${minutes} min`,
+            text: `${this.translate.instant('branchLocator.details.closing')} ${(minutes <= 9 ? '0' : '')}${minutes} min`,
             mode: 'CLOSING'
           };
         }
         // return 'Closing in ' + (hours > 0 ? hours + 'h' : '') + (minutes <= 9 ? '0' : '') + minutes;
         return {
-          text: this.translate.instant('branchlocator.details.open'),
+          text: this.translate.instant('branchLocator.details.open'),
           mode: 'OPEN'
         };
       }
