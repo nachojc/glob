@@ -4,11 +4,11 @@
     [selectIndex]="selectedTabIndex"
     (selectedTab)="tabsChanged($event)"
   >
-    <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
+    <sn-tab label="{{ 'branchLocator.title.map' | translate }}">
       <section class="locator-content">
         <div class="locator-santander-brand" *ngIf="optionalBranding">
-          <h2>{{ 'branchlocator.brand.santander' | translate }}</h2>
-          <h4>{{ 'branchlocator.brand.branchlocator' | translate }}</h4>
+          <h2>{{ 'branchLocator.brand.santander' | translate }}</h2>
+          <h4>{{ 'branchLocator.brand.branchLocator' | translate }}</h4>
         </div>
         <agm-map
           [gestureHandling]="'greedy'"
@@ -92,7 +92,7 @@
     </sn-tab>
     <sn-tab
       class="tab-branches-list"
-      label="{{ 'branchlocator.title.list' | translate }}"
+      label="{{ 'branchLocator.title.list' | translate }}"
     >
       <section class="result-list-wrapper">
         <sn-branch-list
@@ -164,8 +164,8 @@
 
   <section class="locator-content">
     <div class="locator-santander-brand" *ngIf="optionalBranding">
-      <h2>{{ 'branchlocator.brand.santander' | translate }}</h2>
-      <h4>{{ 'branchlocator.brand.branchlocator' | translate }}</h4>
+      <h2>{{ 'branchLocator.brand.santander' | translate }}</h2>
+      <h4>{{ 'branchLocator.brand.branchLocator' | translate }}</h4>
     </div>
     <agm-map
       [gestureHandling]="'greedy'"
