@@ -27,10 +27,6 @@ export class FilterComponent implements OnInit {
     ngOnInit(): void {
         this.hide();
         this.form = this.snFilterService.initForm();
-
-        const sendView = ViewsAnalyticsVariables.filterScreen;
-        console.log('sendView', sendView);
-        this.analyticsService.sendView(sendView);
     }
 
     private show(): void {
@@ -56,6 +52,9 @@ export class FilterComponent implements OnInit {
 
     public open(): void {
         this.show();
+        const sendView = ViewsAnalyticsVariables.filterScreen;
+        console.log('sendView', sendView);
+        this.analyticsService.sendView(sendView);
         this.snFilterService.startFilter();
     }
 
