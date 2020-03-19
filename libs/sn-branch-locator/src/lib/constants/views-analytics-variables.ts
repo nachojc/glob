@@ -6,6 +6,6 @@ export const ViewsAnalyticsVariables: any = {
     ScreenName: 'branch locator:branch detail'
   },
   filterScreen: {
-    ScreenName: 'branch locator:branch detail'
+    ScreenName: 'branch locator:branch filters'
   }
 };
