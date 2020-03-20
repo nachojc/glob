@@ -1,7 +1,7 @@
 # BranchLocator
 
 <a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Build" src="https://img.shields.io/badge/Build-OK-green.svg" alt="build"></a>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Version" src="https://img.shields.io/badge/Version-1.0.9-green.svg" alt="version"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Version" src="https://img.shields.io/badge/Version-1.0.10-green.svg" alt="version"></a>
 
 <table id="Coverage">
 <tr><td>Statements</td><td>Branches</td><td>Functions</td><td>Lines</td></tr>
