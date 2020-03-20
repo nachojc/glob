@@ -164,17 +164,7 @@ export class SnBranchLocatorComponent implements OnInit {
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform
-  ) {
-    this.geoPosition
-      .watchPosition()
-      .pipe(first())
-      .subscribe((pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-      });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.isMobile = this.platform.isMobile;
@@ -277,7 +267,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerMapToUser(callAPI: boolean = true, openNearest: boolean = false) {
-    this.goToUserPositon();
+    this.mapReady();
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
     } else if (openNearest && this.branchesList && this.branchesList.length > 0) {
