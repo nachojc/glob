@@ -310,11 +310,13 @@ export class SnBranchLocatorComponent implements OnInit {
         const _instruction = steps[i].instructions;
         const _distance = steps[i].distance.text;
         const _time = steps[i].duration.text;
+        const _maneuver = steps[i].maneuver;
         this.routes.push({
           id: i + 1,
           instructions: _instruction,
           distance: _distance,
-          time: _time
+          time: _time,
+          maneuver: _maneuver
         });
       }
     }
