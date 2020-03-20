@@ -1,59 +1,72 @@
 {
-    "branchlocator": {
-        "title": {
-            "map": "Map",
-            "list": "List"
-        },
-        "searchinput": {
-            "placeholder": "Search here",
-            "filterbutton": "Filter"
-        },
-        "filters": {
-            "applyfilter": "APPLY FILTERS",
-            "filters": "FILTERS",
-            "buttondeleteall": "Delete all",
-            "select": "Select",
-            "private": "Private",
-            "pyme": "Pyme",
-            "workcafe": "Workcafe",
-            "business": "Business",
-            "universities": "Universities",
-            "popular": "Popular customers",
-            "pastor": "Pastor customers",
-            "banefe": "Banefe customers",
-            "residents": "Residents",
-            "superficies": "Grandes superficies",
-            "agcolaboradores": "AG Colaboradores",
-            "agfinancieros": "AG Financieros",
-            "correspondents": "Correspondents",
-            "eleven": "Eleven",
-            "circlek": "Circle K",
-            "tiendaextra": "Tienda Extra",
-            "tiendak": "Tienda K",
-            "telecomm": "Telecomm",
-            "super": "Super7 24",
-            "oxxo": "Oxxo",
-            "otheratm": "Non Santander ATMs"
-        },
-        "shared": {
-            "branch": "Branch",
-            "atm": "ATM"
-        },
-        "details": {
-            "neartitle": "Nearest result",
-            "today": "Today",
-            "atminfo": "Free cash withdrawals",
-            "contact": "Contact number",
-            "contactbutton": "Call",
-            "schedule": "Opening hours",
-            "services": "Additional services",
-            "servicesfinancial": "Financial",
-            "servicesnofinancial": "No financial",
-            "accessibility": "Accessibility",
-            "accessibilitymessage": "Disabled access",
-            "open": "Open",
-            "closed": "Closed",
-            "closing": "Closing in"
-        }
+  "branchLocator": {
+    "title": {
+      "map": "Map",
+      "list": "List",
+      "pointOfInterest": "Point of Interest (POI)"
+    },
+    "brand": {
+      "santander": "Santander",
+      "branchLocator": "Branch Locator"
+    },
+    "searchInput": {
+      "placeHolder": "Search here",
+      "filterButton": "Filter"
+    },
+    "filtersButtons": {
+      "turnOffFilters": "Turn off Filters",
+      "applyfFilters": "Apply Filters"
+    },
+    "filters": {
+      "applyFilter": "APPLY FILTERS",
+      "filters": "FILTERS",
+      "buttonDeleteAll": "Delete all",
+      "select": "Select",
+      "private": "Private",
+      "pyme": "Pyme_EN",
+      "workCafe": "Workcafe",
+      "business": "Business",
+      "universities": "Universities",
+      "popular": "Popular customers",
+      "pastor": "Pastor customers",
+      "banefe": "Banefe customers",
+      "residents": "Residents",
+      "departmentStores": "Department stores",
+      "agCollaborators": "AG Collaborators",
+      "agFinancials": "AG Financials",
+      "correspondents": "Correspondents",
+      "eleven": "Eleven",
+      "circleK": "Circle K",
+      "extraShop": "Extra Shop",
+      "shopK": "Shop K",
+      "telecomm": "Telecomm",
+      "super": "Super7 24",
+      "oxxo": "Oxxo",
+      "otherAtm": "Non Santander ATMs"
+    },
+    "shared": {
+      "branch": "Branch",
+      "atm": "ATM"
+    },
+    "details": {
+      "nearTitle": "Nearest result",
+      "today": "Today",
+      "atmInfo": "Free cash withdrawals",
+      "contact": "Contact number",
+      "contactButton": "Call",
+      "schedule": "Opening hours",
+      "services": "Additional services",
+      "servicesFinancial": "Financial",
+      "servicesNoFinancial": "No financial",
+      "accessibility": "Accessibility",
+      "accessibilityMessage": "Disabled access",
+      "open": "Open",
+      "closed": "Closed",
+      "closing": "Closing in",
+      "openDirections": "Open Directions"
+    },
+    "list": {
+      "moreResults": "Load more results"
     }
+  }
 }

@@ -6,9 +6,7 @@ import {
   OnInit,
   EventEmitter,
   Output,
-  Input,
-  Inject,
-  ElementRef
+  Input
 } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
 import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
@@ -28,7 +26,6 @@ import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
 
-declare const google: any;
 @Component({
   selector: 'sn-branch-locator',
   templateUrl: 'sn-branch-locator.component.html',
@@ -36,29 +33,43 @@ declare const google: any;
 })
 export class SnBranchLocatorComponent implements OnInit {
   @Input()
-  get coordinates(): any {
+  get coordinates(): string {
     return this._coordinates;
   }
-  set coordinates(value: any) {
-    this._coordinates = value;
+  set coordinates(value: string) {
+    if (value) {
+      this._coordinates = value;
+      const coorsArray = value.replace('{', '').replace('}', '').split(',');
+      const coors: LatLngLiteral = {
+        lat: Number(coorsArray[0]),
+        lng: Number(coorsArray[1])
+      };
+      this.startingPosition = {
+        coordinates: coors
+      };
+    }
   }
   @Input()
-  get defaultLang(): any {
+  get defaultLang(): string {
     return this._defaultLang;
   }
-  set defaultLang(value: any) {
+  set defaultLang(value: string) {
     this._defaultLang = value;
   }
   @Input()
-  get address(): any {
+  get address(): string {
     return this._address;
   }
-  set address(value: any) {
-    this._address = value;
-    this.searchAddress(this._address);
+  set address(value: string) {
+    if (value) {
+      this._address = value;
+      this.startingPosition = {
+        text: value
+      };
+    }
   }
 
-  @Input() startingPosition: IStartingPosition;
+
   @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
@@ -67,44 +78,39 @@ export class SnBranchLocatorComponent implements OnInit {
     this._optionalFullScreen = value !== null && value !== undefined && `${value}` !== 'false';
   }
 
-  @Input()
-  get optionalBranding(): boolean {
-    return this._optionalBranding;
-  }
-  set optionalBranding(value: boolean) {
-    this._optionalBranding = value !== null && value !== undefined && `${value}` !== 'false';
-  }
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
     OutputMarkerSelected
   >();
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
-
-  private selectedMarker: AgmMarker;
-  public _optionalFullScreen = false;
-  private _optionalBranding = false;
-  private _coordinates: string;
-  private _address: string;
-  private _defaultLang: string;
 
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
   @ViewChild(FilterComponent, { static: false }) filterView: FilterComponent;
   @ViewChild(MenuComponent, { static: false }) menuComponent: MenuComponent;
 
+  private selectedMarker: AgmMarker;
+  private _optionalFullScreen = false;
+  private _coordinates: string;
+  private _address: string;
+  private _defaultLang: string;
+
   public isLoading: boolean = true;
   public lat: number;
   public lng: number;
   public branchIcon = {
     url: 'assets/branchlocator/touchpointIcon.svg',
-    scaledSize: { height: 40, width: 40 }
+    scaledSize: { height: 40, width: 40 },
+    anchor: { x: 20, y: 20 }
   };
   public branchSelectedIcon = {
     url: 'assets/branchlocator/santanderTouchpointSelected.svg',
-    scaledSize: { height: 56, width: 56 }
+    scaledSize: { height: 56, width: 56 },
+    anchor: { x: 28, y: 28 }
   };
   public usericon = {
     url: 'assets/branchlocator/pinVoce.svg',
-    scaledSize: { height: 90, width: 90 }
+    scaledSize: { height: 90, width: 90 },
+    anchor: { x: 45, y: 45 }
   };
   public branchesList: Branch[];
 
@@ -118,8 +124,8 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   ];
 
-  private _initialPosition: LatLngLiteral;
   public userPosition: LatLngLiteral;
+  public startingPosition: IStartingPosition;
   public zoom = 13;
   public showReCenter: boolean;
 
@@ -143,25 +149,15 @@ export class SnBranchLocatorComponent implements OnInit {
   public addressLat: number;
   public addressLng: number;
 
+  currentLat: number;
+  currentLong: number;
+  marker: any;
+
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform
-  ) {
-    this.geoPosition
-      .watchPosition()
-      .pipe(first())
-      .subscribe((pos: Position) => {
-        this._initialPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-      });
-  }
+  ) { }
 
   ngOnInit(): void {
     this.isMobile = this.platform.isMobile;
@@ -182,21 +178,11 @@ export class SnBranchLocatorComponent implements OnInit {
         }
       },
       err => {
-        console.error(err);
         this.isLoading = false;
       }
     );
   }
 
-  searchAddress(address: string): void {
-    if (address !== null) {
-      this.geoPosition.getPositionByText(address).subscribe(coords => {
-        this.zoom = 15;
-        this.addressLat = coords.lat;
-        this.addressLng = coords.lng;
-      });
-    }
-  }
 
   getBranchesByCoordinates(
     coords: LatLngLiteral = this.userPosition,
@@ -274,7 +260,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerMapToUser(callAPI: boolean = true, openNearest: boolean = false) {
-    this.goToUserPositon();
+    this.mapReady();
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
     } else if (openNearest && this.branchesList && this.branchesList.length > 0) {
@@ -319,11 +305,13 @@ export class SnBranchLocatorComponent implements OnInit {
         const _instruction = steps[i].instructions;
         const _distance = steps[i].distance.text;
         const _time = steps[i].duration.text;
+        const _maneuver = steps[i].maneuver;
         this.routes.push({
           id: i + 1,
           instructions: _instruction,
           distance: _distance,
-          time: _time
+          time: _time,
+          maneuver: _maneuver
         });
       }
     }
@@ -347,7 +335,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.clearSelectedMarker();
     from(this.map.api.panTo(place))
       .pipe(switchMap(() => from(this.map.api.setZoom(this.zoom))))
-      .subscribe(res => {
+      .subscribe(() => {
         this.getBranchesByBounds();
       });
   }

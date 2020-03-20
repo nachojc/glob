@@ -4,11 +4,17 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "hammerjs": "Hammer",
+      "@globile/mobile-services": "mobileServices",
+      "@ngx-translate/core": "core$2",
+      "@ngx-translate/http-loader": "httpLoader",
+      "@agm/js-marker-clusterer": "jsMarkerClusterer",
+      "@agm/core": "core$1",
       "sn-common-lib": "snCommonLib",
-      "@agm/core" : "core"
+      "hammerjs": "hammerjs"
     },
-    "styleIncludePaths": ["../../node_modules"]
+    "styleIncludePaths": [
+      "../../node_modules"
+    ]
   },
   "whitelistedNonPeerDependencies": [
     "@agm/core",

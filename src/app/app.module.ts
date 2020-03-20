@@ -1,30 +1,31 @@
 
 import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF, CommonModule } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF } from '@angular/common';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ENV_CONFIG, EnvironmentConfigModel } from '@globile/mobile-services';
 import { AgmCoreModule } from '@agm/core';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { PrismModule } from './components/prism/prism.module';
 
 import { DocumentationComponent } from './components/documentation/documentation.component';
-import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GlobileSettingsService, GlobileModule } from '@globile/mobile-services';
 
-// TODO: path Update EnvironmentConfigModel
-export function HttpLoaderFactory(http: HttpClient, path: any) {
-  return new TranslateHttpLoader(http, path.api.BranchLocator['languages'], '.json');
+export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
+  return new TranslateHttpLoader(http, globileSettings.branchLocator.languages, '.json');
 }
 
 @NgModule({
   declarations: [
     AppComponent,
+    DocumentationComponent
+  ],
+  entryComponents: [
     DocumentationComponent
   ],
   imports: [
@@ -36,21 +37,32 @@ export function HttpLoaderFactory(http: HttpClient, path: any) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient, ENV_CONFIG]
+        deps: [HttpClient, GlobileSettingsService]
       }
     }),
     AgmCoreModule.forRoot({
-      apiKey: environment.api.BranchLocator.googleApiKey,
-      libraries: environment.api.BranchLocator.googleApiLibs || []
+      apiKey: environment.branchLocator.googleApiKey,
+      libraries: environment.branchLocator.googleApiLibs || []
     }),
     PrismModule,
-    AppRoutingModule
+    GlobileModule.forRoot({
+      modulesRoutes: [
+        {
+          path: 'documentation',
+          component: DocumentationComponent
+        },
+        {
+          path: 'sample', // TODO: Use ModuleId.BRANCHLOCATOR from globile_services
+          loadChildren: () => import('./modules/branch-locator/branch-locator-wrapper.module').then(m => m.BranchLocatorModule)
+        }],
+      nativeModules: [],
+      notFoundRoute: 'documentation',
+      startRoute: 'documentation'
+    }, environment),
   ],
   providers: [
-    { provide: ENV_CONFIG, useValue: environment as EnvironmentConfigModel },
     { provide: APP_BASE_HREF, useValue: './' },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: 'WINDOW', useValue: window }
   ],
   bootstrap: [AppComponent]
 })

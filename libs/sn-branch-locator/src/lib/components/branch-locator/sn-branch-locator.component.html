@@ -4,12 +4,8 @@
     [selectIndex]="selectedTabIndex"
     (selectedTab)="tabsChanged($event)"
   >
-    <sn-tab label="{{ 'branchlocator.title.map' | translate }}">
+    <sn-tab label="{{ 'branchLocator.title.map' | translate }}">
       <section class="locator-content">
-        <div class="locator-santander-brand" *ngIf="optionalBranding">
-          <h2>Santander</h2>
-          <h4>Branch Locator</h4>
-        </div>
         <agm-map
           [gestureHandling]="'greedy'"
           [showDefaultInfoWindow]="false"
@@ -92,7 +88,7 @@
     </sn-tab>
     <sn-tab
       class="tab-branches-list"
-      label="{{ 'branchlocator.title.list' | translate }}"
+      label="{{ 'branchLocator.title.list' | translate }}"
     >
       <section class="result-list-wrapper">
         <sn-branch-list
@@ -163,10 +159,6 @@
   <!-- End Side Menu -->
 
   <section class="locator-content">
-    <div class="locator-santander-brand" *ngIf="optionalBranding">
-      <h2>Santander</h2>
-      <h4>Branch Locator</h4>
-    </div>
     <agm-map
       [gestureHandling]="'greedy'"
       [showDefaultInfoWindow]="false"

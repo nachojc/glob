@@ -12,6 +12,7 @@ import {
 } from 'sn-common-lib';
 import { DebugElement, SimpleChanges, SimpleChange } from '@angular/core';
 import { branchMock } from '../../helpers/branch.mock';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 describe('BranchListComponent', () => {
   let component: BranchListComponent;
@@ -21,7 +22,7 @@ describe('BranchListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BranchListComponent],
-      imports: [IconModule, OptionListModule, LoaderModule]
+      imports: [IconModule, OptionListModule, LoaderModule, TranslateModule.forRoot()],
     })
       .compileComponents();
   }));

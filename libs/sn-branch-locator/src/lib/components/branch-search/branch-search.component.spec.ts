@@ -5,7 +5,7 @@ import { IconModule } from 'sn-common-lib';
 import { MapsAPILoader, AgmCoreModule } from '@agm/core';
 import { ElementRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { ENV_CONFIG } from '@globile/mobile-services';
+import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
 
 const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
@@ -47,11 +47,9 @@ const windowRef = {
 };
 
 const env = {
-  api: {
-    BranchLocator: {
+    branchLocator: {
       hasFilters: true,
     }
-  }
 };
 
 
@@ -69,8 +67,8 @@ describe('BranchSearchInputComponent', () => {
       ],
       providers: [
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
-        { provide: 'WINDOW', useValue: windowRef },
-        { provide: ENV_CONFIG, useValue: env }
+        { provide: WindowRefService, useValue: windowRef },
+        { provide: GlobileSettingsService, useValue: env }
       ]
     })
       .compileComponents();
@@ -99,7 +97,7 @@ describe('BranchSearchInputComponent', () => {
     component.inputElementRef.nativeElement = {
       focus: () => null
     } as any;
-    component['windowRef'].google.maps.event = {
+    component['windowRef']['google'].maps.event = {
       trigger: () => null
     } as any;
     spyOn(component.inputElementRef.nativeElement, 'focus');

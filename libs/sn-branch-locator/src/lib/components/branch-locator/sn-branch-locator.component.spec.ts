@@ -14,13 +14,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { branchMock } from '../../helpers/branch.mock';
 import { environment } from 'src/environments/environment';
-import { ENV_CONFIG } from '@globile/mobile-services';
 import { BranchSearchInputModule } from '../branch-search/branch-search.module';
 import { FormBuilder } from '@angular/forms';
 
 import { SnTabModule } from '../tabs/sn-tab.module';
 import { SnDirectionModule } from '../../directives/sn-direction/sn-direction.module';
 import { OutputDirection } from '../../models/output-direction';
+import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
 
 
 
@@ -99,10 +99,10 @@ describe('SnBranchLocatorComponent', () => {
         SnBranchInfoComponent,
       ],
       providers: [
-        { provide: 'WINDOW', useValue: windowRef },
+        { provide: WindowRefService, useValue: windowRef },
         { provide: GeoPositionService, useValue: GeoPositionServiceMock },
         { provide: MapsAPILoader, useValue: mockMapsAPILoader },
-        { provide: ENV_CONFIG, useValue: environment },
+        { provide: GlobileSettingsService, useValue: environment },
         SnBranchLocatorService,
         FormBuilder,
       ],
@@ -233,10 +233,6 @@ describe('SnBranchLocatorComponent', () => {
     expect((component as any).coordinates).toBe('lng:12,lat:23');
   });
 
-  it('should set coordinates to null value if there is not value provided', () => {
-    component.coordinates = null;
-    expect((component as any).coordinates).toBe(null);
-  });
 
   it('should get defaultLang value input', () => {
     (component as any)._defaultLang = 'en';
@@ -259,42 +255,20 @@ describe('SnBranchLocatorComponent', () => {
     expect(component.address).toBe((component as any)._address);
   });
 
-  it('should set address value from property value and must call searchAddress function', () => {
-    const geoPosition = {
-      getPositionByText: () => { }
-    };
-    const spy = spyOn<any>(component, 'searchAddress');
-    (component as any).geoPosition = geoPosition;
-    (component as any)._address = '';
-    component.address = 'Calle Madrid';
-    expect((component as any)._address).toBe('Calle Madrid');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should set address to null value if there is not value provided', () => {
-    component.address = null;
-    expect((component as any)._address).toBe(null);
+  it('should set address value from property value', () => {
+    (component as any)._address = 'Calle Alcala';
+    expect(component.address).toBe('Calle Alcala');
   });
 
   it('should get optionalFullScreenControl value from default _optionalFullScreen value', () => {
-    component._optionalFullScreen = false;
-    expect(component.optionalFullScreenControl).toBe(component._optionalFullScreen);
+    (component as any)._optionalFullScreen = false;
+    expect(component.optionalFullScreenControl).toBe((component as any)._optionalFullScreen);
   });
 
   it('should set optionalFullScreenControl value from property value', () => {
-    component._optionalFullScreen = false;
+    (component as any)._optionalFullScreen = false;
     component.optionalFullScreenControl = true;
-    expect(component._optionalFullScreen).toBe(true);
-  });
-  it('should get optionalBranding value from default _optionalBranding value', () => {
-    (component as any)._optionalBranding = false;
-    expect(component.optionalBranding).toBe((component as any)._optionalBranding);
-  });
-
-  it('should set optionalBranding value from property value', () => {
-    (component as any)._optionalBranding = false;
-    component.optionalBranding = true;
-    expect((component as any)._optionalBranding).toBe(true);
+    expect((component as any)._optionalFullScreen).toBe(true);
   });
 
   describe('getBranchesByCoordinates()', () => {
@@ -517,7 +491,8 @@ describe('SnBranchLocatorComponent', () => {
                   },
                   duration: {
                     text: ''
-                  }
+                  },
+                  maneuver: ''
                 }]
               }
             ],
@@ -529,7 +504,8 @@ describe('SnBranchLocatorComponent', () => {
         id: 1,
         instructions: '',
         distance: '',
-        time: ''
+        time: '',
+        maneuver: ''
       }];
 
       component.routes = [];
@@ -580,6 +556,10 @@ describe('SnBranchLocatorComponent', () => {
         scaledSize: {
           height: 40,
           width: 40
+        },
+        anchor: {
+          x: 8,
+          y: 8
         }
       };
       component.branchIcon = branchIcon;
