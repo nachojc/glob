@@ -24,6 +24,7 @@ export class AppComponent {
       this.coordinates = param['coordinates'];
       this.address = param['address'];
       this.defaultLang = param['defaultLang'];
+      translate.use(this.defaultLang);
     });
   }
 

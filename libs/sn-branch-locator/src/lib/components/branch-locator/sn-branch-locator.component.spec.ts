@@ -233,10 +233,6 @@ describe('SnBranchLocatorComponent', () => {
     expect((component as any).coordinates).toBe('lng:12,lat:23');
   });
 
-  it('should set coordinates to null value if there is not value provided', () => {
-    component.coordinates = null;
-    expect((component as any).coordinates).toBe(null);
-  });
 
   it('should get defaultLang value input', () => {
     (component as any)._defaultLang = 'en';
@@ -259,16 +255,9 @@ describe('SnBranchLocatorComponent', () => {
     expect(component.address).toBe((component as any)._address);
   });
 
-  it('should set address value from property value and must call searchAddress function', () => {
-    const geoPosition = {
-      getPositionByText: () => { }
-    };
-    const spy = spyOn<any>(component, 'searchAddress');
-    (component as any).geoPosition = geoPosition;
-    (component as any)._address = '';
-    component.address = 'Calle Madrid';
-    expect((component as any)._address).toBe('Calle Madrid');
-    expect(spy).toHaveBeenCalled();
+  it('should set address value from property value', () => {
+    (component as any)._address = 'Calle Alcala';
+    expect(component.address).toBe('Calle Alcala');
   });
 
   it('should get optionalFullScreenControl value from default _optionalFullScreen value', () => {

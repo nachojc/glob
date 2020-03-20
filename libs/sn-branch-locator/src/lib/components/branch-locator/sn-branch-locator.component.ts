@@ -33,29 +33,43 @@ import { IStartingPosition } from '../../models/starting-position.interface';
 })
 export class SnBranchLocatorComponent implements OnInit {
   @Input()
-  get coordinates(): any {
+  get coordinates(): string {
     return this._coordinates;
   }
-  set coordinates(value: any) {
-    this._coordinates = value;
+  set coordinates(value: string) {
+    if (value) {
+      this._coordinates = value;
+      const coorsArray = value.replace('{', '').replace('}', '').split(',');
+      const coors: LatLngLiteral = {
+        lat: Number(coorsArray[0]),
+        lng: Number(coorsArray[1])
+      };
+      this.startingPosition = {
+        coordinates: coors
+      };
+    }
   }
   @Input()
-  get defaultLang(): any {
+  get defaultLang(): string {
     return this._defaultLang;
   }
-  set defaultLang(value: any) {
+  set defaultLang(value: string) {
     this._defaultLang = value;
   }
   @Input()
-  get address(): any {
+  get address(): string {
     return this._address;
   }
-  set address(value: any) {
-    this._address = value;
-    this.searchAddress(this._address);
+  set address(value: string) {
+    if (value) {
+      this._address = value;
+      this.startingPosition = {
+        text: value
+      };
+    }
   }
 
-  @Input() startingPosition: IStartingPosition;
+
   @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
@@ -111,6 +125,7 @@ export class SnBranchLocatorComponent implements OnInit {
   ];
 
   public userPosition: LatLngLiteral;
+  public startingPosition: IStartingPosition;
   public zoom = 13;
   public showReCenter: boolean;
 
@@ -142,17 +157,7 @@ export class SnBranchLocatorComponent implements OnInit {
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform
-  ) {
-    this.geoPosition
-      .watchPosition()
-      .pipe(first())
-      .subscribe((pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-      });
-  }
+  ) { }
 
   ngOnInit(): void {
     this.isMobile = this.platform.isMobile;
@@ -173,21 +178,11 @@ export class SnBranchLocatorComponent implements OnInit {
         }
       },
       err => {
-        console.error(err);
         this.isLoading = false;
       }
     );
   }
 
-  searchAddress(address: string): void {
-    if (address !== null || typeof (address) !== 'undefined') {
-      this.geoPosition.getPositionByText(address).subscribe(coords => {
-        this.zoom = 15;
-        this.addressLat = coords.lat;
-        this.addressLng = coords.lng;
-      });
-    }
-  }
 
   getBranchesByCoordinates(
     coords: LatLngLiteral = this.userPosition,
@@ -265,7 +260,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerMapToUser(callAPI: boolean = true, openNearest: boolean = false) {
-    this.goToUserPositon();
+    this.mapReady();
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
     } else if (openNearest && this.branchesList && this.branchesList.length > 0) {

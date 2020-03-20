@@ -1,59 +1,72 @@
 {
-    "branchlocator": {
+    "branchLocator": {
         "title": {
             "map": "Mapa",
-            "list": "Listado"
+            "list": "Listado",
+            "pointOfInterest": "Puntos de interes (PdI)"
         },
-        "searchinput": {
-            "placeholder": "Busque aquí",
-            "filterbutton": "Filtrar"
+        "brand": {
+            "santander": "Santander",
+            "branchLocator": "Branch Locator_ES"
+        },
+        "searchInput": {
+            "placeHolder": "Busque aquí",
+            "filterButton": "Filtrar"
+        },
+        "filtersButtons": {
+            "turnOffFilters": "Desactivar Filtros",
+            "applyfFilters": "Aplicar Filtros"
         },
         "filters": {
-            "applyfilter": "APLICAR FILTROS",
+            "applyFilter": "APLICAR FILTROS",
             "filters": "FILTROS",
-            "buttondeleteall": "Eliminar todos",
+            "buttonDeleteAll": "Eliminar todos",
             "select": "Select",
             "private": "Banca Privada",
-            "pyme": "Pyme",
-            "workcafe": "Workcafe",
+            "pyme": "Pyme_ES",
+            "workCafe": "Workcafe",
             "business": "Empresas",
             "universities": "Universidades",
-            "popular": "Clientes Popular", 
+            "popular": "Clientes Popular",
             "pastor": "Clientes Pastor",
             "banefe": "Clientes Banefe",
             "residents": "Residentes",
-            "superficies": "Grandes superficies",
-            "agcolaboradores": "AG Colaboradores",
-            "agfinancieros": "AG Financieros",
+            "departmentStores": "Grandes superficies",
+            "agCollaborators": "AG Colaboradores",
+            "agFinancials": "AG Financieros",
             "correspondents": "Corresponsales",
-            "eleven": "Eleven",
-            "circlek": "Circle K",
-            "tiendaextra": "Tienda Extra",
-            "tiendak": "Tienda K",
+            "eleven": "Eleven_ES",
+            "circleK": "Circle K",
+            "extraShop": "Tienda Extra",
+            "shopK": "Tienda K",
             "telecomm": "Telecomm",
             "super": "Super7 24",
             "oxxo": "Oxxo",
-            "otheratm": "Otros"
+            "otherAtm": "Otros"
         },
         "shared": {
-            "branch": "Agencia",
+            "branch": "Agencias",
             "atm": "Cajeros automáticos"
         },
         "details": {
-            "neartitle": "Resultado más cercano",
+            "nearTitle": "Resultado más cercano",
             "today": "Hoy",
-            "atminfo": "Retiros de efectivo gratis",
+            "atmInfo": "Retiros de efectivo gratis",
             "contact": "Número de contacto",
-            "contactbutton": "llamar",
+            "contactButton": "llamar",
             "schedule": "Horas de oficina ",
             "services": "Servicios adicionales",
-            "servicesfinancial": "Financiero",
-            "servicesnofinancial": "No Financiero",
+            "servicesFinancial": "Financiero",
+            "servicesNoFinancial": "No Financiero",
             "accessibility": "Accesibilidad",
-            "accessibilitymessage": "Acceso para discapacitados",
+            "accessibilityMessage": "Acceso para discapacitados",
             "open": "Abierto",
             "closed": "Cerrado",
-            "closing": "Cerrando en"
+            "closing": "Cerrando en",
+            "openDirections": "Open Directions_ES"
+        },
+        "list": {
+            "moreResults": "Load more results_ES"
         }
     }
 }
