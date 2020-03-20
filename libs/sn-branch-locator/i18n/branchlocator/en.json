@@ -1,72 +1,72 @@
 {
-    "branchLocator": {
-        "title": {
-            "map": "Map",
-            "list": "List",
-            "pointOfInterest": "Point of Interest (POI)"
-        },
-        "brand": {
-            "santander": "Santander",
-            "branchLocator": "Branch Locator"
-        },
-        "searchInput": {
-            "placeHolder": "Search here",
-            "filterButton": "Filter"
-        },
-        "filtersButtons": {
-            "turnOffFilters": "Turn off Filters",
-            "applyfFilters": "Apply Filters"
-        },
-        "filters": {
-            "applyFilter": "APPLY FILTERS",
-            "filters": "FILTERS",
-            "buttonDeleteAll": "Delete all",
-            "select": "Select",
-            "private": "Private",
-            "pyme": "Pyme_EN",
-            "workCafe": "Workcafe",
-            "business": "Business",
-            "universities": "Universities",
-            "popular": "Popular customers",
-            "pastor": "Pastor customers",
-            "banefe": "Banefe customers",
-            "residents": "Residents",
-            "departmentStores": "Department stores",
-            "agCollaborators": "AG Collaborators",
-            "agFinancials": "AG Financials",
-            "correspondents": "Correspondents",
-            "eleven": "Eleven",
-            "circleK": "Circle K",
-            "extraShop": "Extra Shop",
-            "shopK": "Shop K",
-            "telecomm": "Telecomm",
-            "super": "Super7 24",
-            "oxxo": "Oxxo",
-            "otherAtm": "Non Santander ATMs"
-        },
-        "shared": {
-            "branch": "Branches",
-            "atm": "ATM"
-        },
-        "details": {
-            "nearTitle": "Nearest result",
-            "today": "Today",
-            "atmInfo": "Free cash withdrawals",
-            "contact": "Contact number",
-            "contactButton": "Call",
-            "schedule": "Opening hours",
-            "services": "Additional services",
-            "servicesFinancial": "Financial",
-            "servicesNoFinancial": "No financial",
-            "accessibility": "Accessibility",
-            "accessibilityMessage": "Disabled access",
-            "open": "Open",
-            "closed": "Closed",
-            "closing": "Closing in",
-            "openDirections": "Open Directions"
-        },
-        "list": {
-            "moreResults": "Load more results"
-        }
+  "branchLocator": {
+    "title": {
+      "map": "Map",
+      "list": "List",
+      "pointOfInterest": "Point of Interest (POI)"
+    },
+    "brand": {
+      "santander": "Santander",
+      "branchLocator": "Branch Locator"
+    },
+    "searchInput": {
+      "placeHolder": "Search here",
+      "filterButton": "Filter"
+    },
+    "filtersButtons": {
+      "turnOffFilters": "Turn off Filters",
+      "applyfFilters": "Apply Filters"
+    },
+    "filters": {
+      "applyFilter": "APPLY FILTERS",
+      "filters": "FILTERS",
+      "buttonDeleteAll": "Delete all",
+      "select": "Select",
+      "private": "Private",
+      "pyme": "Pyme_EN",
+      "workCafe": "Workcafe",
+      "business": "Business",
+      "universities": "Universities",
+      "popular": "Popular customers",
+      "pastor": "Pastor customers",
+      "banefe": "Banefe customers",
+      "residents": "Residents",
+      "departmentStores": "Department stores",
+      "agCollaborators": "AG Collaborators",
+      "agFinancials": "AG Financials",
+      "correspondents": "Correspondents",
+      "eleven": "Eleven",
+      "circleK": "Circle K",
+      "extraShop": "Extra Shop",
+      "shopK": "Shop K",
+      "telecomm": "Telecomm",
+      "super": "Super7 24",
+      "oxxo": "Oxxo",
+      "otherAtm": "Non Santander ATMs"
+    },
+    "shared": {
+      "branch": "Branch",
+      "atm": "ATM"
+    },
+    "details": {
+      "nearTitle": "Nearest result",
+      "today": "Today",
+      "atmInfo": "Free cash withdrawals",
+      "contact": "Contact number",
+      "contactButton": "Call",
+      "schedule": "Opening hours",
+      "services": "Additional services",
+      "servicesFinancial": "Financial",
+      "servicesNoFinancial": "No financial",
+      "accessibility": "Accessibility",
+      "accessibilityMessage": "Disabled access",
+      "open": "Open",
+      "closed": "Closed",
+      "closing": "Closing in",
+      "openDirections": "Open Directions"
+    },
+    "list": {
+      "moreResults": "Load more results"
     }
+  }
 }

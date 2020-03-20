@@ -46,9 +46,9 @@
       <div class="body-medium" *ngIf="branch.subType?.multi">
         {{ branch.subType?.multi.default }}
       </div>
-      <div>{{ "branchlocator.details.atminfo" | translate }}</div>
+      <div>{{ "branchLocator.details.atminfo" | translate }}</div>
       <div>
-        {{ "branchlocator.details.today" | translate }}, {{ todayHours }}
+        {{ "branchLocator.details.today" | translate }}, {{ todayHours }}
       </div>
     </section> -->
   </div>
@@ -56,10 +56,10 @@
   <div class="branch-status-wrapper">
     <section class="branch-status">
       <div class="branch-hours" *ngIf="isBranch && todayHours">
-        <div>{{ "branchlocator.shared.branch" | translate }}</div>
+        <div>{{ "branchLocator.shared.branch" | translate }}</div>
       </div>
       <div class="atm-hours" *ngIf="!isBranch || (branch.atm && branch.atm[0])">
-        <div>{{ "branchlocator.shared.atm" | translate }}</div>
+        <div>{{ "branchLocator.shared.atm" | translate }}</div>
       </div>
       <div class="close-warning">
         <div class="branch-shedule-state">
@@ -94,7 +94,7 @@
               ></sn-icon>
               <div>
                 <div class="section-title">
-                  {{ "branchlocator.details.contact" | translate }}
+                  {{ "branchLocator.details.contact" | translate }}
                 </div>
                 <div>
                   {{ branch.contactData.phoneNumber }}
@@ -117,7 +117,7 @@
                 align-start
               ></sn-icon>
               <div class="section-title">
-                {{ "branchlocator.details.schedule" | translate }}
+                {{ "branchLocator.details.schedule" | translate }}
               </div>
               <div
                 class="hours-wrapper"
@@ -156,7 +156,7 @@
                 align-start
               ></sn-icon>
               <div class="section-title">
-                {{ "branchlocator.details.services" | translate }}
+                {{ "branchLocator.details.services" | translate }}
               </div>
               <div *ngIf="branch.products.length > 0">
                 <h1 class="title">
@@ -183,7 +183,7 @@
                 align-start
               ></sn-icon>
               <div class="section-title">
-                {{ "branchlocator.details.accessibility" | translate }}
+                {{ "branchLocator.details.accessibility" | translate }}
               </div>
               <h1 class="title">
                 {{ "branchLocator.details.accessibilityMessage" | translate }}
@@ -222,7 +222,7 @@
               ></sn-icon>
               <div>
                 <div class="section-title">
-                  {{ "branchlocator.details.contact" | translate }}
+                  {{ "branchLocator.details.contact" | translate }}
                 </div>
                 <div>
                   {{ branch.atm[0].contactData.phoneNumber }}
@@ -247,7 +247,7 @@
                 align-start
               ></sn-icon>
               <div class="section-title">
-                {{ "branchlocator.details.schedule" | translate }}
+                {{ "branchLocator.details.schedule" | translate }}
               </div>
               <div
                 class="hours-wrapper"
@@ -288,7 +288,7 @@
                 align-start
               ></sn-icon>
               <div class="section-title">
-                {{ "branchlocator.details.services" | translate }}
+                {{ "branchLocator.details.services" | translate }}
               </div>
               <div *ngIf="branch.atm[0].products.length > 0">
                 <h1 class="title">
@@ -319,7 +319,7 @@
                 align-start
               ></sn-icon>
               <div class="section-title">
-                {{ "branchlocator.details.accessibility" | translate }}
+                {{ "branchLocator.details.accessibility" | translate }}
               </div>
               <h1 class="title">
                 {{ "branchLocator.details.accessibilityMessage" | translate }}

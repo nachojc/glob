@@ -491,7 +491,8 @@ describe('SnBranchLocatorComponent', () => {
                   },
                   duration: {
                     text: ''
-                  }
+                  },
+                  maneuver: ''
                 }]
               }
             ],
@@ -503,7 +504,8 @@ describe('SnBranchLocatorComponent', () => {
         id: 1,
         instructions: '',
         distance: '',
-        time: ''
+        time: '',
+        maneuver: ''
       }];
 
       component.routes = [];
