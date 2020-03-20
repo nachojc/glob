@@ -32,8 +32,8 @@ npm install @agm/core --save
 Then add in the main module the following imports and providers:
 
 ```typescript
-import { SnBranchLocatorModule } from 'sn-branch-locator';
-import { AgmCoreModule } from '@agm/core';
+import { SnBranchLocatorModule } from "sn-branch-locator";
+import { AgmCoreModule } from "@agm/core";
 ```
 
 ```js
