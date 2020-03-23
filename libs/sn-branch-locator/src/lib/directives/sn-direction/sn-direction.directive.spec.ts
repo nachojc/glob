@@ -52,7 +52,8 @@ const mockDestinationMarker = {
 };
 
 const mockWaypointsMarker = {
-  push: () => { }
+  push: () => { },
+  forEach: () => { }
 };
 
 const mockWaypoints = [{ waypoint: '' }];
@@ -89,7 +90,7 @@ describe('SnDirectionDirective', () => {
         DirectionsService: MockGoogleMapsClass,
         Marker: MockGoogleMapsClass
       }
-    };
+    } as any;
   });
 
   it('should create an instance', () => {
@@ -451,9 +452,9 @@ describe('SnDirectionDirective', () => {
         route: () => { }
       };
       const markerOptions = {
-        origin: undefined,
+        origin: { draggable: true },
         destination: undefined,
-        waypoints: []
+        waypoints: [[]]
       };
 
       (directive as any).markerOptions = markerOptions;
