@@ -1,22 +1,22 @@
 # BranchLocator
 
 <a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Build" src="https://img.shields.io/badge/Build-OK-green.svg" alt="build"></a>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Version" src="https://img.shields.io/badge/Version-1.0.10-green.svg" alt="version"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Version" src="https://img.shields.io/badge/Version-1.0.11-green.svg" alt="version"></a>
 
 <table id="Coverage">
 <tr><td>Statements</td><td>Branches</td><td>Functions</td><td>Lines</td></tr>
 <tr>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Statements" src="https://img.shields.io/badge/Coverage-91.67%25-green.svg" alt="statements coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Statements" src="https://img.shields.io/badge/Coverage-92.8%25-green.svg" alt="statements coverage"></a>
 </td>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Branches" src="https://img.shields.io/badge/Coverage-78.9%25-green.svg" alt="branches coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Branches" src="https://img.shields.io/badge/Coverage-80.55%25-green.svg" alt="branches coverage"></a>
 </td>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Functions" src="https://img.shields.io/badge/Coverage-85.66%25-green.svg" alt="functions coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Functions" src="https://img.shields.io/badge/Coverage-86.43%25-green.svg" alt="functions coverage"></a>
 </td>
 <td>
-<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Lines" src="https://img.shields.io/badge/Coverage-91.12%25-green.svg" alt="lines coverage"></a>
+<a href="https://nexus.devops.blue4sky.com/" rel="nofollow"><img id="Lines" src="https://img.shields.io/badge/Coverage-92.39%25-green.svg" alt="lines coverage"></a>
 </td>
 </tr>
 </table>
