@@ -256,6 +256,12 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   it('should set address value from property value', () => {
+    (component as any)._address = '';
+    component.address = 'Calle Oviedo';
+    expect((component as any).address).toBe('Calle Oviedo');
+  });
+
+  it('should set address value from property value', () => {
     (component as any)._address = 'Calle Alcala';
     expect(component.address).toBe('Calle Alcala');
   });
@@ -363,7 +369,7 @@ describe('SnBranchLocatorComponent', () => {
         }
       } as any;
       component.startingPosition = {
-        text: ''
+        text: 'Calle Oviedo'
       };
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
@@ -381,6 +387,22 @@ describe('SnBranchLocatorComponent', () => {
       } as any;
       component.startingPosition = {
         coordinates: { lat: 10, lng: 3 }
+      };
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
+      component.mapReady();
+      expect(component.userPosition).toBeDefined();
+    });
+
+    it('should set userPosition by geolocation if no text or coordinates provided', () => {
+      component.map = {
+        api: {
+          panTo: () => new Promise((panToresolve) => panToresolve()),
+          setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+          getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+        }
+      } as any;
+      component.startingPosition = {
       };
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();

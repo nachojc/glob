@@ -271,13 +271,44 @@ describe('DrawerComponent', () => {
       }));
     });
 
+    describe('handlePanStart()', () => {
+      it('should call handlePanStart()', () => {
+        spyOn<any>(component, 'handlePanStart').and.callThrough();
+        component.handlePanStart();
+        expect(component['handlePanStart']).toHaveBeenCalled();
+      });
+    });
+
     describe('handlePanEnd()', () => {
-      it('should call _handleTopPanEnd()', () => {
+      it('should call _handleTopPanEnd() and if deltaY is bigger than _BOUNCE_DELTA, should set drawer state to docked', () => {
+        component.state = DrawerState.Top;
+        spyOn<any>(component, '_handleTopPanEnd').and.callThrough();
+        component.handlePanEnd({deltaY : 60, isFinal: true});
+        expect(component['_handleTopPanEnd']).toHaveBeenCalled();
+      });
+
+      it('should call _handleTopPanEnd() and if deltaY is not bigger than _BOUNCE_DELTA, should call _setTranslateY', () => {
         spyOn<any>(component, '_handleTopPanEnd').and.callThrough();
         spyOn<any>(component, '_setTranslateY').and.callThrough();
         component.state = DrawerState.Top;
-        component.handlePanEnd({isFinal: true});
+        component.handlePanEnd({deltaY : -256, isFinal: true});
         expect(component['_handleTopPanEnd']).toHaveBeenCalled();
+        expect(component['_setTranslateY']).toHaveBeenCalled();
+      });
+
+      it('should call _handleBottomPanEnd() and if -deltaY is bigger than _BOUNCE_DELTA, should set drawer state to docked', () => {
+        spyOn<any>(component, '_handleBottomPanEnd').and.callThrough();
+        component.state = DrawerState.Bottom;
+        component.handlePanEnd({deltaY : -60, isFinal: true});
+        expect(component['_handleBottomPanEnd']).toHaveBeenCalled();
+      });
+
+      it('should call _handleBottomPanEnd() and if -deltaY is not bigger than _BOUNCE_DELTA, should call _setTranslateY', () => {
+        spyOn<any>(component, '_handleBottomPanEnd').and.callThrough();
+        spyOn<any>(component, '_setTranslateY').and.callThrough();
+        component.state = DrawerState.Bottom;
+        component.handlePanEnd({deltaY : 256, isFinal: true});
+        expect(component['_handleBottomPanEnd']).toHaveBeenCalled();
         expect(component['_setTranslateY']).toHaveBeenCalled();
       });
 
@@ -288,14 +319,7 @@ describe('DrawerComponent', () => {
         expect(component.handleDockedPanEnd).toHaveBeenCalled();
       });
 
-      it('should call _handleBottomPanEnd()', () => {
-        spyOn<any>(component, '_handleBottomPanEnd').and.callThrough();
-        spyOn<any>(component, '_setTranslateY').and.callThrough();
-        component.state = DrawerState.Bottom;
-        component.handlePanEnd({isFinal: true});
-        expect(component['_handleBottomPanEnd']).toHaveBeenCalled();
-        expect(component['_setTranslateY']).toHaveBeenCalled();
-      });
+
     });
 
 
