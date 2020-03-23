@@ -1,10 +1,10 @@
 {
   "name": "branch-locator",
-  "version": "1.0.7",
+  "version": "1.0.12",
   "scripts": {
     "preversion": "node ./tools/readme-coverage.js && npm run patch-lib && git add .",
     "start": "ng serve --open",
-    "build": "npm run build-lib && ng build",
+    "build": "npm run build-lib && ng build BL-group",
     "build-dev": "npm run test-lib-dev && npm run build-lib",
     "build-local": "ng build --base-href /",
     "build-aot": "ng build --aot --base-href /",

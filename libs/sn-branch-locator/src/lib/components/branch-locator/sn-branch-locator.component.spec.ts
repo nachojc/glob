@@ -233,10 +233,6 @@ describe('SnBranchLocatorComponent', () => {
     expect((component as any).coordinates).toBe('lng:12,lat:23');
   });
 
-  it('should set coordinates to null value if there is not value provided', () => {
-    component.coordinates = null;
-    expect((component as any).coordinates).toBe(null);
-  });
 
   it('should get defaultLang value input', () => {
     (component as any)._defaultLang = 'en';
@@ -259,16 +255,15 @@ describe('SnBranchLocatorComponent', () => {
     expect(component.address).toBe((component as any)._address);
   });
 
-  it('should set address value from property value and must call searchAddress function', () => {
-    const geoPosition = {
-      getPositionByText: () => { }
-    };
-    const spy = spyOn<any>(component, 'searchAddress');
-    (component as any).geoPosition = geoPosition;
+  it('should set address value from property value', () => {
     (component as any)._address = '';
-    component.address = 'Calle Madrid';
-    expect((component as any)._address).toBe('Calle Madrid');
-    expect(spy).toHaveBeenCalled();
+    component.address = 'Calle Oviedo';
+    expect((component as any).address).toBe('Calle Oviedo');
+  });
+
+  it('should set address value from property value', () => {
+    (component as any)._address = 'Calle Alcala';
+    expect(component.address).toBe('Calle Alcala');
   });
 
   it('should get optionalFullScreenControl value from default _optionalFullScreen value', () => {
@@ -280,16 +275,6 @@ describe('SnBranchLocatorComponent', () => {
     (component as any)._optionalFullScreen = false;
     component.optionalFullScreenControl = true;
     expect((component as any)._optionalFullScreen).toBe(true);
-  });
-  it('should get optionalBranding value from default _optionalBranding value', () => {
-    (component as any)._optionalBranding = false;
-    expect(component.optionalBranding).toBe((component as any)._optionalBranding);
-  });
-
-  it('should set optionalBranding value from property value', () => {
-    (component as any)._optionalBranding = false;
-    component.optionalBranding = true;
-    expect((component as any)._optionalBranding).toBe(true);
   });
 
   describe('getBranchesByCoordinates()', () => {
@@ -384,7 +369,7 @@ describe('SnBranchLocatorComponent', () => {
         }
       } as any;
       component.startingPosition = {
-        text: ''
+        text: 'Calle Oviedo'
       };
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
@@ -402,6 +387,22 @@ describe('SnBranchLocatorComponent', () => {
       } as any;
       component.startingPosition = {
         coordinates: { lat: 10, lng: 3 }
+      };
+      spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
+      spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
+      component.mapReady();
+      expect(component.userPosition).toBeDefined();
+    });
+
+    it('should set userPosition by geolocation if no text or coordinates provided', () => {
+      component.map = {
+        api: {
+          panTo: () => new Promise((panToresolve) => panToresolve()),
+          setZoom: () => new Promise((setZoomresolve) => setZoomresolve()),
+          getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
+        }
+      } as any;
+      component.startingPosition = {
       };
       spyOn(component['branchService'], 'getBranchesByCoords').and.returnValue(of([branchMock, branchMock]));
       spyOn(component['geoPosition'], 'getCurrentPosition').and.callThrough();
@@ -512,7 +513,8 @@ describe('SnBranchLocatorComponent', () => {
                   },
                   duration: {
                     text: ''
-                  }
+                  },
+                  maneuver: ''
                 }]
               }
             ],
@@ -524,7 +526,8 @@ describe('SnBranchLocatorComponent', () => {
         id: 1,
         instructions: '',
         distance: '',
-        time: ''
+        time: '',
+        maneuver: ''
       }];
 
       component.routes = [];

@@ -3,4 +3,5 @@ export class Routes {
   instructions: string;
   distance: string;
   time: string;
+  maneuver: string;
 }

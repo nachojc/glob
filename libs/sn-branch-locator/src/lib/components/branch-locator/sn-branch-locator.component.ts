@@ -87,13 +87,6 @@ export class SnBranchLocatorComponent implements OnInit {
     this._optionalFullScreen = value !== null && value !== undefined && `${value}` !== 'false';
   }
 
-  @Input()
-  get optionalBranding(): boolean {
-    return this._optionalBranding;
-  }
-  set optionalBranding(value: boolean) {
-    this._optionalBranding = value !== null && value !== undefined && `${value}` !== 'false';
-  }
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
     OutputMarkerSelected
   >();
@@ -105,8 +98,7 @@ export class SnBranchLocatorComponent implements OnInit {
   @ViewChild(MenuComponent, { static: false }) menuComponent: MenuComponent;
 
   private selectedMarker: AgmMarker;
-  public _optionalFullScreen = false;
-  private _optionalBranding = false;
+  private _optionalFullScreen = false;
   private _coordinates: string;
   private _address: string;
   private _defaultLang: string;
@@ -217,15 +209,6 @@ export class SnBranchLocatorComponent implements OnInit {
     );
   }
 
-  searchAddress(address: string): void {
-    if (address !== null || typeof (address) !== 'undefined') {
-      this.geoPosition.getPositionByText(address).subscribe(coords => {
-        this.zoom = 15;
-        this.addressLat = coords.lat;
-        this.addressLng = coords.lng;
-      });
-    }
-  }
 
   getBranchesByCoordinates(
     coords: LatLngLiteral = this.userPosition,
@@ -303,7 +286,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerMapToUser(callAPI: boolean = true, openNearest: boolean = false) {
-    this.goToUserPositon();
+    this.mapReady();
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
     } else if (openNearest && this.branchesList && this.branchesList.length > 0) {
@@ -348,11 +331,13 @@ export class SnBranchLocatorComponent implements OnInit {
         const _instruction = steps[i].instructions;
         const _distance = steps[i].distance.text;
         const _time = steps[i].duration.text;
+        const _maneuver = steps[i].maneuver;
         this.routes.push({
           id: i + 1,
           instructions: _instruction,
           distance: _distance,
-          time: _time
+          time: _time,
+          maneuver: _maneuver
         });
       }
     }
