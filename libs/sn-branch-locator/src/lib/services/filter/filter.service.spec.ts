@@ -27,7 +27,7 @@ describe('SnFilterService', () => {
   it('startFilter() should call form reset if no previous values', () => {
     const service: FilterService = TestBed.get(FilterService);
     service.initForm();
-    const formResetSpy =  spyOn(service.form, 'reset');
+    const formResetSpy = spyOn(service.form, 'reset');
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
   });
@@ -35,7 +35,7 @@ describe('SnFilterService', () => {
   it('startFilter() should call form reset if no previous values', () => {
     const service: FilterService = TestBed.get(FilterService);
     service.initForm();
-    const formResetSpy =  spyOn(service.form, 'reset');
+    const formResetSpy = spyOn(service.form, 'reset');
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
   });
@@ -44,7 +44,7 @@ describe('SnFilterService', () => {
   it('startFilter() should call form reset if no previous values', () => {
     const service: FilterService = TestBed.get(FilterService);
     service.initForm();
-    const formResetSpy =  spyOn(service.form, 'reset');
+    const formResetSpy = spyOn(service.form, 'reset');
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
   });
@@ -53,9 +53,9 @@ describe('SnFilterService', () => {
   it('Apply filter selection and comeback with same values', () => {
     const service: FilterService = TestBed.get(FilterService);
     service.initForm();
-    const formResetSpy =  spyOn(service.form, 'reset');
-    const formpatchValueSpy =  spyOn(service.form, 'patchValue');
-    const formupdateValueAndValidityValueSpy =  spyOn(service.form, 'updateValueAndValidity');
+    const formResetSpy = spyOn(service.form, 'reset');
+    const formpatchValueSpy = spyOn(service.form, 'patchValue');
+    const formupdateValueAndValidityValueSpy = spyOn(service.form, 'updateValueAndValidity');
     service.initForm();
     service.startFilter();
     expect(formResetSpy).toHaveBeenCalled();
@@ -73,7 +73,7 @@ describe('SnFilterService', () => {
   it('Cancel filter selection', () => {
     const service: FilterService = TestBed.get(FilterService);
     service.initForm();
-    const formResetSpy =  spyOn(service.form, 'reset');
+    const formResetSpy = spyOn(service.form, 'reset');
     service.initForm();
     service.startFilter();
     service.form.get('BRANCH').get('SELECT').setValue(true);
@@ -87,7 +87,7 @@ describe('SnFilterService', () => {
   it('filter stores selection', () => {
     const service: FilterService = TestBed.get(FilterService);
     service.initForm();
-    const formResetSpy =  spyOn(service.form, 'reset');
+    const formResetSpy = spyOn(service.form, 'reset');
     service.initForm();
     service.startFilter();
     service.form.get('BRANCH').get('SELECT').setValue(true);
@@ -102,7 +102,8 @@ describe('SnFilterService', () => {
 
   it('enableFilters', () => {
     const service: FilterService = TestBed.get(FilterService);
-    service.enableFilters({}as any);
+    service.enableFilters({} as any);
+    expect(service).toBeTruthy();
   });
 
 });

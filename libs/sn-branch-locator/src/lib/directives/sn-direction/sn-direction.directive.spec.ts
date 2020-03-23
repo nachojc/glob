@@ -1,7 +1,7 @@
 import { SnDirectionDirective } from './sn-direction.directive';
 import { Component, ViewChild } from '@angular/core';
 import { GoogleMapsAPIWrapper, MapsAPILoader } from '@agm/core';
-import { GoogleMap} from '@agm/core/services/google-maps-types';
+import { GoogleMap } from '@agm/core/services/google-maps-types';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
@@ -53,10 +53,12 @@ const mockDestinationMarker = {
 };
 
 const mockWaypointsMarker = {
-  push: () => { }
+  push: () => { },
+  forEach: () => { },
+  setMap: () => { }
 };
 
-const mockWaypoints = [{ waypoint: '' }];
+const mockWaypoints = [{ waypoint: { setMap: () => { } } }];
 
 describe('SnDirectionDirective', () => {
   let directive: SnDirectionDirective;
@@ -90,7 +92,7 @@ describe('SnDirectionDirective', () => {
         DirectionsService: MockGoogleMapsClass,
         Marker: MockGoogleMapsClass
       }
-    };
+    } as any;
   });
 
   it('should create an instance', () => {
@@ -223,7 +225,7 @@ describe('SnDirectionDirective', () => {
 
     it('shouldn`t clear markers in origin, destination and waypointsMarker setMap with null', () => {
       const destinationMarker = undefined;
-      const waypointsMarker = [undefined];
+      const waypointsMarker = [{ setMap: () => { } }];
       (directive as any).originMarker = undefined;
       (directive as any).destinationMarker = destinationMarker;
       (directive as any).waypointsMarker = waypointsMarker;
@@ -242,7 +244,7 @@ describe('SnDirectionDirective', () => {
         waypoints: [{ w: {} }]
       };
       const waypointsMarker = [
-        { w: {} }
+        { setMap: () => { } }
       ];
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
@@ -290,7 +292,7 @@ describe('SnDirectionDirective', () => {
         waypoints: [{ w: {} }]
       };
       const waypointsMarker = [
-        undefined
+        { setMap: () => { } }
       ];
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
@@ -428,14 +430,14 @@ describe('SnDirectionDirective', () => {
           position: {},
           draggable: false,
         },
-        waypoints: [{map: {}}]
+        waypoints: undefined
       };
 
       (directive as any).markerOptions = markerOptions;
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
-      (directive as any).waypointsMarker = [];
-      (directive as any).waypoints = undefined;
+      (directive as any).waypointsMarker = mockWaypointsMarker;
+      (directive as any).waypoints = mockWaypoints;
       directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;
 
@@ -452,16 +454,15 @@ describe('SnDirectionDirective', () => {
         route: () => { }
       };
       const markerOptions = {
-        origin: {draggable: false},
+        origin: { draggable: true },
         destination: undefined,
-        waypoints: [],
-        map: undefined
+        waypoints: [[]]
       };
 
       (directive as any).markerOptions = markerOptions;
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
-      (directive as any).waypointsMarker = [];
+      (directive as any).waypointsMarker = mockWaypointsMarker;
       (directive as any).waypoints = mockWaypoints;
       directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;
