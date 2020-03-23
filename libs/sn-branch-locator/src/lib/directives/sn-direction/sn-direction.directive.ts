@@ -235,11 +235,13 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
     if (typeof this.destinationMarker !== 'undefined') {
       this.destinationMarker.setMap(null);
     }
-    this.waypointsMarker.forEach((waypoint: any) => {
-      if (typeof waypoint !== 'undefined') {
-        waypoint.setMap(null);
-      }
-    });
+    if (Array.isArray(this.waypointsMarker) {
+      this.waypointsMarker.forEach((waypoint: any) => {
+        if (typeof waypoint !== 'undefined' && typeof waypoint.setMap === 'function') {
+          waypoint.setMap(null);
+        }
+      });
+    }
   }
 
   private removeDirections(): void {
