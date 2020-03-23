@@ -13,6 +13,7 @@ export class SnBranchDirectionComponent {
   private _branch: Branch;
   private _routes: Array<Routes>;
   public isBranch = true;
+  public selectedRoute = 'DRIVING';
 
   @Input()
   set branch(value: Branch) {
@@ -34,6 +35,7 @@ export class SnBranchDirectionComponent {
   constructor(public translate: TranslateService) { }
 
   emitDirectionCoords(geoCoords: any) {
+    this.selectedRoute = geoCoords.travelMode;
     this.branchDirection.emit(geoCoords);
   }
 
