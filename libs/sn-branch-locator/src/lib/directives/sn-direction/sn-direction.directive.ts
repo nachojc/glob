@@ -184,9 +184,6 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
                           _route.via_waypoints[index],
                         ));
                       } else {
-                        if (typeof this.markerOptions.waypoints[index] === 'undefined') {
-                          this.markerOptions.waypoints[index] = {};
-                        }
                         this.markerOptions.waypoints[index].map = map;
                         this.markerOptions.waypoints[index].position = _route.via_waypoints[index];
                         this.waypointsMarker.push(this.setMarker(
@@ -238,13 +235,11 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
     if (typeof this.destinationMarker !== 'undefined') {
       this.destinationMarker.setMap(null);
     }
-    if (Array.isArray(this.waypointsMarker)) {
-      this.waypointsMarker.forEach((waypoint: any) => {
-        if (typeof waypoint !== 'undefined' && typeof waypoint.setMap === 'function') {
-          waypoint.setMap(null);
-        }
-      });
-    }
+    this.waypointsMarker.forEach((waypoint: any) => {
+      if (typeof waypoint !== 'undefined') {
+        waypoint.setMap(null);
+      }
+    });
   }
 
   private removeDirections(): void {
