@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
-import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
+import { WindowRefService, GlobileSettingsService, BridgeAnalyticService } from '@globile/mobile-services';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class BranchSearchInputComponent implements OnInit {
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private windowRef: WindowRefService,
-    private globileSettings: GlobileSettingsService
+    private globileSettings: GlobileSettingsService,
+    private analyticsService: BridgeAnalyticService
   ) { }
 
   ngOnInit(): void {
@@ -57,5 +59,11 @@ export class BranchSearchInputComponent implements OnInit {
     this.windowRef['google'].maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
       keyCode: 13
     });
+  }
+
+  searchBarClicked(): void {
+    const sendEvent = EventsAnalyticsVariables.clickSearchBar;
+    console.log('searchBarClicked', sendEvent);
+    this.analyticsService.sendEvent(sendEvent);
   }
 }

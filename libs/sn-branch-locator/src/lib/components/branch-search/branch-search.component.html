@@ -6,15 +6,8 @@
       </button>
     </div>
     <div class="search-input-input">
-      <input
-        #in
-        type="search"
-        [placeholder]="'branchLocator.searchInput.placeHolder' | translate"
-        autocomplete="off"
-        autocapitalize="off"
-        spellcheck="off"
-        value="{{ address }}"
-      />
+      <input #in type="search" [placeholder]="'branchLocator.searchInput.placeHolder' | translate"
+        (focus)="searchBarClicked()" autocomplete="off" autocapitalize="off" spellcheck="off" value="{{ address }}" />
     </div>
     <div class="search-input-center-button">
       <button *ngIf="showReCenter" (click)="reCenter.emit($event)">
@@ -24,11 +17,7 @@
   </div>
 
   <div class="filter-button-container" *ngIf="hasFilters">
-    <button
-      class="filter-button"
-      (click)="callFilter.emit($event)"
-      aria-label="Filter"
-    >
+    <button class="filter-button" (click)="callFilter.emit($event)" aria-label="Filter">
       <div class="filter-button-wrapper">
         <div class="filter-button-label">
           {{ 'branchLocator.searchInput.filterButton' | translate }}
