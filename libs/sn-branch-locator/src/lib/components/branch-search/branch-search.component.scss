@@ -1,161 +1,144 @@
-
-@import '~sn-common-lib/styles/settings/colors';
-@import '~sn-common-lib/styles/settings/typography';
+@import "~sn-common-lib/styles/settings/colors";
+@import "~sn-common-lib/styles/settings/typography";
 
 .search-box {
+  display: flex;
+  background-color: $color-primary-white;
+  border-radius: 4px;
+  width: 100%;
+  box-shadow: 0px 1px 2px 0px $color-secondary-mediumgray;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 48px;
+  line-height: 48px;
+
+  ::ng-deep sn-icon {
     display: flex;
-    background-color: $color-primary-white;
-    border-radius: 4px;
-    width: 100%;
-    box-shadow: 0px 1px 2px 0px $color-secondary-mediumgray;
-    padding-left: 8px;
-    padding-right: 8px;
-    height: 48px;
-    line-height: 48px;
+    i {
+      font-size: 24px;
+      vertical-align: middle;
+    }
+  }
 
-    ::ng-deep sn-icon {
+  .search-input-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    .search-input-button {
+      flex: 0;
+      height: 100%;
+
+      button {
+        height: 100%;
         display: block;
-        i {
-            font-size: 24px;
-            vertical-align: middle;
+        padding: 0;
+      }
+    }
+    .search-input-input {
+      margin-left: 8px;
+      margin-right: 8px;
+      flex: 1;
+
+      input[type="search"] {
+        font-family: inherit !important;
+        height: 100%;
+        -webkit-appearance: none;
+        display: block;
+        text-align: left;
+        font-weight: normal;
+        font-size: 16px;
+        color: currentColor;
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        text-align: inherit;
+        max-width: 100%;
+        background: 0 0;
+        outline: none;
+        -webkit-rtl-ordering: logical;
+        -webkit-user-select: text;
+        cursor: auto;
+
+        /* clears the 'X' from Internet Explorer */
+        &::-ms-clear {
+          display: none;
+          width: 0;
+          height: 0;
         }
-    }
 
-        .search-input-wrapper{
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-items: center;
-
-
-            .search-input-button{
-                flex: 0;
-                height: 100%;
-
-                button {
-                    height: 100%;
-                    display: block;
-                    padding: 0;
-                    ::ng-deep sn-icon {
-                        i {
-                            color: $color-primary-santander;
-                        }
-                    }
-                }
-
-            }
-            .search-input-input{
-                margin-left: 8px;
-                margin-right: 8px;
-                flex:1;
-
-                input[type=search] {
-                    font-family: inherit !important;
-                    height: 100%;
-                    -webkit-appearance: none;
-                    display: block;
-                    text-align: left;
-                    font-weight: normal;
-                    font-size: 16px;
-                    color: currentColor;
-                    border: none;
-                    padding: 0;
-                    margin: 0;
-                    width: 100%;
-                    text-align: inherit;
-                    max-width: 100%;
-                    background: 0 0;
-                    outline: none;
-                    -webkit-rtl-ordering: logical;
-                    -webkit-user-select: text;
-                    cursor: auto;
-
-                    /* clears the 'X' from Internet Explorer */
-                    &::-ms-clear {
-                        display: none;
-                        width: 0;
-                        height: 0;
-                    }
-
-                    &::-ms-reveal {
-                        display: none;
-                        width: 0;
-                        height: 0;
-                    }
-
-                    /* clears the 'X' from Chrome */
-                    &::-webkit-search-decoration,
-                    &::-webkit-search-cancel-button,
-                    &::-webkit-search-results-button,
-                    &::-webkit-search-results-decoration {
-                        display: none;
-                    }
-                }
-            }
-            .search-input-center-button{
-                flex: 0;
-                height: 100%;
-                button{
-                    height: 100%;
-                    display: block;
-                    padding: 0;
-                    margin-right: 8px;
-                    ::ng-deep sn-icon {
-                        i {
-                            color: $color-primary-santander;
-                        }
-                    }
-                }
-            }
-    }
-
-
-
-
-
-
-
-    .filter-button-container {
-        flex: 0;
-        width: auto;
-
-        button.filter-button {
-            flex: 0;
-            text-align: right;
-            color: $color-secondary-mediumgray;
-            padding: 0;
-            height: 100%;
-
-            .filter-button-wrapper {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                align-items: center;
-                .filter-button-label{
-                    padding-left: 6px;
-                    border-left: 1px solid $color-secondary-mediumgray;
-                }
-                .filter-button-icon{
-                    margin-left: 6px;
-
-                    .filter-button-notification {
-                        display: inline-block;
-
-                        .filter-button-notification-wrapper {
-                            border-radius: 50%;
-                            background-color: $color-primary-santander;
-                            height: 25px;
-                            width: 25px;
-                            color: $color-primary-white;
-                            text-align: center;
-                        }
-                    }
-                }
-            }
-
-
-
+        &::-ms-reveal {
+          display: none;
+          width: 0;
+          height: 0;
         }
+
+        /* clears the 'X' from Chrome */
+        &::-webkit-search-decoration,
+        &::-webkit-search-cancel-button,
+        &::-webkit-search-results-button,
+        &::-webkit-search-results-decoration {
+          display: none;
+        }
+      }
     }
+    .search-input-center-button {
+      flex: 0;
+      height: 100%;
+      button {
+        height: 100%;
+        display: block;
+        padding: 0;
+        margin-right: 8px;
+        ::ng-deep sn-icon {
+          i {
+            color: $color-primary-santander;
+          }
+        }
+      }
+    }
+  }
+
+  .filter-button-container {
+    flex: 0;
+    width: auto;
+
+    button.filter-button {
+      flex: 0;
+      text-align: right;
+      color: $color-secondary-mediumgray;
+      padding: 0;
+      height: 100%;
+
+      .filter-button-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        .filter-button-label {
+          padding-left: 6px;
+          border-left: 1px solid $color-secondary-mediumgray;
+        }
+        .filter-button-icon {
+          margin-left: 6px;
+
+          .filter-button-notification {
+            display: inline-block;
+
+            .filter-button-notification-wrapper {
+              border-radius: 50%;
+              background-color: $color-primary-santander;
+              height: 25px;
+              width: 25px;
+              color: $color-primary-white;
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+  }
 }
