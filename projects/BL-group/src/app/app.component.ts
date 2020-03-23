@@ -17,12 +17,19 @@ export class AppComponent {
     private translate: TranslateService,
     private queryParamsService: QueryParamsService
   ) {
-    translate.setDefaultLang('en');
+    const browserLang = navigator.language || window.navigator['userLanguage'];
+    this.defaultLang = browserLang.substring(0, 2);
+    this.translate.setDefaultLang(this.defaultLang);
+    translate.use(this.defaultLang);
+
     this.queryParamsService.parametersWatcher.subscribe(param => {
       this.coordinates = param['coordinates'];
       this.address = param['address'];
-      this.defaultLang = param['defaultLang'];
-      translate.use(this.defaultLang);
+      if (param['defaultLang'] && param['defaultLang'] !== this.defaultLang) {
+        this.defaultLang = param['defaultLang'];
+        this.translate.setDefaultLang(this.defaultLang);
+        translate.use(this.defaultLang);
+      }
     });
   }
 
