@@ -1,6 +1,7 @@
 import { SnDirectionDirective } from './sn-direction.directive';
 import { Component, ViewChild } from '@angular/core';
 import { GoogleMapsAPIWrapper, MapsAPILoader } from '@agm/core';
+import { GoogleMap } from '@agm/core/services/google-maps-types';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
@@ -428,14 +429,14 @@ describe('SnDirectionDirective', () => {
           position: {},
           draggable: false,
         },
-        waypoints: undefined
+        waypoints: [{ map: {} }]
       };
 
       (directive as any).markerOptions = markerOptions;
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
-      (directive as any).waypointsMarker = mockWaypointsMarker;
-      (directive as any).waypoints = mockWaypoints;
+      (directive as any).waypointsMarker = [];
+      (directive as any).waypoints = undefined;
       directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;
 
@@ -454,13 +455,14 @@ describe('SnDirectionDirective', () => {
       const markerOptions = {
         origin: { draggable: true },
         destination: undefined,
-        waypoints: [[]]
+        waypoints: [[]],
+        map: undefined
       };
 
       (directive as any).markerOptions = markerOptions;
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
-      (directive as any).waypointsMarker = mockWaypointsMarker;
+      (directive as any).waypointsMarker = [];
       (directive as any).waypoints = mockWaypoints;
       directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;

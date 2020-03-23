@@ -184,6 +184,9 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
                           _route.via_waypoints[index],
                         ));
                       } else {
+                        if (typeof this.markerOptions.waypoints[index] === 'undefined') {
+                          this.markerOptions.waypoints[index] = {};
+                        }
                         this.markerOptions.waypoints[index].map = map;
                         this.markerOptions.waypoints[index].position = _route.via_waypoints[index];
                         this.waypointsMarker.push(this.setMarker(
