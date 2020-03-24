@@ -210,6 +210,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   markerSelect(selected: AgmMarker, branch: Branch) {
+    this.showDirectionsPanel = false;
     this.closeDrawer();
     this.clearSelectedMarker();
     selected.iconUrl = this.branchSelectedIcon as any;
@@ -294,7 +295,6 @@ export class SnBranchLocatorComponent implements OnInit {
 
   openDirectionsPanel(): void {
     this.showDirectionsPanel = true;
-    this.closeDrawer();
   }
 
   onDirectionsResponse(event: any): void {
