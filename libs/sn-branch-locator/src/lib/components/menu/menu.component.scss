@@ -22,7 +22,6 @@
     opacity: 1;
     height: 100%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    overflow-y: auto;
   }
 
   .menu-toggle {
@@ -50,6 +49,7 @@
       margin-top: 24px;
       margin-bottom: 31px;
       color: $color-primary-santander;
+      z-index: 1;
 
       ::ng-deep sn-icon {
         display: flex;
@@ -71,6 +71,7 @@
     height: 48px;
     padding: 8px;
     margin-bottom: 48px;
+    z-index: 1;
 
     ::ng-deep sn-branch-search .search-box {
       height: 31px;

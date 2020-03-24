@@ -115,12 +115,9 @@
                 </div>
               </div>
               <div item-end>
-                <button
-                  (click)="contactBranch(branch.contactData.phoneNumber)"
-                  class="call-button"
-                >
+                <a class="call-button" [href]="'tel:' +  branch.contactData.phoneNumber" target="_blank">
                   {{ "branchLocator.details.contactButton" | translate }}
-                </button>
+                </a>
               </div>
             </sn-option-item>
             <sn-option-item *ngIf="branch.schedule?.preview?.length > 0">

@@ -1,6 +1,7 @@
 <form class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="apply()">
   <div class="sn-filter-header">
     <sn-icon icon="sn-SYS020" (click)="close()"></sn-icon>
+    <span class="mobile-title">{{ "branchLocator.title.filterMobileTitle" | translate }}</span>
   </div>
   <div
     class="turn-off-filter-container"
