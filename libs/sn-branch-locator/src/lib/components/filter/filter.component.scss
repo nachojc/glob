@@ -1,7 +1,8 @@
-@import '~sn-common-lib/styles/settings/colors';
+@import "~sn-common-lib/styles/settings/colors";
 
 @media (min-width: 640px) {
-  .sn-filter-wrapper .sn-filter-footer.hide-web, .mobile-title {
+  .sn-filter-wrapper .sn-filter-footer.hide-web,
+  .mobile-title {
     display: none;
   }
 }
@@ -108,6 +109,19 @@
         font-size: 24px;
         vertical-align: bottom;
         color: $color-primary-santander;
+      }
+    }
+
+    .info-close-button-wrapper {
+      position: absolute;
+      top: 25px;
+      left: 14px;
+      display: flex;
+      z-index: 999;
+
+      button.info-close-button {
+        transform: rotate(180deg);
+        color: red;
       }
     }
 
