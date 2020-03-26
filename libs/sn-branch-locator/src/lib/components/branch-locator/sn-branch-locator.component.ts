@@ -145,6 +145,7 @@ export class SnBranchLocatorComponent implements OnInit {
   public origin: LatLngLiteral;
   public travelMode: string;
   public routes = [];
+  public durations = [];
 
   public addressLat: number;
   public addressLng: number;
@@ -289,12 +290,17 @@ export class SnBranchLocatorComponent implements OnInit {
 
   closeDirectionsPanel(): void {
     this.routes = [];
+    this.durations = [];
     this.showDirectionsPanel = false;
     this.openDrawer();
   }
 
   openDirectionsPanel(): void {
     this.showDirectionsPanel = true;
+  }
+
+  onGetDirections(event: any): void {
+    this.durations = event;
   }
 
   onDirectionsResponse(event: any): void {

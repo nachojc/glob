@@ -25,6 +25,7 @@
             [destination]="destination"
             [travelMode]="travelMode"
             (_onResponse)="onDirectionsResponse($event)"
+            (_onGetDirections)="onGetDirections($event)"
           ></sn-direction>
           <agm-marker
             [agmFitBounds]="true"
@@ -82,6 +83,7 @@
             *ngIf="showDirectionsPanel"
             [branch]="selectedBranch"
             (branchDirection)="drawDirections($event)"
+            [durations]="durations"
             [routes]="routes"
           ></sn-branch-direction>
         </sn-drawer>
@@ -152,6 +154,7 @@
       *ngIf="showDirectionsPanel"
       [branch]="selectedBranch"
       (branchDirection)="drawDirections($event)"
+      [durations]="durations"
       [routes]="routes"
     ></sn-branch-direction>
 
@@ -181,6 +184,7 @@
         [destination]="destination"
         [travelMode]="travelMode"
         (_onResponse)="onDirectionsResponse($event)"
+        (_onGetDirections)="onGetDirections($event)"
       ></sn-direction>
       <agm-marker
         [agmFitBounds]="true"

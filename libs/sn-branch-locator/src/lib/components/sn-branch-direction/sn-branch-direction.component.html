@@ -11,7 +11,7 @@
         "
       >
         <sn-icon icon="sn-SERV051"> </sn-icon>
-        <span>4 min</span>
+        <span>{{ durations['DRIVING'] }}</span>
       </div>
       <div
         [ngClass]="{ selectedRoute: selectedRoute === 'BICYCLING' }"
@@ -23,7 +23,7 @@
         "
       >
         <sn-icon icon="sn-SERV053"> </sn-icon>
-        <span>6 min</span>
+        <span>{{ durations['BICYCLING'] }}</span>
       </div>
       <div
         [ngClass]="{ selectedRoute: selectedRoute === 'TRANSIT' }"
@@ -35,7 +35,7 @@
         "
       >
         <sn-icon icon="sn-SERV054"></sn-icon>
-        <span>2 min</span>
+        <span>{{ durations['TRANSIT'] }}</span>
       </div>
       <div
         [ngClass]="{ selectedRoute: selectedRoute === 'WALKING' }"
@@ -47,7 +47,7 @@
         "
       >
         <sn-icon icon="sn-FUNC059"></sn-icon>
-        <span>8 min</span>
+        <span>{{ durations['WALKING'] }}</span>
       </div>
     </div>
   </section>
