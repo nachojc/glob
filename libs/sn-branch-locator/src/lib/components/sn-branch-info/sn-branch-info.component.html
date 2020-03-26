@@ -54,18 +54,32 @@
   </div>
 
   <div class="branch-status-wrapper">
-    <section class="branch-status">
-      <div class="branch-hours" *ngIf="isBranch && todayHours">
+    <section class="branch-status" *ngIf="isBranch && todayHours">
+      <div class="branch-hours">
         <div>{{ "branchLocator.shared.branch" | translate }}</div>
-      </div>
-      <div class="atm-hours" *ngIf="!isBranch || (branch.atm && branch.atm[0])">
-        <div>{{ "branchLocator.shared.atm" | translate }}</div>
       </div>
       <div class="close-warning">
         <div class="branch-shedule-state">
           {{ branch.schedule.timeToClose.text }}
         </div>
         <div class="signal {{ branch.schedule.timeToClose.mode }}"></div>
+      </div>
+    </section>
+
+    <section
+      class="branch-status"
+      *ngIf="!isBranch || (branch.atm && branch.atm[0])"
+    >
+      <div class="atm-hours">
+        <div>{{ "branchLocator.shared.atm" | translate }}</div>
+      </div>
+      <div class="close-warning">
+        <div class="branch-shedule-state">
+          {{ branch.atm[0].schedule?.timeToClose.text }}
+        </div>
+        <div
+          class="signal {{ branch.atm[0].schedule?.timeToClose.mode }}"
+        ></div>
       </div>
     </section>
   </div>
@@ -101,12 +115,9 @@
                 </div>
               </div>
               <div item-end>
-                <button
-                  (click)="contactBranch(branch.contactData.phoneNumber)"
-                  class="call-button"
-                >
+                <a class="call-button" [href]="'tel:' +  branch.contactData.phoneNumber" target="_blank">
                   {{ "branchLocator.details.contactButton" | translate }}
-                </button>
+                </a>
               </div>
             </sn-option-item>
             <sn-option-item *ngIf="branch.schedule?.preview?.length > 0">
@@ -201,16 +212,6 @@
         <!--*ngIf="false"-->
         <div class="branch-info-wrapper">
           <sn-option-list lines="full">
-            <sn-option-item *ngIf="branch.atm[0].schedule?.timeToClose">
-              <div class="close-warning">
-                <div class="Type-5_Light-Style">
-                  {{ branch.atm[0].schedule?.timeToClose.text }}
-                </div>
-                <div
-                  class="signal {{ branch.atm[0].schedule?.timeToClose.mode }}"
-                ></div>
-              </div>
-            </sn-option-item>
             <sn-option-item
               *ngIf="branch.atm && branch.atm[0].contactData?.phoneNumber"
             >

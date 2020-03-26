@@ -41,6 +41,27 @@ describe('BranchListComponent', () => {
     const iconTypesDictionary = (component as any).branchIconTypes;
     expect(component).toBeTruthy();
   });
+  it('should check if have not enough results to show Load More results button', () => {
+    component.incrementRange = 10;
+    component.branchesList = [
+      branchMock, branchMock, branchMock,
+      branchMock, branchMock, branchMock
+    ];
+    component.ngOnInit();
+    expect(component.isMoreBranchesToLoad).toBeFalsy();
+  });
+  it('should check if have enough results to show Load More results button', () => {
+    component.incrementRange = 10;
+    component.branchesList = [
+      branchMock, branchMock, branchMock,
+      branchMock, branchMock, branchMock,
+      branchMock, branchMock, branchMock,
+      branchMock, branchMock, branchMock,
+      branchMock, branchMock, branchMock
+    ];
+    component.ngOnInit();
+    expect(component.isMoreBranchesToLoad).toBeTruthy();
+  });
   it('should load more results', () => {
     component.branchesList = [];
     const spy = spyOn(component, 'loadMoreResults').and.callThrough();
@@ -111,6 +132,25 @@ describe('BranchListComponent', () => {
       component.ngOnChanges(changes);
       const isMaxBranchesToLoadReset = component.maxBranchesToLoad === (component as any).numberOfBranchesToLoad ? false : true;
       expect(isMaxBranchesToLoadReset).toBeFalsy();
+    });
+    it('load more result needs to be showed when BranchList is mayor than incrementRange', () => {
+      component.incrementRange = 10;
+      const changes = {
+        branchesList: {
+          previousValue: [branchMock],
+          currentValue: [branchMock, branchMock, branchMock],
+          firstChange: false
+        } as SimpleChange
+      } as SimpleChanges;
+      component.branchesList = [
+        branchMock, branchMock, branchMock,
+        branchMock, branchMock, branchMock,
+        branchMock, branchMock, branchMock,
+        branchMock, branchMock, branchMock,
+        branchMock, branchMock, branchMock];
+      fixture.detectChanges();
+      component.ngOnChanges(changes);
+      expect(component.isMoreBranchesToLoad).toBeTruthy();
     });
     it( 'should identify kind of icon and create a new Array', () => {
       const noSubtypeBranchMock = branchMock;

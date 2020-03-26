@@ -11,16 +11,18 @@ import { SnBranchLocatorService } from './branch-locator.service';
 import { branchMock } from '../../helpers/branch.mock';
 import { Branch } from '../../models/branch.model';
 import { environment } from 'src/environments/environment';
+import { GeoPositionService } from '../geo-position/geo-position.service';
 
 
 const windowRef = {
   google: {
-    maps : {
+    maps: {
       places: {
-        Autocomplete : () => ({
-          addListener: () => {},
-          getPlace: () => ({geometry: null})
-        })}
+        Autocomplete: () => ({
+          addListener: () => { },
+          getPlace: () => ({ geometry: null })
+        })
+      }
     }
   },
   screen: {
@@ -37,11 +39,16 @@ const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
 };
 
+const GeoPositionServiceMock = {
+  watchPosition: () => of({ coords: { latitude: 38.7376049, longitude: -9.2654431 } }),
+  getCurrentPosition: () => of({ coords: { latitude: 38.7376049, longitude: -9.2654431 } })
+};
+
 describe('SnBranchLocatorService', () => {
   let httpTestingController: HttpTestingController;
   let service: SnBranchLocatorService;
-  const branchMock2: Branch =  Object.assign({}, branchMock, {distanceInKm: 123, id: '1'});
-  const atmMock: Branch = Object.assign({}, branchMock, {objectType: {code: 'ATM'}, id: '2'});
+  const branchMock2: Branch = Object.assign({}, branchMock, { distanceInKm: 123, id: '1' });
+  const atmMock: Branch = Object.assign({}, branchMock, { objectType: { code: 'ATM' }, id: '2' });
   const filterserviceMock = {
     filterParams: {}
   };
@@ -56,6 +63,7 @@ describe('SnBranchLocatorService', () => {
       { provide: GlobileSettingsService, useValue: environment },
       { provide: FilterService, useValue: filterserviceMock },
       { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
+      { provide: GeoPositionService, useValue: GeoPositionServiceMock }
     ],
     schemas: [
       CUSTOM_ELEMENTS_SCHEMA,
@@ -99,8 +107,8 @@ describe('SnBranchLocatorService', () => {
 
     it('should return an array with 1 objects and 2 atm inside', () => {
       atmMock.distanceInKm = 123;
-      const atmMock2 = Object.assign({}, atmMock, {id: '3'});
-      const atmMock3 = Object.assign({}, atmMock, {id: '4'});
+      const atmMock2 = Object.assign({}, atmMock, { id: '3' });
+      const atmMock3 = Object.assign({}, atmMock, { id: '4' });
       const response = service['groupAtmToBranch']([atmMock, atmMock2, atmMock3, branchMock2]);
       expect(response.length).toBe(1);
       expect(response[0].atm.length).toBe(3);
@@ -113,7 +121,7 @@ describe('SnBranchLocatorService', () => {
       service.onChange.subscribe(res => {
         expect(res.length).toBe(1);
       });
-      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}, {lat: 52, lng: -0.78});
+      service.getBranchesByBounds({ lat: 1, lng: 2 }, { lat: 3, lng: 4 }, { lat: 52, lng: -0.78 });
     });
 
     it('should return an array with 1 length', () => {
@@ -121,7 +129,7 @@ describe('SnBranchLocatorService', () => {
       service.onChange.subscribe(res => {
         expect(res.length).toBe(1);
       });
-      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}, {lat: 52, lng: -0.78});
+      service.getBranchesByBounds({ lat: 1, lng: 2 }, { lat: 3, lng: 4 }, { lat: 52, lng: -0.78 });
     });
 
 
@@ -129,7 +137,7 @@ describe('SnBranchLocatorService', () => {
       spyOn(service.http, 'get').and.returnValue(throwError(new Error('Fake Error')));
       service.onChange.subscribe(() => {
       }, (err) => expect(err).toBeDefined());
-      service.getBranchesByBounds({lat: 1, lng: 2}, {lat: 3, lng: 4}, {lat: 52, lng: -0.78});
+      service.getBranchesByBounds({ lat: 1, lng: 2 }, { lat: 3, lng: 4 }, { lat: 52, lng: -0.78 });
 
     });
   });
@@ -141,7 +149,7 @@ describe('SnBranchLocatorService', () => {
       service.onChange.subscribe(res => {
         expect(res.length).toBe(1);
       });
-      service.getBranchesByCoords({lat: 1, lng: 2});
+      service.getBranchesByCoords({ lat: 1, lng: 2 });
     });
 
     it('should return an array with length equal to 1', () => {
@@ -149,7 +157,7 @@ describe('SnBranchLocatorService', () => {
       service.onChange.subscribe(res => {
         expect(res.length).toBe(1);
       });
-      service.getBranchesByCoords({lat: 1, lng: 2});
+      service.getBranchesByCoords({ lat: 1, lng: 2 });
     });
 
 
@@ -157,7 +165,7 @@ describe('SnBranchLocatorService', () => {
       spyOn(service.http, 'get').and.returnValue(throwError(new Error('Fake Error')));
       service.onChange.subscribe(() => {
       }, (err) => expect(err).toBeDefined());
-      service.getBranchesByCoords({lat: 1, lng: 2});
+      service.getBranchesByCoords({ lat: 1, lng: 2 });
     });
 
 
@@ -167,7 +175,7 @@ describe('SnBranchLocatorService', () => {
       service.onChange.subscribe(res => {
         expect(service.http.get).toHaveBeenCalledWith(apiUrl, {});
       });
-      service.getBranchesByCoords({lat: 1, lng: 2});
+      service.getBranchesByCoords({ lat: 1, lng: 2 });
 
     });
   });

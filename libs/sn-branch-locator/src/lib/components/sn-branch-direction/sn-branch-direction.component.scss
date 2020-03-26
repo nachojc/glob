@@ -25,7 +25,9 @@
       .branch-directions {
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: initial;
+        flex-wrap: nowrap; 
+        overflow: auto;
 
         ::ng-deep {
           i {

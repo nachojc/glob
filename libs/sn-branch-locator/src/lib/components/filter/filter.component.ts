@@ -14,6 +14,8 @@ export class FilterComponent implements OnInit {
     @Output() filterApply = new EventEmitter();
 
     public form: FormGroup;
+    public selectedFilters = {};
+    public isHideTurnOffButton = true;
 
     constructor(
         private snFilterService: FilterService,
@@ -28,6 +30,8 @@ export class FilterComponent implements OnInit {
 
     private show(): void {
         this.renderer.removeStyle(this.el.nativeElement, 'display');
+        this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
+
     }
 
     private hide(): void {
@@ -50,6 +54,29 @@ export class FilterComponent implements OnInit {
     public open(): void {
         this.show();
         this.snFilterService.startFilter();
+    }
+
+    public selectFilter(event: any): void {
+      const eventUniqueId = event.source._uniqueId;
+
+      if (this.selectedFilters.hasOwnProperty(eventUniqueId)) {
+        delete this.selectedFilters[eventUniqueId];
+      } else {
+        this.selectedFilters[eventUniqueId] = {
+          checked: event.checked
+        };
+      }
+
+      if (Object.entries(this.selectedFilters).length === 0) {
+        this.isHideTurnOffButton = true;
+      } else {
+        this.isHideTurnOffButton = false;
+      }
+    }
+
+    public switchFilterButton(): void {
+      this.selectedFilters = {};
+      this.isHideTurnOffButton = true;
     }
 
 }

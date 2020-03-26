@@ -61,4 +61,46 @@ describe('SnFilterComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it('should display turn off button if a filter is selected', () => {
+    const event = {
+      source: {
+        _uniqueId: 'sn-checkbox-1'
+      },
+      checked: true
+    };
+    component.selectedFilters = {};
+    component.isHideTurnOffButton = true;
+    component.selectFilter(event);
+    expect(component.isHideTurnOffButton).toBe(false);
+  });
+
+  it('should hide turn off button when there is not a filter selected', () => {
+    const event = {
+      source: {
+        _uniqueId: 'sn-checkbox-1'
+      },
+      checked: true
+    };
+    component.selectedFilters = {
+      'sn-checkbox-1': {
+        checked: true
+      }
+    };
+    component.isHideTurnOffButton = true;
+    component.selectFilter(event);
+    expect(component.isHideTurnOffButton).toBeTruthy();
+  });
+
+  it('should be clean selectedFilters and set isHideTurnOffButton as true when switchFilterButton', () => {
+    component.selectedFilters = {
+      'sn-checkbox-1': {
+        checked: true
+      }
+    };
+    component.isHideTurnOffButton = false;
+    component.switchFilterButton();
+    expect(component.selectedFilters).toEqual({});
+    expect(component.isHideTurnOffButton).toBeTruthy();
+  });
+
 });

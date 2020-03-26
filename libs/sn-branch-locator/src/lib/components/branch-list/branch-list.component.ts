@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 
 @Component({
@@ -6,7 +6,7 @@ import { Branch } from '../../models/branch.model';
   templateUrl: './branch-list.component.html',
   styleUrls: ['./branch-list.component.scss']
 })
-export class BranchListComponent implements OnChanges {
+export class BranchListComponent implements OnChanges, OnInit {
 
   @Input() branchesList: Branch[];
   @Input() isLoading: boolean;
@@ -40,6 +40,10 @@ export class BranchListComponent implements OnChanges {
   public isMoreBranchesToLoad = true;
   public  branchIcons = [];
 
+  ngOnInit(): void {
+    this.isMoreBranchesToLoad = this.branchesList && this.branchesList.length > this.incrementRange ? true : false;
+  }
+
   identifyIconType() {
     this.branchIcons = this.branchesList.map((branch: Branch) => {
       if (branch.objectType && branch.subType &&
@@ -56,7 +60,7 @@ export class BranchListComponent implements OnChanges {
     if (typeof (changes.branchesList) !== 'undefined' &&
       changes.branchesList.previousValue !== changes.branchesList.currentValue) {
       this.maxBranchesToLoad = this.numberOfBranchesToLoad;
-      this.isMoreBranchesToLoad = true;
+      this.isMoreBranchesToLoad = this.branchesList && this.branchesList.length > this.incrementRange ? true : false;
       this.identifyIconType();
     }
   }

@@ -24,6 +24,7 @@
             [origin]="origin"
             [destination]="destination"
             [travelMode]="travelMode"
+            (_onResponse)="onDirectionsResponse($event)"
           ></sn-direction>
           <agm-marker
             [agmFitBounds]="true"
@@ -70,7 +71,7 @@
           (stateChange)="drawerStageChange($event)"
         >
           <sn-branch-info
-            *ngIf="selectedBranch"
+            *ngIf="selectedBranch && !showDirectionsPanel"
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
