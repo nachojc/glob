@@ -1,0 +1,161 @@
+# apiVersion: extensions/v1beta1
+# kind: Deployment
+# metadata:
+#   name: angular-branch-locator-develop-oauth2-proxy
+#   namespace: globilebank-ns
+#   labels:
+#     k8s-app: angular-branch-locator-develop-oauth2-proxy
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       k8s-app: angular-branch-locator-develop-oauth2-proxy
+#   template:
+#     metadata:
+#       labels:
+#         k8s-app: angular-branch-locator-develop-oauth2-proxy
+#     spec:
+#       containers:
+#       - args:
+#         - --provider=github
+#         - --email-domain=*
+#         - --upstream=file:///dev/null
+#         - --http-address=0.0.0.0:4180
+#         - --github-org=globile-software
+#         # Register a new application
+#         # https://github.com/settings/applications/new
+#         env:
+#         - name: OAUTH2_PROXY_CLIENT_ID
+#           value: 13acc7ac7e5680954c5a
+#         - name: OAUTH2_PROXY_CLIENT_SECRET
+#           value: 81db8621120bae17ae55ecbc8d4cf8bb770bcfa0
+#         # docker run -ti --rm python:3-alpine python -c 'import secrets,base64; print(base64.b64encode(base64.b64encode(secrets.token_bytes(16))));'
+#         - name: OAUTH2_PROXY_COOKIE_SECRET
+#           value: OUxqUjl1b0lvWllYVVh4RzI2ZEMvZz09
+#         image: docker.io/colemickens/oauth2_proxy:latest
+#         imagePullPolicy: Always
+#         name: angular-branch-locator-develop-oauth2-proxy
+#         ports:
+#         - containerPort: 4180
+#           protocol: TCP
+
+# ---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: angular-branch-locator-develop-oauth2-service
+#   namespace: globilebank-ns
+#   labels:
+#     k8s-app: angular-branch-locator-develop-oauth2-proxy
+# spec:
+#   ports:
+#   - name: http
+#     port: 4180
+#     protocol: TCP
+#     targetPort: 4180
+#   selector:
+#     k8s-app: angular-branch-locator-develop-oauth2-proxy
+
+
+# ---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: angular-branch-locator-develop
+  namespace: globilebank-ns
+  labels:
+    app: angular-branch-locator-develop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: angular-branch-locator-develop
+    spec:
+      containers:
+        - name: angular-branch-locator-develop
+          image: sdis1weucreglobilcomm001.azurecr.io/angular-branch-locator-develop:null
+          imagePullPolicy: "Always"
+          ports:
+          - containerPort: 80
+            name: http
+          - containerPort: 443
+            name: https
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-branch-locator-develop-service
+  namespace: globilebank-ns
+  labels:
+    app: angular-branch-locator-develop
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: angular-branch-locator-develop
+
+---
+
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: angular-branch-locator-develop-ingress
+  namespace: globilebank-ns
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
+    # nginx.ingress.kubernetes.io/auth-url: https://$host/oauth2/auth
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    url: angular-branch-locator.develop.blue4sky.com
+  labels:
+    app: angular-branch-locator-develop
+spec:
+  tls:
+  - hosts:
+    - angular-branch-locator.develop.blue4sky.com
+    # secretName: OUxqUjl1b0lvWllYVVh4RzI2ZEMvZz09
+  rules:
+  - host: angular-branch-locator.develop.blue4sky.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: angular-branch-locator-develop-service
+          servicePort: 80
+
+# ---
+
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: angular-branch-locator-develop-oauth2-proxy
+#   namespace: globilebank-ns
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#     #nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
+#     #nginx.ingress.kubernetes.io/auth-url: https://$host/oauth2/auth
+#     nginx.ingress.kubernetes.io/rewrite-target: /oauth2
+#     url: angular-branch-locator.develop.blue4sky.com
+#   labels:
+#     app: angular-branch-locator-develop
+# spec:
+#   rules:
+#   - host: angular-branch-locator.develop.blue4sky.com
+#     http:
+#       paths:
+#       - backend:
+#           serviceName: angular-branch-locator-develop-oauth2-service
+#           servicePort: 4180
+#         path: /oauth2
+#   tls:
+#   - hosts:
+#     - angular-branch-locator.develop.blue4sky.com
+#     secretName: OUxqUjl1b0lvWllYVVh4RzI2ZEMvZz09
