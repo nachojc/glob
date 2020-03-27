@@ -81,7 +81,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
 
 
             //9. RELEASE: Lunch release pipeline with all the componetes
-            SKIP_RELEASE: false,
+            SKIP_RELEASE: true,
 
               //Variables
               //RELEASE_JOB: '../Angular-branch-locator-release', //Name of the job release
