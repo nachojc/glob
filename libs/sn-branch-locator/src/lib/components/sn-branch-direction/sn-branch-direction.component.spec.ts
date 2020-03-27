@@ -6,6 +6,7 @@ import { IconModule } from 'sn-common-lib';
 import { TranslateModule } from '@ngx-translate/core';
 import { branchMock } from '../../helpers/branch.mock';
 import { routesMock } from '../../helpers/routes.mock';
+import { durationsMock } from '../../helpers/durations.mock';
 
 describe('SnBranchDirectionComponent', () => {
   let component: SnBranchDirectionComponent;
@@ -28,6 +29,7 @@ describe('SnBranchDirectionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SnBranchDirectionComponent);
     component = fixture.componentInstance;
+    component.selectedRoute = 'DRIVING';
     fixture.detectChanges();
   });
 
@@ -53,6 +55,11 @@ describe('SnBranchDirectionComponent', () => {
   it('should set the routes', async(() => {
     component.routes = routesMock;
     expect((component as any)._routes).toBe(routesMock);
+  }));
+
+  it('should set the durations', async(() => {
+    component.durations = durationsMock;
+    expect((component as any)._durations).toBe(durationsMock);
   }));
 
   it('should emit geoCoords when click on route type', () => {

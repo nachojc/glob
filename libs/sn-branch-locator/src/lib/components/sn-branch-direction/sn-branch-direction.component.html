@@ -1,5 +1,5 @@
 <div class="branch-wrapper">
-  <section class="branch-location">
+  <section class="branch-location" *ngIf="durations">
     <div class="branch-directions">
       <div
         [ngClass]="{ selectedRoute: selectedRoute === 'DRIVING' }"
