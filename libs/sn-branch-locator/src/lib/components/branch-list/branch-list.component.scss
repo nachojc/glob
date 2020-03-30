@@ -49,19 +49,11 @@
         margin-bottom: 8px;
         .menu-toggle {
           color: $color-primary-santander;
-
-          ::ng-deep {
-            sn-icon {
-              font-size: 10px;
-              padding: 10px 12px;
-              border-radius: 20px;
-              border: 1px solid $color-primary-santander;
-              &:hover {
-                color: $color-primary-white;
-                background-color: $color-primary-santander;
-              }
-            }
-          }
+          border-radius: 50%;
+          border: 1px solid var(--color-primary-santander,#ec0000);
+          height: 44px;
+          width: 44px;
+          font-size: 14px;
         }
       }
     }

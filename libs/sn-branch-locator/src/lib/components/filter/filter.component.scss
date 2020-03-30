@@ -43,6 +43,12 @@
   background-color: $color-primary-white;
   height: 100%;
 
+  ::ng-deep sn-icon {
+    i {
+      display: inline;
+    }
+  }
+
   &[modal],
   &.modal {
     position: absolute;
@@ -80,7 +86,7 @@
   }
 
   .turn-off-filter-container {
-    margin: 100px auto 25px;
+    margin: 110px auto 25px;
     border-radius: 8px;
     text-align: center;
     background-color: $color-primary-white;
@@ -90,10 +96,15 @@
       width: 100%;
       height: 44px;
       color: $color-secondary-mediumgray;
+      flex-direction: row;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       sn-icon {
         color: $color-secondary-darkturquoise;
-        vertical-align: middle;
         margin-right: 8px;
+        display: flex;
       }
     }
   }
