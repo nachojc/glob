@@ -24,6 +24,8 @@
             [origin]="origin"
             [destination]="destination"
             [travelMode]="travelMode"
+            (_onResponse)="onDirectionsResponse($event)"
+            (_onLoad)="onGetDirections($event)"
           ></sn-direction>
           <agm-marker
             [agmFitBounds]="true"
@@ -70,7 +72,7 @@
           (stateChange)="drawerStageChange($event)"
         >
           <sn-branch-info
-            *ngIf="selectedBranch"
+            *ngIf="selectedBranch && !showDirectionsPanel"
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
@@ -78,9 +80,10 @@
             (openDirectionsPanel)="openDirectionsPanel()"
           ></sn-branch-info>
           <sn-branch-direction
-            *ngIf="showDirectionsPanel"
+            *ngIf="showDirectionsPanel && durationsLoaded"
             [branch]="selectedBranch"
             (branchDirection)="drawDirections($event)"
+            [durations]="durations"
             [routes]="routes"
           ></sn-branch-direction>
         </sn-drawer>
@@ -148,9 +151,10 @@
     ></sn-branch-info>
 
     <sn-branch-direction
-      *ngIf="showDirectionsPanel"
+      *ngIf="showDirectionsPanel && durationsLoaded"
       [branch]="selectedBranch"
       (branchDirection)="drawDirections($event)"
+      [durations]="durations"
       [routes]="routes"
     ></sn-branch-direction>
 
@@ -180,6 +184,7 @@
         [destination]="destination"
         [travelMode]="travelMode"
         (_onResponse)="onDirectionsResponse($event)"
+        (_onLoad)="onGetDirections($event)"
       ></sn-direction>
       <agm-marker
         [agmFitBounds]="true"

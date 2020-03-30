@@ -43,10 +43,6 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    proxies:{
-      '/assets/fonts/sn-icons.woff': 'node_modules/sn-common-lib/assets/fonts/sn-icons.woff',
-      '/assets/fonts/sn-icons.ttf': 'node_modules/sn-common-lib/assets/fonts/sn-icons.ttf'
-    },
     customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
@@ -62,7 +58,7 @@ module.exports = function (config) {
         ]
       }
     },
-    browsers:[ browsers ],
+    browsers: [browsers],
     singleRun: false,
     restartOnFileChange: true
   });

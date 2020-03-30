@@ -3,7 +3,8 @@
         "title": {
             "map": "Mapa",
             "list": "Listado",
-            "pointOfInterest": "Puntos de interes (PdI)"
+            "pointOfInterest": "Puntos de interes (PdI)",
+            "filterMobileTitle": "Filtros"
         },
         "brand": {
             "santander": "Santander",

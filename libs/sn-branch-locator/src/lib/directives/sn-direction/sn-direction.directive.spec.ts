@@ -1,9 +1,11 @@
 import { SnDirectionDirective } from './sn-direction.directive';
 import { Component, ViewChild } from '@angular/core';
 import { GoogleMapsAPIWrapper, MapsAPILoader } from '@agm/core';
+import { GoogleMap } from '@agm/core/services/google-maps-types';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
+import { componentFactoryName } from '@angular/compiler';
 
 @Component({
   template: `
@@ -27,18 +29,20 @@ const mockDirectionsDisplay = {
   setDirections: () => { }
 };
 
-const mockResponse = {
-  routes: [
-    {
-      legs: [{
-        start_location: '',
-        start_address: '',
-        end_location: '',
-        end_address: '',
-        via_waypoints: []
-      }]
-    }
-  ]
+const mockDirections = {
+  DRIVING : {
+    routes: [
+      {
+        legs: [{
+          start_location: '',
+          start_address: '',
+          end_location: '',
+          end_address: '',
+          via_waypoints: []
+        }]
+      }
+    ]
+  }
 };
 
 const mockOriginMarker = {
@@ -52,10 +56,12 @@ const mockDestinationMarker = {
 };
 
 const mockWaypointsMarker = {
-  push: () => { }
+  push: () => { },
+  forEach: () => { },
+  setMap: () => { }
 };
 
-const mockWaypoints = [{ waypoint: '' }];
+const mockWaypoints = [{ waypoint: { setMap: () => { } } }];
 
 describe('SnDirectionDirective', () => {
   let directive: SnDirectionDirective;
@@ -89,26 +95,11 @@ describe('SnDirectionDirective', () => {
         DirectionsService: MockGoogleMapsClass,
         Marker: MockGoogleMapsClass
       }
-    };
+    } as any;
   });
 
   it('should create an instance', () => {
     expect(directive).toBeTruthy();
-  });
-
-  describe('ngOnInit', () => {
-    it('should call directionDraw on init when visible is true', () => {
-      const spy = spyOn<any>(directive, 'directionDraw');
-      directive.visible = true;
-      directive.ngOnInit();
-      expect(spy).toHaveBeenCalled();
-    });
-
-    it('shouldn`t call directionDraw on init when visible is false', () => {
-      directive.visible = false;
-      directive.ngOnInit();
-      expect().nothing();
-    });
   });
 
   describe('ngOnChanges', () => {
@@ -122,67 +113,100 @@ describe('SnDirectionDirective', () => {
       spies.forEach(spy => expect(spy).toHaveBeenCalled());
     });
 
-    it('should call directionDraw on changes if visible is true, in the first change and the direction display is undefined', () => {
-      const spy = spyOn<any>(directive, 'directionDraw');
-      directive.visible = true;
-      (directive as any).isFirstChange = true;
-      (directive as any).directionsDisplay = undefined;
-      directive.ngOnChanges({});
-      expect(spy).toHaveBeenCalled();
-      expect((directive as any).isFirstChange).toBeFalsy();
-    });
-
-    it('shouldn`t call directionDraw on changes if visible is true, in the first change and the direction display is defined', () => {
-      directive.visible = true;
-      (directive as any).isFirstChange = true;
-      (directive as any).directionsDisplay = true;
-      directive.ngOnChanges({});
-      expect((directive as any).isFirstChange).toBeFalsy();
-    });
-
-    it('should call directionDraw, removeMarkers and removeDirections on changes if visible and is not the first change', () => {
-      const spies = [
-        spyOn<any>(directive, 'directionDraw'),
-        spyOn<any>(directive, 'removeMarkers'),
-        spyOn<any>(directive, 'removeDirections')
-      ];
+    it('should call getDirections on changes if visible is true and there is no previous destination', () => {
+      const spy = spyOn<any>(directive, 'getDirections');
       const obj = {
-        renderOptions: {
-          firstChange: false
+        destination: {
+          previousValue: undefined
         }
       };
       directive.visible = true;
-      (directive as any).isFirstChange = false;
-      directive.ngOnChanges(obj);
-      spies.forEach(spy => expect(spy).toHaveBeenCalled());
-    });
-
-    it('should call directionDraw, removeMarkers and removeDirections on changes if visible and is not the first change', () => {
-      const spy = spyOn<any>(directive, 'directionDraw');
-      const obj = {
-        renderOptions: {
-          firstChange: true
-        }
-      };
-      directive.visible = true;
-      (directive as any).isFirstChange = false;
       directive.ngOnChanges(obj);
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should only call directionDraw on changes if visible and object renderOptions is not defined', () => {
-      const spy = spyOn<any>(directive, 'directionDraw');
+    it('should call getDirections on changes if visible is true and the longitude of the destination has changed', () => {
+      const spy = spyOn<any>(directive, 'getDirections');
       const obj = {
-        renderOptions: undefined
+        destination: {
+          previousValue: {
+            lng: 20
+          },
+          currentValue: {
+            lng: 21
+          }
+        }
       };
       directive.visible = true;
-      (directive as any).isFirstChange = false;
+      directive.ngOnChanges(obj);
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should call getDirections on changes if visible is true and the latitude of the destination has changed', () => {
+      const spy = spyOn<any>(directive, 'getDirections');
+      const obj = {
+        destination: {
+          previousValue: {
+            lat: 30
+          },
+          currentValue: {
+            lat: 32
+          }
+        }
+      };
+      directive.visible = true;
+      directive.ngOnChanges(obj);
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should only call directionDraw on changes if visible is true and the destination has not changed', () => {
+      const spy = spyOn<any>(directive, 'directionDraw');
+      const obj = {
+        renderOptions: undefined,
+        destination: {
+          previousValue: {
+            lng: 20,
+            lat: 30
+          },
+          currentValue: {
+            lng: 20,
+            lat: 30
+          }
+        }
+      };
+      directive.visible = true;
       directive.ngOnChanges(obj);
       expect(spy).toHaveBeenCalled();
     });
   });
 
-  describe('ngOnChanges', () => {
+  it('should call directionDraw, removeMarkers and removeDirections on changes if visible and is not the first change', () => {
+    const spies = [
+      spyOn<any>(directive, 'directionDraw'),
+      spyOn<any>(directive, 'removeMarkers'),
+      spyOn<any>(directive, 'removeDirections')
+    ];
+    const obj = {
+      destination: {
+        previousValue: {
+          lng: 20
+        },
+        currentValue: {
+          lng: 20
+        }
+      },
+      renderOptions: {
+        firstChange: false
+      }
+    };
+    directive.directionsDisplay = mockDirectionsDisplay;
+    directive.visible = true;
+    directive.ngOnChanges(obj);
+    spies.forEach(spy => expect(spy).toHaveBeenCalled());
+  });
+
+
+  describe('ngOnDestroy', () => {
     it('should destroy Markers and remove Directions when on destroy directive', () => {
       const spies = [
         spyOn<any>(directive, 'removeMarkers'),
@@ -222,7 +246,7 @@ describe('SnDirectionDirective', () => {
 
     it('shouldn`t clear markers in origin, destination and waypointsMarker setMap with null', () => {
       const destinationMarker = undefined;
-      const waypointsMarker = [undefined];
+      const waypointsMarker = [{ setMap: () => { } }];
       (directive as any).originMarker = undefined;
       (directive as any).destinationMarker = destinationMarker;
       (directive as any).waypointsMarker = waypointsMarker;
@@ -241,7 +265,7 @@ describe('SnDirectionDirective', () => {
         waypoints: [{ w: {} }]
       };
       const waypointsMarker = [
-        { w: {} }
+        { setMap: () => { } }
       ];
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
@@ -289,7 +313,7 @@ describe('SnDirectionDirective', () => {
         waypoints: [{ w: {} }]
       };
       const waypointsMarker = [
-        undefined
+        { setMap: () => { } }
       ];
       (directive as any).originMarker = mockOriginMarker;
       (directive as any).destinationMarker = mockDestinationMarker;
@@ -300,17 +324,17 @@ describe('SnDirectionDirective', () => {
     });
   });
 
-  describe('directionDraw()', () => {
+  describe('getDirections()', () => {
     it('should ', fakeAsync(() => {
       directive.directionsDisplay = undefined;
-      (directive as any).directionDraw();
+      (directive as any).getDirections();
       tick(50);
       expect(directive.directionsDisplay).toBeTruthy();
     }));
 
     it('should set directions service with google maps directions service', fakeAsync(() => {
       directive.directionsDisplay = mockDirectionsDisplay;
-      (directive as any).directionDraw();
+      (directive as any).getDirections();
       tick(50);
       expect(directive.directionsDisplay).toBeTruthy();
     }));
@@ -320,7 +344,7 @@ describe('SnDirectionDirective', () => {
         route: () => { }
       };
       directive.directionsService = directionsService;
-      (directive as any).directionDraw();
+      (directive as any).getDirections();
       tick(50);
       expect(directive.directionsService).toBeTruthy();
     }));
@@ -328,7 +352,7 @@ describe('SnDirectionDirective', () => {
     it('should set directions display if a panel input is entered', fakeAsync(() => {
       directive.panel = {};
       directive.directionsDisplay = mockDirectionsDisplay;
-      (directive as any).directionDraw();
+      (directive as any).getDirections();
       tick(50);
       expect(directive.directionsDisplay).toBeTruthy();
     }));
@@ -336,23 +360,25 @@ describe('SnDirectionDirective', () => {
     it('should set directions display to set a direction when a render route is entered', fakeAsync(() => {
       directive.renderRoute = {};
       directive.directionsDisplay = mockDirectionsDisplay;
-      (directive as any).directionDraw();
+      (directive as any).getDirections();
       tick(50);
       expect(directive.directionsDisplay).toBeTruthy();
       expect(directive.renderRoute).toBeNull();
     }));
 
-    it('should call directions service route when drawing a path', fakeAsync(() => {
+    it('getDirections should call directions service route', fakeAsync(() => {
       directive.directionsService = {
         route: () => { }
       };
-      (directive as any).directionDraw();
+      (directive as any).getDirections();
       const spy = spyOn(directive.directionsService, 'route').and.callFake((obj, fn) => { fn(); });
       tick(50);
       expect(spy).toHaveBeenCalled();
     }));
+  });
 
-    it('should define elements in route directions service function when config is properly set', fakeAsync(() => {
+  describe('directionDraw()', () => {
+    it('should define elements in route directionDraw() method when config is properly set', fakeAsync(() => {
       const directionsService = {
         route: () => { }
       };
@@ -381,10 +407,8 @@ describe('SnDirectionDirective', () => {
       (directive as any).waypoints = mockWaypoints;
       directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;
+      (directive as any).directions = mockDirections;
 
-      spyOn(directive.directionsService, 'route').and.callFake((obj, fn) => {
-        fn(mockResponse, 'OK');
-      });
       const spies = [
         spyOn<any>(directive, 'destroyMarkers')
       ];
@@ -393,7 +417,7 @@ describe('SnDirectionDirective', () => {
       spies.forEach(spy => expect(spy).toHaveBeenCalled());
     }));
 
-    it('should do nothing in direction service route if marker oprtions is not defined', fakeAsync(() => {
+    it('should do nothing in directionDraw() method if marker options is not defined', fakeAsync(() => {
       const directionsService = {
         route: () => { }
       };
@@ -402,12 +426,9 @@ describe('SnDirectionDirective', () => {
       (directive as any).markerOptions = markerOptions;
       directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;
-
-      spyOn(directive.directionsService, 'route').and.callFake((obj, fn) => {
-        fn({}, 'OK');
-      });
-
+      (directive as any).directions = mockDirections;
       (directive as any).directionDraw();
+
       tick(50);
       expect().nothing();
     }));
@@ -437,23 +458,18 @@ describe('SnDirectionDirective', () => {
       (directive as any).waypoints = mockWaypoints;
       directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;
-
-      spyOn(directive.directionsService, 'route').and.callFake((obj, fn) => {
-        fn(mockResponse, 'OK');
-      });
+      (directive as any).directions = mockDirections;
       (directive as any).directionDraw();
+
       tick(50);
       expect().nothing();
     }));
 
     it('shouldn`t config marker options origin and destination if they are undefined', fakeAsync(() => {
-      const directionsService = {
-        route: () => { }
-      };
       const markerOptions = {
-        origin: undefined,
+        origin: { draggable: true },
         destination: undefined,
-        waypoints: []
+        waypoints: [[]]
       };
 
       (directive as any).markerOptions = markerOptions;
@@ -461,13 +477,10 @@ describe('SnDirectionDirective', () => {
       (directive as any).destinationMarker = mockDestinationMarker;
       (directive as any).waypointsMarker = mockWaypointsMarker;
       (directive as any).waypoints = mockWaypoints;
-      directive.directionsService = directionsService;
       directive.directionsDisplay = mockDirectionsDisplay;
-
-      spyOn(directive.directionsService, 'route').and.callFake((obj, fn) => {
-        fn(mockResponse, 'OK');
-      });
+      (directive as any).directions = mockDirections;
       (directive as any).directionDraw();
+
       tick(50);
       expect().nothing();
     }));
