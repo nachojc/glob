@@ -51,7 +51,6 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges(obj: any) {
-    console.log(obj);
     if (!this.visible) {
       try {
         this.removeMarkers();

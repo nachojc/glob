@@ -159,73 +159,54 @@ describe('SnDirectionDirective', () => {
       expect(spy).toHaveBeenCalled();
     });
 
-    it('shouldn`t call directionDraw on changes if visible is true, in the first change and the direction display is defined', () => {
-      directive.visible = true;
-      (directive as any).isFirstChange = true;
-      (directive as any).directionsDisplay = true;
-      directive.ngOnChanges({});
-      expect((directive as any).isFirstChange).toBeFalsy();
-    });
-
-    it('should call getDirections, removeMarkers and removeDirections on changes if visible and is not the first change', () => {
-      const spies = [
-        spyOn<any>(directive, 'directionDraw'),
-        spyOn<any>(directive, 'removeMarkers'),
-        spyOn<any>(directive, 'removeDirections')
-      ];
-      const obj = {
-        destination: {
-          previousValue: {
-            lng: 20
-          },
-          currentValue: {
-            lng: 21
-          }
-        },
-        renderOptions: {
-          firstChange: false
-        }
-      };
-      directive.visible = true;
-      (directive as any).isFirstChange = false;
-      directive.ngOnChanges(obj);
-      spies.forEach(spy => expect(spy).toHaveBeenCalled());
-    });
-
-    it('should call directionDraw, removeMarkers and removeDirections on changes if visible and is not the first change', () => {
+    it('should only call directionDraw on changes if visible is true and the destination has not changed', () => {
       const spy = spyOn<any>(directive, 'directionDraw');
-      const obj = {
-        renderOptions: {
-          firstChange: true
-        }
-      };
-      directive.visible = true;
-      (directive as any).isFirstChange = false;
-      directive.ngOnChanges(obj);
-      expect(spy).toHaveBeenCalled();
-    });
-
-    it('should only call getDirections on changes if visible and object renderOptions is not defined', () => {
-      const spy = spyOn<any>(directive, 'getDirections');
       const obj = {
         renderOptions: undefined,
         destination: {
           previousValue: {
-            lng: 20
+            lng: 20,
+            lat: 30
           },
           currentValue: {
-            lng: 21
+            lng: 20,
+            lat: 30
           }
         }
       };
       directive.visible = true;
-      (directive as any).isFirstChange = false;
       directive.ngOnChanges(obj);
       expect(spy).toHaveBeenCalled();
     });
   });
 
-  describe('ngOnChanges', () => {
+  it('should call directionDraw, removeMarkers and removeDirections on changes if visible and is not the first change', () => {
+    const spies = [
+      spyOn<any>(directive, 'directionDraw'),
+      spyOn<any>(directive, 'removeMarkers'),
+      spyOn<any>(directive, 'removeDirections')
+    ];
+    const obj = {
+      destination: {
+        previousValue: {
+          lng: 20
+        },
+        currentValue: {
+          lng: 20
+        }
+      },
+      renderOptions: {
+        firstChange: false
+      }
+    };
+    directive.directionsDisplay = mockDirectionsDisplay;
+    directive.visible = true;
+    directive.ngOnChanges(obj);
+    spies.forEach(spy => expect(spy).toHaveBeenCalled());
+  });
+
+
+  describe('ngOnDestroy', () => {
     it('should destroy Markers and remove Directions when on destroy directive', () => {
       const spies = [
         spyOn<any>(directive, 'removeMarkers'),
