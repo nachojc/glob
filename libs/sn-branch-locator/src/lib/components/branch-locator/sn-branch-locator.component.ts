@@ -145,13 +145,17 @@ export class SnBranchLocatorComponent implements OnInit {
   public origin: LatLngLiteral;
   public travelMode: string;
   public routes = [];
+  public durations = [];
 
   public addressLat: number;
   public addressLng: number;
 
+  public durationsLoaded: boolean;
+
   currentLat: number;
   currentLong: number;
   marker: any;
+
 
   constructor(
     private geoPosition: GeoPositionService,
@@ -289,6 +293,7 @@ export class SnBranchLocatorComponent implements OnInit {
 
   closeDirectionsPanel(): void {
     this.routes = [];
+    this.durations = [];
     this.showDirectionsPanel = false;
     this.openDrawer();
   }
@@ -297,9 +302,15 @@ export class SnBranchLocatorComponent implements OnInit {
     this.showDirectionsPanel = true;
   }
 
+  onGetDirections(event: any): void {
+    this.durations = event;
+    this.durationsLoaded = true;
+  }
+
   onDirectionsResponse(event: any): void {
     if (typeof event.routes !== 'undefined' && event.routes.length > 0) {
       const steps = event.routes[0].legs[0].steps;
+
       this.routes = [];
       for (let i = 0; i < steps.length; i++) {
         const _instruction = steps[i].instructions;

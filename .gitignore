@@ -5,6 +5,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Fix for pipline problem
+*.kube
+pipeline/yamlfiles/Deployment.yaml.tmp
+
 # Runtime data
 pids
 *.pid
@@ -63,3 +67,4 @@ typings/
 .next
 
 package-lock.json
+/.history
