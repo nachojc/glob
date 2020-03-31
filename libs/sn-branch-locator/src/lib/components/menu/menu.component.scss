@@ -99,6 +99,13 @@
     }
   }
 
+  .direction-wrapper {
+    position: absolute;
+    background-color: white;
+    margin-top: 160px;
+    height: 100%;
+  }
+
   .info-wrapper,
   .direction-wrapper {
     flex: 1;
