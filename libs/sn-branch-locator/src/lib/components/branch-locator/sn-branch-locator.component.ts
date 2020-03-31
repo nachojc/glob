@@ -69,7 +69,6 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-
   @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
