@@ -21,6 +21,12 @@
 </tr>
 </table>
 
+## Url registry
+
+First at all, you must add next URL registry before start dowloading the lib:
+
+http://nexus.alm.europe.cloudcenter.corp/repository/blue4sky-npm-group/
+
 ## Download
 
 Need to install next node dependencies:
