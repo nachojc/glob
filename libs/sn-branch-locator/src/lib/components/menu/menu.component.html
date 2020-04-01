@@ -12,10 +12,7 @@
 
   <section class="panel-wrapper">
     <div
-      class="info-close-button-wrapper"
-      [ngClass]="{ closed: !info }"
-      style="position: absolute; top: 25px; left: 14px;"
-    >
+      class="info-close-button-wrapper" [ngClass]="{ closed: !info }">
       <button class="info-close-button" (click)="closeInfo.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
@@ -25,6 +22,15 @@
       <button
         class="info-close-button"
         (click)="closeDirectionsPanel.emit($event)"
+      >
+        <sn-icon icon="sn-SYS021"></sn-icon>
+      </button>
+    </div>
+
+    <div class="info-close-button-wrapper" [ngClass]="{ closed: info || direction }">
+      <button
+        class="info-close-button"
+        (click)="closeFilterPanel.emit($event)"
       >
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
@@ -53,7 +59,8 @@
     <div class="direction-wrapper" [ngClass]="{ closed: !direction }">
       <ng-content select="sn-branch-direction"></ng-content>
     </div>
+
+    <ng-content select="sn-filter" [ngClass]="{ closed: info || direction }"></ng-content>
   </section>
 
-  <ng-content select="sn-filter"></ng-content>
 </div>

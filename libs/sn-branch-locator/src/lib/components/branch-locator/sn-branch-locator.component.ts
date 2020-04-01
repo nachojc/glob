@@ -365,6 +365,11 @@ export class SnBranchLocatorComponent implements OnInit {
     this.filterView.open();
   }
 
+  hideFilter() {
+    this.filterView.close();
+    this.openDrawer();
+  }
+
   private roundCordinates(cord: number) {
     return Math.round(cord * 1e7) / 1e7;
   }

@@ -49,14 +49,14 @@
     }
   }
 
-  &[modal],
+  /* &[modal],
   &.modal {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-  }
+  } */
 
   h1,
   h2 {
@@ -82,11 +82,11 @@
   }
 
   .aply-filter-container {
-    margin: 0px auto 34px;
+    margin: 0 auto 34px;
   }
 
   .turn-off-filter-container {
-    margin: 110px auto 25px;
+    margin: 0 auto 25px;
     border-radius: 8px;
     text-align: center;
     background-color: $color-primary-white;
