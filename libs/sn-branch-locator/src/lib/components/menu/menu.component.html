@@ -46,7 +46,7 @@
       <ng-content select="sn-branch-list"></ng-content>
     </div>
 
-    <div class="info-wrapper" [ngClass]="{ closed: !info }">
+    <div class="info-wrapper" [ngClass]="{ closed: !info || direction }">
       <ng-content select="sn-branch-info"></ng-content>
     </div>
 

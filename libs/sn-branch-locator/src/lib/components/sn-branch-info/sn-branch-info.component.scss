@@ -73,6 +73,12 @@
         align-items: center;
         justify-content: center;
         display: flex;
+
+        ::ng-deep {
+          i {
+            color: $color-secondary-darkturquoise;
+          }
+        }
       }
     }
 
