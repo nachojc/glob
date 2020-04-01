@@ -291,8 +291,8 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeDirectionsPanel(): void {
-    this.routes = [];
-    this.durations = [];
+    this.isVisibleRoute = false;
+    this.isVisibleMarkers = true;
     this.showDirectionsPanel = false;
     this.openDrawer();
   }
@@ -310,13 +310,13 @@ export class SnBranchLocatorComponent implements OnInit {
     if (typeof event.routes !== 'undefined' && event.routes.length > 0) {
       const steps = event.routes[0].legs[0].steps;
 
-      this.routes = [];
+      const routes = [];
       for (let i = 0; i < steps.length; i++) {
         const _instruction = steps[i].instructions;
         const _distance = steps[i].distance.text;
         const _time = steps[i].duration.text;
         const _maneuver = steps[i].maneuver;
-        this.routes.push({
+        routes.push({
           id: i + 1,
           instructions: _instruction,
           distance: _distance,
@@ -324,6 +324,10 @@ export class SnBranchLocatorComponent implements OnInit {
           maneuver: _maneuver
         });
       }
+
+      setTimeout(() => {
+        this.routes = routes;
+      }, 100);
     }
   }
 
