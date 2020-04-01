@@ -27,7 +27,7 @@
       </button>
     </div>
 
-    <div class="info-close-button-wrapper" [ngClass]="{ closed: info || direction }">
+    <div class="info-close-button-wrapper" [ngClass]="{ closed: filter }">
       <button
         class="info-close-button"
         (click)="closeFilterPanel.emit($event)"
