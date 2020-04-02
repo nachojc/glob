@@ -2,6 +2,7 @@ import { Component, ContentChild, Output, EventEmitter } from '@angular/core';
 import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
 import { SnBranchDirectionComponent } from '../sn-branch-direction/sn-branch-direction.component';
 import { MenuAnimations } from './menu.animations';
+import { FilterComponent } from '../filter/filter.component';
 
 @Component({
   selector: 'sn-menu',
@@ -13,8 +14,10 @@ export class MenuComponent {
 
   @Output() closeInfo = new EventEmitter<MouseEvent>();
   @Output() closeDirectionsPanel = new EventEmitter<MouseEvent>();
+  @Output() closeFilterPanel = new EventEmitter<MouseEvent>();
   @ContentChild(SnBranchInfoComponent, { static: false }) info!: SnBranchInfoComponent;
   @ContentChild(SnBranchDirectionComponent, { static: false }) direction!: SnBranchDirectionComponent;
+  @ContentChild(FilterComponent, { static: false }) filter!: FilterComponent;
   @Output() menuDidOpen = new EventEmitter<boolean>();
   @Output() menuDidClose = new EventEmitter<boolean>();
   currentState = 'menuOpened';

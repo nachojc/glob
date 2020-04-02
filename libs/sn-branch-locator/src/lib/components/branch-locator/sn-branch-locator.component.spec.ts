@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SnBranchLocatorComponent } from './sn-branch-locator.component';
 
 import { AgmCoreModule, LatLngLiteral, MapsAPILoader } from '@agm/core';
@@ -485,12 +485,12 @@ describe('SnBranchLocatorComponent', () => {
   describe('closeDirectionsPanel()', () => {
     it('should set show directions panel to false, clear routes and call openDrawer', () => {
       const spy = spyOn<any>((component as any), 'openDrawer');
-      const route = { id: 0, instructions: 'Head to', distance: '0.3 km', time: '1 min' };
-      const routes = [route, route, route];
-      component.routes = routes;
+      component.isVisibleRoute = true;
+      component.isVisibleMarkers = false;
       component.closeDirectionsPanel();
       expect(component.showDirectionsPanel).toBeFalsy();
-      expect(component.routes).toEqual([]);
+      expect(component.isVisibleMarkers).toBe(true);
+      expect(component.isVisibleRoute).toBeFalsy();
       expect(spy).toHaveBeenCalled();
     });
   });
@@ -503,7 +503,7 @@ describe('SnBranchLocatorComponent', () => {
   });
 
   describe('onDirectionsResponse()', () => {
-    it('should build routes with event values on directions response', () => {
+    it('should build routes with event values on directions response', fakeAsync(() => {
       const event = {
         routes: [
           {
@@ -535,8 +535,12 @@ describe('SnBranchLocatorComponent', () => {
 
       component.routes = [];
       component.onDirectionsResponse(event);
-      expect(component.routes).toEqual(routes);
-    });
+      tick(500);
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.routes).toEqual(routes);
+      });
+    }));
   });
 
   describe('drawDirections()', () => {

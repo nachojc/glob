@@ -70,7 +70,7 @@ export class SnBranchInfoComponent implements OnInit {
   }
 
   private getProducts(poi: Branch): string[] {
-    if (poi.comercialProducts) {
+    if (poi && poi.comercialProducts) {
       return poi.comercialProducts.map(product => product[this.language] ? product[this.language] : product.default);
     }
     return [];

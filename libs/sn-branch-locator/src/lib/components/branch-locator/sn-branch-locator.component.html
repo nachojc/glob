@@ -54,7 +54,7 @@
 <!-- Desktop -->
 <ng-container *ngIf="!isMobile">
   <!-- Side Menu -->
-  <sn-menu (closeInfo)="closeInfo()" (closeDirectionsPanel)="closeDirectionsPanel()">
+  <sn-menu (closeInfo)="closeInfo()" (closeDirectionsPanel)="closeDirectionsPanel()" (closeFilterPanel)="hideFilter()">
     <sn-branch-search #test [showReCenter]="showReCenter" [filterCount]="filterCounts" [address]="address"
       (placeChange)="placeChange($event)" (reCenter)="centerMapToUser(true, true)" (callFilter)="showFilter()">
     </sn-branch-search>
