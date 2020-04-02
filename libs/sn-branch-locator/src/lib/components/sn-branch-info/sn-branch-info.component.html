@@ -29,16 +29,16 @@
         *ngIf="branch.appointment && branch.appointment.branchAppointment"
       >
         <a [href]="branch.appointment.branchAppointment" target="_blank">
-          <sn-icon color="primary" icon="sn-SERV005"></sn-icon>
+          <sn-icon color="primary" icon="sn-FUNC103"></sn-icon>
         </a>
-        <p>Appointments</p>
+        <p>{{ 'branchLocator.details.appointments' | translate }}</p>
       </div>
 
       <div class="branch-directions">
         <button (click)="emitOpenDirectionsPanel()" class="menu-toggle">
           <sn-icon icon="sn-SYS021"></sn-icon>
         </button>
-        <p>Directions</p>
+        <p>{{ 'branchLocator.details.directions' | translate }}</p>
       </div>
     </section>
 
