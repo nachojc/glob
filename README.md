@@ -29,17 +29,7 @@ http://nexus.alm.europe.cloudcenter.corp/repository/blue4sky-npm-group/
 
 ## Download
 
-Need to install next node dependencies:
-
-```npm
-npm i @globile/branch-locator
-npm i @agm/core
-npm i js-marker-clusterer
-npm i sn-common-lib
-npm i @types/googlemaps --save-dev
-```
-
-Then add in the main module the following imports:
+Add in the main module the following imports:
 
 ```typescript
 import { AgmCoreModule } from "@agm/core";
@@ -114,6 +104,34 @@ export const environment = {
   }
   ...
 };
+```
+
+## Config angular.json
+
+Add in assets part next code:
+
+```json
+ {
+      "glob": "**/*",
+      "input": "node_modules/sn-common-lib/assets/fonts/",
+      "output": "assets/fonts/"
+    },
+    {
+      "glob": "**/*",
+      "input": "node_modules/@globile/branch-locator/assets",
+      "output": "assets/branchlocator/"
+    },
+    {
+      "glob": "**/*",
+      "input": "node_modules/@globile/branch-locator/i18n",
+      "output": "/i18n/branchlocator/"
+    }
+```
+
+and in style part:
+
+```json
+"node_modules/sn-common-lib/styles/styles.scss"
 ```
 
 ## Getting Started
