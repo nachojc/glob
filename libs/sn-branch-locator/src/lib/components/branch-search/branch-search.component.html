@@ -7,7 +7,7 @@
     </div>
     <div class="search-input-input">
       <input #in type="search" [placeholder]="'branchLocator.searchInput.placeHolder' | translate"
-        (focus)="searchBarClicked()" autocomplete="off" autocapitalize="off" spellcheck="off" value="{{ address }}" />
+        (click)="searchBarClicked()" autocomplete="off" autocapitalize="off" spellcheck="off" value="{{ address }}" />
     </div>
     <div class="search-input-center-button">
       <button *ngIf="showReCenter" (click)="reCenter.emit($event)">

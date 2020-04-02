@@ -9,20 +9,12 @@
       "branchLocator.title.filterMobileTitle" | translate
     }}</span>
   </div>
-  <div
-    class="turn-off-filter-container"
-    [ngClass]="{
+  <div class="turn-off-filter-container" [ngClass]="{
       'm-fadeIn': !isHideTurnOffButton,
       'm-fadeOut': isHideTurnOffButton
-    }"
-  >
-    <button
-      class="turn-off-filter-button"
-      type="reset"
-      (click)="switchFilterButton()"
-    >
-      <sn-icon icon="sn-FUNC036"></sn-icon
-      >{{ "branchLocator.filtersButtons.turnOffFilters" | translate }}
+    }">
+    <button class="turn-off-filter-button" type="reset" (click)="switchFilterButton()">
+      <sn-icon icon="sn-FUNC036"></sn-icon>{{ "branchLocator.filtersButtons.turnOffFilters" | translate }}
     </button>
   </div>
   <div class="aply-filter-container hide-mobile">
@@ -39,126 +31,74 @@
       <div class="filters-list-wrapper">
         <div class="filters-list">
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="SELECT"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="SELECT" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.select" | translate }}
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="BANCAPRIVADA"
-              icon="sn-SERV008"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="BANCAPRIVADA" icon="sn-SERV008" (change)="selectFilter($event)">
               {{ "branchLocator.filters.private" | translate }}
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="PYME"
-              icon="sn-BAN023"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="PYME" icon="sn-BAN023" (change)="selectFilter($event)">
               {{ "branchLocator.filters.pyme" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="WORKCAFE"
-              icon="sn-FUNC136"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="WORKCAFE" icon="sn-FUNC136" (change)="selectFilter($event)">
               {{ "branchLocator.filters.workCafe" | translate }}
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="EMPRESAS"
-              icon="sn-SERV006"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="EMPRESAS" icon="sn-SERV006" (change)="selectFilter($event)">
               {{ "branchLocator.filters.business" | translate }}
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="UNIVERSIDADES"
-              icon="sn-SERV049"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="UNIVERSIDADES" icon="sn-SERV049" (change)="selectFilter($event)">
               {{ "branchLocator.filters.universities" | translate }}
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="CLIENTES_POPULAR"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="CLIENTES_POPULAR" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.popular" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="CLIENTES_PASTOR"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="CLIENTES_PASTOR" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.pastor" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="CLIENTES_BANEFE"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="CLIENTES_BANEFE" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.banefe" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="RESIDENTES"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="RESIDENTES" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.residents" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="GRANDES_SUPERFICIES"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="GRANDES_SUPERFICIES" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.departmentStores" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="AG_COLABORADORES"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="AG_COLABORADORES" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.agCollaborators" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="AG_FINANCIEROS"
-              icon="sn-BAN040"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="AG_FINANCIEROS" icon="sn-BAN040" (change)="selectFilter($event)">
               {{ "branchLocator.filters.agFinancials" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
@@ -171,20 +111,12 @@
       <div class="filters-list-wrapper">
         <div class="filters-list">
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="ATM"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="ATM" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.brand.santander" | translate }}
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="NON_SANTANDER_ATM"
-              icon="sn-FUNC019C"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="NON_SANTANDER_ATM" icon="sn-FUNC019C" (change)="selectFilter($event)">
               {{ "branchLocator.filters.otherAtm" | translate }}
             </sn-checkbox>
           </div>
@@ -198,80 +130,48 @@
       <div class="filters-list-wrapper">
         <div class="filters-list">
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="CORRESPONSALES"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="CORRESPONSALES" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.correspondents" | translate }}
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="ELEVEN"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="ELEVEN" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.eleven" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="CIRCLE_K"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="CIRCLE_K" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.circleK" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="TIENDA_EXTRA"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="TIENDA_EXTRA" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.extraShop" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="TIENDA_K"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="TIENDA_K" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.shopK" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="TELECOMM"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="TELECOMM" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.telecomm" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="SUPER7_24"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="SUPER7_24" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.super" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>
           </div>
           <div class="filter-item">
-            <sn-checkbox
-              formControlName="OXXO"
-              icon="sn-BAN005"
-              (change)="selectFilter($event)"
-            >
+            <sn-checkbox formControlName="OXXO" icon="sn-BAN005" (change)="selectFilter($event)">
               {{ "branchLocator.filters.oxxo" | translate }}
               <!-- TODO: review translation -->
             </sn-checkbox>

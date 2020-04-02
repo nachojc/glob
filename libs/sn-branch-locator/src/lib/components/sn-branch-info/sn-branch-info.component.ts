@@ -3,6 +3,7 @@ import { Branch } from '../../models/branch.model';
 import { TranslateService } from '@ngx-translate/core';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { BridgeAnalyticService } from '@globile/mobile-services';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 
 @Component({
   selector: 'sn-branch-info',
@@ -52,7 +53,6 @@ export class SnBranchInfoComponent implements OnInit {
 
   ngOnInit(): void {
     const sendView = ViewsAnalyticsVariables.detailScreen;
-    console.log('sendView', sendView);
     this.analyticsService.sendView(sendView);
   }
 
@@ -226,5 +226,18 @@ export class SnBranchInfoComponent implements OnInit {
     });
 
     this.openDirectionsPanel.emit();
+  }
+
+  sendEvent(event) {
+    const sendEvent = EventsAnalyticsVariables.clickTabPicker;
+    sendEvent.BranchAtmType = event.tab.label ? event.tab.label : '';
+    sendEvent.BranchAtmName = event.tab.label ? event.tab.label : '';
+    sendEvent.TabName = this._branch.id ? this._branch.id : '';
+    this.analyticsService.sendEvent(sendEvent);
+  }
+
+  sendCall() {
+    const sendEvent = EventsAnalyticsVariables.clickCall;
+    this.analyticsService.sendEvent(sendEvent);
   }
 }

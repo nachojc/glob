@@ -34,6 +34,7 @@ import {
   WebAnalyticsInitModel
 } from '@globile/mobile-services';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -187,7 +188,6 @@ export class SnBranchLocatorComponent implements OnInit {
     this.initAnalytics();
 
     const sendView = ViewsAnalyticsVariables.mapScreen;
-    console.log('sendView', sendView);
     this.analyticsService.sendView(sendView);
 
     this.isMobile = this.platform.isMobile;
@@ -232,14 +232,17 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   selectBranch = (branch: Branch) => {
+    const sendEvent = EventsAnalyticsVariables.clickBranchDetails;
+    this.analyticsService.sendEvent(sendEvent);
+
     const markerFound = this.branchMarkerList['_results'].find(
       marker => marker.label && marker.label.text === branch.id
     );
-    this.markerSelect(markerFound, branch);
+    this.markerSelect(markerFound, branch, false);
     this.selectedTabIndex = 0;
   }
 
-  markerSelect(selected: AgmMarker, branch: Branch) {
+  markerSelect(selected: AgmMarker, branch: Branch, sendEvent: boolean) {
     this.showDirectionsPanel = false;
     this.closeDrawer();
     this.clearSelectedMarker();
@@ -251,6 +254,13 @@ export class SnBranchLocatorComponent implements OnInit {
       userPosition: this.userPosition,
       marker: this.selectedBranch
     });
+
+    if (sendEvent) {
+      const event = EventsAnalyticsVariables.clickBranchIcon;
+      event.BranchAtmType = 'branch';
+      event.BranchAtmName = branch.id ? branch.id : '';
+      this.analyticsService.sendEvent(event);
+    }
 
     this.openMenu();
     this.openDrawer();

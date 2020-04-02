@@ -17,17 +17,23 @@ export const EventsAnalyticsVariables: any = {
   clickTabPicker: {
     ScreenName: 'branch locator:home',
     EventAction: 'tap branch picker',
-    EventName: 'tap branch picker'
+    EventName: 'tap branch picker',
+    BranchAtmName: '',
+    BranchAtmType: '',
+    TabName: ''
   },
   clickBranchIcon: {
     ScreenName: 'branch locator:home',
     EventAction: 'tap branch icon',
-    EventName: 'tap branch icon'
+    EventName: 'tap branch icon',
+    BranchAtmName: '',
+    BranchAtmType: ''
   },
   clickCall: {
     ScreenName: 'branch locator:home',
     EventAction: 'tap on call button',
-    EventName: 'tap on call button'
+    EventName: 'tap on call button',
+    TabName: 'branch'
   },
   performSearch: {
     ScreenName: 'branch locator:home',
