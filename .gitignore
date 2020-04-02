@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Fix for pipline problem
-*.kube
 pipeline/yamlfiles/Deployment.yaml.tmp
 
 # Runtime data
