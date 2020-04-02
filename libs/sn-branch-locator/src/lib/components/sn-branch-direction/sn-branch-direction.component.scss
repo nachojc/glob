@@ -6,8 +6,6 @@
     height: 100%;
 
     .branch-location {
-      display: flex;
-      flex-direction: column;
       width: 100%;
 
       .branch-address {
@@ -23,13 +21,18 @@
       }
 
       .branch-directions {
-        display: flex;
-        flex-direction: row;
-        justify-content: initial;
-        flex-wrap: nowrap; 
-        overflow: auto;
+        width: auto;
+        height: 45px;
+        padding: 10px;
+        white-space: nowrap;
+        overflow-x: auto;
 
         ::ng-deep {
+          sn-icon {
+            position: relative;
+            float: left;
+          }
+
           i {
             color: $color-secondary-mediumgray;
           }
@@ -45,6 +48,7 @@
           }
 
           ::ng-deep {
+
             i {
               color: $color-primary-santander;
             }
@@ -52,15 +56,11 @@
         }
 
         div {
-          display: flex;
-          height: 49px;
-          border-radius: 50%;
           margin-right: 5px;
           margin-left: 5px;
-          justify-content: center;
-          align-items: center;
           cursor: pointer;
-          transition: ease-in-out opacity 300ms;
+          transition: opacity .3s ease-in-out;
+          display: inline-block;
 
           &:hover {
             opacity: 0.5;
@@ -92,4 +92,6 @@
       }
     }
   }
+
+
 }

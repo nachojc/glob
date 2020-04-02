@@ -1,4 +1,4 @@
-import { Directive, Input, Output, OnChanges, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Directive, Input, Output, OnChanges, EventEmitter, OnDestroy } from '@angular/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { InfoWindow, GoogleMap, Marker } from '@agm/core/services/google-maps-types';
 
@@ -7,7 +7,7 @@ declare var google: any;
 @Directive({
   selector: '[snDirection], sn-direction'
 })
-export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
+export class SnDirectionDirective implements OnChanges, OnDestroy {
 
   @Input() origin: any;
   @Input() destination: any;
@@ -27,6 +27,7 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
   @Input() renderRoute: any;
 
   @Output() _onChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() _onLoad: EventEmitter<any> = new EventEmitter<any>();
   @Output() _onResponse: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendInfoWindow: EventEmitter<InfoWindow> = new EventEmitter<InfoWindow>();
   @Output() status: EventEmitter<string> = new EventEmitter<string>();
@@ -40,17 +41,14 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
   private destinationMarker: any;
   private waypointsMarker: any = [];
 
-  private isFirstChange = true;
+  private map: GoogleMap;
+  private directions: any = {};
+  private durations: any = {};
+  private travelModes = ['DRIVING', 'BICYCLING', 'TRANSIT', 'WALKING'];
 
   constructor(
     private gmapsApi: GoogleMapsAPIWrapper,
   ) { }
-
-  ngOnInit() {
-    if (this.visible === true) {
-      this.directionDraw();
-    }
-  }
 
   ngOnChanges(obj: any) {
     if (!this.visible) {
@@ -59,11 +57,11 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
         this.removeDirections();
       } catch (e) { }
     } else {
-      if (this.isFirstChange) {
-        if (typeof this.directionsDisplay === 'undefined') {
-          this.directionDraw();
-        }
-        this.isFirstChange = false;
+
+      if (!obj.destination.previousValue || obj.destination.previousValue.lng !== obj.destination.currentValue.lng
+        || obj.destination.previousValue.lat !== obj.destination.currentValue.lat) {
+        this.directions = {};
+        this.getDirections();
         return;
       }
 
@@ -82,12 +80,13 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
     this.removeDirections();
   }
 
-  private directionDraw() {
+  private getDirections() {
     this.gmapsApi.getNativeMap().then((map: GoogleMap) => {
+      this.map = map;
 
       if (typeof this.directionsDisplay === 'undefined') {
         this.directionsDisplay = new google.maps.DirectionsRenderer(this.renderOptions);
-        this.directionsDisplay.setMap(map);
+        this.directionsDisplay.setMap(this.map);
         this.directionsDisplay.addListener('directions_changed', () => {
           this._onChange.emit(this.directionsDisplay.getDirections());
         });
@@ -105,111 +104,111 @@ export class SnDirectionDirective implements OnChanges, OnInit, OnDestroy {
         this.directionsDisplay.setDirections(this.renderRoute);
         this.renderRoute = null;
       } else {
+        let len = this.travelModes.length;
 
-        this.directionsService.route({
-          origin: this.origin,
-          destination: this.destination,
-          travelMode: this.travelMode,
-          transitOptions: this.transitOptions,
-          drivingOptions: this.drivingOptions,
-          waypoints: this.waypoints,
-          optimizeWaypoints: this.optimizeWaypoints,
-          provideRouteAlternatives: this.provideRouteAlternatives,
-          avoidHighways: this.avoidHighways,
-          avoidTolls: this.avoidTolls,
-        }, (response: any, status: any) => {
-
-          this._onResponse.emit(response);
-
-          this.status.emit(status);
-
-          switch (status) {
-            case 'OK':
-              this.directionsDisplay.setDirections(response);
-
-              if (typeof this.markerOptions !== 'undefined') {
-
-                this.destroyMarkers();
-
-                const _route = response.routes[0].legs[0];
-                try {
-                  if (typeof this.markerOptions.origin !== 'undefined') {
-                    this.markerOptions.origin.map = map;
-                    this.markerOptions.origin.position = _route.start_location;
-                    this.originMarker = this.setMarker(
-                      map,
-                      this.originMarker,
-                      this.markerOptions.origin,
-                      _route.start_address,
-                    );
-
-                    if (this.markerOptions.origin.draggable) {
-                      this.originMarker.addListener('dragend', () => {
-                        this.origin = this.originMarker.position;
-                        this.directionDraw();
-                        this.originDrag.emit(this.origin);
-                      });
-                    }
-                  }
-
-                  if (typeof this.markerOptions.destination !== 'undefined') {
-                    this.markerOptions.destination.map = map;
-                    this.markerOptions.destination.position = _route.end_location;
-                    this.destinationMarker = this.setMarker(
-                      map,
-                      this.destinationMarker,
-                      this.markerOptions.destination,
-                      _route.end_address,
-                    );
-                    if (this.markerOptions.destination.draggable) {
-                      this.destinationMarker.addListener('dragend', () => {
-                        this.destination = this.destinationMarker.position;
-                        this.directionDraw();
-                        this.destinationDrag.emit(this.destination);
-                      });
-                    }
-                  }
-
-                  if (typeof this.markerOptions.waypoints !== 'undefined') {
-
-                    this.waypoints.forEach((waypoint: any, index: number) => {
-
-                      if (!Array.isArray(this.markerOptions.waypoints)) {
-                        this.markerOptions.waypoints.map = map;
-                        this.markerOptions.waypoints.position = _route.via_waypoints[index];
-                        this.waypointsMarker.push(this.setMarker(
-                          map,
-                          waypoint,
-                          this.markerOptions.waypoints,
-                          _route.via_waypoints[index],
-                        ));
-                      } else {
-                        this.markerOptions.waypoints[index].map = map;
-                        this.markerOptions.waypoints[index].position = _route.via_waypoints[index];
-                        this.waypointsMarker.push(this.setMarker(
-                          map,
-                          waypoint,
-                          this.markerOptions.waypoints[index],
-                          _route.via_waypoints[index],
-                        ));
-                      }
-
-                    });
-
-                  }
-                } catch (err) {
-                  console.error('MarkerOptions error.', err);
-                }
+        while (len--) {
+          this.directionsService.route({
+            origin: this.origin,
+            destination: this.destination,
+            travelMode: this.travelModes[len],
+            transitOptions: this.transitOptions,
+            drivingOptions: this.drivingOptions,
+            waypoints: this.waypoints,
+            optimizeWaypoints: this.optimizeWaypoints,
+            provideRouteAlternatives: this.provideRouteAlternatives,
+            avoidHighways: this.avoidHighways,
+            avoidTolls: this.avoidTolls,
+          }, (response: any, status: any) => {
+            if (status === 'OK') {
+              this.status.emit(status);
+              this.durations[response.request.travelMode] = response.routes[0].legs[0].duration.text;
+              this.directions[response.request.travelMode] = response;
+              if (Object.keys(this.directions).length === this.travelModes.length) {
+                this._onLoad.emit(this.durations);
+                this.directionDraw();
               }
-
-              break;
-
-            default:
-              break;
-          }
-        });
+            }
+          });
+        }
       }
     });
+  }
+
+  private directionDraw() {
+    const response = this.directions[this.travelMode];
+    this._onResponse.emit(response);
+    this.directionsDisplay.setDirections(response);
+
+    if (typeof this.markerOptions !== 'undefined') {
+      this.destroyMarkers();
+      const _route = response.routes[0].legs[0];
+      try {
+        if (typeof this.markerOptions.origin !== 'undefined') {
+          this.markerOptions.origin.map = this.map;
+          this.markerOptions.origin.position = _route.start_location;
+          this.originMarker = this.setMarker(
+            this.map,
+            this.originMarker,
+            this.markerOptions.origin,
+            _route.start_address,
+          );
+
+          if (this.markerOptions.origin.draggable) {
+            this.originMarker.addListener('dragend', () => {
+              this.origin = this.originMarker.position;
+              this.directionDraw();
+              this.originDrag.emit(this.origin);
+            });
+          }
+        }
+
+        if (typeof this.markerOptions.destination !== 'undefined') {
+          this.markerOptions.destination.map = this.map;
+          this.markerOptions.destination.position = _route.end_location;
+          this.destinationMarker = this.setMarker(
+            this.map,
+            this.destinationMarker,
+            this.markerOptions.destination,
+            _route.end_address,
+          );
+          if (this.markerOptions.destination.draggable) {
+            this.destinationMarker.addListener('dragend', () => {
+              this.destination = this.destinationMarker.position;
+              this.directionDraw();
+              this.destinationDrag.emit(this.destination);
+            });
+          }
+        }
+
+        if (typeof this.markerOptions.waypoints !== 'undefined') {
+
+          this.waypoints.forEach((waypoint: any, index: number) => {
+
+            if (!Array.isArray(this.markerOptions.waypoints)) {
+              this.markerOptions.waypoints.map = this.map;
+              this.markerOptions.waypoints.position = _route.via_waypoints[index];
+              this.waypointsMarker.push(this.setMarker(
+                this.map,
+                waypoint,
+                this.markerOptions.waypoints,
+                _route.via_waypoints[index],
+              ));
+            } else {
+              this.markerOptions.waypoints[index].map = this.map;
+              this.markerOptions.waypoints[index].position = _route.via_waypoints[index];
+              this.waypointsMarker.push(this.setMarker(
+                this.map,
+                waypoint,
+                this.markerOptions.waypoints[index],
+                _route.via_waypoints[index],
+              ));
+            }
+          });
+        }
+      } catch (err) {
+        console.error('MarkerOptions error.', err);
+      }
+    }
   }
 
   private setMarker(map: GoogleMap, marker: any, markerOpts: any, content: string): Marker {

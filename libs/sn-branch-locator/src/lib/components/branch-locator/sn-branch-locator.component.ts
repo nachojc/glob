@@ -69,7 +69,6 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-
   @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
@@ -145,13 +144,17 @@ export class SnBranchLocatorComponent implements OnInit {
   public origin: LatLngLiteral;
   public travelMode: string;
   public routes = [];
+  public durations = [];
 
   public addressLat: number;
   public addressLng: number;
 
+  public durationsLoaded: boolean;
+
   currentLat: number;
   currentLong: number;
   marker: any;
+
 
   constructor(
     private geoPosition: GeoPositionService,
@@ -288,7 +291,8 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeDirectionsPanel(): void {
-    this.routes = [];
+    this.isVisibleRoute = false;
+    this.isVisibleMarkers = true;
     this.showDirectionsPanel = false;
     this.openDrawer();
   }
@@ -297,16 +301,22 @@ export class SnBranchLocatorComponent implements OnInit {
     this.showDirectionsPanel = true;
   }
 
+  onGetDirections(event: any): void {
+    this.durations = event;
+    this.durationsLoaded = true;
+  }
+
   onDirectionsResponse(event: any): void {
     if (typeof event.routes !== 'undefined' && event.routes.length > 0) {
       const steps = event.routes[0].legs[0].steps;
-      this.routes = [];
+
+      const routes = [];
       for (let i = 0; i < steps.length; i++) {
         const _instruction = steps[i].instructions;
         const _distance = steps[i].distance.text;
         const _time = steps[i].duration.text;
         const _maneuver = steps[i].maneuver;
-        this.routes.push({
+        routes.push({
           id: i + 1,
           instructions: _instruction,
           distance: _distance,
@@ -314,6 +324,10 @@ export class SnBranchLocatorComponent implements OnInit {
           maneuver: _maneuver
         });
       }
+
+      setTimeout(() => {
+        this.routes = routes;
+      }, 100);
     }
   }
 
@@ -349,6 +363,11 @@ export class SnBranchLocatorComponent implements OnInit {
     this.closeDrawer();
     this.clearSelectedMarker();
     this.filterView.open();
+  }
+
+  hideFilter() {
+    this.filterView.close();
+    this.openDrawer();
   }
 
   private roundCordinates(cord: number) {

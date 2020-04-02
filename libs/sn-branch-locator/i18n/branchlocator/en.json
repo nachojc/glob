@@ -64,7 +64,9 @@
       "open": "Open",
       "closed": "Closed",
       "closing": "Closing in",
-      "openDirections": "Open Directions"
+      "openDirections": "Open Directions",
+      "appointments": "Appointments",
+      "directions": "Directions"
     },
     "list": {
       "moreResults": "Load more results"

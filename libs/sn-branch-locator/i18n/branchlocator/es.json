@@ -64,7 +64,9 @@
             "open": "Abierto",
             "closed": "Cerrado",
             "closing": "Cerrando en",
-            "openDirections": "Open Directions_ES"
+            "openDirections": "Open Directions_ES",
+            "appointments": "Cita",
+            "directions": "Direcciones"
         },
         "list": {
             "moreResults": "Load more results_ES"
