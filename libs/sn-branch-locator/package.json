@@ -16,6 +16,7 @@
     "js-marker-clusterer": "^1.0.0",
     "@globile/mobile-services": "^0.1.9",
     "@ngx-translate/core": "^12.1.2",
-    "@ngx-translate/http-loader": "^4.0.0"
+    "@ngx-translate/http-loader": "^4.0.0",
+    "@types/googlemaps": "^3.39.3"
   }
 }
