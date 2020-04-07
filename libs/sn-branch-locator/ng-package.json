@@ -22,6 +22,9 @@
     "js-marker-clusterer",
     "@types/googlemaps",
     "hammerjs",
-    "sn-common-lib"
+    "sn-common-lib",
+    "@globile/mobile-services",
+    "@ngx-translate/core",
+    "@ngx-translate/http-loader"
   ]
 }
