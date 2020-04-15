@@ -109,6 +109,12 @@ export class SnBranchInfoComponent implements OnInit {
   getHoursToClose(schedule) {
     const poiHours = this.getTodayTimeInformation(schedule);
     if (poiHours) {
+      if (poiHours === 'Closed') {
+        return {
+          text: this.translate.instant('branchLocator.details.closed'),
+          mode: 'CLOSED'
+        };
+      }
       const now = new Date(0, 0, 0, new Date().getHours(), new Date().getMinutes(), 0);
       const [start, end] = poiHours.split('-').map(res => res.split(':'));
       const startDate = new Date(0, 0, 0, Number(start[0]), Number(start[1]), 0);
