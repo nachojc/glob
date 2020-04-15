@@ -392,18 +392,20 @@ export class SnBranchLocatorComponent implements OnInit {
 
   onFilterApply(event) {
     this.filterCounts = event.count;
+    this.closeDirectionsPanel();
+    this.closeInfo();
     this.getBranchesByBounds();
   }
 
   showFilter() {
-    this.closeDrawer();
-    this.clearSelectedMarker();
     this.filterView.open();
   }
 
   hideFilter() {
     this.filterView.close();
-    this.openDrawer();
+    if (this.selectedBranch) {
+      this.openDrawer();
+    }
   }
 
   private roundCordinates(cord: number) {

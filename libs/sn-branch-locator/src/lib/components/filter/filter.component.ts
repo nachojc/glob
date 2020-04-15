@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { FilterService } from '../../services/filter/filter.service';
 import { FormGroup } from '@angular/forms';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
@@ -13,12 +13,14 @@ import { EventsAnalyticsVariables } from '../../constants/events-analytics-varia
 })
 export class FilterComponent implements OnInit {
 
-
+  @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
 
   public form: FormGroup;
   public selectedFilters = {};
   public isHideTurnOffButton = true;
+
+  private isFilterOpen: boolean = false;
 
   constructor(
     private snFilterService: FilterService,
@@ -33,12 +35,13 @@ export class FilterComponent implements OnInit {
   }
 
   private show(): void {
+    this.isFilterOpen = true;
     this.renderer.removeStyle(this.el.nativeElement, 'display');
     this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
-
   }
 
   private hide(): void {
+    this.isFilterOpen = false;
     this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
   }
 
