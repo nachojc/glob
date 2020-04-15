@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
-import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
+import { WindowRefService, GlobileSettingsService, BridgeAnalyticService } from '@globile/mobile-services';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class BranchSearchInputComponent implements OnInit {
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private windowRef: WindowRefService,
-    private globileSettings: GlobileSettingsService
+    private globileSettings: GlobileSettingsService,
+    private analyticsService: BridgeAnalyticService
   ) { }
 
   ngOnInit(): void {
@@ -39,10 +41,19 @@ export class BranchSearchInputComponent implements OnInit {
   initSearchBox(): void {
     this.searchBox = new this.windowRef['google'].maps.places.SearchBox(this.inputElementRef.nativeElement);
     this.searchBox.addListener('places_changed', () => {
-
       const places = this.searchBox.getPlaces();
       if (places && places.length > 0) {
         const place = places[0];
+
+        if (places.length > 1) {
+          this.sendPerformedSearch();
+        } else {
+          const sendEvent = EventsAnalyticsVariables.tapSearchResult;
+          sendEvent.TermSearched = this.inputElementRef.nativeElement.value ? this.inputElementRef.nativeElement.value : '';
+          sendEvent.ClickedResult = place.name ? place.name : '';
+          this.analyticsService.sendEvent(sendEvent);
+        }
+
         if (Boolean(place.geometry)) {
           const lat = place.geometry.location.lat();
           const lng = place.geometry.location.lng();
@@ -57,5 +68,18 @@ export class BranchSearchInputComponent implements OnInit {
     this.windowRef['google'].maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
       keyCode: 13
     });
+    this.sendPerformedSearch();
   }
+
+  searchBarClicked(): void {
+    const sendEvent = EventsAnalyticsVariables.clickSearchBar;
+    this.analyticsService.sendEvent(sendEvent);
+  }
+
+  sendPerformedSearch() {
+    const sendEvent = EventsAnalyticsVariables.performSearch;
+    this.analyticsService.sendEvent(sendEvent);
+    sendEvent.TermSearched = this.inputElementRef.nativeElement.value ? this.inputElementRef.nativeElement.value : '';
+  }
+
 }
