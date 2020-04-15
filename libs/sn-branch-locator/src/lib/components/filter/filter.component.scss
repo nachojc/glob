@@ -1,4 +1,4 @@
-@import '~sn-common-lib/styles/settings/colors';
+@import "~sn-common-lib/styles/settings/colors";
 
 @media (min-width: 640px) {
   .sn-filter-wrapper .sn-filter-footer.hide-web,
@@ -17,16 +17,15 @@
   }
   .filters-list-wrapper .filters-list .filter-item {
     ::ng-deep {
-      .sn-checkbox
-        .sn-checkbox-layout
-        .sn-inner-container
-        .sn-checkbox-frame
-        sn-icon.custom-icon {
+      .sn-checkbox .sn-checkbox-layout .sn-inner-container .sn-checkbox-frame sn-icon.custom-icon {
         vertical-align: bottom;
       }
     }
   }
   .sn-filter-wrapper {
+    position: absolute;
+    top: 0;
+    width: 100%;
     .turn-off-filter-container {
       margin: 5px auto 15px;
     }
@@ -190,10 +189,7 @@
 
   .filters-list .filter-item {
     ::ng-deep {
-      .sn-checkbox-checked
-        .sn-checkbox-layout
-        .sn-inner-container
-        .sn-checkbox-frame {
+      .sn-checkbox-checked .sn-checkbox-layout .sn-inner-container .sn-checkbox-frame {
         border: 0.1em solid $color-primary-santander;
         sn-icon.custom-icon {
           color: $color-primary-santander;
@@ -215,12 +211,14 @@
 
   .m-fadeOut {
     visibility: hidden;
+    display: none;
     opacity: 0;
     transition: visibility 0s linear 300ms, opacity 300ms;
   }
 
   .m-fadeIn {
     visibility: visible;
+    display: block;
     opacity: 1;
     transition: visibility 0s linear 0s, opacity 300ms;
   }
