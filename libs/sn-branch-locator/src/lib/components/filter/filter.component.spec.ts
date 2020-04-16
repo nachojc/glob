@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IconModule, CheckboxModule } from 'sn-common-lib';
 import { FilterService } from '../../services/filter/filter.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 
 describe('SnFilterComponent', () => {
@@ -21,13 +22,14 @@ describe('SnFilterComponent', () => {
         FormsModule,
         IconModule,
         CheckboxModule,
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        HttpClientTestingModule
       ],
       providers: [
         FilterService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

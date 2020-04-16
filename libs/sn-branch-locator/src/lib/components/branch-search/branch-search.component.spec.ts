@@ -6,6 +6,7 @@ import { MapsAPILoader, AgmCoreModule } from '@agm/core';
 import { ElementRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
+import { HttpClientModule } from '@angular/common/http';
 
 const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
@@ -47,9 +48,9 @@ const windowRef = {
 };
 
 const env = {
-    branchLocator: {
-      hasFilters: true,
-    }
+  branchLocator: {
+    hasFilters: true,
+  }
 };
 
 
@@ -63,7 +64,8 @@ describe('BranchSearchInputComponent', () => {
       imports: [
         IconModule,
         AgmCoreModule.forRoot(),
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        HttpClientModule
       ],
       providers: [
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
