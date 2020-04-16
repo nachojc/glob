@@ -1,13 +1,16 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
+import { BridgeAnalyticService } from '@globile/mobile-services';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 
 @Component({
   selector: 'sn-branch-info',
   templateUrl: './sn-branch-info.component.html',
   styleUrls: ['./sn-branch-info.component.scss']
 })
-export class SnBranchInfoComponent {
+export class SnBranchInfoComponent implements OnInit {
   private _branch: Branch;
   public isBranch = true;
   public todayHours: string;
@@ -43,7 +46,14 @@ export class SnBranchInfoComponent {
 
 
 
-  constructor(public translate: TranslateService) {
+  constructor(
+    public translate: TranslateService,
+    private analyticsService: BridgeAnalyticService
+  ) { }
+
+  ngOnInit(): void {
+    const sendView = ViewsAnalyticsVariables.detailScreen;
+    this.analyticsService.sendView(sendView);
   }
 
   contactBranch(phone: string) {
@@ -99,6 +109,12 @@ export class SnBranchInfoComponent {
   getHoursToClose(schedule) {
     const poiHours = this.getTodayTimeInformation(schedule);
     if (poiHours) {
+      if (poiHours === 'Closed') {
+        return {
+          text: this.translate.instant('branchLocator.details.closed'),
+          mode: 'CLOSED'
+        };
+      }
       const now = new Date(0, 0, 0, new Date().getHours(), new Date().getMinutes(), 0);
       const [start, end] = poiHours.split('-').map(res => res.split(':'));
       const startDate = new Date(0, 0, 0, Number(start[0]), Number(start[1]), 0);
@@ -216,5 +232,18 @@ export class SnBranchInfoComponent {
     });
 
     this.openDirectionsPanel.emit();
+  }
+
+  sendEvent(event) {
+    const sendEvent = EventsAnalyticsVariables.clickTabPicker;
+    sendEvent.BranchAtmType = event.tab.label ? event.tab.label : '';
+    sendEvent.BranchAtmName = event.tab.label ? event.tab.label : '';
+    sendEvent.TabName = this._branch.id ? this._branch.id : '';
+    this.analyticsService.sendEvent(sendEvent);
+  }
+
+  sendCall() {
+    const sendEvent = EventsAnalyticsVariables.clickCall;
+    this.analyticsService.sendEvent(sendEvent);
   }
 }

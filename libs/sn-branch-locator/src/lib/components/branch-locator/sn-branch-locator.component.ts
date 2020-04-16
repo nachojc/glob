@@ -25,6 +25,16 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
+import {
+  BridgeAnalyticService,
+  AnalyticsChannelEnum,
+  AnalyticsInitModel,
+  ComponentParamsModel,
+  NativeAnalyticsInitModel,
+  WebAnalyticsInitModel
+} from '@globile/mobile-services';
+import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -159,10 +169,26 @@ export class SnBranchLocatorComponent implements OnInit {
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
-    private platform: Platform
-  ) { }
+    private platform: Platform,
+    private analyticsService: BridgeAnalyticService
+  ) {
+    this.geoPosition
+      .watchPosition()
+      .pipe(first())
+      .subscribe((pos: Position) => {
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+      });
+  }
 
   ngOnInit(): void {
+    this.initAnalytics();
+
+    const sendView = ViewsAnalyticsVariables.mapScreen;
+    this.analyticsService.sendView(sendView);
+
     this.isMobile = this.platform.isMobile;
 
     this.branchService.onChange.subscribe(
@@ -205,14 +231,17 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   selectBranch = (branch: Branch) => {
+    const sendEvent = EventsAnalyticsVariables.clickBranchDetails;
+    this.analyticsService.sendEvent(sendEvent);
+
     const markerFound = this.branchMarkerList['_results'].find(
       marker => marker.label && marker.label.text === branch.id
     );
-    this.markerSelect(markerFound, branch);
+    this.markerSelect(markerFound, branch, false);
     this.selectedTabIndex = 0;
   }
 
-  markerSelect(selected: AgmMarker, branch: Branch) {
+  markerSelect(selected: AgmMarker, branch: Branch, sendEvent: boolean) {
     this.showDirectionsPanel = false;
     this.closeDrawer();
     this.clearSelectedMarker();
@@ -224,6 +253,13 @@ export class SnBranchLocatorComponent implements OnInit {
       userPosition: this.userPosition,
       marker: this.selectedBranch
     });
+
+    if (sendEvent) {
+      const event = EventsAnalyticsVariables.clickBranchIcon;
+      event.BranchAtmType = 'branch';
+      event.BranchAtmName = branch.id ? branch.id : '';
+      this.analyticsService.sendEvent(event);
+    }
 
     this.openMenu();
     this.openDrawer();
@@ -356,18 +392,20 @@ export class SnBranchLocatorComponent implements OnInit {
 
   onFilterApply(event) {
     this.filterCounts = event.count;
+    this.closeDirectionsPanel();
+    this.closeInfo();
     this.getBranchesByBounds();
   }
 
   showFilter() {
-    this.closeDrawer();
-    this.clearSelectedMarker();
     this.filterView.open();
   }
 
   hideFilter() {
     this.filterView.close();
-    this.openDrawer();
+    if (this.selectedBranch) {
+      this.openDrawer();
+    }
   }
 
   private roundCordinates(cord: number) {
@@ -439,4 +477,35 @@ export class SnBranchLocatorComponent implements OnInit {
       );
     }
   }
+
+  private initAnalytics() {
+    const analyticsConfig: AnalyticsInitModel = {
+      account: 'santander',
+      profile: 'globile',
+      environment: 'prod'
+    };
+    // TODO: Chnag to native whene have inplementation by core team
+    const channelConfig: WebAnalyticsInitModel = {
+      externalTealium: false
+    };
+    const componentParams: ComponentParamsModel = {
+      tealium_trace_id: 'testbr',
+      Component: 'branch locator',
+      ComponentVersion: '0.0.1',
+      AppType: 'Internal',
+      AppName: 'santander globile internal',
+      AppVersion: '0.0.1',
+      Language: 'spanish',
+      Country: 'ES'
+    };
+
+    this.analyticsService.setInitValues(
+      // TODO: Chnag to native whene have inplementation by core team
+      AnalyticsChannelEnum.WEB,
+      analyticsConfig,
+      channelConfig,
+      componentParams
+    );
+  }
+
 }

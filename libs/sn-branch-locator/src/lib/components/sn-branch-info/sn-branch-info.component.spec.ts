@@ -5,6 +5,7 @@ import { SnBranchInfoComponent } from './sn-branch-info.component';
 import { branchMock } from '../../helpers/branch.mock';
 import { TranslateModule } from '@ngx-translate/core';
 import { SnTabModule } from '../tabs/sn-tab.module';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SnBranchInfoComponent', () => {
   let component: SnBranchInfoComponent;
@@ -12,15 +13,16 @@ describe('SnBranchInfoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SnBranchInfoComponent ],
+      declarations: [SnBranchInfoComponent],
       imports: [
         SnTabModule,
         IconModule,
         OptionListModule,
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        HttpClientModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -38,7 +40,7 @@ describe('SnBranchInfoComponent', () => {
     });
 
     it('should set isbranch as false', () => {
-      component.branch = Object.assign({}, branchMock, {objectType: {code: 'atm'}});
+      component.branch = Object.assign({}, branchMock, { objectType: { code: 'atm' } });
       expect(component.isBranch).toBeFalsy();
     });
 
@@ -52,7 +54,7 @@ describe('SnBranchInfoComponent', () => {
     });
 
     it('should define products and attributes for atm', () => {
-      branchMock.atm = [Object.assign({}, branchMock, {objectType: {code: 'atm'}})];
+      branchMock.atm = [Object.assign({}, branchMock, { objectType: { code: 'atm' } })];
       component.branch = branchMock;
       expect(component.branch.atm[0].attributes[0]).toEqual('Cash withdraw');
       expect(component.branch.atm[0].attributes[1]).toEqual('CONTACTLESS');
