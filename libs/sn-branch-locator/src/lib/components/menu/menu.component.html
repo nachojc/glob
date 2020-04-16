@@ -1,8 +1,4 @@
-<div
-  class="panel panel-visible"
-  [@menuTrigger]="currentState"
-  (@menuTrigger.done)="animationEnd($event)"
->
+<div class="panel panel-visible" [@menuTrigger]="currentState" (@menuTrigger.done)="animationEnd($event)">
   <div class="close-button-wrapper">
     <button (click)="changeState()" class="menu-toggle">
       <sn-icon *ngIf="currentState === 'menuOpened'" icon="sn-SYS017"></sn-icon>
@@ -11,27 +7,20 @@
   </div>
 
   <section class="panel-wrapper">
-    <div
-      class="info-close-button-wrapper" [ngClass]="{ closed: !info }">
+    <div class="info-close-button-wrapper" [ngClass]="{ closed: !info }">
       <button class="info-close-button" (click)="closeInfo.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
     </div>
 
-    <div class="info-close-button-wrapper" [ngClass]="{ closed: !direction }">
-      <button
-        class="info-close-button"
-        (click)="closeDirectionsPanel.emit($event)"
-      >
+    <div class="info-close-button-wrapper" [ngClass]="{ closed: !direction || filter.isOpen }">
+      <button class="info-close-button" (click)="closeDirectionsPanel.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
     </div>
 
-    <div class="info-close-button-wrapper" [ngClass]="{ closed: filter }">
-      <button
-        class="info-close-button"
-        (click)="closeFilterPanel.emit($event)"
-      >
+    <div class="info-close-button-wrapper" [ngClass]="{ closed: !filter.isOpen }">
+      <button class="info-close-button" (click)="closeFilterPanel.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
     </div>
@@ -45,10 +34,7 @@
       <ng-content select="sn-branch-search"></ng-content>
     </div>
 
-    <div
-      class="search-results-wrapper"
-      [ngClass]="{ closed: !!info || !!direction }"
-    >
+    <div class="search-results-wrapper" [ngClass]="{ closed: !!info || !!direction }">
       <ng-content select="sn-branch-list"></ng-content>
     </div>
 
@@ -60,7 +46,7 @@
       <ng-content select="sn-branch-direction"></ng-content>
     </div>
 
-    <ng-content select="sn-filter" [ngClass]="{ closed: info || direction }"></ng-content>
+    <ng-content select="sn-filter" [ngClass]="{ closed: !filter.isOpen }"></ng-content>
   </section>
 
 </div>

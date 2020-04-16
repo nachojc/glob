@@ -203,7 +203,7 @@ describe('SnBranchLocatorComponent', () => {
         })
       }
     } as any;
-    component.markerSelect(selected, branchMock);
+    component.markerSelect(selected, branchMock, false);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toEqual(selected);
   });
