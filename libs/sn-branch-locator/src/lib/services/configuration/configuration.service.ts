@@ -34,7 +34,6 @@ export class ConfigurationService {
     this.branchLocatorEnv = globileSettings.branchLocator;
 
     this.activatedRoute.queryParams.pipe(first()).subscribe(
-
       params => {
 
         const viewType = params['view'] || this.paramDefaultView;

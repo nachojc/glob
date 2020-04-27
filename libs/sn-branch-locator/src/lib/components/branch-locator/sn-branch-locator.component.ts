@@ -35,6 +35,8 @@ import {
 } from '@globile/mobile-services';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import {ActivatedRoute} from '@angular/router';
+import {ConfigurationService} from '../../services/configuration/configuration.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -59,6 +61,7 @@ export class SnBranchLocatorComponent implements OnInit {
       };
     }
   }
+
   @Input()
   get defaultLang(): string {
     return this._defaultLang;
@@ -66,6 +69,7 @@ export class SnBranchLocatorComponent implements OnInit {
   set defaultLang(value: string) {
     this._defaultLang = value;
   }
+
   @Input()
   get address(): string {
     return this._address;
@@ -90,6 +94,7 @@ export class SnBranchLocatorComponent implements OnInit {
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
     OutputMarkerSelected
   >();
+
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
@@ -165,13 +170,14 @@ export class SnBranchLocatorComponent implements OnInit {
   currentLong: number;
   marker: any;
 
-
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform,
-    private analyticsService: BridgeAnalyticService
+    private analyticsService: BridgeAnalyticService,
+    private configuration: ConfigurationService,
   ) {
+
     this.geoPosition
       .watchPosition()
       .pipe(first())
@@ -284,9 +290,16 @@ export class SnBranchLocatorComponent implements OnInit {
       } else if (this.startingPosition && this.startingPosition.coordinates) {
         this.placeChange(this.startingPosition.coordinates);
       } else {
-        this.goToUserPositon();
+        this.goToUserPosition();
       }
-    });
+    },
+      (err) => {
+        this.configuration.settings$.subscribe((settings) => {
+          this.userPosition = { lat: settings.coords[0], lng: settings.coords[1]};
+          this.goToUserPosition();
+        });
+      }
+    );
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
@@ -430,7 +443,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.showDrawer = true;
   }
 
-  public goToUserPositon(): void {
+  public goToUserPosition(): void {
     if (this.userPosition) {
       this.map.api.panTo(this.userPosition).then(() => this.map.api.setZoom(this.zoom));
     }

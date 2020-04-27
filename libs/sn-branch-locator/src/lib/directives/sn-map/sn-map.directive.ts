@@ -5,9 +5,7 @@ import { AgmMap, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
   selector: '[snMap],agm-map'
 })
 export class SnMapDirective {
-
   constructor(public component: AgmMap, public api: GoogleMapsAPIWrapper) {
 
   }
-
 }

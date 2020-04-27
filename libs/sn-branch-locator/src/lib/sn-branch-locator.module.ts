@@ -28,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SnDirectionModule } from './directives/sn-direction/sn-direction.module';
 import { SnBranchDirectionComponent } from './components/sn-branch-direction/sn-branch-direction.component';
 import { SafePipe } from './pipes/safe.pipe';
-import { GlobileSettingsService } from '@globile/mobile-services';
+import { GlobileSettingsService, WindowRefService } from '@globile/mobile-services';
+import {SnBranchLocatorService} from './services/branch-locator/branch-locator.service';
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
@@ -70,7 +71,7 @@ export function LocalLoaderFactory(http: HttpClient, globileSettings: GlobileSet
     LoaderModule,
     SnDirectionModule
   ],
-  providers: [TranslateService, BridgeAnalyticService],
+  providers: [TranslateService, BridgeAnalyticService, SnBranchLocatorService],
   exports: [SnBranchLocatorComponent]
 })
 export class SnBranchLocatorModule { }

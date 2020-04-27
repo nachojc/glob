@@ -15,7 +15,6 @@ export class SnTabGroupComponent implements AfterContentInit, OnDestroy {
 
   @Input() startIndex: number;
 
-
   @Input()
   set selectIndex(value: number) {
     // this.selectedIndex = value;

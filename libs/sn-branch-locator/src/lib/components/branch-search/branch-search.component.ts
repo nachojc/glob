@@ -3,7 +3,6 @@ import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { WindowRefService, GlobileSettingsService, BridgeAnalyticService } from '@globile/mobile-services';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 
-
 @Component({
   selector: 'sn-branch-search',
   templateUrl: './branch-search.component.html',
@@ -24,7 +23,7 @@ export class BranchSearchInputComponent implements OnInit {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    private windowRef: WindowRefService,
+    @Inject(WindowRefService) private windowRef: WindowRefService,
     private globileSettings: GlobileSettingsService,
     private analyticsService: BridgeAnalyticService
   ) { }
