@@ -44,7 +44,7 @@ export class ConfigurationService {
             this.baseEndpoint = this.resolveConfigUrl(pos);
             this.fetchRemoteConfig(this.baseEndpoint, viewType);
           },
-          noLocationAvailableError => {
+          () => {
             this.baseEndpoint = this.resolveConfigUrl();
             this.fetchRemoteConfig(this.baseEndpoint, viewType);
           }
