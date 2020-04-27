@@ -290,6 +290,9 @@ export class SnBranchLocatorComponent implements OnInit {
       } else if (this.startingPosition && this.startingPosition.coordinates) {
         this.placeChange(this.startingPosition.coordinates);
       } else {
+        this.startingPosition = {
+          coordinates: this.userPosition
+        };
         this.goToUserPosition();
       }
     },
@@ -313,6 +316,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerMapToUser(callAPI: boolean = true, openNearest: boolean = false) {
+    this.placeChange(this.startingPosition.coordinates);
     this.mapReady();
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
@@ -399,6 +403,7 @@ export class SnBranchLocatorComponent implements OnInit {
     from(this.map.api.panTo(place))
       .pipe(switchMap(() => from(this.map.api.setZoom(this.zoom))))
       .subscribe(() => {
+        this.startingPosition.coordinates = place;
         this.getBranchesByBounds();
       });
   }
