@@ -66,5 +66,8 @@ typings/
 # next.js build output
 .next
 
+# webstorm, intellij
+.idea
+
 package-lock.json
 /.history
