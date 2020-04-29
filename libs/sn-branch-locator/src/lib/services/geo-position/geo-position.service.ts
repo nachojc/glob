@@ -45,7 +45,6 @@ export class GeoPositionService {
         this._observer$.next(pos);
       },
       (error) => {
-          // console.error('Position is not available', error);
           this._observer$.error(error);
       },
       {

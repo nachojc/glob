@@ -298,7 +298,7 @@ export class SnBranchLocatorComponent implements OnInit {
     },
       (err) => {
         this.configuration.settings$.subscribe((settings) => {
-          this.userPosition = { lat: settings.coords[0], lng: settings.coords[1]};
+          this.userPosition = { lat: settings.defaultCoords[0], lng: settings.defaultCoords[1]};
           this.goToUserPosition();
         });
       }

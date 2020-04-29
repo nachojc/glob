@@ -4,6 +4,11 @@ import { FormGroup } from '@angular/forms';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { BridgeAnalyticService } from '@globile/mobile-services';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import {SnBranchLocatorService} from '../../services/branch-locator/branch-locator.service';
+import {ConfigurationService} from '../../services/configuration/configuration.service';
+import {LocatorFilters, LocatorSettings} from '../../models/remote-config.model';
+import {Observable, of} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 
 
 @Component({
@@ -19,19 +24,26 @@ export class FilterComponent implements OnInit {
   public form: FormGroup;
   public selectedFilters = {};
   public isHideTurnOffButton = true;
-
   private isFilterOpen: boolean = false;
+
+  filters: LocatorFilters;
 
   constructor(
     private snFilterService: FilterService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private analyticsService: BridgeAnalyticService
+    private analyticsService: BridgeAnalyticService,
+    private configuration: ConfigurationService
   ) { }
 
   ngOnInit(): void {
     this.hide();
     this.form = this.snFilterService.initForm();
+    this.configuration.settings$.subscribe(
+      (settings ) => {
+        this.filters = settings.filters;
+      }
+    );
   }
 
   private show(): void {
@@ -85,11 +97,14 @@ export class FilterComponent implements OnInit {
     }
   }
 
+  public getFilterIcon(code: string): string {
+    return 'sn-BAN005'; // todo : implement
+  }
+
   public switchFilterButton(): void {
     this.selectedFilters = {};
     this.isHideTurnOffButton = true;
     const sendEvent = EventsAnalyticsVariables.tapCleanFilters;
     this.analyticsService.sendEvent(sendEvent);
   }
-
 }
