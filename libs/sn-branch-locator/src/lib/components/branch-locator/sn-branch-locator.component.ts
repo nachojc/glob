@@ -218,7 +218,6 @@ export class SnBranchLocatorComponent implements OnInit {
     );
   }
 
-
   getBranchesByCoordinates(
     coords: LatLngLiteral = this.userPosition,
     openNearest: boolean = false
@@ -416,6 +415,9 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   showFilter() {
+    // if not attached
+    // attach form
+
     this.filterView.open();
   }
 

@@ -38,7 +38,9 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.hide();
-    this.form = this.snFilterService.initForm();
+    this.snFilterService.initForm().subscribe((form) => {
+      this.form = form;
+    });
     this.configuration.settings$.subscribe(
       (settings ) => {
         this.filters = settings.filters;

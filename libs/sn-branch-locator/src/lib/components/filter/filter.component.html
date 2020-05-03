@@ -1,4 +1,6 @@
-<form class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="apply()">
+<form
+  *ngIf="form"
+  class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="apply()">
   <!-- <div class="sn-filter-header">
     <div class="info-close-button-wrapper">
       <button class="info-close-button" (click)="close()">
@@ -57,7 +59,7 @@
         </div>
       </div>
     </div>-->
-    <div><!-- <div formGroupName="BRANCH"> -->
+    <div formGroupName="BRANCH"><!-- <div formGroupName="BRANCH"> -->
       <h2 class="title">
         {{ "branchLocator.title.pointOfInterest" | translate }}
       </h2>
@@ -68,7 +70,8 @@
             <sn-checkbox
               icon="{{getFilterIcon(filter.code)}}"
               (change)="selectFilter($event)"
-            ><!-- formControlName="{{filter.code}}"-->
+              formControlName="{{filter.code}}"
+            ><!-- -->
               {{filter.code}} <!-- todo: translate -->
             </sn-checkbox>
           </div>
@@ -77,18 +80,18 @@
       </div>
     </div>
 
-    <div><!--<div formGroupName="CORRESPONSALES">-->
+    <div formGroupName="CORRESPONSALES"><!--<div formGroupName="CORRESPONSALES">-->
       <h2 class="title">
         {{ "branchLocator.filters.correspondents" | translate }}
       </h2>
       <div class="filters-list-wrapper">
         <div class="filters-list" *ngIf="filters">
           <div class="filter-item"  *ngFor="let filter of filters.features">
-
             <sn-checkbox
               icon="{{getFilterIcon(filter.code)}}"
               (change)="selectFilter($event)"
-            ><!-- formControlName="{{filter.code}}"-->
+              formControlName="{{filter.code}}"
+            ><!-- -->
               {{filter.code}}
             </sn-checkbox>
           </div>
