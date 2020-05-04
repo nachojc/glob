@@ -1,14 +1,17 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject, OnDestroy} from '@angular/core';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { WindowRefService, GlobileSettingsService, BridgeAnalyticService } from '@globile/mobile-services';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import {ConfigurationService} from '../../services/configuration/configuration.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-search',
   templateUrl: './branch-search.component.html',
   styleUrls: ['./branch-search.component.scss']
 })
-export class BranchSearchInputComponent implements OnInit {
+export class BranchSearchInputComponent implements OnInit, OnDestroy {
 
   @Input() showReCenter: boolean;
   @Output() reCenter = new EventEmitter<MouseEvent>();
@@ -20,12 +23,15 @@ export class BranchSearchInputComponent implements OnInit {
   @ViewChild('in', { static: false }) public inputElementRef: ElementRef<HTMLInputElement>;
   searchBox: google.maps.places.SearchBox;
   hasFilters: boolean;
+  private unsubscribe$: Subject<void>;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
     @Inject(WindowRefService) private windowRef: WindowRefService,
     private globileSettings: GlobileSettingsService,
-    private analyticsService: BridgeAnalyticService
+    private analyticsService: BridgeAnalyticService,
+    private configuration: ConfigurationService
+
   ) { }
 
   ngOnInit(): void {
@@ -34,8 +40,19 @@ export class BranchSearchInputComponent implements OnInit {
         this.initSearchBox();
       });
 
-    this.hasFilters = this.globileSettings.branchLocator.hasFilters;
+    this.configuration.settings$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(settings => {
+
+      const allFilters = !settings.filters ? [] : settings.filters.types.concat(settings.filters.types);
+      this.hasFilters =   allFilters.length ? true : false;
+    });
   }
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 
   initSearchBox(): void {
     this.searchBox = new this.windowRef['google'].maps.places.SearchBox(this.inputElementRef.nativeElement);
@@ -80,5 +97,4 @@ export class BranchSearchInputComponent implements OnInit {
     this.analyticsService.sendEvent(sendEvent);
     sendEvent.TermSearched = this.inputElementRef.nativeElement.value ? this.inputElementRef.nativeElement.value : '';
   }
-
 }

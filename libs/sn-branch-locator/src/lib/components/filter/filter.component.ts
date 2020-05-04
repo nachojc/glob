@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
+import {Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input, OnDestroy} from '@angular/core';
 import { FilterService } from '../../services/filter/filter.service';
 import { FormGroup } from '@angular/forms';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
@@ -7,8 +7,8 @@ import { EventsAnalyticsVariables } from '../../constants/events-analytics-varia
 import {SnBranchLocatorService} from '../../services/branch-locator/branch-locator.service';
 import {ConfigurationService} from '../../services/configuration/configuration.service';
 import {LocatorFilters, LocatorSettings} from '../../models/remote-config.model';
-import {Observable, of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+import {Observable, of, Subject} from 'rxjs';
+import {mergeMap, takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -16,7 +16,8 @@ import {mergeMap} from 'rxjs/operators';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, OnDestroy {
+
 
   @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
@@ -25,6 +26,7 @@ export class FilterComponent implements OnInit {
   public selectedFilters = {};
   public isHideTurnOffButton = true;
   private isFilterOpen: boolean = false;
+  private unsubscribe$: Subject<void>;
 
   filters: LocatorFilters;
 
@@ -38,15 +40,25 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.hide();
-    this.snFilterService.initForm().subscribe((form) => {
+    this.snFilterService.initForm()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((form) => {
       this.form = form;
     });
-    this.configuration.settings$.subscribe(
+    this.configuration.settings$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
       (settings ) => {
         this.filters = settings.filters;
       }
     );
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 
   private show(): void {
     this.isFilterOpen = true;
