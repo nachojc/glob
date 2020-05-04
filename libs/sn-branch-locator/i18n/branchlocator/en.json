@@ -16,7 +16,8 @@
     },
     "filtersButtons": {
       "turnOffFilters": "Turn off Filters",
-      "applyfFilters": "Apply Filters"
+      "applyfFilters": "Apply Filters",
+      "backToList" : "Back to list"
     },
     "filters": {
       "applyFilter": "APPLY FILTERS",
@@ -44,6 +45,7 @@
       "super": "Super7 24",
       "oxxo": "Oxxo",
       "otherAtm": "Non Santander ATMs"
+
     },
     "shared": {
       "branch": "Branch",

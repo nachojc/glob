@@ -37,6 +37,7 @@ import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variabl
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 import {ActivatedRoute} from '@angular/router';
 import {ConfigurationService} from '../../services/configuration/configuration.service';
+import {TranslateService, TranslateStore} from '@ngx-translate/core';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -163,7 +164,6 @@ export class SnBranchLocatorComponent implements OnInit {
 
   public addressLat: number;
   public addressLng: number;
-
   public durationsLoaded: boolean;
 
   currentLat: number;
@@ -176,7 +176,10 @@ export class SnBranchLocatorComponent implements OnInit {
     private platform: Platform,
     private analyticsService: BridgeAnalyticService,
     private configuration: ConfigurationService,
+    private translateService: TranslateService,
   ) {
+
+    const translations = this.translateService.translations;
 
     this.geoPosition
       .watchPosition()
@@ -415,10 +418,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   showFilter() {
-    // if not attached
-    // attach form
-
-    this.filterView.open();
+    this.filterView.toggle();
   }
 
   hideFilter() {

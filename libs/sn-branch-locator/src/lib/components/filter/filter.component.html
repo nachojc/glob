@@ -1,6 +1,6 @@
 <form
   *ngIf="form"
-  class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="apply()">
+  class="sn-filter-wrapper" [formGroup]="form" (ngSubmit)="close()">
   <!-- <div class="sn-filter-header">
     <div class="info-close-button-wrapper">
       <button class="info-close-button" (click)="close()">
@@ -29,7 +29,8 @@
   </div>
   <div class="aply-filter-container hide-mobile">
     <button sn-button-strech type="submit">
-      {{ "branchLocator.filtersButtons.applyfFilters" | translate }}
+     <!-- {{ "branchLocator.filtersButtons.applyfFilters" | translate }}-->
+      Back to list
     </button>
   </div>
   <div class="sn-filter-content">
@@ -103,6 +104,7 @@
   <div class="sn-filter-footer hide-web">
     <button sn-button type="submit">
       {{ "branchLocator.filters.applyFilter" | translate }}
+
     </button>
   </div>
 </form>

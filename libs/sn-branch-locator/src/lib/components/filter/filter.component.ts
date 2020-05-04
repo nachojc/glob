@@ -1,6 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
 import {FilterService} from '../../services/filter/filter.service';
-import {FormGroup} from '@angular/forms';
+import {FormGroup, NgForm} from '@angular/forms';
 import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
 import {BridgeAnalyticService} from '@globile/mobile-services';
 import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
@@ -14,7 +14,6 @@ import {take} from 'rxjs/operators';
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
-
   @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
 
@@ -49,7 +48,6 @@ export class FilterComponent implements OnInit {
     );
   }
 
-
   private show(): void {
     this.isFilterOpen = true;
     this.renderer.removeStyle(this.el.nativeElement, 'display');
@@ -65,7 +63,7 @@ export class FilterComponent implements OnInit {
     this.hide();
   }
 
-  public apply(): void {
+  public apply(hide: boolean = true): void {
     const sendEvent = EventsAnalyticsVariables.tapApplyFilters;
     this.analyticsService.sendEvent(sendEvent);
     this.snFilterService.applyChanges();
@@ -73,7 +71,18 @@ export class FilterComponent implements OnInit {
       count: this.snFilterService.count,
       values: this.snFilterService.filterParams
     });
-    this.hide();
+
+    if (hide) {
+      this.hide();
+    }
+  }
+
+  public toggle(): void {
+     if (!this.isFilterOpen) {
+        this.show();
+     } else {
+       this.hide();
+     }
   }
 
   public open(): void {
@@ -99,6 +108,8 @@ export class FilterComponent implements OnInit {
     } else {
       this.isHideTurnOffButton = false;
     }
+
+    this.apply(false);
   }
 
   public getFilterIcon(code: string): string {
@@ -110,5 +121,7 @@ export class FilterComponent implements OnInit {
     this.isHideTurnOffButton = true;
     const sendEvent = EventsAnalyticsVariables.tapCleanFilters;
     this.analyticsService.sendEvent(sendEvent);
+
+    this.apply(false);
   }
 }

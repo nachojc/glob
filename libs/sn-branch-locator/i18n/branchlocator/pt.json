@@ -16,7 +16,8 @@
         },
         "filtersButtons": {
             "turnOffFilters": "Desligar Filtros",
-            "applyfFilters": "Aplicar Filtros"
+            "applyfFilters": "Aplicar Filtros",
+          "backToList" : "Lista de resultados"
         },
         "filters": {
             "applyFilter": "APLIQUE FILTROS",
@@ -44,6 +45,9 @@
             "super": "Super7 24",
             "oxxo": "Oxxo",
             "otherAtm": "Outros"
+
+
+
         },
         "shared": {
             "branch": "Agências",

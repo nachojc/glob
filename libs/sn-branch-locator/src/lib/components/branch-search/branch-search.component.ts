@@ -41,7 +41,6 @@ export class BranchSearchInputComponent implements OnInit {
     this.configuration.settings$
       .pipe(take(1))
       .subscribe(settings => {
-
       const allFilters = !settings.filters ? [] : settings.filters.types.concat(settings.filters.types);
       this.hasFilters =   allFilters.length ? true : false;
     });
