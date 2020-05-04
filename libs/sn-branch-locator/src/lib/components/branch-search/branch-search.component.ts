@@ -1,17 +1,16 @@
-import {Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject, OnDestroy} from '@angular/core';
-import { MapsAPILoader, LatLngLiteral } from '@agm/core';
-import { WindowRefService, GlobileSettingsService, BridgeAnalyticService } from '@globile/mobile-services';
-import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {LatLngLiteral, MapsAPILoader} from '@agm/core';
+import {BridgeAnalyticService, GlobileSettingsService, WindowRefService} from '@globile/mobile-services';
+import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
 import {ConfigurationService} from '../../services/configuration/configuration.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-search',
   templateUrl: './branch-search.component.html',
   styleUrls: ['./branch-search.component.scss']
 })
-export class BranchSearchInputComponent implements OnInit, OnDestroy {
+export class BranchSearchInputComponent implements OnInit {
 
   @Input() showReCenter: boolean;
   @Output() reCenter = new EventEmitter<MouseEvent>();
@@ -23,7 +22,6 @@ export class BranchSearchInputComponent implements OnInit, OnDestroy {
   @ViewChild('in', { static: false }) public inputElementRef: ElementRef<HTMLInputElement>;
   searchBox: google.maps.places.SearchBox;
   hasFilters: boolean;
-  private unsubscribe$: Subject<void>;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -41,16 +39,12 @@ export class BranchSearchInputComponent implements OnInit, OnDestroy {
       });
 
     this.configuration.settings$
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(take(1))
       .subscribe(settings => {
 
       const allFilters = !settings.filters ? [] : settings.filters.types.concat(settings.filters.types);
       this.hasFilters =   allFilters.length ? true : false;
     });
-  }
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
 

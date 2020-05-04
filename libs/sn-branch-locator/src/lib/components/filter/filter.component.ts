@@ -1,23 +1,19 @@
-import {Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input, OnDestroy} from '@angular/core';
-import { FilterService } from '../../services/filter/filter.service';
-import { FormGroup } from '@angular/forms';
-import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
-import { BridgeAnalyticService } from '@globile/mobile-services';
-import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
-import {SnBranchLocatorService} from '../../services/branch-locator/branch-locator.service';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
+import {FilterService} from '../../services/filter/filter.service';
+import {FormGroup} from '@angular/forms';
+import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
+import {BridgeAnalyticService} from '@globile/mobile-services';
+import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
 import {ConfigurationService} from '../../services/configuration/configuration.service';
-import {LocatorFilters, LocatorSettings} from '../../models/remote-config.model';
-import {Observable, of, Subject} from 'rxjs';
-import {mergeMap, takeUntil} from 'rxjs/operators';
-
+import {LocatorFilters} from '../../models/remote-config.model';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'sn-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit, OnDestroy {
-
+export class FilterComponent implements OnInit {
 
   @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
@@ -26,7 +22,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   public selectedFilters = {};
   public isHideTurnOffButton = true;
   private isFilterOpen: boolean = false;
-  private unsubscribe$: Subject<void>;
 
   filters: LocatorFilters;
 
@@ -41,22 +36,17 @@ export class FilterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.hide();
     this.snFilterService.initForm()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(take(1))
       .subscribe((form) => {
       this.form = form;
     });
     this.configuration.settings$
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(take(1))
       .subscribe(
       (settings ) => {
         this.filters = settings.filters;
       }
     );
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
 
