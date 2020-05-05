@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
@@ -39,6 +39,7 @@ export class SnBranchLocatorService {
    * @memberOf SnBranchLocatorService
    */
   public getBranchesByCoords(coords: LatLngLiteral): void {
+    console.log('BLA - getBranchesByCoords()');
     if (!coords) {
       this._observer$.next([]);
       return;
@@ -59,6 +60,7 @@ export class SnBranchLocatorService {
     southWest: LatLngLiteral,
     coords?: LatLngLiteral
   ): void {
+    console.log('BLA - getBranchesByBounds');
     if (!this._initPosition) {
       this.setApiURL(coords);
     }
@@ -80,6 +82,7 @@ export class SnBranchLocatorService {
   public getClosestBranchByTextQuery(text: string) {
     return this.geoPositionService.getPositionByText(text).pipe(
       flatMap(coords => {
+        console.log('BLA - getClosestBranchByTextQuery');
         const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
         if (!this._initPosition) {
           this.setApiURL({ lat: coords.lat, lng: coords.lng });
@@ -103,6 +106,7 @@ export class SnBranchLocatorService {
   }
 
   private groupAtmToBranch(array: Branch[]): Branch[] {
+    console.log('BLA - groupAtmToBranch');
     return array.reduce((poiArray, currentValue) => {
       const index = poiArray.findIndex(
         el => el.distanceInKm.toFixed(2) === currentValue.distanceInKm.toFixed(2)

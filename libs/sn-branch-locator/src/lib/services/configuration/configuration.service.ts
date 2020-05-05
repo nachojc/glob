@@ -67,6 +67,7 @@ export class ConfigurationService {
       )
       .subscribe(response => {
         const settings = this.buildSettings(response);
+        console.log('CONFIG - fetchRemoteConfig -> next', settings);
         this.settings.next(settings);
       });
   }
@@ -95,15 +96,15 @@ export class ConfigurationService {
 
     const features = response.filters.featurePOI;
     if (features && features !== {}) {
-        for (const filter in features) {
-          if (features[filter].visible) {
-            settings.filters.features.push({
-              code: filter,
-              active: features[filter].active
-            });
-          }
+      for (const filter in features) {
+        if (features[filter].visible) {
+          settings.filters.features.push({
+            code: filter,
+            active: features[filter].active
+          });
         }
       }
+    }
 
     return settings;
   }

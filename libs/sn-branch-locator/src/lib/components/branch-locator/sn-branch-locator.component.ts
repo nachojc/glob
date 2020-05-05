@@ -35,9 +35,8 @@ import {
 } from '@globile/mobile-services';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
-import {ActivatedRoute} from '@angular/router';
-import {ConfigurationService} from '../../services/configuration/configuration.service';
-import {TranslateService, TranslateStore} from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { ConfigurationService } from '../../services/configuration/configuration.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -193,6 +192,8 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit()');
+
     this.initAnalytics();
 
     const sendView = ViewsAnalyticsVariables.mapScreen;
@@ -300,7 +301,7 @@ export class SnBranchLocatorComponent implements OnInit {
     },
       (err) => {
         this.configuration.settings$.subscribe((settings) => {
-          this.userPosition = { lat: settings.defaultCoords[0], lng: settings.defaultCoords[1]};
+          this.userPosition = { lat: settings.defaultCoords[0], lng: settings.defaultCoords[1] };
           this.goToUserPosition();
         });
       }
