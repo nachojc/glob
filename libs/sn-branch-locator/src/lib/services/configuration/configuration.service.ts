@@ -69,7 +69,6 @@ export class ConfigurationService {
       )
       .subscribe(response => {
         const settings = this.buildSettings(response, viewType, coordinates, address);
-        console.log('CONFIG - fetchRemoteConfig -> next', settings);
         this.settings.next(settings);
       });
   }

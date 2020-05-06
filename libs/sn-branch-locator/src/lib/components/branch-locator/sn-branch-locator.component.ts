@@ -158,12 +158,12 @@ export class SnBranchLocatorComponent implements OnInit {
 
   ngOnInit(): void {
     this.configuration.settings$.subscribe((settings) => {
-      console.log('AppComponent', settings);
 
       // To set the languaje
       const browserLang = navigator.language || window.navigator['userLanguage'];
       this.defaultLang = browserLang.substring(0, 2);
       this.translateService.setDefaultLang(this.defaultLang);
+
       if (
         settings.paramView !== 'defaultView'
         && (settings.paramView === 'en' || settings.paramView === 'es' || settings.paramView === 'pl' || settings.paramView === 'pt')
@@ -171,26 +171,6 @@ export class SnBranchLocatorComponent implements OnInit {
         this.translateService.use(settings.paramView);
       } else {
         this.translateService.use(this.defaultLang);
-      }
-
-      // To set the coords if they come in the params
-      if (settings.paramCoordinates !== '') {
-        const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
-        const coors: LatLngLiteral = {
-          lat: Number(coorsArray[0]),
-          lng: Number(coorsArray[1])
-        };
-        this.startingPosition = {
-          coordinates: coors
-        };
-      }
-
-      // To set the coords by text if it comes from the params
-      if (settings.paramAddress !== '') {
-        this._address = settings.paramAddress;
-        this.startingPosition = {
-          text: settings.paramAddress
-        };
       }
 
     });
@@ -282,31 +262,56 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   mapReady(): void {
-    this.geoPosition.getCurrentPosition().subscribe((pos: Position) => {
-      this.userPosition = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude
-      };
-      if (this.startingPosition && this.startingPosition.text) {
-        this.geoPosition
-          .getPositionByText(this.startingPosition.text)
-          .subscribe(coords => this.placeChange(coords));
-      } else if (this.startingPosition && this.startingPosition.coordinates) {
-        this.placeChange(this.startingPosition.coordinates);
-      } else {
-        this.startingPosition = {
-          coordinates: this.userPosition
+    this.configuration.settings$.subscribe((settings) => {
+
+      this.geoPosition.getCurrentPosition().subscribe((pos: Position) => {
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
         };
-        this.goToUserPosition();
-      }
-    },
-      (err) => {
-        this.configuration.settings$.subscribe((settings) => {
-          this.userPosition = { lat: settings.defaultCoords[0], lng: settings.defaultCoords[1] };
+
+        if (settings.paramCoordinates !== '') {
+          const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
+          const coors: LatLngLiteral = {
+            lat: Number(coorsArray[0]),
+            lng: Number(coorsArray[1])
+          };
+          this.startingPosition = {
+            coordinates: coors
+          };
+        }
+
+        if (settings.paramAddress !== '') {
+          this._address = settings.paramAddress;
+          this.startingPosition = {
+            text: settings.paramAddress
+          };
+        }
+
+        if (this.startingPosition && this.startingPosition.text) {
+          this.geoPosition
+            .getPositionByText(this.startingPosition.text)
+            .subscribe(coords => this.placeChange(coords));
+        } else if (this.startingPosition && this.startingPosition.coordinates) {
+          this.placeChange(this.startingPosition.coordinates);
+        } else {
+          this.startingPosition = {
+            coordinates: this.userPosition
+          };
           this.goToUserPosition();
-        });
-      }
-    );
+        }
+      },
+        (err) => {
+          // tslint:disable-next-line: no-shadowed-variable
+          this.configuration.settings$.subscribe((settings) => {
+            this.userPosition = { lat: settings.defaultCoords[0], lng: settings.defaultCoords[1] };
+            this.goToUserPosition();
+          });
+        }
+      );
+
+    });
+
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
