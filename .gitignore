@@ -68,3 +68,7 @@ typings/
 
 package-lock.json
 /.history
+
+# webstorm, intellij
+.idea
+
