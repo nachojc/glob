@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { QueryParamsService } from './query-params.service';
+import { ConfigurationService } from './configuration.service';
 
-describe('QueryParamsService', () => {
+describe('ConfigurationService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: QueryParamsService = TestBed.get(QueryParamsService);
+    const service: ConfigurationService = TestBed.get(ConfigurationService);
     expect(service).toBeTruthy();
   });
 });

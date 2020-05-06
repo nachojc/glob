@@ -35,6 +35,9 @@ import {
 } from '@globile/mobile-services';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import { TranslateService, TranslateStore } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { ConfigurationService } from '../../services/configuration/configuration.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -42,42 +45,6 @@ import { EventsAnalyticsVariables } from '../../constants/events-analytics-varia
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent implements OnInit {
-  @Input()
-  get coordinates(): string {
-    return this._coordinates;
-  }
-  set coordinates(value: string) {
-    if (value) {
-      this._coordinates = value;
-      const coorsArray = value.replace('{', '').replace('}', '').split(',');
-      const coors: LatLngLiteral = {
-        lat: Number(coorsArray[0]),
-        lng: Number(coorsArray[1])
-      };
-      this.startingPosition = {
-        coordinates: coors
-      };
-    }
-  }
-  @Input()
-  get defaultLang(): string {
-    return this._defaultLang;
-  }
-  set defaultLang(value: string) {
-    this._defaultLang = value;
-  }
-  @Input()
-  get address(): string {
-    return this._address;
-  }
-  set address(value: string) {
-    if (value) {
-      this._address = value;
-      this.startingPosition = {
-        text: value
-      };
-    }
-  }
 
   @Input()
   get optionalFullScreenControl(): boolean {
@@ -90,6 +57,7 @@ export class SnBranchLocatorComponent implements OnInit {
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
     OutputMarkerSelected
   >();
+
   @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
 
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
@@ -131,6 +99,7 @@ export class SnBranchLocatorComponent implements OnInit {
       width: 32,
       backgroundPosition: '-4px 2px'
     }
+
   ];
 
   public userPosition: LatLngLiteral;
@@ -158,20 +127,25 @@ export class SnBranchLocatorComponent implements OnInit {
 
   public addressLat: number;
   public addressLng: number;
-
   public durationsLoaded: boolean;
 
+  public defaultLang: string = '';
+  public address: string = '';
   currentLat: number;
   currentLong: number;
   marker: any;
-
 
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform,
-    private analyticsService: BridgeAnalyticService
+    private analyticsService: BridgeAnalyticService,
+    private configuration: ConfigurationService,
+    private translateService: TranslateService,
   ) {
+
+    const translations = this.translateService.translations;
+
     this.geoPosition
       .watchPosition()
       .pipe(first())
@@ -184,6 +158,24 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.configuration.settings$.subscribe((settings) => {
+
+      // To set the languaje
+      const browserLang = navigator.language || window.navigator['userLanguage'];
+      this.defaultLang = browserLang.substring(0, 2);
+      this.translateService.setDefaultLang(this.defaultLang);
+
+      if (
+        settings.paramView !== 'defaultView'
+        && (settings.paramView === 'en' || settings.paramView === 'es' || settings.paramView === 'pl' || settings.paramView === 'pt')
+      ) {
+        this.translateService.use(settings.paramView);
+      } else {
+        this.translateService.use(this.defaultLang);
+      }
+
+    });
+
     this.initAnalytics();
 
     const sendView = ViewsAnalyticsVariables.mapScreen;
@@ -211,7 +203,6 @@ export class SnBranchLocatorComponent implements OnInit {
       }
     );
   }
-
 
   getBranchesByCoordinates(
     coords: LatLngLiteral = this.userPosition,
@@ -272,24 +263,56 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   mapReady(): void {
-    this.geoPosition.getCurrentPosition().subscribe((pos: Position) => {
-      this.userPosition = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude
-      };
-      if (this.startingPosition && this.startingPosition.text) {
-        this.geoPosition
-          .getPositionByText(this.startingPosition.text)
-          .subscribe(coords => this.placeChange(coords));
-      } else if (this.startingPosition && this.startingPosition.coordinates) {
-        this.placeChange(this.startingPosition.coordinates);
-      } else {
-        this.startingPosition = {
-          coordinates: this.userPosition
+    this.configuration.settings$.subscribe((settings) => {
+
+      this.geoPosition.getCurrentPosition().subscribe((pos: Position) => {
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
         };
-        this.goToUserPositon();
-      }
+
+        if (settings.paramCoordinates !== '') {
+          const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
+          const coors: LatLngLiteral = {
+            lat: Number(coorsArray[0]),
+            lng: Number(coorsArray[1])
+          };
+          this.startingPosition = {
+            coordinates: coors
+          };
+        }
+
+        if (settings.paramAddress !== '') {
+          this._address = settings.paramAddress;
+          this.startingPosition = {
+            text: settings.paramAddress
+          };
+        }
+
+        if (this.startingPosition && this.startingPosition.text) {
+          this.geoPosition
+            .getPositionByText(this.startingPosition.text)
+            .subscribe(coords => this.placeChange(coords));
+        } else if (this.startingPosition && this.startingPosition.coordinates) {
+          this.placeChange(this.startingPosition.coordinates);
+        } else {
+          this.startingPosition = {
+            coordinates: this.userPosition
+          };
+          this.goToUserPosition();
+        }
+      },
+        (err) => {
+          // tslint:disable-next-line: no-shadowed-variable
+          this.configuration.settings$.subscribe((settings) => {
+            this.userPosition = { lat: settings.defaultCoords[0], lng: settings.defaultCoords[1] };
+            this.goToUserPosition();
+          });
+        }
+      );
+
     });
+
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
@@ -403,7 +426,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   showFilter() {
-    this.filterView.open();
+    this.filterView.toggle();
   }
 
   hideFilter() {
@@ -435,7 +458,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.showDrawer = true;
   }
 
-  public goToUserPositon(): void {
+  public goToUserPosition(): void {
     if (this.userPosition) {
       this.map.api.panTo(this.userPosition).then(() => this.map.api.setZoom(this.zoom));
     }

@@ -16,7 +16,8 @@
     },
     "filtersButtons": {
       "turnOffFilters": "Turn off Filters",
-      "applyfFilters": "Apply Filters"
+      "applyfFilters": "Apply Filters",
+      "backToList" : "Back to list"
     },
     "filters": {
       "applyFilter": "APPLY FILTERS",
@@ -43,7 +44,12 @@
       "telecomm": "Telecomm",
       "super": "Super7 24",
       "oxxo": "Oxxo",
-      "otherAtm": "Non Santander ATMs"
+      "otherAtm": "Non Santander ATMs",
+      "options" : {
+          "FILTERWORKCAFE" : "Dominik's Work Cafe!"
+      }
+
+
     },
     "shared": {
       "branch": "Branch",

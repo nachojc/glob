@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class SnBranchLocatorService {
     globileSettings: GlobileSettingsService,
     public http: HttpClient,
     private filterservice: FilterService,
-    public windowRef: WindowRefService,
+    @Inject(WindowRefService) windowRef: WindowRefService,
     private geoPositionService: GeoPositionService
   ) {
     this.branchLocator = globileSettings.branchLocator;
@@ -167,6 +167,7 @@ export class SnBranchLocatorService {
     const d = R * c;
     return d;
   }
+
   private setApiURL(coords?: LatLngLiteral) {
     this._initPosition = coords;
     const pos0 = this.getDistance(this.branchLocator.endpoints[0]);

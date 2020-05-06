@@ -5,7 +5,6 @@ import { ButtonModule, CheckboxModule, IconModule } from 'sn-common-lib';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-
 @NgModule({
   declarations: [FilterComponent],
   imports: [

@@ -1,8 +1,9 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, Inject } from '@angular/core';
-import { MapsAPILoader, LatLngLiteral } from '@agm/core';
-import { WindowRefService, GlobileSettingsService, BridgeAnalyticService } from '@globile/mobile-services';
-import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
-
+import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {LatLngLiteral, MapsAPILoader} from '@agm/core';
+import {BridgeAnalyticService, GlobileSettingsService, WindowRefService} from '@globile/mobile-services';
+import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
+import {ConfigurationService} from '../../services/configuration/configuration.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-search',
@@ -24,9 +25,11 @@ export class BranchSearchInputComponent implements OnInit {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    private windowRef: WindowRefService,
+    @Inject(WindowRefService) private windowRef: WindowRefService,
     private globileSettings: GlobileSettingsService,
-    private analyticsService: BridgeAnalyticService
+    private analyticsService: BridgeAnalyticService,
+    private configuration: ConfigurationService
+
   ) { }
 
   ngOnInit(): void {
@@ -35,8 +38,14 @@ export class BranchSearchInputComponent implements OnInit {
         this.initSearchBox();
       });
 
-    this.hasFilters = this.globileSettings.branchLocator.hasFilters;
+    this.configuration.settings$
+      .pipe(take(1))
+      .subscribe(settings => {
+      const allFilters = !settings.filters ? [] : settings.filters.types.concat(settings.filters.types);
+      this.hasFilters =   allFilters.length ? true : false;
+    });
   }
+
 
   initSearchBox(): void {
     this.searchBox = new this.windowRef['google'].maps.places.SearchBox(this.inputElementRef.nativeElement);
@@ -81,5 +90,4 @@ export class BranchSearchInputComponent implements OnInit {
     this.analyticsService.sendEvent(sendEvent);
     sendEvent.TermSearched = this.inputElementRef.nativeElement.value ? this.inputElementRef.nativeElement.value : '';
   }
-
 }

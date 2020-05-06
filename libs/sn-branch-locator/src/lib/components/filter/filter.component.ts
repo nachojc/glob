@@ -1,10 +1,13 @@
-import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
-import { FilterService } from '../../services/filter/filter.service';
-import { FormGroup } from '@angular/forms';
-import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
-import { BridgeAnalyticService } from '@globile/mobile-services';
-import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
-
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import {FilterService} from '../../services/filter/filter.service';
+import {FormGroup, NgForm} from '@angular/forms';
+import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
+import {BridgeAnalyticService} from '@globile/mobile-services';
+import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
+import {ConfigurationService} from '../../services/configuration/configuration.service';
+import {LocatorFilters} from '../../models/remote-config.model';
+import {take} from 'rxjs/operators';
+import {CheckboxComponent} from 'sn-common-lib/atoms/checkbox/checkbox.component';
 
 @Component({
   selector: 'sn-filter',
@@ -12,26 +15,40 @@ import { EventsAnalyticsVariables } from '../../constants/events-analytics-varia
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
-
   @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
+
+  @ViewChildren('types') typesCheckboxes!: QueryList<CheckboxComponent>;
 
   public form: FormGroup;
   public selectedFilters = {};
   public isHideTurnOffButton = true;
-
   private isFilterOpen: boolean = false;
+
+  filters: LocatorFilters;
 
   constructor(
     private snFilterService: FilterService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private analyticsService: BridgeAnalyticService
+    private analyticsService: BridgeAnalyticService,
+    private configuration: ConfigurationService
   ) { }
 
   ngOnInit(): void {
     this.hide();
-    this.form = this.snFilterService.initForm();
+    this.snFilterService.initForm()
+      .pipe(take(1))
+      .subscribe((form) => {
+      this.form = form;
+    });
+    this.configuration.settings$
+      .pipe(take(1))
+      .subscribe(
+      (settings ) => {
+        this.filters = settings.filters;
+      }
+    );
   }
 
   private show(): void {
@@ -49,7 +66,7 @@ export class FilterComponent implements OnInit {
     this.hide();
   }
 
-  public apply(): void {
+  public apply(hide: boolean = true): void {
     const sendEvent = EventsAnalyticsVariables.tapApplyFilters;
     this.analyticsService.sendEvent(sendEvent);
     this.snFilterService.applyChanges();
@@ -57,7 +74,18 @@ export class FilterComponent implements OnInit {
       count: this.snFilterService.count,
       values: this.snFilterService.filterParams
     });
-    this.hide();
+
+    if (hide) {
+      this.hide();
+    }
+  }
+
+  public toggle(): void {
+     if (!this.isFilterOpen) {
+        this.show();
+     } else {
+       this.hide();
+     }
   }
 
   public open(): void {
@@ -67,8 +95,18 @@ export class FilterComponent implements OnInit {
     this.snFilterService.startFilter();
   }
 
-  public selectFilter(event: any): void {
+  public selectFilter(event: any, clearTypes?: boolean): void {
     const eventUniqueId = event.source._uniqueId;
+
+    if (clearTypes) {
+      console.log(this.typesCheckboxes);
+      this.typesCheckboxes.forEach(component => {
+        if (this.selectedFilters.hasOwnProperty(component.id)) {
+          // delete this.selectedFilters[component.id];
+          component._inputElement.nativeElement.click();
+        }
+      });
+    }
 
     if (this.selectedFilters.hasOwnProperty(eventUniqueId)) {
       delete this.selectedFilters[eventUniqueId];
@@ -83,6 +121,12 @@ export class FilterComponent implements OnInit {
     } else {
       this.isHideTurnOffButton = false;
     }
+
+    this.apply(false);
+  }
+
+  public getFilterIcon(code: string): string {
+    return 'sn-BAN005'; // todo : implement
   }
 
   public switchFilterButton(): void {
@@ -90,6 +134,7 @@ export class FilterComponent implements OnInit {
     this.isHideTurnOffButton = true;
     const sendEvent = EventsAnalyticsVariables.tapCleanFilters;
     this.analyticsService.sendEvent(sendEvent);
-  }
 
+    this.apply(false);
+  }
 }

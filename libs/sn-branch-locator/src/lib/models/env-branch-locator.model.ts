@@ -12,3 +12,4 @@ export interface EnvBranchLocatorModel {
     googleApiLibs: Array<string>;
     languages: string;
 }
+

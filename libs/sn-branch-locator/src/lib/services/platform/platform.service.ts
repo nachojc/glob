@@ -13,7 +13,8 @@ export class Platform {
   }
 
   get orientation(): ScreenOrientation {
-    return this.windowRef.screen.orientation;
+    const screen = this.windowRef.screen as any;
+    return screen.orientation || screen.msOrientation;
   }
 
   get isMobile(): boolean {
