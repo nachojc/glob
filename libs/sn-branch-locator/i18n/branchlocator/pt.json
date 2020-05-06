@@ -7,7 +7,7 @@
             "filterMobileTitle": "Filtros"
         },
         "brand": {
-            "santander": "Santander",
+            "santander": "Santainder",
             "branchLocator": "Branch Locator_PT"
         },
         "searchInput": {
@@ -17,7 +17,7 @@
         "filtersButtons": {
             "turnOffFilters": "Desligar Filtros",
             "applyfFilters": "Aplicar Filtros",
-          "backToList" : "Lista de resultados"
+             "backToList" : "Lista de resultados"
         },
         "filters": {
             "applyFilter": "APLIQUE FILTROS",
@@ -45,9 +45,6 @@
             "super": "Super7 24",
             "oxxo": "Oxxo",
             "otherAtm": "Outros"
-
-
-
         },
         "shared": {
             "branch": "Agências",

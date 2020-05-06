@@ -11,6 +11,8 @@ import {
 } from '../../models/env-branch-locator.model';
 import { catchError, first, timeout } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
+import LiteralsAggregator from './literals.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +23,13 @@ export class ConfigurationService {
     return this.settings.asObservable();
   }
 
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private globileSettings: GlobileSettingsService,
     private geoPosition: GeoPositionService,
-    private http: HttpClient
+    private http: HttpClient,
+    private translateService: TranslateService
   ) {
     this.branchLocatorEnv = globileSettings.branchLocator;
 
@@ -45,6 +49,10 @@ export class ConfigurationService {
             this.fetchRemoteConfig(this.baseEndpoint, viewType);
           }
         );
+    });
+
+    this.settings$.subscribe((settings) => {
+      LiteralsAggregator.inject(settings.literals).into(this.translateService);
     });
   }
   private paramDefaultView = 'defaultView';
@@ -72,14 +80,33 @@ export class ConfigurationService {
   }
 
   private buildSettings(response): LocatorSettings {
+
+    // todo remove this mock
+
+    response.literals.en.FILTERSELECT_EMBASSY = 'Embassy of the Great Llama';
+
+
     const settings: LocatorSettings = {
       defaultCoords: response.coords,
-      translations: response.literals,
+      literals: [],
       filters: {
         types: [],
         features: []
       }
     };
+
+    if (response.language.defaultLanguage
+      && response.literals.hasOwnProperty(response.language.defaultLanguage)
+      ) {
+      const langLiterals = response.literals[response.language.defaultLanguage];
+      settings.literals = Object.keys(langLiterals).map((code) => {
+        return {
+          code,
+          content : langLiterals[code]
+        };
+      });
+    }
+
 
     const types = response.filters.tipoPOI;
     if (types && types !== {}) {

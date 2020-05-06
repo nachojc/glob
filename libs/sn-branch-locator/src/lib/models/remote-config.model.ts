@@ -1,6 +1,6 @@
 export interface LocatorSettings {
   defaultCoords: [ number, number];
-  translations?: [];
+  literals?: LocatorLiteral[];
   filters?: LocatorFilters;
 }
 
@@ -14,3 +14,10 @@ interface LocatorFilter {
   code: string;
   active: boolean;
 }
+
+export interface LocatorLiteral {
+  code: string;
+  content: string;
+}
+
+

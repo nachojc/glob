@@ -29,8 +29,7 @@
   </div>
   <div class="aply-filter-container hide-mobile">
     <button sn-button-strech type="submit">
-     <!-- {{ "branchLocator.filtersButtons.applyfFilters" | translate }}-->
-      Back to list
+     {{ "branchLocator.filtersButtons.backToList" | translate }}
     </button>
   </div>
   <div class="sn-filter-content">
@@ -69,11 +68,12 @@
         <div class="filters-list" *ngIf="filters">
           <div class="filter-item" *ngFor="let filter of filters.types">
             <sn-checkbox
+              #types
               icon="{{getFilterIcon(filter.code)}}"
-              (change)="selectFilter($event)"
+              (change)="selectFilter($event,true)"
               formControlName="{{filter.code}}"
             ><!-- -->
-              {{filter.code}} <!-- todo: translate -->
+              {{'_custom.FILTER'+filter.code | translate}}
             </sn-checkbox>
           </div>
 
@@ -93,7 +93,7 @@
               (change)="selectFilter($event)"
               formControlName="{{filter.code}}"
             ><!-- -->
-              {{filter.code}}
+              {{'_custom.FILTER'+filter.code | translate}}
             </sn-checkbox>
           </div>
         </div>
