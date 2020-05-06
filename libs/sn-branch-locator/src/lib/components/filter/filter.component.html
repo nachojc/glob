@@ -72,7 +72,7 @@
               icon="{{getFilterIcon(filter.code)}}"
               (change)="selectFilter($event,true)"
               formControlName="{{filter.code}}"
-            ><!-- -->
+            >
               {{'branchLocator.filters.options.FILTER'+filter.code | translate}}
             </sn-checkbox>
           </div>
@@ -92,7 +92,7 @@
               icon="{{getFilterIcon(filter.code)}}"
               (change)="selectFilter($event)"
               formControlName="{{filter.code}}"
-            ><!-- -->
+            >
               {{'branchLocator.filters.options.FILTER'+filter.code | translate}}
             </sn-checkbox>
           </div>

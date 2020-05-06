@@ -102,9 +102,8 @@ export class FilterComponent implements OnInit {
       console.log(this.typesCheckboxes);
       this.typesCheckboxes.forEach(component => {
         if (this.selectedFilters.hasOwnProperty(component.id)) {
-          delete this.selectedFilters[component.id];
-          component.checked = false;
-          component._inputElement.nativeElement.checked = false;
+          // delete this.selectedFilters[component.id];
+          component._inputElement.nativeElement.click();
         }
       });
     }
