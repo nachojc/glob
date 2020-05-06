@@ -99,6 +99,7 @@ export class SnBranchLocatorComponent implements OnInit {
       width: 32,
       backgroundPosition: '-4px 2px'
     }
+
   ];
 
   public userPosition: LatLngLiteral;
