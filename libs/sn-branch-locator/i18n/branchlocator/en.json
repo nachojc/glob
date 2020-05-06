@@ -44,7 +44,10 @@
       "telecomm": "Telecomm",
       "super": "Super7 24",
       "oxxo": "Oxxo",
-      "otherAtm": "Non Santander ATMs"
+      "otherAtm": "Non Santander ATMs",
+      "options" : {
+          "FILTERWORKCAFE" : "Dominik's Work Cafe!"
+      }
 
 
     },

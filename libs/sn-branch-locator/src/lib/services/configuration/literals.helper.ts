@@ -18,23 +18,27 @@ export default class LiteralsAggregator {
   private static engage(literals: LocatorLiteral[], service: TranslateService) {
 
     const map = TranslateMap;
+    const translations = service.translations;
+    const lang = service.currentLang;
+    const prefix = LiteralsAggregator.filterPrefix;
 
     literals.forEach(literal => {
       if (map.hasOwnProperty(literal.code)) {
-        service.translations[service.currentLang] = LiteralsAggregator.assignToObject(
-          service.translations[service.currentLang],
+        translations[lang] = LiteralsAggregator.assignToObject(
+          translations[lang],
           map[literal.code],
           literal.content
         );
       }
 
-      const prefix = LiteralsAggregator.filterPrefix;
       if (literal.code.substr(0, prefix.length) === prefix) {
-        if (!service.translations[service.currentLang]._custom) {
-          service.translations[service.currentLang]._custom = [];
+        const filters = translations[lang].branchLocator.filters;
+
+        if (!filters.options) {
+          filters.options = {};
         }
 
-        service.translations[service.currentLang]._custom[literal.code] = literal.content;
+        filters.options[literal.code] = literal.content;
       }
 
     });
