@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {FilterService} from '../../services/filter/filter.service';
 import {FormGroup, NgForm} from '@angular/forms';
 import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
@@ -7,6 +7,7 @@ import {EventsAnalyticsVariables} from '../../constants/events-analytics-variabl
 import {ConfigurationService} from '../../services/configuration/configuration.service';
 import {LocatorFilters} from '../../models/remote-config.model';
 import {take} from 'rxjs/operators';
+import {CheckboxComponent} from 'sn-common-lib/atoms/checkbox/checkbox.component';
 
 @Component({
   selector: 'sn-filter',
@@ -16,6 +17,8 @@ import {take} from 'rxjs/operators';
 export class FilterComponent implements OnInit {
   @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
+
+  @ViewChildren('types') typesCheckboxes!: QueryList<CheckboxComponent>;
 
   public form: FormGroup;
   public selectedFilters = {};
@@ -92,8 +95,18 @@ export class FilterComponent implements OnInit {
     this.snFilterService.startFilter();
   }
 
-  public selectFilter(event: any): void {
+  public selectFilter(event: any, clearTypes?: boolean): void {
     const eventUniqueId = event.source._uniqueId;
+
+    if (clearTypes) {
+      console.log(this.typesCheckboxes);
+      this.typesCheckboxes.forEach(component => {
+        if (this.selectedFilters.hasOwnProperty(component.id)) {
+          // delete this.selectedFilters[component.id];
+          component._inputElement.nativeElement.click();
+        }
+      });
+    }
 
     if (this.selectedFilters.hasOwnProperty(eventUniqueId)) {
       delete this.selectedFilters[eventUniqueId];

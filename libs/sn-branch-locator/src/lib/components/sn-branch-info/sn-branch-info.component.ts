@@ -45,7 +45,6 @@ export class SnBranchInfoComponent implements OnInit {
   @Output() openDirectionsPanel = new EventEmitter<any>();
 
 
-
   constructor(
     public translate: TranslateService,
     private analyticsService: BridgeAnalyticService
