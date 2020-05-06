@@ -1,5 +1,8 @@
 export interface LocatorSettings {
-  defaultCoords: [ number, number];
+  paramView: string;
+  paramCoordinates: string;
+  paramAddress: string;
+  defaultCoords: [number, number];
   translations?: [];
   filters?: LocatorFilters;
 }

@@ -31,6 +31,8 @@ export class ConfigurationService {
 
     this.activatedRoute.queryParams.pipe(first()).subscribe(params => {
       const viewType = params['view'] || this.paramDefaultView;
+      const coordinates = params['coordinates'] || '';
+      const address = params['address'] || '';
 
       this.geoPosition
         .getCurrentPosition()
@@ -38,11 +40,11 @@ export class ConfigurationService {
         .subscribe(
           (pos: Position) => {
             this.baseEndpoint = this.resolveConfigUrl(pos);
-            this.fetchRemoteConfig(this.baseEndpoint, viewType);
+            this.fetchRemoteConfig(this.baseEndpoint, viewType, coordinates, address);
           },
           () => {
             this.baseEndpoint = this.resolveConfigUrl();
-            this.fetchRemoteConfig(this.baseEndpoint, viewType);
+            this.fetchRemoteConfig(this.baseEndpoint, viewType, coordinates, address);
           }
         );
     });
@@ -53,7 +55,7 @@ export class ConfigurationService {
   private baseEndpoint: string;
 
   private settings = new ReplaySubject<LocatorSettings>();
-  private fetchRemoteConfig(baseEndpoint, viewType) {
+  private fetchRemoteConfig(baseEndpoint, viewType, coordinates, address) {
     const configEndpoint = baseEndpoint + '/view/' + viewType;
     this.http
       .get<any>(configEndpoint)
@@ -66,14 +68,17 @@ export class ConfigurationService {
         )
       )
       .subscribe(response => {
-        const settings = this.buildSettings(response);
+        const settings = this.buildSettings(response, viewType, coordinates, address);
         console.log('CONFIG - fetchRemoteConfig -> next', settings);
         this.settings.next(settings);
       });
   }
 
-  private buildSettings(response): LocatorSettings {
+  private buildSettings(response, viewType, coordinates, address): LocatorSettings {
     const settings: LocatorSettings = {
+      paramView: viewType,
+      paramCoordinates: coordinates,
+      paramAddress: address,
       defaultCoords: response.coords,
       translations: response.literals,
       filters: {

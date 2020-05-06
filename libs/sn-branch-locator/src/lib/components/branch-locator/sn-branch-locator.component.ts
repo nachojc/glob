@@ -35,6 +35,7 @@ import {
 } from '@globile/mobile-services';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
 
@@ -44,44 +45,6 @@ import { ConfigurationService } from '../../services/configuration/configuration
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent implements OnInit {
-  @Input()
-  get coordinates(): string {
-    return this._coordinates;
-  }
-  set coordinates(value: string) {
-    if (value) {
-      this._coordinates = value;
-      const coorsArray = value.replace('{', '').replace('}', '').split(',');
-      const coors: LatLngLiteral = {
-        lat: Number(coorsArray[0]),
-        lng: Number(coorsArray[1])
-      };
-      this.startingPosition = {
-        coordinates: coors
-      };
-    }
-  }
-
-  @Input()
-  get defaultLang(): string {
-    return this._defaultLang;
-  }
-  set defaultLang(value: string) {
-    this._defaultLang = value;
-  }
-
-  @Input()
-  get address(): string {
-    return this._address;
-  }
-  set address(value: string) {
-    if (value) {
-      this._address = value;
-      this.startingPosition = {
-        text: value
-      };
-    }
-  }
 
   @Input()
   get optionalFullScreenControl(): boolean {
@@ -165,6 +128,8 @@ export class SnBranchLocatorComponent implements OnInit {
   public addressLng: number;
   public durationsLoaded: boolean;
 
+  public defaultLang: string = '';
+  public address: string = '';
   currentLat: number;
   currentLong: number;
   marker: any;
@@ -192,7 +157,43 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit()');
+    this.configuration.settings$.subscribe((settings) => {
+      console.log('AppComponent', settings);
+
+      // To set the languaje
+      const browserLang = navigator.language || window.navigator['userLanguage'];
+      this.defaultLang = browserLang.substring(0, 2);
+      this.translateService.setDefaultLang(this.defaultLang);
+      if (
+        settings.paramView !== 'defaultView'
+        && (settings.paramView === 'en' || settings.paramView === 'es' || settings.paramView === 'pl' || settings.paramView === 'pt')
+      ) {
+        this.translateService.use(settings.paramView);
+      } else {
+        this.translateService.use(this.defaultLang);
+      }
+
+      // To set the coords if they come in the params
+      if (settings.paramCoordinates !== '') {
+        const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
+        const coors: LatLngLiteral = {
+          lat: Number(coorsArray[0]),
+          lng: Number(coorsArray[1])
+        };
+        this.startingPosition = {
+          coordinates: coors
+        };
+      }
+
+      // To set the coords by text if it comes from the params
+      if (settings.paramAddress !== '') {
+        this._address = settings.paramAddress;
+        this.startingPosition = {
+          text: settings.paramAddress
+        };
+      }
+
+    });
 
     this.initAnalytics();
 
