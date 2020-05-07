@@ -2,7 +2,7 @@
   "name": "branch-locator",
   "version": "1.0.26",
   "scripts": {
-    "preversion": "npm run patch-lib && git add .",
+    "preversion": "node ./tools/readme-coverage.js && npm run patch-lib && git add .",
     "start": "ng serve --open",
     "build": "npm run build-lib",
     "build-dev": "npm run test-lib-dev && npm run build-lib",
