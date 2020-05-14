@@ -47,6 +47,43 @@ import { ConfigurationService } from '../../services/configuration/configuration
 export class SnBranchLocatorComponent implements OnInit {
 
   @Input()
+  get coordinates(): string {
+    return this._coordinates;
+  }
+  set coordinates(value: string) {
+    if (value) {
+      this._coordinates = value;
+      const coorsArray = value.replace('{', '').replace('}', '').split(',');
+      const coors: LatLngLiteral = {
+        lat: Number(coorsArray[0]),
+        lng: Number(coorsArray[1])
+      };
+      this.startingPosition = {
+        coordinates: coors
+      };
+    }
+  }
+  @Input()
+  get defaultLang(): string {
+    return this._defaultLang;
+  }
+  set defaultLang(value: string) {
+    this._defaultLang = value;
+  }
+  @Input()
+  get address(): string {
+    return this._address;
+  }
+  set address(value: string) {
+    if (value) {
+      this._address = value;
+      this.startingPosition = {
+        text: value
+      };
+    }
+  }
+
+  @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
   }
@@ -129,8 +166,6 @@ export class SnBranchLocatorComponent implements OnInit {
   public addressLng: number;
   public durationsLoaded: boolean;
 
-  public defaultLang: string = '';
-  public address: string = '';
   currentLat: number;
   currentLong: number;
   marker: any;
@@ -271,23 +306,23 @@ export class SnBranchLocatorComponent implements OnInit {
           lng: pos.coords.longitude
         };
 
-        if (settings.paramCoordinates !== '') {
-          const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
-          const coors: LatLngLiteral = {
-            lat: Number(coorsArray[0]),
-            lng: Number(coorsArray[1])
-          };
-          this.startingPosition = {
-            coordinates: coors
-          };
-        }
+        // if (settings.paramCoordinates !== '') {
+        //   const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
+        //   const coors: LatLngLiteral = {
+        //     lat: Number(coorsArray[0]),
+        //     lng: Number(coorsArray[1])
+        //   };
+        //   this.startingPosition = {
+        //     coordinates: coors
+        //   };
+        // }
 
-        if (settings.paramAddress !== '') {
-          this._address = settings.paramAddress;
-          this.startingPosition = {
-            text: settings.paramAddress
-          };
-        }
+        // if (settings.paramAddress !== '') {
+        //   this._address = settings.paramAddress;
+        //   this.startingPosition = {
+        //     text: settings.paramAddress
+        //   };
+        // }
 
         if (this.startingPosition && this.startingPosition.text) {
           this.geoPosition
