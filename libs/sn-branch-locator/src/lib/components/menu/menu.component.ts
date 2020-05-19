@@ -12,20 +12,20 @@ import {animate, style, transition, trigger} from '@angular/animations';
   animations: [MenuAnimations.menuTrigger, trigger('slideState', [
     transition('* => true', [
       style({transform: 'translateX(100%)'}),
-      animate('400ms ease-out', style({transform: 'translateX(0%)'}))
+      animate('400ms ease', style({transform: 'translateX(0%)'}))
     ]),
     transition('true=>*', [
       style({display: 'block'}),
-      animate('400ms ease-out', style({transform: 'translateX(100%)'}))
+      animate('400ms ease', style({transform: 'translateX(100%)'}))
     ])
   ]),
     trigger('slideStateOut', [
       transition('* => true', [
-        animate('400ms ease-out', style({transform: 'translateX(-100%)'})),
+        animate('400ms ease', style({transform: 'translateX(-100%)'})),
       ]),
       transition('true => *', [
         style({transform: 'translateX(-100%)'}),
-        animate('400ms ease-out', style({transform: 'translateX(0%)'})),
+        animate('400ms ease', style({transform: 'translateX(0%)'})),
       ])
     ])]
 })
