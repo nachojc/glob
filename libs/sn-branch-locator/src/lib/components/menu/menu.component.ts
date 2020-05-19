@@ -10,7 +10,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   animations: [MenuAnimations.menuTrigger, trigger('slideState', [
-    transition('*=>true', [
+    transition('* => true', [
       style({transform: 'translateX(100%)'}),
       animate('400ms ease-out', style({transform: 'translateX(0%)'}))
     ]),
