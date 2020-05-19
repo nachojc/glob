@@ -78,6 +78,7 @@ export class BranchListComponent implements OnChanges, OnInit {
       this.isMoreBranchesToLoad = false;
     }
   }
+
   changeState() {
     this.currentState = this.currentState === 'menuOpened' ? 'menuClosed' : 'menuOpened';
   }

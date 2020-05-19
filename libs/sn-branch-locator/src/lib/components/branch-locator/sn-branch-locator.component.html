@@ -1,6 +1,10 @@
 <!-- Mobile and Tablet -->
 <!-- TODO: Please add translations for all hardcoded text -->
 <!-- TODO:  Use tabgroup from common lib and not the local one, this needs to be updated -->
+<div style="position:fixed;top:0; color:red;left: 10px; z-index:100">
+  {{showDrawer}}
+</div>
+
 <ng-container *ngIf="isMobile">
   <sn-tab-group
     [selectIndex]="selectedTabIndex"
@@ -73,16 +77,17 @@
           [distanceTop]="64"
           (stateChange)="drawerStageChange($event)"
         >
+          <!-- *ngIf="selectedBranch && !showDirectionsPanel" -->
           <sn-branch-info
-            *ngIf="selectedBranch && !showDirectionsPanel"
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
             (branchDirection)="drawDirections($event)"
             (openDirectionsPanel)="openDirectionsPanel()"
           ></sn-branch-info>
+
+          <!-- *ngIf="showDirectionsPanel && durationsLoaded" -->
           <sn-branch-direction
-            *ngIf="showDirectionsPanel && durationsLoaded"
             [branch]="selectedBranch"
             (branchDirection)="drawDirections($event)"
             [durations]="durations"
@@ -130,6 +135,7 @@
     (closeInfo)="closeInfo()"
     (closeDirectionsPanel)="closeDirectionsPanel()"
     (closeFilterPanel)="hideFilter()"
+    [displayPanel]="displayPanel"
   >
     <sn-branch-search
       #test
@@ -139,8 +145,7 @@
       (placeChange)="placeChange($event)"
       (reCenter)="centerMapToUser(true, true)"
       (callFilter)="showFilter()"
-    >
-    </sn-branch-search>
+    ></sn-branch-search>
 
     <sn-branch-list
       [isLoading]="isLoading"

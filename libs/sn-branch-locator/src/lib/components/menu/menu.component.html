@@ -34,16 +34,26 @@
       <ng-content select="sn-branch-search"></ng-content>
     </div>
 
-    <div class="search-results-wrapper" [ngClass]="{ closed: !!info || !!direction }">
-      <ng-content select="sn-branch-list"></ng-content>
-    </div>
+<!--  [ngClass]="{ closed: !!info || !!direction } -->
+    <div class="content-wrapper">
 
-    <div class="info-wrapper" [ngClass]="{ closed: !info || direction }">
-      <ng-content select="sn-branch-info"></ng-content>
-    </div>
+      <div class="search-results-wrapper"
+           [@slideStateOut]="displayPanel=='info'"
+      >
+        <ng-content select="sn-branch-list"></ng-content>
+      </div>
 
-    <div class="direction-wrapper" [ngClass]="{ closed: !direction }">
-      <ng-content select="sn-branch-direction"></ng-content>
+      <!--[ngClass]="{ closed: !info || direction }"-->
+      <div class="info-wrapper"
+           [@slideState]="displayPanel=='info'"
+      >
+        <ng-content select="sn-branch-info"></ng-content>
+      </div>
+
+      <!--[ngClass]="{ closed: !direction }"-->
+      <div class="direction-wrapper" >
+        <ng-content select="sn-branch-direction"></ng-content>
+      </div>
     </div>
 
     <ng-content select="sn-filter" [ngClass]="{ closed: !filter.isOpen }"></ng-content>

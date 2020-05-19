@@ -38,6 +38,7 @@ import { EventsAnalyticsVariables } from '../../constants/events-analytics-varia
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
+import { trigger, transition, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -89,6 +90,43 @@ export class SnBranchLocatorComponent implements OnInit {
   }
   set optionalFullScreenControl(value: boolean) {
     this._optionalFullScreen = value !== null && value !== undefined && `${value}` !== 'false';
+  }
+
+  constructor(
+    private geoPosition: GeoPositionService,
+    private branchService: SnBranchLocatorService,
+    private platform: Platform,
+    private analyticsService: BridgeAnalyticService,
+    private configuration: ConfigurationService,
+    private translateService: TranslateService,
+  ) {
+
+    const translations = this.translateService.translations;
+
+    this.geoPosition
+      .watchPosition()
+      .pipe(first())
+      .subscribe((pos: Position) => {
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+      });
+  }
+  private get position(): Observable<LatLngLiteral> {
+    if (this.userPosition) {
+      return of(this.userPosition);
+    } else {
+      return this.geoPosition.getCurrentPosition().pipe(
+        map((pos: Position) => {
+          this.userPosition = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          return this.userPosition;
+        })
+      );
+    }
   }
 
   @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
@@ -169,28 +207,7 @@ export class SnBranchLocatorComponent implements OnInit {
   currentLat: number;
   currentLong: number;
   marker: any;
-
-  constructor(
-    private geoPosition: GeoPositionService,
-    private branchService: SnBranchLocatorService,
-    private platform: Platform,
-    private analyticsService: BridgeAnalyticService,
-    private configuration: ConfigurationService,
-    private translateService: TranslateService,
-  ) {
-
-    const translations = this.translateService.translations;
-
-    this.geoPosition
-      .watchPosition()
-      .pipe(first())
-      .subscribe((pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-      });
-  }
+  displayPanel: string;
 
   ngOnInit(): void {
     this.configuration.settings$.subscribe((settings) => {
@@ -257,14 +274,17 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   selectBranch = (branch: Branch) => {
+
     const sendEvent = EventsAnalyticsVariables.clickBranchDetails;
     this.analyticsService.sendEvent(sendEvent);
 
     const markerFound = this.branchMarkerList['_results'].find(
       marker => marker.label && marker.label.text === branch.id
     );
+
     this.markerSelect(markerFound, branch, false);
     this.selectedTabIndex = 0;
+    this.displayPanel = 'info';
   }
 
   markerSelect(selected: AgmMarker, branch: Branch, sendEvent: boolean) {
@@ -384,8 +404,11 @@ export class SnBranchLocatorComponent implements OnInit {
     this.isVisibleRoute = false;
     this.isVisibleMarkers = true;
     this.clearSelectedMarker();
-    this.getBranchesByBounds();
-    this.showDrawer = !this.showDrawer;
+    // todo check: this call is redundant because list will
+    // be up to date already
+    // this.getBranchesByBounds();
+    // this.showDrawer = !this.showDrawer;
+    this.displayPanel = 'list';
   }
 
   closeDirectionsPanel(): void {
@@ -523,21 +546,6 @@ export class SnBranchLocatorComponent implements OnInit {
           });
         }
       });
-    }
-  }
-  private get position(): Observable<LatLngLiteral> {
-    if (this.userPosition) {
-      return of(this.userPosition);
-    } else {
-      return this.geoPosition.getCurrentPosition().pipe(
-        map((pos: Position) => {
-          this.userPosition = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          };
-          return this.userPosition;
-        })
-      );
     }
   }
 
