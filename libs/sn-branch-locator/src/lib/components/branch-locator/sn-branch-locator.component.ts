@@ -174,7 +174,6 @@ export class SnBranchLocatorComponent implements OnInit {
       width: 32,
       backgroundPosition: '-4px 2px'
     }
-
   ];
 
   public userPosition: LatLngLiteral;
@@ -365,9 +364,7 @@ export class SnBranchLocatorComponent implements OnInit {
           });
         }
       );
-
     });
-
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
@@ -401,25 +398,27 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeInfo() {
-    this.isVisibleRoute = false;
-    this.isVisibleMarkers = true;
-    this.clearSelectedMarker();
+    // this.isVisibleRoute = false;
+    // this.isVisibleMarkers = true;
+     this.clearSelectedMarker();
     // todo check: this call is redundant because list will
     // be up to date already
     // this.getBranchesByBounds();
     // this.showDrawer = !this.showDrawer;
-    this.displayPanel = 'list';
+     this.displayPanel = 'list';
   }
 
   closeDirectionsPanel(): void {
-    this.isVisibleRoute = false;
+    // this.isVisibleRoute = false;
     this.isVisibleMarkers = true;
-    this.showDirectionsPanel = false;
+    // this.showDirectionsPanel = false;
+    this.displayPanel = 'info';
     this.openDrawer();
   }
 
   openDirectionsPanel(): void {
     this.showDirectionsPanel = true;
+    this.displayPanel = 'directions';
   }
 
   onGetDirections(event: any): void {
@@ -504,7 +503,9 @@ export class SnBranchLocatorComponent implements OnInit {
       this.selectedMarker.iconUrl = this.branchIcon as any;
       this.selectedMarker['_markerManager'].updateIcon(this.selectedMarker);
       this.selectedMarker = undefined;
-      this.selectedBranch = undefined;
+
+      // todo: last branch selected stays on its panel
+      // this.selectedBranch = undefined;
     }
   }
 

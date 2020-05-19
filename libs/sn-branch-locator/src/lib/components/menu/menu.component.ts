@@ -15,24 +15,34 @@ import {animate, style, transition, trigger} from '@angular/animations';
       animate('2000ms ease-in', style({transform: 'translateX(0%)'}))
     ]),
     transition('true=>*', [
-      style({display: 'block !important'}),
+      style({display: 'block'}),
       animate('2000ms ease-in', style({transform: 'translateX(100%)'}))
     ])
   ]),
     trigger('slideStateOut', [
       transition('* => true', [
-        animate('2000ms ease-in', style({transform: 'translateX(-100%)'}))
+        animate('2000ms ease-in', style({transform: 'translateX(-100%)'})),
       ]),
       transition('true => *', [
-
         style({transform: 'translateX(-100%)'}),
-        animate('2000ms ease-in', style({transform: 'translateX(0%)'}))
+        animate('2000ms ease-in', style({transform: 'translateX(0%)'})),
       ])
-    ])],
+    ])]
 })
 export class MenuComponent {
+  transitionActive: boolean;
+  previousPanel: string;
 
-  @Input() displayPanel: string;
+  private _displayPanel: string;
+  @Input()
+  set displayPanel(displayPanel: string) {
+    this.previousPanel = this._displayPanel;
+    this.transitionActive = true;
+    this._displayPanel = displayPanel;
+  }
+  get displayPanel() {
+    return this._displayPanel;
+  }
   @Output() closeInfo = new EventEmitter<MouseEvent>();
   @Output() closeDirectionsPanel = new EventEmitter<MouseEvent>();
   @Output() closeFilterPanel = new EventEmitter<MouseEvent>();
@@ -59,4 +69,9 @@ export class MenuComponent {
     event.toState === 'menuOpened' ? this.menuDidOpen.emit(true) : this.menuDidClose.emit(true);
   }
 
+  transitionDone(event: AnimationEvent) {
+    if (this._displayPanel) {
+      this.transitionActive = false;
+    }
+  }
 }

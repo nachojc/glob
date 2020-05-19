@@ -82,11 +82,15 @@
 
   .content-wrapper {
     position : relative;
+    height:100%;
+    width:100%;
+    overflow-x:hidden;
     .info-wrapper,
     .direction-wrapper,
     .search-results-wrapper {
       position:absolute;
       top:0;
+      //width:100%
 
     }
   }
@@ -115,10 +119,14 @@
     height: 100%;
   }
 
+  .info-wrapper {
+    width:100%;
+  }
+
   .info-wrapper,
   .direction-wrapper {
     flex: 1;
-    overflow: hidden;
+    //overflow: hidden;
 
     ::ng-deep sn-branch-info {
       .tab-group-wrapper {
