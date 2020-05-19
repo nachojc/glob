@@ -33,11 +33,12 @@ export class MenuComponent {
   transitionActive: boolean;
   previousPanel: string;
 
-  private _displayPanel: string;
+  private _displayPanel = 'list';
   @Input()
   set displayPanel(displayPanel: string) {
+    if (!displayPanel) { return; }
     this.previousPanel = this._displayPanel;
-    this.transitionActive = true;
+    this.transitionActive = false;
     this._displayPanel = displayPanel;
   }
   get displayPanel() {
