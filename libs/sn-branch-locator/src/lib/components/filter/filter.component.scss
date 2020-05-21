@@ -1,5 +1,7 @@
 @import "~sn-common-lib/styles/settings/colors";
 
+form {padding-top:20px;}
+
 @media (min-width: 640px) {
   .sn-filter-wrapper .sn-filter-footer.hide-web,
   .mobile-title {
@@ -153,6 +155,8 @@
   .sn-filter-content {
     flex: 1;
     padding: 1.5em 1em;
+    overflow-y:scroll;
+    overflow-x: hidden;
 
     .title {
       font-size: 1.125em;

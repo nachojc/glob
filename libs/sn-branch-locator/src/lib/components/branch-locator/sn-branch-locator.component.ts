@@ -479,10 +479,18 @@ export class SnBranchLocatorComponent implements OnInit {
     this.filterCounts = event.count;
     this.closeDirectionsPanel();
     this.closeInfo();
+
     this.getBranchesByBounds();
   }
 
+  onFilterDeployed(event) {
+    // if (event) {
+    //   this.displayPanel = 'list';
+    // }
+  }
+
   showFilter() {
+
     this.filterView.toggle();
   }
 
@@ -525,6 +533,10 @@ export class SnBranchLocatorComponent implements OnInit {
 
   tilesLoaded() {
     this.getBranchesByBounds();
+    if (this.displayPanel != 'directions') {
+    this.displayPanel = 'list';
+    }
+
   }
 
   getBranchesByBounds() {

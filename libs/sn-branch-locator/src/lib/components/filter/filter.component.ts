@@ -17,6 +17,7 @@ import {CheckboxComponent} from 'sn-common-lib/atoms/checkbox/checkbox.component
 export class FilterComponent implements OnInit {
   @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
+  @Output() filterDeployed = new EventEmitter();
 
   @ViewChildren('types') typesCheckboxes!: QueryList<CheckboxComponent>;
 
@@ -53,13 +54,14 @@ export class FilterComponent implements OnInit {
 
   private show(): void {
     this.isFilterOpen = true;
-    this.renderer.removeStyle(this.el.nativeElement, 'display');
-    this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
+
+    // this.renderer.removeStyle(this.el.nativeElement, 'display');
+    // this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
   }
 
   private hide(): void {
     this.isFilterOpen = false;
-    this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+    // this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
   }
 
   public close(): void {

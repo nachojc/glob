@@ -27,7 +27,18 @@ import {animate, style, transition, trigger} from '@angular/animations';
         style({transform: 'translateX(-100%)'}),
         animate('400ms ease', style({transform: 'translateX(0%)'})),
       ])
-    ])]
+    ]),
+    trigger('showFilter', [
+      transition('* => true', [
+        style({height: '0', display: 'block'}),
+        animate('400ms ease', style({height: '80vh'})),
+      ]),
+      transition('true => *', [
+        style({height: '80vh'}),
+        animate('400ms ease', style({height: '0'})),
+      ])
+    ])
+  ]
 })
 export class MenuComponent {
   transitionActive: boolean;
@@ -52,7 +63,9 @@ export class MenuComponent {
   @ContentChild(FilterComponent, { static: false }) filter!: FilterComponent;
   @Output() menuDidOpen = new EventEmitter<boolean>();
   @Output() menuDidClose = new EventEmitter<boolean>();
+  @Output() filterDeployed = new EventEmitter<boolean>();
   currentState = 'menuOpened';
+  showFilter = false;
 
   changeState() {
     this.currentState = this.currentState === 'menuOpened' ? 'menuClosed' : 'menuOpened';
@@ -73,6 +86,13 @@ export class MenuComponent {
   transitionDone(event: AnimationEvent) {
     if (this._displayPanel) {
       this.transitionActive = false;
+    }
+  }
+
+  filterTransitionDone(event: AnimationEvent) {
+    this.showFilter = this.filter.isOpen;
+    if (this.showFilter) {
+      this.filterDeployed.emit(true);
     }
   }
 }

@@ -19,7 +19,7 @@
       </button>
     </div>
 
-    <div class="info-close-button-wrapper" [ngClass]="{ closed: !filter.isOpen }">
+    <div class="info-close-button-wrapper"  [ngClass]="{ closed: !filter.isOpen }">
       <button class="info-close-button" (click)="closeFilterPanel.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
@@ -30,8 +30,18 @@
       <span>Santander</span>
     </div>
 
-    <div class="search-input-wrapper">
-      <ng-content select="sn-branch-search"></ng-content>
+      <div class="search-input-wrapper">
+        <ng-content select="sn-branch-search"></ng-content>
+      </div>
+
+    <div class="filter-container">
+      <div class="filter-panel-wrapper"
+           [@showFilter] = "filter.isOpen"
+           [ngClass]="{ closed: !showFilter }"
+           (@showFilter.done)="filterTransitionDone($event)"
+      >
+        <ng-content select="sn-filter"></ng-content>
+      </div>
     </div>
 
 <!--  [ngClass]="{ closed: !!info || !!direction } -->

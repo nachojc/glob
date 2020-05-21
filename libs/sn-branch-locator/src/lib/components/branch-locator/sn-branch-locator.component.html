@@ -112,7 +112,6 @@
   </sn-tab-group>
   <section class="locator-search">
     <div class="locator-search-container">
-
       <sn-branch-search
         [showReCenter]="showReCenter"
         [filterCount]="filterCounts"
@@ -120,11 +119,12 @@
         (placeChange)="placeChange($event)"
         (reCenter)="centerMapToUser(true, true)"
         (callFilter)="showFilter()"
-      >
-      </sn-branch-search>
+      ></sn-branch-search>
     </div>
   </section>
-  <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
+  <sn-filter modal (filterApply)="onFilterApply($event)"
+
+  ></sn-filter>
 </ng-container>
 <!-- End Mobile and Tablet -->
 
@@ -136,6 +136,7 @@
     (closeDirectionsPanel)="closeDirectionsPanel()"
     (closeFilterPanel)="hideFilter()"
     [displayPanel]="displayPanel"
+    (filterDeployed)="onFilterDeployed($event)"
   >
     <sn-branch-search
       #test
@@ -170,7 +171,7 @@
       [routes]="routes"
     ></sn-branch-direction>
 
-    <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
+    <sn-filter (filterApply)="onFilterApply($event)"></sn-filter>
   </sn-menu>
   <!-- End Side Menu -->
 
