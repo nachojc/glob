@@ -92,7 +92,7 @@ export class MenuComponent {
   filterTransitionDone(event: AnimationEvent) {
     this.showFilter = this.filter.isOpen;
     if (this.showFilter) {
-      this.filterDeployed.emit(true);
+       this.filterDeployed.emit(true);
     }
   }
 }

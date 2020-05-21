@@ -237,7 +237,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.branchService.onChange.subscribe(
       res => {
         this.closeDrawer();
-        this.clearSelectedMarker();
+        // this.clearSelectedMarker();
         this.branchesList = res.sort((a, b) =>
           a.distanceInKm > b.distanceInKm ? 1 : b.distanceInKm > a.distanceInKm ? -1 : 0
         );
@@ -391,7 +391,7 @@ export class SnBranchLocatorComponent implements OnInit {
   drawerStageChange(state): void {
     if (state === DrawerState.Bottom) {
       this.closeDrawer();
-      this.clearSelectedMarker();
+      // this.clearSelectedMarker();
     } else {
       this.openDrawer();
     }
@@ -400,7 +400,7 @@ export class SnBranchLocatorComponent implements OnInit {
   closeInfo() {
     // this.isVisibleRoute = false;
     // this.isVisibleMarkers = true;
-     this.clearSelectedMarker();
+    //  this.clearSelectedMarker();
     // todo check: this call is redundant because list will
     // be up to date already
     // this.getBranchesByBounds();
@@ -461,7 +461,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.origin = this.userPosition;
 
     this.isVisibleRoute = true;
-    this.isVisibleMarkers = false;
+    // this.isVisibleMarkers = false;
   }
 
   placeChange(place: LatLngLiteral) {
@@ -479,18 +479,13 @@ export class SnBranchLocatorComponent implements OnInit {
     this.filterCounts = event.count;
     this.closeDirectionsPanel();
     this.closeInfo();
-
     this.getBranchesByBounds();
   }
 
   onFilterDeployed(event) {
-    // if (event) {
-    //   this.displayPanel = 'list';
-    // }
   }
 
   showFilter() {
-
     this.filterView.toggle();
   }
 
@@ -533,14 +528,15 @@ export class SnBranchLocatorComponent implements OnInit {
 
   tilesLoaded() {
     this.getBranchesByBounds();
-    if (this.displayPanel != 'directions') {
-    this.displayPanel = 'list';
-    }
+    // if (this.displayPanel != 'directions') {
+    // // this.displayPanel = 'list';
+    // }
 
   }
 
   getBranchesByBounds() {
-    if (!this.isVisibleRoute) {
+    // if (!this.isVisibleRoute) {
+    if (true) { // todo remove if not needed
       from(this.map.api.getBounds()).subscribe((mapBounds: LatLngBounds) => {
         if (mapBounds) {
           const northEast = {
