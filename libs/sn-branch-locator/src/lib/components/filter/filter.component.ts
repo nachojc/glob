@@ -18,6 +18,7 @@ export class FilterComponent implements OnInit {
   @Input() get isOpen() { return this.isFilterOpen; }
   @Output() filterApply = new EventEmitter();
   @Output() filterDeployed = new EventEmitter();
+  @Output() filterCallList = new EventEmitter();
 
   @ViewChildren('types') typesCheckboxes!: QueryList<CheckboxComponent>;
 

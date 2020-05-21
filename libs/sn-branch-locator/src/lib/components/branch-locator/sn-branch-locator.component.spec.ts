@@ -416,7 +416,6 @@ describe('SnBranchLocatorComponent', () => {
     });
   });
 
-
   describe('closeInfo()', () => {
     const map = {
       api: {

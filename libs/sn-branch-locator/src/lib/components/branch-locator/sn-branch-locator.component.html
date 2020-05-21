@@ -163,15 +163,18 @@
       (openDirectionsPanel)="openDirectionsPanel()"
     ></sn-branch-info>
 
+    <!-- *ngIf="showDirectionsPanel && durationsLoaded" -->
     <sn-branch-direction
-      *ngIf="showDirectionsPanel && durationsLoaded"
+
       [branch]="selectedBranch"
       (branchDirection)="drawDirections($event)"
       [durations]="durations"
       [routes]="routes"
     ></sn-branch-direction>
 
-    <sn-filter (filterApply)="onFilterApply($event)"></sn-filter>
+    <sn-filter
+      (filterCallList)="displayPanel='list'"
+      (filterApply)="onFilterApply($event)"></sn-filter>
   </sn-menu>
   <!-- End Side Menu -->
 

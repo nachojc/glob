@@ -19,7 +19,7 @@
     </button>
   </div>
   <div class="aply-filter-container hide-mobile">
-    <button sn-button-strech type="submit">
+    <button sn-button-strech type="submit" (click)="filterCallList.emit($event)" >
      {{ "branchLocator.filtersButtons.backToList" | translate }}
     </button>
   </div>

@@ -26,6 +26,7 @@
     </div>
 
     <div class="panel-title">
+
       <sn-icon icon="sn-BAN005"></sn-icon>
       <span>Santander</span>
     </div>
@@ -35,6 +36,7 @@
       </div>
 
     <div class="filter-container">
+
       <div class="filter-panel-wrapper"
            [@showFilter] = "filter.isOpen"
            [ngClass]="{ closed: !showFilter }"
@@ -47,7 +49,6 @@
 <!--  [ngClass]="{ closed: !!info || !!direction } -->
     <div class="content-wrapper">
 
-    <!--<div style="color:purple" class="testing">{{transitionActive}} {{displayPanel}}</div>-->
       <div class="search-results-wrapper"
            [@slideStateOut]="displayPanel=='info'||displayPanel=='directions'"
            [ngClass]="{ closed:( !transitionActive && displayPanel!='list')|| (displayPanel=='directions' || previousPanel=='directions') }"
