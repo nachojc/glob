@@ -377,7 +377,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   mapReady(): void {
-
     this.configuration.settings$.subscribe(settings => {
       this.geoPosition.getCurrentPosition().subscribe(
         (pos: Position) => {
@@ -435,7 +434,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
-
     if (this.userPosition && this.userPosition.lng && this.userPosition.lat) {
       this.showReCenter =
         this.roundCordinates(this.userPosition.lng) !==
@@ -476,7 +474,9 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeDirectionsPanel(): void {
-    this.map.api.setZoom(this._lastZoom);
+    if (this._lastZoom) {
+      this.map.api.setZoom(this._lastZoom);
+    }
     this.isVisibleRoute = false;
     this.isVisibleMarkers = true;
     this.displayPanel = 'info';
@@ -535,7 +535,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   placeChange(place: LatLngLiteral) {
-
     if (this.displayPanel === 'directions') {
       this.map.api.setZoom(this._lastZoom);
       this.closeDirectionsPanel();
@@ -589,7 +588,6 @@ export class SnBranchLocatorComponent implements OnInit {
         console.warn('Couldn\'t update icon');
       }
       this.selectedMarker = undefined;
-
     }
   }
 
