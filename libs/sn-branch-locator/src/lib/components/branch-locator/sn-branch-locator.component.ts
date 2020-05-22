@@ -266,7 +266,6 @@ export class SnBranchLocatorComponent implements OnInit {
             this.showNearest = true;
           });
         }
-
         if (this._selectedBranch) {
           setTimeout(() => {
             this.selectBranch(this._selectedBranch, true);
@@ -551,6 +550,12 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   placeChange(place: LatLngLiteral) {
+
+    if (this.displayPanel === 'directions') {
+      this.map.api.setZoom(this._lastZoom);
+      this.closeDirectionsPanel();
+    }
+
     this.closeDrawer();
     // this.clearSelectedMarker();
     from(this.map.api.panTo(place))
@@ -600,7 +605,11 @@ export class SnBranchLocatorComponent implements OnInit {
     this.showNearest = false;
     if (this.selectedMarker) {
       this.selectedMarker.iconUrl = this.branchIcon as any;
-      this.selectedMarker['_markerManager'].updateIcon(this.selectedMarker);
+      try {
+        this.selectedMarker['_markerManager'].updateIcon(this.selectedMarker);
+      } catch (err) {
+        console.warn('Couldn\'t update icon');
+      }
       this.selectedMarker = undefined;
 
       // todo: last branch selected stays on its panel
