@@ -377,7 +377,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   mapReady(): void {
-    console.log('%c%s', 'color: green; background: lightyellow', 'mapReady');
 
     this.configuration.settings$.subscribe(settings => {
       this.geoPosition.getCurrentPosition().subscribe(
@@ -436,11 +435,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
-    console.log(
-      '%c%s',
-      'color: green; background: lightyellow',
-      'centerChange'
-    );
+
     if (this.userPosition && this.userPosition.lng && this.userPosition.lat) {
       this.showReCenter =
         this.roundCordinates(this.userPosition.lng) !==
@@ -477,24 +472,14 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeInfo() {
-    // this.isVisibleRoute = false;
-    // this.isVisibleMarkers = true;
-    //  this.clearSelectedMarker();
-    // todo check: this call is redundant because list will
-    // be up to date already
-    // this.getBranchesByBounds();
-    // this.showDrawer = !this.showDrawer;
     this.displayPanel = 'list';
-    console.log('%c%s', 'color: green; background: limegreen', 'display list');
   }
 
   closeDirectionsPanel(): void {
     this.map.api.setZoom(this._lastZoom);
     this.isVisibleRoute = false;
     this.isVisibleMarkers = true;
-    // this.showDirectionsPanel = false;
     this.displayPanel = 'info';
-    console.log('%c%s', 'color: green; background: lightblue', 'display info');
     this.openDrawer();
   }
 
@@ -557,7 +542,6 @@ export class SnBranchLocatorComponent implements OnInit {
     }
 
     this.closeDrawer();
-    // this.clearSelectedMarker();
     from(this.map.api.panTo(place))
       .pipe(switchMap(() => from(this.map.api.setZoom(this.zoom))))
       .subscribe(() => {
@@ -570,7 +554,6 @@ export class SnBranchLocatorComponent implements OnInit {
     this.filterCounts = event.count;
     this.closeDirectionsPanel();
     this.closeInfo();
-    // this.displayPanel = 'list';
     this.getBranchesByBounds();
   }
 
@@ -597,11 +580,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   private clearSelectedMarker(): void {
-    console.log(
-      '%c%s',
-      'color: green; background: yellow',
-      'clearselectedmarker'
-    );
     this.showNearest = false;
     if (this.selectedMarker) {
       this.selectedMarker.iconUrl = this.branchIcon as any;
@@ -612,8 +590,6 @@ export class SnBranchLocatorComponent implements OnInit {
       }
       this.selectedMarker = undefined;
 
-      // todo: last branch selected stays on its panel
-      // this.selectedBranch = undefined;
     }
   }
 
@@ -634,16 +610,11 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   tilesLoaded() {
-    console.log('%c%s', 'color: green; background: lightyellow', 'tilesLoaded');
     this.getBranchesByBounds();
-    // if (this.displayPanel != 'directions') {
-    // // this.displayPanel = 'list';
-    // }
   }
 
   getBranchesByBounds() {
     if (this.displayPanel !== 'directions') {
-      // if (true) { // todo remove if not needed
       from(this.map.api.getBounds()).subscribe((mapBounds: LatLngBounds) => {
         if (mapBounds) {
           const northEast = {

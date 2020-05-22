@@ -1,9 +1,7 @@
 <!-- Mobile and Tablet -->
 <!-- TODO: Please add translations for all hardcoded text -->
 <!-- TODO:  Use tabgroup from common lib and not the local one, this needs to be updated -->
-<!--<div style="position:fixed;top:0; color:red;left: 10px; z-index:100">
-  {{showDrawer}} {{displayPanel}}
-</div>-->
+
 
 <ng-container *ngIf="isMobile">
   <sn-tab-group
@@ -77,7 +75,6 @@
           [distanceTop]="64"
           (stateChange)="drawerStageChange($event)"
         >
-          <!-- *ngIf="selectedBranch && !showDirectionsPanel" -->
           <sn-branch-info
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
@@ -86,7 +83,6 @@
             (openDirectionsPanel)="openDirectionsPanel()"
           ></sn-branch-info>
 
-          <!-- *ngIf="showDirectionsPanel && durationsLoaded" -->
           <sn-branch-direction
             [branch]="selectedBranch"
             (branchDirection)="drawDirections($event)"
@@ -156,14 +152,13 @@
     </sn-branch-list>
 
     <sn-branch-info
-      *ngIf="showDrawer"
+      *ngIf="selectedBranch"
       [branch]="selectedBranch"
       [isNearestMarker]="showNearest"
       (branchDirection)="drawDirections($event)"
       (openDirectionsPanel)="openDirectionsPanel()"
     ></sn-branch-info>
 
-    <!-- *ngIf="showDirectionsPanel && durationsLoaded" -->
     <sn-branch-direction
 
       [branch]="selectedBranch"
