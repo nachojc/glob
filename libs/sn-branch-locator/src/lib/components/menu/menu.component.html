@@ -50,7 +50,7 @@
 
       <div class="search-results-wrapper"
            [@slideStateOut]="displayPanel=='info'||displayPanel=='directions'"
-           [ngClass]="{ closed:( !transitionActive && displayPanel!='list')|| (displayPanel=='directions' || previousPanel=='directions') }"
+           [ngClass]="{ closed:( !transitionActive && displayPanel!='list') || (displayPanel=='directions' || previousPanel=='directions') }"
       >
         <ng-content select="sn-branch-list"></ng-content>
       </div>
@@ -67,7 +67,7 @@
 
       <div class="direction-wrapper"
            [@slideState]="displayPanel=='directions'"
-           [ngClass]="{ closed:( !transitionActive && displayPanel!='directions') || displayPanel =='list'}"
+           [ngClass]="{ closed:( !transitionActive && displayPanel!='directions') || (previousPanel == 'list') || (displayPanel == 'list') }"
       >
         <ng-content select="sn-branch-direction"></ng-content>
       </div>

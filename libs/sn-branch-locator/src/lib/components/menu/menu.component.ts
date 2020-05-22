@@ -49,7 +49,7 @@ export class MenuComponent {
   set displayPanel(displayPanel: string) {
     if (!displayPanel) { return; }
     this.previousPanel = this._displayPanel;
-    this.transitionActive = false;
+    this.transitionActive = true;
     this._displayPanel = displayPanel;
   }
   get displayPanel() {

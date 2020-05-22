@@ -365,6 +365,11 @@ export class SnBranchLocatorComponent implements OnInit {
         'display info'
       );
     }
+
+    if (this.filterView.isOpen) {
+      this.filterView.toggle();
+    }
+
   }
 
   openMenu() {
@@ -529,7 +534,6 @@ export class SnBranchLocatorComponent implements OnInit {
       lat: branchDirection.geoCoords.latitude
     };
     this.origin = this.userPosition;
-
     this.isVisibleRoute = true;
     this.isVisibleMarkers = false;
   }
