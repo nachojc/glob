@@ -90,5 +90,4 @@ export class BranchListComponent implements OnChanges, OnInit {
   close() {
     this.currentState = 'menuClosed';
   }
-
 }

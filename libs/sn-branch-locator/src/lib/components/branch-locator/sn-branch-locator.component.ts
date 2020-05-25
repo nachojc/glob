@@ -155,16 +155,19 @@ export class SnBranchLocatorComponent implements OnInit {
   public isLoading: boolean = true;
   public lat: number;
   public lng: number;
+
   public branchIcon = {
     url: 'assets/branchlocator/touchpointIcon.svg',
     scaledSize: { height: 40, width: 40 },
     anchor: { x: 20, y: 20 }
   };
+
   public branchSelectedIcon = {
     url: 'assets/branchlocator/santanderTouchpointSelected.svg',
     scaledSize: { height: 56, width: 56 },
     anchor: { x: 28, y: 28 }
   };
+
   public usericon = {
     url: 'assets/branchlocator/pinVoce.svg',
     scaledSize: { height: 90, width: 90 },

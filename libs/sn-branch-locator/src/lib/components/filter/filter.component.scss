@@ -80,6 +80,7 @@ form {padding-top:20px;}
   .turn-off-filter-container {
     width: 90%;
     font-size: 16px;
+
   }
 
   .aply-filter-container {
@@ -93,6 +94,11 @@ form {padding-top:20px;}
     background-color: $color-primary-white;
     box-shadow: 2px 2px 6px 2px rgba(206, 214, 219, 0.4);
     cursor: pointer;
+    overflow:hidden;
+    display: flex;
+    align-items: flex-end;
+
+
     .turn-off-filter-button {
       width: 100%;
       height: 44px;

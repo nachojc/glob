@@ -1,3 +1,4 @@
+
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {FilterService} from '../../services/filter/filter.service';
 import {FormGroup, NgForm} from '@angular/forms';
@@ -8,11 +9,26 @@ import {ConfigurationService} from '../../services/configuration/configuration.s
 import {LocatorFilters} from '../../models/remote-config.model';
 import {take} from 'rxjs/operators';
 import {CheckboxComponent} from 'sn-common-lib/atoms/checkbox/checkbox.component';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'sn-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  styleUrls: ['./filter.component.scss'],
+  animations: [
+    trigger(
+      'clearButtonAnimation', [
+        transition(':enter', [
+          style({height: 0, 'margin-bottom': '0', opacity: 0}),
+          animate('300ms', style({height: 44, 'margin-bottom': '25px', opacity: 1}))
+        ]),
+        transition(':leave', [
+          style({height: 44, 'margin-bottom': '25px', opacity: 1}),
+          animate('300ms', style({height: 0, 'margin-bottom': '0', opacity: 0}))
+        ])
+      ]
+    )
+  ]
 })
 export class FilterComponent implements OnInit {
   @Input() get isOpen() { return this.isFilterOpen; }
@@ -30,7 +46,7 @@ export class FilterComponent implements OnInit {
   filters: LocatorFilters;
 
   constructor(
-    private snFilterService: FilterService,
+    public snFilterService: FilterService,
     private renderer: Renderer2,
     private el: ElementRef,
     private analyticsService: BridgeAnalyticService,
@@ -38,12 +54,15 @@ export class FilterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.hide();
+
     this.snFilterService.initForm()
       .pipe(take(1))
       .subscribe((form) => {
       this.form = form;
     });
+
     this.configuration.settings$
       .pipe(take(1))
       .subscribe(
@@ -55,7 +74,6 @@ export class FilterComponent implements OnInit {
 
   private show(): void {
     this.isFilterOpen = true;
-
   }
 
   private hide(): void {
@@ -128,12 +146,19 @@ export class FilterComponent implements OnInit {
     return 'sn-BAN005'; // todo : implement
   }
 
-  public switchFilterButton(): void {
-    this.selectedFilters = {};
+  public clearFilters(event): void {
+
+    for (const filterKey in Object.keys(this.selectedFilters)) {
+      if (1 === 1) {
+        delete this.selectedFilters[filterKey];
+      }
+    }
+
     this.isHideTurnOffButton = true;
     const sendEvent = EventsAnalyticsVariables.tapCleanFilters;
     this.analyticsService.sendEvent(sendEvent);
 
-    this.apply(false);
+    setTimeout(() => {this.apply(false); });
+
   }
 }

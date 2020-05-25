@@ -4,15 +4,13 @@
 
   <div
     class="turn-off-filter-container"
-    [ngClass]="{
-      'm-fadeIn': !isHideTurnOffButton,
-      'm-fadeOut': isHideTurnOffButton
-    }"
+    *ngIf = "snFilterService.count>0"
+    [@clearButtonAnimation]
   >
     <button
       class="turn-off-filter-button"
       type="reset"
-      (click)="switchFilterButton()"
+      (click)="clearFilters($event)"
     >
       <sn-icon icon="sn-FUNC036"></sn-icon
       >{{ "branchLocator.filtersButtons.turnOffFilters" | translate }}
@@ -24,7 +22,6 @@
     </button>
   </div>
   <div class="sn-filter-content">
-
     <div formGroupName="BRANCH">
       <h2 class="title">
         {{ "branchLocator.title.pointOfInterest" | translate }}
