@@ -80,6 +80,17 @@ export class FilterComponent implements OnInit {
     this.isFilterOpen = false;
   }
 
+  private clearTypes(): boolean  {
+    let applied = false;
+    this.typesCheckboxes.forEach(component => {
+      if (this.selectedFilters.hasOwnProperty(component.id)) {
+        component._inputElement.nativeElement.click();
+        applied = true;
+      }
+    });
+    return applied;
+  }
+
   public close(): void {
     this.hide();
   }
@@ -115,14 +126,11 @@ export class FilterComponent implements OnInit {
 
   public selectFilter(event: any, clearTypes?: boolean): void {
     const eventUniqueId = event.source._uniqueId;
+    let cleared;
 
     if (clearTypes) {
-      console.log(this.typesCheckboxes);
-      this.typesCheckboxes.forEach(component => {
-        if (this.selectedFilters.hasOwnProperty(component.id)) {
-          component._inputElement.nativeElement.click();
-        }
-      });
+      cleared = this.clearTypes();
+
     }
 
     if (this.selectedFilters.hasOwnProperty(eventUniqueId)) {
@@ -148,11 +156,9 @@ export class FilterComponent implements OnInit {
 
   public clearFilters(event): void {
 
-    for (const filterKey in Object.keys(this.selectedFilters)) {
-      if (1 === 1) {
-        delete this.selectedFilters[filterKey];
-      }
-    }
+    this.clearTypes();
+
+    this.selectedFilters = {};
 
     this.isHideTurnOffButton = true;
     const sendEvent = EventsAnalyticsVariables.tapCleanFilters;
