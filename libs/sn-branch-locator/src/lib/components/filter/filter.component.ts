@@ -20,11 +20,11 @@ import {animate, style, transition, trigger} from '@angular/animations';
       'clearButtonAnimation', [
         transition(':enter', [
           style({height: 0, 'margin-bottom': '0', opacity: 0}),
-          animate('300ms', style({height: 44, 'margin-bottom': '25px', opacity: 1}))
+          animate('200ms', style({height: 44, 'margin-bottom': '25px', opacity: 1}))
         ]),
         transition(':leave', [
           style({height: 44, 'margin-bottom': '25px', opacity: 1}),
-          animate('300ms', style({height: 0, 'margin-bottom': '0', opacity: 0}))
+          animate('120ms', style({height: 0, 'margin-bottom': '0', opacity: 0}))
         ])
       ]
     )
