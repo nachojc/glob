@@ -490,7 +490,7 @@ export class SnBranchLocatorComponent implements OnInit {
     this.isVisibleRoute = false;
     this.isVisibleMarkers = true;
     this.displayPanel = 'info';
-    this.openDrawer();
+    // this.openDrawer();
   }
 
   openDirectionsPanel(): void {

@@ -74,10 +74,13 @@ export class FilterComponent implements OnInit {
 
   private show(): void {
     this.isFilterOpen = true;
+    this.renderer.removeStyle(this.el.nativeElement, 'display');
+    this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
   }
 
   private hide(): void {
     this.isFilterOpen = false;
+    this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
   }
 
   private clearTypes(): boolean  {
