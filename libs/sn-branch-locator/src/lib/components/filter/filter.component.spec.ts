@@ -100,7 +100,7 @@ describe('SnFilterComponent', () => {
       }
     };
     component.isHideTurnOffButton = false;
-    component.clearFilters();
+    component.clearFilters(new Event(''));
     expect(component.selectedFilters).toEqual({});
     expect(component.isHideTurnOffButton).toBeTruthy();
   });
