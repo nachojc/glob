@@ -29,6 +29,11 @@ h1 {
       position: absolute;
       right: 4rem;
       top: 0.6rem;
+
+      @media only screen and (max-width:640px) {
+        right:8px;
+      }
+
       button {
         background-color: $color-primary-white;
         border-radius: 2.7px;
