@@ -37,7 +37,6 @@ export class SnBranchInfoComponent implements OnInit {
     return this._branch;
   }
 
-  // TODO : Temporary fix.
   @Output() branchInfoClicked = new EventEmitter<any>();
 
   @Output() branchDirection = new EventEmitter<any>();
@@ -103,7 +102,6 @@ export class SnBranchInfoComponent implements OnInit {
     }
     return [];
   }
-
 
   getHoursToClose(schedule) {
     const poiHours = this.getTodayTimeInformation(schedule);

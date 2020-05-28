@@ -18,7 +18,6 @@ export class Platform {
   }
 
   get isMobile(): boolean {
-    // tslint:disable-next-line: max-line-length
     // TODO: make it with width size of own component
     return !(this.orientation.angle === 0 &&
       this.orientation.type === 'landscape-primary') &&

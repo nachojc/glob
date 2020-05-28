@@ -17,7 +17,6 @@ export class AppComponent {
     private translate: TranslateService,
     private queryParamsService: QueryParamsService
   ) {
-    console.log('bl-group app component');
     const browserLang = navigator.language || window.navigator['userLanguage'];
     this.defaultLang = browserLang.substring(0, 2);
     this.translate.setDefaultLang(this.defaultLang);

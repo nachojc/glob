@@ -416,7 +416,6 @@ describe('SnBranchLocatorComponent', () => {
     });
   });
 
-
   describe('closeInfo()', () => {
     const map = {
       api: {
@@ -425,6 +424,7 @@ describe('SnBranchLocatorComponent', () => {
         getBounds: () => new Promise((getBoundsresolve) => getBoundsresolve(mapBounds))
       }
     } as any;
+
     it('should return true', () => {
       component.map = map;
       component.showDrawer = false;
@@ -433,6 +433,7 @@ describe('SnBranchLocatorComponent', () => {
       component.closeInfo();
       expect(component.showDrawer).toBeTruthy();
     });
+
     it('should return false', () => {
       component.map = map;
       component.showDrawer = true;

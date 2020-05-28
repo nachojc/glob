@@ -51,6 +51,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
   private startPositionTop: number;
   private readonly _BOUNCE_DELTA = 30;
+  private readonly _DOCK_OFFSET = 14;
   public panArea: boolean = false;
 
   constructor(
@@ -100,7 +101,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   setDynamicHeight(children) {
     const header = this.getHeaderElement(children);
     if (header) {
-      this.dockedHeight = header.offsetHeight;
+      this.dockedHeight = header.offsetHeight + this._DOCK_OFFSET;
     }
   }
 

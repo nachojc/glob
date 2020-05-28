@@ -1,6 +1,7 @@
 <!-- Mobile and Tablet -->
 <!-- TODO: Please add translations for all hardcoded text -->
 <!-- TODO:  Use tabgroup from common lib and not the local one, this needs to be updated -->
+
 <ng-container *ngIf="isMobile">
   <sn-tab-group
     [selectIndex]="selectedTabIndex"
@@ -66,6 +67,7 @@
             <sn-icon icon="sn-SYS029"></sn-icon>
           </button>
         </section>
+
         <sn-drawer
           #drawer
           [dockedHeight]="220"
@@ -74,13 +76,14 @@
           (stateChange)="drawerStageChange($event)"
         >
           <sn-branch-info
-            *ngIf="selectedBranch && !showDirectionsPanel"
+            *ngIf="selectedBranch  && !showDirectionsPanel"
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
             (branchDirection)="drawDirections($event)"
             (openDirectionsPanel)="openDirectionsPanel()"
           ></sn-branch-info>
+
           <sn-branch-direction
             *ngIf="showDirectionsPanel && durationsLoaded"
             [branch]="selectedBranch"
@@ -107,7 +110,6 @@
   </sn-tab-group>
   <section class="locator-search">
     <div class="locator-search-container">
-
       <sn-branch-search
         [showReCenter]="showReCenter"
         [filterCount]="filterCounts"
@@ -115,11 +117,15 @@
         (placeChange)="placeChange($event)"
         (reCenter)="centerMapToUser(true, true)"
         (callFilter)="showFilter()"
-      >
-      </sn-branch-search>
+      ></sn-branch-search>
     </div>
   </section>
-  <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
+
+  <sn-filter modal
+             (filterCallList)="displayPanel='list'"
+             (filterApply)="onFilterApply($event)"
+  ></sn-filter>
+
 </ng-container>
 <!-- End Mobile and Tablet -->
 
@@ -130,6 +136,8 @@
     (closeInfo)="closeInfo()"
     (closeDirectionsPanel)="closeDirectionsPanel()"
     (closeFilterPanel)="hideFilter()"
+    [displayPanel]="displayPanel"
+    (filterDeployed)="onFilterDeployed($event)"
   >
     <sn-branch-search
       #test
@@ -139,8 +147,7 @@
       (placeChange)="placeChange($event)"
       (reCenter)="centerMapToUser(true, true)"
       (callFilter)="showFilter()"
-    >
-    </sn-branch-search>
+    ></sn-branch-search>
 
     <sn-branch-list
       [isLoading]="isLoading"
@@ -150,7 +157,7 @@
     </sn-branch-list>
 
     <sn-branch-info
-      *ngIf="showDrawer"
+      *ngIf="selectedBranch"
       [branch]="selectedBranch"
       [isNearestMarker]="showNearest"
       (branchDirection)="drawDirections($event)"
@@ -158,14 +165,16 @@
     ></sn-branch-info>
 
     <sn-branch-direction
-      *ngIf="showDirectionsPanel && durationsLoaded"
       [branch]="selectedBranch"
       (branchDirection)="drawDirections($event)"
       [durations]="durations"
       [routes]="routes"
     ></sn-branch-direction>
 
-    <sn-filter modal (filterApply)="onFilterApply($event)"></sn-filter>
+    <sn-filter
+      (filterCallList)="displayPanel='list'"
+      (filterApply)="onFilterApply($event)"></sn-filter>
+
   </sn-menu>
   <!-- End Side Menu -->
 

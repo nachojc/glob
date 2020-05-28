@@ -7,19 +7,19 @@
   </div>
 
   <section class="panel-wrapper">
-    <div class="info-close-button-wrapper" [ngClass]="{ closed: !info }">
+    <div class="info-close-button-wrapper" [ngClass]="{ closed: displayPanel!='info' }">
       <button class="info-close-button" (click)="closeInfo.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
     </div>
 
-    <div class="info-close-button-wrapper" [ngClass]="{ closed: !direction || filter.isOpen }">
+    <div class="info-close-button-wrapper" [ngClass]="{ closed: displayPanel!='directions' }">
       <button class="info-close-button" (click)="closeDirectionsPanel.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
     </div>
 
-    <div class="info-close-button-wrapper" [ngClass]="{ closed: !filter.isOpen }">
+    <div class="info-close-button-wrapper"  [ngClass]="{ closed: !filter.isOpen }">
       <button class="info-close-button" (click)="closeFilterPanel.emit($event)">
         <sn-icon icon="sn-SYS021"></sn-icon>
       </button>
@@ -30,23 +30,48 @@
       <span>Santander</span>
     </div>
 
-    <div class="search-input-wrapper">
-      <ng-content select="sn-branch-search"></ng-content>
+      <div class="search-input-wrapper">
+        <ng-content select="sn-branch-search"></ng-content>
+      </div>
+
+    <div class="filter-container">
+
+      <div class="filter-panel-wrapper"
+           [@showFilter] = "filter.isOpen"
+           [ngClass]="{ closed: !showFilter }"
+           (@showFilter.done)="filterTransitionDone($event)"
+      >
+        <ng-content select="sn-filter"></ng-content>
+      </div>
     </div>
 
-    <div class="search-results-wrapper" [ngClass]="{ closed: !!info || !!direction }">
-      <ng-content select="sn-branch-list"></ng-content>
-    </div>
+    <div class="content-wrapper">
 
-    <div class="info-wrapper" [ngClass]="{ closed: !info || direction }">
-      <ng-content select="sn-branch-info"></ng-content>
-    </div>
+      <div class="search-results-wrapper"
+           [@slideStateOut]="displayPanel=='info'||displayPanel=='directions'"
+           [ngClass]="{ closed:( !transitionActive && displayPanel!='list') || (displayPanel=='directions' || previousPanel=='directions') }"
+      >
+        <ng-content select="sn-branch-list"></ng-content>
+      </div>
 
-    <div class="direction-wrapper" [ngClass]="{ closed: !direction }">
-      <ng-content select="sn-branch-direction"></ng-content>
+      <div class="info-wrapper"
+           [@slideState]="displayPanel=='info'"
+           [@slideStateOut]="displayPanel=='directions'"
+           (@slideStateOut.done)="transitionDone($event)"
+           (@slideState.done)="transitionDone($event)"
+           [ngClass]="{ closed: !transitionActive && displayPanel!='info'}"
+      >
+        <ng-content select="sn-branch-info"></ng-content>
+      </div>
+
+      <div class="direction-wrapper"
+           [@slideState]="displayPanel=='directions'"
+           [ngClass]="{ closed:( !transitionActive && displayPanel!='directions') || (previousPanel == 'list') || (displayPanel == 'list') }"
+      >
+        <ng-content select="sn-branch-direction"></ng-content>
+      </div>
     </div>
 
     <ng-content select="sn-filter" [ngClass]="{ closed: !filter.isOpen }"></ng-content>
   </section>
-
 </div>

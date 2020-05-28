@@ -10,7 +10,6 @@ import { Durations} from '../../models/durations.model';
   styleUrls: ['./sn-branch-direction.component.scss']
 })
 export class SnBranchDirectionComponent {
-
   private _branch: Branch;
   private _routes: Array<Routes>;
   private _durations: Durations;
@@ -49,5 +48,4 @@ export class SnBranchDirectionComponent {
     this.selectedRoute = geoCoords.travelMode;
     this.branchDirection.emit(geoCoords);
   }
-
 }

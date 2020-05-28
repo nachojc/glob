@@ -29,7 +29,6 @@ export class BranchSearchInputComponent implements OnInit {
     private globileSettings: GlobileSettingsService,
     private analyticsService: BridgeAnalyticService,
     private configuration: ConfigurationService
-
   ) { }
 
   ngOnInit(): void {

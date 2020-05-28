@@ -17,10 +17,12 @@
     i {
       font-size: 24px;
       vertical-align: middle;
+
     }
   }
 
   .search-input-wrapper {
+
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -140,5 +142,50 @@
         }
       }
     }
+  }
+
+
+}
+
+
+::ng-deep {
+
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+
+    .search-input-wrapper {
+      height: initial;
+      min-height: 48px;
+      padding:0 !important;
+    }
+
+    .search-input-button, .filter-button-container {
+      flex-basis : auto !important;
+      height : 48px;
+      button {
+        background-color:white;
+      }
+    }
+
+
+    .search-input-button button {
+      background-color:white;
+    }
+
+    .filter-panel-wrapper {
+      background-color:white;
+    }
+
+    .sn-inner-container {
+      min-width: 48px;
+    }
+
+    sn-icon {
+      i {
+        line-height:40px !important;
+      }
+    }
+
+
+
   }
 }

@@ -16,7 +16,7 @@
             justify-content: flex-start;
             min-height: 48px;
             overflow: auto;
-            
+
             &::-webkit-scrollbar
             {
                 display: none;
@@ -27,8 +27,6 @@
                 margin: auto;
                 border-right: 1px solid grey;
                 cursor: pointer;
-                
-                // Font Settings
                 text-align: center;
                 font-size: 0.875rem;
                 line-height: 1.5;
@@ -52,11 +50,11 @@
             left: 0;
             bottom: 0;
             background-color: red;
-            transition: left 1s ease;
-            -webkit-transition: left 1s ease;
-            -moz-transition: left 1s ease;
-            -ms-transition: left 1s ease;
-            -o-transition: left 1s ease;
+            transition: left 0.25s ease-in-out;
+            -webkit-transition: left 0.25s ease-in-out;
+            -moz-transition: left 0.25s ease-in-out;
+            -ms-transition: left 0.25s ease-in-out;
+            -o-transition: left 0.25s ease-in-out;
         }
     }
 }

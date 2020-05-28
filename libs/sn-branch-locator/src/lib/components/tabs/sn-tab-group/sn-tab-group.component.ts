@@ -27,6 +27,7 @@ export class SnTabGroupComponent implements AfterContentInit, OnDestroy {
 
   tabslabel: string[] = [];
   private _activeIndex: number;
+
   get getPosition() {
     return {
       left : this.tabslabel ? ((100 / this.calcPosition()) * (this._activeIndex < 2 ? this._activeIndex : 2)) + '%' : 0,

@@ -62,7 +62,7 @@ export function LocalLoaderFactory(http: HttpClient, globileSettings: GlobileSet
     FilterModule,
     LoadingModule,
     LoaderModule,
-    SnDirectionModule
+    SnDirectionModule,
   ],
   providers: [TranslateService, BridgeAnalyticService, SnBranchLocatorService],
   exports: [SnBranchLocatorComponent]

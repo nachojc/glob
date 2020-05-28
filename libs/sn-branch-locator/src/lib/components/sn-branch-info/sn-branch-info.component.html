@@ -39,16 +39,6 @@
         <p>{{ 'branchLocator.details.directions' | translate }}</p>
       </div>
     </section>
-
-    <!-- <section class="branch-schedule">
-      <div class="body-medium" *ngIf="branch.subType?.multi">
-        {{ branch.subType?.multi.default }}
-      </div>
-      <div>{{ "branchLocator.details.atminfo" | translate }}</div>
-      <div>
-        {{ "branchLocator.details.today" | translate }}, {{ todayHours }}
-      </div>
-    </section> -->
   </div>
 
   <div class="branch-status-wrapper">
@@ -119,17 +109,7 @@
                 </div>
               </div>
             </sn-option-item>
-            <!-- <sn-option-item >
-              <sn-icon color="primary" icon="sn-SYS004" item-start align-start></sn-icon>
-              <div class="Type-5_Regular-Style section-title">Notices and news</div>
-              <div class="Type-5_Regular-Style">
-                <h1 class="title">Tomorrow closed for works</h1>
-                Due to improvements in the facilities we will keep the office closed tomorrow, Tuesday, August 6, 2018.
-                <br />
-                <br />
-                Sorry for the inconvenience
-              </div>
-            </sn-option-item> -->
+
             <sn-option-item *ngIf="
                 branch.attributes?.length > 0 || branch.products?.length > 0
               ">
@@ -203,17 +183,6 @@
                 </div>
               </div>
             </sn-option-item>
-            <!-- <sn-option-item >
-                <sn-icon color="primary" icon="sn-SYS004" item-start align-start></sn-icon>
-                <div class="Type-5_Regular-Style section-title">Notices and news</div>
-                <div class="Type-5_Regular-Style">
-                  <h1 class="title">Tomorrow closed for works</h1>
-                  Due to improvements in the facilities we will keep the office closed tomorrow, Tuesday, August 6, 2018.
-                  <br />
-                  <br />
-                  Sorry for the inconvenience
-                </div>
-              </sn-option-item> -->
             <sn-option-item *ngIf="
                 branch.atm &&
                 (branch.atm[0].attributes?.length > 0 ||
