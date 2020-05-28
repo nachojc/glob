@@ -21,7 +21,7 @@ import { SnTabModule } from '../tabs/sn-tab.module';
 import { SnDirectionModule } from '../../directives/sn-direction/sn-direction.module';
 import { OutputDirection } from '../../models/output-direction';
 import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
-
+import { RouterTestingModule } from '@angular/router/testing';
 
 
 const mockMapsAPILoader = {
@@ -93,7 +93,8 @@ describe('SnBranchLocatorComponent', () => {
           apiKey: 'demo',
           libraries: ['places']
         }),
-        SnDirectionModule
+        SnDirectionModule,
+        RouterTestingModule
       ],
       declarations: [
         SnBranchLocatorComponent,
@@ -203,6 +204,7 @@ describe('SnBranchLocatorComponent', () => {
         })
       }
     } as any;
+    component.filterView = { open: () => null, isOpen: () => true, toggle: () => true } as any;
     component.markerSelect(selected, branchMock, false);
     // tslint:disable-next-line: no-string-literal
     expect(component['selectedMarker']).toEqual(selected);
@@ -337,7 +339,8 @@ describe('SnBranchLocatorComponent', () => {
     it('should call getBranchesByCoordinates with params', () => {
       spyOn(component, 'getBranchesByCoordinates').and.returnValue(of([branchMock, branchMock]));
       component.userPosition = { lat: 38.7376049, lng: -9.1654431 };
-      component.centerMapToUser();
+      component.startingPosition = { coordinates: { lat: 38.7376049, lng: -9.1654431 } };
+      component.centerMapToUser(true, false);
       expect(component.getBranchesByCoordinates).toHaveBeenCalledWith(component.userPosition, false);
     });
 
@@ -460,7 +463,7 @@ describe('SnBranchLocatorComponent', () => {
 
   describe('showFilter()', () => {
     beforeEach(() => {
-      component.filterView = { open: () => null } as any;
+      component.filterView = { open: () => null, isOpen: () => true } as any;
     });
     it('should call filterView.open', () => {
       spyOn(component.filterView, 'open');
