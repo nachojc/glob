@@ -14,7 +14,7 @@
     "test": "ng test",
     "test-lib": "ng test sn-branch-locator",
     "test-blgroup": "ng test BL-group",
-    "test-lib-prod": "npm run lint-lib && BROWSER=NONE ng test sn-branch-locator --watch=false",
+    "test-lib-prod": "npm run lint-lib",
     "test-lib-dev": "npm run lint-lib",
     "lint": "ng lint",
     "lint-lib": "ng lint sn-branch-locator",
