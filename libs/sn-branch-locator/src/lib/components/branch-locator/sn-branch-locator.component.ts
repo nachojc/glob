@@ -245,6 +245,8 @@ export class SnBranchLocatorComponent implements OnInit {
 
     this.isMobile = this.platform.isMobile;
 
+
+
     this.branchService.onChange.subscribe(
       res => {
         console.log(
@@ -548,6 +550,7 @@ export class SnBranchLocatorComponent implements OnInit {
     }
 
     this.closeDrawer();
+
     from(this.map.api.panTo(place))
       .pipe(switchMap(() => from(this.map.api.setZoom(this.zoom))))
       .subscribe(() => {

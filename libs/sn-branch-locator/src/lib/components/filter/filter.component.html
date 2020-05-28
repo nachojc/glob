@@ -6,6 +6,10 @@
     class="turn-off-filter-container"
     *ngIf = "snFilterService.count>0"
     [@clearButtonAnimation]
+    [ngClass]="{
+      'm-fadeIn': !isHideTurnOffButton,
+      'm-fadeOut': isHideTurnOffButton
+    }"
   >
     <button
       class="turn-off-filter-button"
