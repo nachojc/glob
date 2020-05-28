@@ -42,7 +42,6 @@
               }
             ],
             "styles": [
-              "node_modules/sn-common-lib/styles/styles.scss",
               "node_modules/prismjs/themes/prism-coy.css"
             ],
             "stylePreprocessorOptions": {
@@ -104,8 +103,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.scss",
-              "node_modules/sn-common-lib/styles/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": [],
             "assets": [
@@ -205,7 +203,6 @@
               }
             ],
             "styles": [
-              "node_modules/sn-common-lib/styles/styles.scss",
             ]
           }
         },
@@ -261,9 +258,7 @@
               }
             ],
             "styles": [
-              "projects/BL-group/src/styles.scss",
-              "node_modules/sn-common-lib/styles/styles.scss",
-              "node_modules/prismjs/themes/prism-coy.css"
+              "projects/BL-group/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["/node_modules"]
