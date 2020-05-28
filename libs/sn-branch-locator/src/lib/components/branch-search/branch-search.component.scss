@@ -179,12 +179,19 @@
       min-width: 48px;
     }
 
+    .branch-maneuver {
+      min-width :   24px;
+    }
+
     sn-icon {
       i {
         line-height:40px !important;
       }
     }
 
+    .branch-directions {
+      overflow-y : hidden;
+    }
 
 
   }

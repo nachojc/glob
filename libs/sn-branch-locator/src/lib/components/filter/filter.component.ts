@@ -10,6 +10,7 @@ import {LocatorFilters} from '../../models/remote-config.model';
 import {take} from 'rxjs/operators';
 import {CheckboxComponent} from 'sn-common-lib/atoms/checkbox/checkbox.component';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {Platform} from '../../services/platform/platform.service';
 
 @Component({
   selector: 'sn-filter',
@@ -50,7 +51,8 @@ export class FilterComponent implements OnInit {
     private renderer: Renderer2,
     private el: ElementRef,
     private analyticsService: BridgeAnalyticService,
-    private configuration: ConfigurationService
+    private configuration: ConfigurationService,
+    private platform: Platform,
   ) { }
 
   ngOnInit(): void {
@@ -74,13 +76,19 @@ export class FilterComponent implements OnInit {
 
   private show(): void {
     this.isFilterOpen = true;
-    this.renderer.removeStyle(this.el.nativeElement, 'display');
-    this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
+    if (this.platform.isMobile) {
+      this.renderer.removeStyle(this.el.nativeElement, 'display');
+      this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
+    }
   }
 
   private hide(): void {
     this.isFilterOpen = false;
-    this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+
+    if (this.platform.isMobile) {
+      this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+    }
+
   }
 
   private clearTypes(): boolean  {
