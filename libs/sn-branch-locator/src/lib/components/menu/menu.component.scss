@@ -174,3 +174,11 @@
     display: none;
   }
 }
+
+::ng-deep {
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    button.info-close-button {
+      background-color: transparent;
+    }
+  }
+}

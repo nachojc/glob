@@ -125,12 +125,13 @@ export class FilterComponent implements OnInit {
   }
 
   public selectFilter(event: any, clearTypes?: boolean): void {
+
     const eventUniqueId = event.source._uniqueId;
+
     let cleared;
 
     if (clearTypes) {
       cleared = this.clearTypes();
-
     }
 
     if (this.selectedFilters.hasOwnProperty(eventUniqueId)) {
@@ -139,7 +140,7 @@ export class FilterComponent implements OnInit {
       this.selectedFilters[eventUniqueId] = {
         checked: event.checked
       };
-    }
+  }
 
     if (Object.entries(this.selectedFilters).length === 0) {
       this.isHideTurnOffButton = true;

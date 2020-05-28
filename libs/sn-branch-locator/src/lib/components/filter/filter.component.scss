@@ -9,6 +9,9 @@ form {padding-top:20px;}
   }
 }
 @media (max-width: 640px) {
+
+
+
   .hide-mobile {
     display: none;
   }
@@ -80,7 +83,6 @@ form {padding-top:20px;}
   .turn-off-filter-container {
     width: 90%;
     font-size: 16px;
-
   }
 
   .aply-filter-container {
@@ -97,7 +99,6 @@ form {padding-top:20px;}
     overflow:hidden;
     display: flex;
     align-items: flex-end;
-
 
     .turn-off-filter-button {
       width: 100%;
@@ -140,6 +141,8 @@ form {padding-top:20px;}
       button.info-close-button {
         transform: rotate(180deg);
         color: red;
+        background-color:white;
+
       }
     }
 
