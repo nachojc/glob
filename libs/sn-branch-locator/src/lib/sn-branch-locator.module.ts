@@ -36,7 +36,6 @@ import { SnDirectionModule } from './directives/sn-direction/sn-direction.module
 import { SnBranchDirectionComponent } from './components/sn-branch-direction/sn-branch-direction.component';
 import { SafePipe } from './pipes/safe.pipe';
 import { SnBranchLocatorService } from './services/branch-locator/branch-locator.service';
-import { ENV_SETTINGS } from './tokens/environment-settings.token';
 
 
 // TODO: path Update EnvironmentConfigModel

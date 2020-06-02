@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LocatorSettings } from '../../models/remote-config.model';
 import { ObservableInput, of, ReplaySubject } from 'rxjs';
@@ -29,9 +29,10 @@ export class ConfigurationService {
     private globileSettings: GlobileSettingsService,
     private geoPosition: GeoPositionService,
     private http: HttpClient,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    @Inject('ENV_CONFIG') private _enviroment
   ) {
-    this.branchLocatorEnv = globileSettings.branchLocator;
+    this.branchLocatorEnv = this._enviroment.branchLocator;
 
     this.activatedRoute.queryParams.pipe(first()).subscribe(params => {
       const viewType = params['view'] || this.paramDefaultView;
