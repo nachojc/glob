@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF } from '@angular/common';
 
@@ -63,6 +62,7 @@ export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSett
   providers: [
     { provide: APP_BASE_HREF, useValue: './' },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+
   ],
   bootstrap: [AppComponent]
 })

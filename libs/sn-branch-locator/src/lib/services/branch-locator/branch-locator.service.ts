@@ -9,6 +9,7 @@ import { Branch } from '../../models/branch.model';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
 import { FilterService } from '../filter/filter.service';
 import { GeoPositionService } from '../geo-position/geo-position.service';
+import {EnvironmentSettingsService} from '../environment-settings/environment-settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +21,11 @@ export class SnBranchLocatorService {
   branchLocator: EnvBranchLocatorModel;
 
   constructor(
-    globileSettings: GlobileSettingsService,
-    public http: HttpClient,
-    private filterservice: FilterService,
-    @Inject(WindowRefService) windowRef: WindowRefService,
-    private geoPositionService: GeoPositionService
+     private globileSettings: EnvironmentSettingsService,
+     public http: HttpClient,
+     private filterservice: FilterService,
+     @Inject(WindowRefService) windowRef: WindowRefService,
+     private geoPositionService: GeoPositionService
   ) {
     this.branchLocator = globileSettings.branchLocator;
   }
@@ -34,7 +35,7 @@ export class SnBranchLocatorService {
   }
 
   /**
-   * @description Returns a list of points of interest
+   * @description Returns a li st of points of interest
    * @Returns {Observable<Branch[]>}
    * @memberOf SnBranchLocatorService
    */
