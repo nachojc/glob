@@ -37,8 +37,7 @@ import { SnBranchDirectionComponent } from './components/sn-branch-direction/sn-
 import { SafePipe } from './pipes/safe.pipe';
 import { SnBranchLocatorService } from './services/branch-locator/branch-locator.service';
 import { ENV_SETTINGS } from './tokens/environment-settings.token';
-import { environment } from '../assets/environment';
-import { EnvironmentSettingsService } from './services/environment-settings/environment-settings.service';
+
 
 // TODO: path Update EnvironmentConfigModel
 export function LocalLoaderFactory(
@@ -90,9 +89,7 @@ export function LocalLoaderFactory(
   providers: [
     TranslateService,
     BridgeAnalyticService,
-    SnBranchLocatorService,
-    EnvironmentSettingsService,
-    { provide: ENV_SETTINGS, useValue: environment }
+    SnBranchLocatorService
   ],
   exports: [SnBranchLocatorComponent]
 })

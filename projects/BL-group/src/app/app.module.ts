@@ -45,6 +45,8 @@ export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSett
     GlobileModule.forRoot({}, environment),
   ],
   providers: [
+    { provide: 'WINDOW', useValue: window },
+    { provide: 'ENV_CONFIG', useValue: environment },
     // { provide: APP_BASE_HREF, useValue: './' },
     // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
