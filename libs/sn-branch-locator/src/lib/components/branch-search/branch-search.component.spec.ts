@@ -4,8 +4,8 @@ import {BranchSearchInputComponent} from './branch-search.component';
 import {IconModule} from 'sn-common-lib';
 import {AgmCoreModule, MapsAPILoader} from '@agm/core';
 import {ElementRef} from '@angular/core';
-import {GlobileSettingsService, WindowRefService} from '@globile/mobile-services';
 import {HttpClientModule} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
@@ -67,8 +67,8 @@ describe('BranchSearchInputComponent', () => {
       ],
       providers: [
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
-        { provide: WindowRefService, useValue: windowRef },
-        { provide: GlobileSettingsService, useValue: env }
+        { provide: 'WINDOW', useValue: window },
+        { provide: 'ENV_CONFIG', useValue: environment },
       ]
     })
       .compileComponents();

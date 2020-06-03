@@ -1,12 +1,12 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Branch } from '../../models/branch.model';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
-import { BridgeAnalyticService } from '@globile/mobile-services';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 import { LabelPipe } from '../../pipes/label/label.pipe';
-import { Configuration } from 'jasmine-spec-reporter/built/configuration';
+
 import { ConfigurationService } from '../../services/configuration/configuration.service';
-import { take, takeLast } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+import { AnalyticsService } from '../../services/analytic/analytics.service';
 
 @Component({
   selector: 'sn-branch-info',
@@ -58,7 +58,7 @@ export class SnBranchInfoComponent implements OnInit {
   @Output() openDirectionsPanel = new EventEmitter<any>();
 
   constructor(
-    private analyticsService: BridgeAnalyticService,
+    private analyticsService: AnalyticsService,
     public labels: LabelPipe,
     public configuration: ConfigurationService
   ) {}

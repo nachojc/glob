@@ -12,7 +12,6 @@ import {
 import { FilterService } from '../../services/filter/filter.service';
 import { FormGroup } from '@angular/forms';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
-import { BridgeAnalyticService } from '@globile/mobile-services';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
 import { LocatorFilters } from '../../models/remote-config.model';
@@ -20,6 +19,7 @@ import { take } from 'rxjs/operators';
 import { CheckboxComponent } from 'sn-common-lib/atoms/checkbox/checkbox.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Platform } from '../../services/platform/platform.service';
+import { AnalyticsService } from '../../services/analytic/analytics.service';
 
 @Component({
   selector: 'sn-filter',
@@ -61,7 +61,7 @@ export class FilterComponent implements OnInit {
     public snFilterService: FilterService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private analyticsService: BridgeAnalyticService,
+    private analyticsService: AnalyticsService,
     private configuration: ConfigurationService,
     private platform: Platform
   ) {}

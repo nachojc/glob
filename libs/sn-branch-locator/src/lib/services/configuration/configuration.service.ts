@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { LocatorSettings } from '../../models/remote-config.model';
 import { ObservableInput, of, ReplaySubject } from 'rxjs';
 import { LatLngLiteral } from '@agm/core';
-import { GlobileSettingsService } from '@globile/mobile-services';
 import { GeoPositionService } from '../geo-position/geo-position.service';
 import {
   EnvBranchLocatorEndPointModel,
@@ -22,7 +21,6 @@ export class ConfigurationService {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private globileSettings: GlobileSettingsService,
     private geoPosition: GeoPositionService,
     private http: HttpClient,
     @Inject('ENV_CONFIG') private _enviroment

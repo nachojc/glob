@@ -4,7 +4,6 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "@globile/mobile-services": "mobileServices",
       "@agm/js-marker-clusterer": "jsMarkerClusterer",
       "@agm/core": "core$1",
       "sn-common-lib": "snCommonLib",
@@ -20,7 +19,6 @@
     "js-marker-clusterer",
     "@types/googlemaps",
     "hammerjs",
-    "sn-common-lib",
-    "@globile/mobile-services",
+    "sn-common-lib"
   ]
 }

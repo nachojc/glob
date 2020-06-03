@@ -25,16 +25,11 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
-import {
-  AnalyticsChannelEnum,
-  AnalyticsInitModel,
-  BridgeAnalyticService,
-  ComponentParamsModel,
-  WebAnalyticsInitModel
-} from '@globile/mobile-services';
+
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
+import { AnalyticsService } from '../../services/analytic/analytics.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -95,7 +90,7 @@ export class SnBranchLocatorComponent implements OnInit {
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform,
-    private analyticsService: BridgeAnalyticService,
+    private analyticsService: AnalyticsService,
     private configuration: ConfigurationService
   ) {
     this.geoPosition
@@ -230,8 +225,6 @@ export class SnBranchLocatorComponent implements OnInit {
         // this.translateService.use(this.defaultLang);
       }
     });
-
-    this.initAnalytics();
 
     const sendView = ViewsAnalyticsVariables.mapScreen;
     this.analyticsService.sendView(sendView);
@@ -632,35 +625,5 @@ export class SnBranchLocatorComponent implements OnInit {
         }
       });
     }
-  }
-
-  private initAnalytics() {
-    const analyticsConfig: AnalyticsInitModel = {
-      account: 'santander',
-      profile: 'globile',
-      environment: 'prod'
-    };
-    // TODO: Chnag to native whene have inplementation by core team
-    const channelConfig: WebAnalyticsInitModel = {
-      externalTealium: false
-    };
-    const componentParams: ComponentParamsModel = {
-      tealium_trace_id: 'testbr',
-      Component: 'branch locator',
-      ComponentVersion: '0.0.1',
-      AppType: 'Internal',
-      AppName: 'santander globile internal',
-      AppVersion: '0.0.1',
-      Language: 'spanish',
-      Country: 'ES'
-    };
-
-    this.analyticsService.setInitValues(
-      // TODO: Chnag to native whene have inplementation by core team
-      AnalyticsChannelEnum.WEB,
-      analyticsConfig,
-      channelConfig,
-      componentParams
-    );
   }
 }
