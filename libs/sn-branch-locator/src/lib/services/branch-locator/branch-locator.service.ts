@@ -25,7 +25,7 @@ export class SnBranchLocatorService {
     @Inject('ENV_CONFIG') private _enviroment
   ) {
     this.branchLocator = this._enviroment.branchLocator;
-  }
+}
 
   get onChange(): Observable<Branch[]> {
     return this._observer$.asObservable();

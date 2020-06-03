@@ -21,6 +21,6 @@
     "@types/googlemaps",
     "hammerjs",
     "sn-common-lib",
-    "@globile/mobile-services",
+    "@globile/mobile-services"
   ]
 }

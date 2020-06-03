@@ -134,7 +134,7 @@ export class SnBranchInfoComponent implements OnInit {
       if (poiHours === 'Closed') {
         return {
           // text: this.labels.transform('branchLocator.details.closed'),
-          text: this.labels.transform('branchLocator.details.closed'),
+          text: this.labels.transform('POICLOSED'),
           mode: 'CLOSED'
         };
       }
@@ -161,7 +161,7 @@ export class SnBranchInfoComponent implements OnInit {
         now.getTime() > endDate.getTime()
       ) {
         return {
-          text: this.labels.transform('branchLocator.details.closed'),
+          text: this.labels.transform('POICLOSED'),
           mode: 'CLOSED'
         };
       } else {
@@ -171,7 +171,7 @@ export class SnBranchInfoComponent implements OnInit {
         const minutes = Math.floor(diff / 1000 / 60);
         if (hours <= 0) {
           return {
-            text: `${this.labels.transform('branchLocator.details.closing')} ${
+            text: `${this.labels.transform('POICLOSING')} ${
               minutes <= 9 ? '0' : ''
             }${minutes} min`,
             mode: 'CLOSING'
@@ -179,7 +179,7 @@ export class SnBranchInfoComponent implements OnInit {
         }
         // return 'Closing in ' + (hours > 0 ? hours + 'h' : '') + (minutes <= 9 ? '0' : '') + minutes;
         return {
-          text: this.labels.transform('branchLocator.details.open'),
+          text: this.labels.transform('POIOPEN'),
           mode: 'OPEN'
         };
       }

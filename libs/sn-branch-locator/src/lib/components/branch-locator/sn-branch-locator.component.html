@@ -7,7 +7,7 @@
     [selectIndex]="selectedTabIndex"
     (selectedTab)="tabsChanged($event)"
   >
-    <sn-tab label="{{ 'branchLocator.title.map' | label }}">
+    <sn-tab label="{{ 'RESPMENUMAPBUTTON' | label }}">
       <section class="locator-content">
         <agm-map
           [gestureHandling]="'greedy'"
@@ -96,7 +96,7 @@
     </sn-tab>
     <sn-tab
       class="tab-branches-list"
-      label="{{ 'branchLocator.title.list' | label }}"
+      label="{{ 'RESPMENURESULTSBUTTON' | label }}"
     >
       <section class="result-list-wrapper">
         <sn-branch-list
