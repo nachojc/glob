@@ -17,20 +17,20 @@
       (click)="clearFilters($event)"
     >
       <sn-icon icon="sn-FUNC036"></sn-icon
-      >{{ "branchLocator.filtersButtons.turnOffFilters" | translate }}
+      >{{ "branchLocator.filtersButtons.turnOffFilters" | label }}
     </button>
   </div>
   <div class="aply-filter-container hide-mobile">
     <button sn-button-strech type="submit" (click)="filterCallList.emit($event)" >
-     {{ "branchLocator.filtersButtons.backToList" | translate }}
+     {{ "branchLocator.filtersButtons.backToList" | label }}
     </button>
   </div>
   <div class="sn-filter-content">
     <div formGroupName="BRANCH">
       <h2 class="title">
-        {{ "branchLocator.title.pointOfInterest" | translate }}
+        {{ "branchLocator.title.pointOfInterest" | label }}
       </h2>
-      <h2 class="sub-title">{{ "branchLocator.shared.branch" | translate }}</h2>
+      <h2 class="sub-title">{{ "branchLocator.shared.branch" | label }}</h2>
       <div class="filters-list-wrapper">
         <div class="filters-list" *ngIf="filters">
           <div class="filter-item" *ngFor="let filter of filters.types">
@@ -40,7 +40,7 @@
               (change)="selectFilter($event,true)"
               formControlName="{{filter.code}}"
             >
-              {{'branchLocator.filters.options.FILTER'+filter.code | translate}}
+              {{'branchLocator.filters.options.FILTER'+filter.code | label}}
             </sn-checkbox>
           </div>
         </div>
@@ -49,7 +49,7 @@
 
     <div formGroupName="CORRESPONSALES">
       <h2 class="title">
-        {{ "branchLocator.filters.correspondents" | translate }}
+        {{ "branchLocator.filters.correspondents" | label }}
       </h2>
       <div class="filters-list-wrapper">
         <div class="filters-list" *ngIf="filters">
@@ -59,7 +59,7 @@
               (change)="selectFilter($event)"
               formControlName="{{filter.code}}"
             >
-              {{'branchLocator.filters.options.FILTER'+filter.code | translate}}
+              {{'branchLocator.filters.options.FILTER'+filter.code | label}}
             </sn-checkbox>
           </div>
         </div>
@@ -69,7 +69,7 @@
 
   <div class="sn-filter-footer hide-web">
     <button sn-button type="submit">
-      {{ "branchLocator.filters.applyFilter" | translate }}
+      {{ "branchLocator.filters.applyFilter" | label }}
     </button>
   </div>
 </form>

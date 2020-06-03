@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SnBranchDirectionComponent } from './sn-branch-direction.component';
-import { SafePipe } from '../../pipes/safe.pipe';
+import { SafePipe } from '../../pipes/safe/safe.pipe';
 import { IconModule } from 'sn-common-lib';
 import { TranslateModule } from '@ngx-translate/core';
 import { branchMock } from '../../helpers/branch.mock';

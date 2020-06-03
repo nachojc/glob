@@ -54,9 +54,9 @@ export class ConfigurationService {
         );
     });
 
-    this.settings$.subscribe((settings) => {
-      LiteralsAggregator.inject(settings.literals).into(this.translateService);
-    });
+    // this.settings$.subscribe((settings) => {
+    //   LiteralsAggregator.inject(settings.literals).into(this.translateService);
+    // });
   }
   private paramDefaultView = 'defaultView';
   private remoteFetchTimeout = 10000;
@@ -83,11 +83,6 @@ export class ConfigurationService {
   }
 
   private buildSettings(response, viewType, coordinates, address): LocatorSettings {
-
-    // todo remove this mock
-
-    response.literals.en.FILTERSELECT_EMBASSY = 'Embassy of the Great Llama';
-
 
     const settings: LocatorSettings = {
       paramView: viewType,

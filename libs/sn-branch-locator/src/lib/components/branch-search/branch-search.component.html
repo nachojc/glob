@@ -8,7 +8,7 @@
     </div>
 
     <div class="search-input-input">
-      <input #in type="search" [placeholder]="'branchLocator.searchInput.placeHolder' | translate"
+      <input #in type="search" [placeholder]="'branchLocator.searchInput.placeHolder' | label"
         (click)="searchBarClicked()" autocomplete="off" autocapitalize="off" spellcheck="off" value="{{ address }}" />
     </div>
 
@@ -23,7 +23,7 @@
     <button class="filter-button" (click)="callFilter.emit($event)" aria-label="Filter">
       <div class="filter-button-wrapper">
         <div class="filter-button-label">
-          {{ 'branchLocator.searchInput.filterButton' | translate }}
+          {{ 'FILTERS' | label }}
         </div>
         <div class="filter-button-icon">
           <sn-icon icon="sn-FUNC035" *ngIf="!filterCount"></sn-icon>

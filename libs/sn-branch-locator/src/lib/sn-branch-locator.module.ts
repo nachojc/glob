@@ -34,8 +34,10 @@ import { SnTabModule } from './components/tabs/sn-tab.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SnDirectionModule } from './directives/sn-direction/sn-direction.module';
 import { SnBranchDirectionComponent } from './components/sn-branch-direction/sn-branch-direction.component';
-import { SafePipe } from './pipes/safe.pipe';
+import { SafePipe } from './pipes/safe/safe.pipe';
 import { SnBranchLocatorService } from './services/branch-locator/branch-locator.service';
+import {LabelPipe} from './pipes/label/label.pipe';
+import {SharedModule} from './modules/shared/shared.module';
 
 
 // TODO: path Update EnvironmentConfigModel
@@ -62,6 +64,7 @@ export function LocalLoaderFactory(
     SafePipe
   ],
   imports: [
+    SharedModule,
     CommonModule,
     ReactiveFormsModule,
     AgmCoreModule,
