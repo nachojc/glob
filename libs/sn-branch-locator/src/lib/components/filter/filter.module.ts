@@ -15,9 +15,6 @@ import { SharedModule } from '../../modules/shared/shared.module';
     IconModule,
     ReactiveFormsModule
   ],
-  exports: [FilterComponent],
+  exports: [FilterComponent]
 })
-
-export class FilterModule {
-
-}
+export class FilterModule {}

@@ -1,21 +1,30 @@
-import {Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {SnMapDirective} from '../../directives/sn-map/sn-map.directive';
-import {AgmMarker, LatLngBounds, LatLngLiteral} from '@agm/core';
-import {GeoPositionService} from '../../services/geo-position/geo-position.service';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
+import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
+import { AgmMarker, LatLngBounds, LatLngLiteral } from '@agm/core';
+import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
-import {from, Observable, of} from 'rxjs';
-import {first, map, switchMap} from 'rxjs/operators';
-import {Branch} from '../../models/branch.model';
-import {SnBranchLocatorService} from '../../services/branch-locator/branch-locator.service';
-import {FilterComponent} from '../filter/filter.component';
-import {DrawerState} from 'sn-common-lib';
-import {ClusterStyle} from '@agm/js-marker-clusterer/services/google-clusterer-types';
-import {Platform} from '../../services/platform/platform.service';
-import {OutputMarkerSelected} from '../../models/output-marker-selected';
-import {OutputMapBounds} from '../../models/output-map-bounds';
-import {OutputDirection} from '../../models/output-direction';
-import {MenuComponent} from '../menu/menu.component';
-import {IStartingPosition} from '../../models/starting-position.interface';
+import { from, Observable, of } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
+import { Branch } from '../../models/branch.model';
+import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
+import { FilterComponent } from '../filter/filter.component';
+import { DrawerState } from 'sn-common-lib';
+import { ClusterStyle } from '@agm/js-marker-clusterer/services/google-clusterer-types';
+import { Platform } from '../../services/platform/platform.service';
+import { OutputMarkerSelected } from '../../models/output-marker-selected';
+import { OutputMapBounds } from '../../models/output-map-bounds';
+import { OutputDirection } from '../../models/output-direction';
+import { MenuComponent } from '../menu/menu.component';
+import { IStartingPosition } from '../../models/starting-position.interface';
 import {
   AnalyticsChannelEnum,
   AnalyticsInitModel,
@@ -23,9 +32,9 @@ import {
   ComponentParamsModel,
   WebAnalyticsInitModel
 } from '@globile/mobile-services';
-import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
-import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
-import {ConfigurationService} from '../../services/configuration/configuration.service';
+import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import { ConfigurationService } from '../../services/configuration/configuration.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -87,9 +96,8 @@ export class SnBranchLocatorComponent implements OnInit {
     private branchService: SnBranchLocatorService,
     private platform: Platform,
     private analyticsService: BridgeAnalyticService,
-    private configuration: ConfigurationService,
+    private configuration: ConfigurationService
   ) {
-
     this.geoPosition
       .watchPosition()
       .pipe(first())
@@ -357,7 +365,6 @@ export class SnBranchLocatorComponent implements OnInit {
     if (this.filterView.isOpen) {
       this.filterView.toggle();
     }
-
   }
 
   openMenu() {

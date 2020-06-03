@@ -8,13 +8,16 @@ import {
   OnChanges,
   Output,
   Renderer2,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 
 import * as Hammer from 'hammerjs';
 
-import {DrawerState} from './drawer-state.enum';
-import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import { DrawerState } from './drawer-state.enum';
+import {
+  HAMMER_GESTURE_CONFIG,
+  HammerGestureConfig
+} from '@angular/platform-browser';
 
 export class DrawerCustomHammerConfig extends HammerGestureConfig {
   overrides = {
@@ -26,16 +29,16 @@ export class DrawerCustomHammerConfig extends HammerGestureConfig {
   };
 }
 
-
-
 @Component({
   selector: 'sn-drawer',
   templateUrl: './drawer.component.html',
   styleUrls: ['./drawer.component.scss'],
-  providers: [{ provide: HAMMER_GESTURE_CONFIG, useClass: DrawerCustomHammerConfig }]
+  providers: [
+    { provide: HAMMER_GESTURE_CONFIG, useClass: DrawerCustomHammerConfig }
+  ]
 })
 export class DrawerComponent implements AfterViewInit, OnChanges {
-  @ViewChild('content', {static: false}) contentElement: ElementRef;
+  @ViewChild('content', { static: false }) contentElement: ElementRef;
 
   @Input() dockedHeight = 50;
   @Input() shouldBounce = true;
@@ -45,8 +48,9 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   @Input() state: DrawerState = DrawerState.Bottom;
   @Input() minimumHeight = 0;
 
-
-  @Output() stateChange: EventEmitter<DrawerState> = new EventEmitter<DrawerState>();
+  @Output() stateChange: EventEmitter<DrawerState> = new EventEmitter<
+    DrawerState
+  >();
 
   private startPositionTop: number;
   private readonly _BOUNCE_DELTA = 30;
@@ -55,17 +59,20 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private renderer: Renderer2,
-  ) { }
+    private renderer: Renderer2
+  ) {}
 
-   @HostListener('pan', ['$event']) drawerPan(event) {
+  @HostListener('pan', ['$event']) drawerPan(event) {
     if (!this.disableDrag && this.panArea) {
       this._handlePan(event);
     }
   }
 
   @HostListener('panstart', ['$event']) drawerPanStart(event) {
-    const header = event.srcEvent.path.find(elem => elem instanceof HTMLElement && elem.getAttribute('draggable') !== null);
+    const header = event.srcEvent.path.find(
+      elem =>
+        elem instanceof HTMLElement && elem.getAttribute('draggable') !== null
+    );
     if (header) {
       this.panArea = true;
     }
@@ -112,40 +119,54 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   }
 
   setDrawerState(state: DrawerState) {
-    const parentHeight = this.elementRef.nativeElement.parentElement.clientHeight;
+    const parentHeight = this.elementRef.nativeElement.parentElement
+      .clientHeight;
     this.state = state;
-    this.renderer.setStyle(this.elementRef.nativeElement, 'transition', this.transition);
+    this.renderer.setStyle(
+      this.elementRef.nativeElement,
+      'transition',
+      this.transition
+    );
     switch (state) {
       case DrawerState.Bottom:
         this._setTranslateY('calc(100vh - ' + this.minimumHeight + 'px)');
         break;
       case DrawerState.Docked:
-        this._setTranslateY((parentHeight - this.dockedHeight) + 'px');
+        this._setTranslateY(parentHeight - this.dockedHeight + 'px');
         break;
       default:
         this._setTranslateY(this.distanceTop + 'px');
     }
   }
 
-
-
   private _setTranslateY(value) {
     window.requestAnimationFrame(() => {
-      this.renderer.setStyle(this.elementRef.nativeElement, 'transform', 'translateY(' + value + ')');
-      this.renderer.setStyle(this.elementRef.nativeElement, 'height', 'calc(100% - ' + value + ')');
+      this.renderer.setStyle(
+        this.elementRef.nativeElement,
+        'transform',
+        'translateY(' + value + ')'
+      );
+      this.renderer.setStyle(
+        this.elementRef.nativeElement,
+        'height',
+        'calc(100% - ' + value + ')'
+      );
     });
-
   }
 
   handlePanStart() {
-    this.startPositionTop = this.elementRef.nativeElement.getBoundingClientRect().top
-      - this.elementRef.nativeElement.parentElement.offsetTop;
-
+    this.startPositionTop =
+      this.elementRef.nativeElement.getBoundingClientRect().top -
+      this.elementRef.nativeElement.parentElement.offsetTop;
   }
 
   handlePanEnd(ev) {
     if (this.shouldBounce && ev.isFinal) {
-      this.renderer.setStyle(this.elementRef.nativeElement, 'transition', this.transition);
+      this.renderer.setStyle(
+        this.elementRef.nativeElement,
+        'transition',
+        this.transition
+      );
       switch (this.state) {
         case DrawerState.Top:
           this._handleTopPanEnd(ev);
@@ -161,14 +182,15 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
   }
 
   handleDockedPanEnd(ev) {
-    const parentHeight = this.elementRef.nativeElement.parentElement.clientHeight;
+    const parentHeight = this.elementRef.nativeElement.parentElement
+      .clientHeight;
     const absDeltaY = Math.abs(ev.deltaY);
     if (absDeltaY > this._BOUNCE_DELTA && ev.deltaY < 0) {
       this.state = DrawerState.Top;
     } else if (absDeltaY > this._BOUNCE_DELTA && ev.deltaY > 0) {
       this.state = DrawerState.Bottom;
     } else {
-      this._setTranslateY((parentHeight - this.dockedHeight) + 'px');
+      this._setTranslateY(parentHeight - this.dockedHeight + 'px');
     }
   }
 
@@ -190,7 +212,8 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
 
   private _handlePan(ev) {
     const pointerY = ev.center.y;
-    const parentHeight = this.elementRef.nativeElement.parentElement.clientHeight;
+    const parentHeight = this.elementRef.nativeElement.parentElement
+      .clientHeight;
     this.renderer.setStyle(this.elementRef.nativeElement, 'transition', 'none');
     if (pointerY > 0 && pointerY < parentHeight) {
       if (ev.additionalEvent === 'panup' || ev.additionalEvent === 'pandown') {
@@ -201,7 +224,7 @@ export class DrawerComponent implements AfterViewInit, OnChanges {
           this._setTranslateY(this.distanceTop + 'px');
         }
         if (newTop > parentHeight - this.minimumHeight) {
-          this._setTranslateY((parentHeight - this.minimumHeight) + 'px');
+          this._setTranslateY(parentHeight - this.minimumHeight + 'px');
         }
       }
     }

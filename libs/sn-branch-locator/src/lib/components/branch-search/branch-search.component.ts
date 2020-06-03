@@ -1,9 +1,22 @@
-import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {LatLngLiteral, MapsAPILoader} from '@agm/core';
-import {BridgeAnalyticService, GlobileSettingsService, WindowRefService} from '@globile/mobile-services';
-import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
-import {ConfigurationService} from '../../services/configuration/configuration.service';
-import {take} from 'rxjs/operators';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import { LatLngLiteral, MapsAPILoader } from '@agm/core';
+import {
+  BridgeAnalyticService,
+  GlobileSettingsService,
+  WindowRefService
+} from '@globile/mobile-services';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import { ConfigurationService } from '../../services/configuration/configuration.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-search',
@@ -11,7 +24,6 @@ import {take} from 'rxjs/operators';
   styleUrls: ['./branch-search.component.scss']
 })
 export class BranchSearchInputComponent implements OnInit {
-
   @Input() showReCenter: boolean;
   @Output() reCenter = new EventEmitter<MouseEvent>();
   @Output() placeChange = new EventEmitter<LatLngLiteral>();
@@ -19,7 +31,9 @@ export class BranchSearchInputComponent implements OnInit {
   @Input() filterCount: number;
   @Input() address: string;
 
-  @ViewChild('in', { static: false }) public inputElementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('in', { static: false }) public inputElementRef: ElementRef<
+    HTMLInputElement
+  >;
   searchBox: google.maps.places.SearchBox;
   hasFilters: boolean;
 
@@ -29,25 +43,25 @@ export class BranchSearchInputComponent implements OnInit {
     private globileSettings: GlobileSettingsService,
     private analyticsService: BridgeAnalyticService,
     private configuration: ConfigurationService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.mapsAPILoader.load()
-      .then(() => {
-        this.initSearchBox();
-      });
+    this.mapsAPILoader.load().then(() => {
+      this.initSearchBox();
+    });
 
-    this.configuration.settings$
-      .pipe(take(1))
-      .subscribe(settings => {
-      const allFilters = !settings.filters ? [] : settings.filters.types.concat(settings.filters.types);
-      this.hasFilters =   allFilters.length ? true : false;
+    this.configuration.settings$.pipe(take(1)).subscribe(settings => {
+      const allFilters = !settings.filters
+        ? []
+        : settings.filters.types.concat(settings.filters.types);
+      this.hasFilters = allFilters.length ? true : false;
     });
   }
 
-
   initSearchBox(): void {
-    this.searchBox = new this.windowRef['google'].maps.places.SearchBox(this.inputElementRef.nativeElement);
+    this.searchBox = new this.windowRef['google'].maps.places.SearchBox(
+      this.inputElementRef.nativeElement
+    );
     this.searchBox.addListener('places_changed', () => {
       const places = this.searchBox.getPlaces();
       if (places && places.length > 0) {
@@ -57,7 +71,9 @@ export class BranchSearchInputComponent implements OnInit {
           this.sendPerformedSearch();
         } else {
           const sendEvent = EventsAnalyticsVariables.tapSearchResult;
-          sendEvent.TermSearched = this.inputElementRef.nativeElement.value ? this.inputElementRef.nativeElement.value : '';
+          sendEvent.TermSearched = this.inputElementRef.nativeElement.value
+            ? this.inputElementRef.nativeElement.value
+            : '';
           sendEvent.ClickedResult = place.name ? place.name : '';
           this.analyticsService.sendEvent(sendEvent);
         }
@@ -73,9 +89,13 @@ export class BranchSearchInputComponent implements OnInit {
 
   search(): void {
     this.inputElementRef.nativeElement.focus();
-    this.windowRef['google'].maps.event.trigger(this.inputElementRef.nativeElement, 'keydown', {
-      keyCode: 13
-    });
+    this.windowRef['google'].maps.event.trigger(
+      this.inputElementRef.nativeElement,
+      'keydown',
+      {
+        keyCode: 13
+      }
+    );
     this.sendPerformedSearch();
   }
 
@@ -87,6 +107,8 @@ export class BranchSearchInputComponent implements OnInit {
   sendPerformedSearch() {
     const sendEvent = EventsAnalyticsVariables.performSearch;
     this.analyticsService.sendEvent(sendEvent);
-    sendEvent.TermSearched = this.inputElementRef.nativeElement.value ? this.inputElementRef.nativeElement.value : '';
+    sendEvent.TermSearched = this.inputElementRef.nativeElement.value
+      ? this.inputElementRef.nativeElement.value
+      : '';
   }
 }

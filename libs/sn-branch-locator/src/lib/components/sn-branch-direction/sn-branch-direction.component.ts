@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Branch} from '../../models/branch.model';
-import {Routes} from '../../models/routes.model';
-import {Durations} from '../../models/durations.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Branch } from '../../models/branch.model';
+import { Routes } from '../../models/routes.model';
+import { Durations } from '../../models/durations.model';
 
 @Component({
   selector: 'sn-branch-direction',
@@ -41,7 +41,7 @@ export class SnBranchDirectionComponent {
 
   @Output() branchDirection = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {}
 
   emitDirectionCoords(geoCoords: any) {
     this.selectedRoute = geoCoords.travelMode;

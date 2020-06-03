@@ -76,7 +76,7 @@
           (stateChange)="drawerStageChange($event)"
         >
           <sn-branch-info
-            *ngIf="selectedBranch  && !showDirectionsPanel"
+            *ngIf="selectedBranch && !showDirectionsPanel"
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
@@ -121,11 +121,11 @@
     </div>
   </section>
 
-  <sn-filter modal
-             (filterCallList)="displayPanel='list'"
-             (filterApply)="onFilterApply($event)"
+  <sn-filter
+    modal
+    (filterCallList)="displayPanel = 'list'"
+    (filterApply)="onFilterApply($event)"
   ></sn-filter>
-
 </ng-container>
 <!-- End Mobile and Tablet -->
 
@@ -172,9 +172,9 @@
     ></sn-branch-direction>
 
     <sn-filter
-      (filterCallList)="displayPanel='list'"
-      (filterApply)="onFilterApply($event)"></sn-filter>
-
+      (filterCallList)="displayPanel = 'list'"
+      (filterApply)="onFilterApply($event)"
+    ></sn-filter>
   </sn-menu>
   <!-- End Side Menu -->
 

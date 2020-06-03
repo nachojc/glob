@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LocatorSettings } from '../../models/remote-config.model';
 import { ObservableInput, of, ReplaySubject } from 'rxjs';
@@ -16,7 +16,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ConfigurationService {
-
   public get settings$() {
     return this.settings.asObservable();
   }
@@ -41,11 +40,21 @@ export class ConfigurationService {
         .subscribe(
           (pos: Position) => {
             this.baseEndpoint = this.resolveConfigUrl(pos);
-            this.fetchRemoteConfig(this.baseEndpoint, viewType, coordinates, address);
+            this.fetchRemoteConfig(
+              this.baseEndpoint,
+              viewType,
+              coordinates,
+              address
+            );
           },
           () => {
             this.baseEndpoint = this.resolveConfigUrl();
-            this.fetchRemoteConfig(this.baseEndpoint, viewType, coordinates, address);
+            this.fetchRemoteConfig(
+              this.baseEndpoint,
+              viewType,
+              coordinates,
+              address
+            );
           }
         );
     });
@@ -73,13 +82,22 @@ export class ConfigurationService {
         )
       )
       .subscribe(response => {
-        const settings = this.buildSettings(response, viewType, coordinates, address);
+        const settings = this.buildSettings(
+          response,
+          viewType,
+          coordinates,
+          address
+        );
         this.settings.next(settings);
       });
   }
 
-  private buildSettings(response, viewType, coordinates, address): LocatorSettings {
-
+  private buildSettings(
+    response,
+    viewType,
+    coordinates,
+    address
+  ): LocatorSettings {
     const settings: LocatorSettings = {
       paramView: viewType,
       paramCoordinates: coordinates,
@@ -90,21 +108,21 @@ export class ConfigurationService {
         types: [],
         features: []
       },
-      language : response.language
+      language: response.language
     };
 
-    if (response.language.defaultLanguage
-      && response.literals.hasOwnProperty(response.language.defaultLanguage)
+    if (
+      response.language.defaultLanguage &&
+      response.literals.hasOwnProperty(response.language.defaultLanguage)
     ) {
       const langLiterals = response.literals[response.language.defaultLanguage];
-      settings.literals = Object.keys(langLiterals).map((code) => {
+      settings.literals = Object.keys(langLiterals).map(code => {
         return {
           code,
           content: langLiterals[code]
         };
       });
     }
-
 
     const types = response.filters.tipoPOI;
     if (types && types !== {}) {
@@ -173,9 +191,9 @@ export class ConfigurationService {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(rad(p1.lat)) *
-      Math.cos(rad(p2.lat)) *
-      Math.sin(dLong / 2) *
-      Math.sin(dLong / 2);
+        Math.cos(rad(p2.lat)) *
+        Math.sin(dLong / 2) *
+        Math.sin(dLong / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d;
