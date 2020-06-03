@@ -1,7 +1,6 @@
-
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChildren} from '@angular/core';
 import {FilterService} from '../../services/filter/filter.service';
-import {FormGroup, NgForm} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
 import {BridgeAnalyticService} from '@globile/mobile-services';
 import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
@@ -36,7 +35,6 @@ export class FilterComponent implements OnInit {
   @Output() filterApply = new EventEmitter();
   @Output() filterDeployed = new EventEmitter();
   @Output() filterCallList = new EventEmitter();
-
   @ViewChildren('types') typesCheckboxes!: QueryList<CheckboxComponent>;
 
   public form: FormGroup;

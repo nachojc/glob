@@ -70,8 +70,8 @@
     <sn-tab-group [ngClass]="{ both: isBranch && branch?.atm?.length }" (selectedTab)="sendEvent($event)">
       <sn-tab [label]="
           isBranch
-            ? translate.instant('branchLocator.shared.branch')
-            : translate.instant('branchLocator.shared.atm')
+            ? labels.transform('branchLocator.shared.branch')
+            : labels.transform('branchLocator.shared.atm')
         " class="tab-branch-info">
         <div class="branch-info-wrapper">
           <sn-option-list lines="full">

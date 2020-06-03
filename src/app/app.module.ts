@@ -1,23 +1,18 @@
-import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {APP_BASE_HREF, HashLocationStrategy, LocationStrategy} from '@angular/common';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { AgmCoreModule } from '@agm/core';
-import { environment } from 'src/environments/environment';
-import { AppComponent } from './app.component';
-import { PrismModule } from './components/prism/prism.module';
+import {HttpClientModule} from '@angular/common/http';
+import {AgmCoreModule} from '@agm/core';
+import {environment} from 'src/environments/environment';
+import {AppComponent} from './app.component';
+import {PrismModule} from './components/prism/prism.module';
 
-import { DocumentationComponent } from './components/documentation/documentation.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
-import { GlobileSettingsService, GlobileModule } from '@globile/mobile-services';
+import {DocumentationComponent} from './components/documentation/documentation.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ReactiveFormsModule} from '@angular/forms';
+import {GlobileModule} from '@globile/mobile-services';
 
-export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
-  return new TranslateHttpLoader(http, globileSettings.branchLocator.languages, '.json');
-}
 
 @NgModule({
   declarations: [
@@ -32,13 +27,7 @@ export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSett
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient, GlobileSettingsService]
-      }
-    }),
+
     AgmCoreModule.forRoot({
       apiKey: environment.branchLocator.googleApiKey,
       libraries: environment.branchLocator.googleApiLibs || []

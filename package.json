@@ -40,8 +40,6 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@globile/mobile-services": "^0.1.9",
-    "@ngx-translate/core": "^12.1.2",
-    "@ngx-translate/http-loader": "^4.0.0",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "js-marker-clusterer": "^1.0.0",

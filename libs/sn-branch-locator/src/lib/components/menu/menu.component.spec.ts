@@ -1,13 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MenuComponent } from './menu.component';
-import { IconModule } from 'sn-common-lib';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FilterComponent } from '../filter/filter.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {MenuComponent} from './menu.component';
+import {IconModule} from 'sn-common-lib';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FilterComponent} from '../filter/filter.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -22,7 +21,6 @@ describe('MenuComponent', () => {
       imports: [IconModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         HttpClientTestingModule
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]

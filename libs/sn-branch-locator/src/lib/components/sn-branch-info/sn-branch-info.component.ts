@@ -1,9 +1,12 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Branch } from '../../models/branch.model';
-import { TranslateService } from '@ngx-translate/core';
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { BridgeAnalyticService } from '@globile/mobile-services';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import {LabelPipe} from '../../pipes/label/label.pipe';
+import {Configuration} from 'jasmine-spec-reporter/built/configuration';
+import {ConfigurationService} from '../../services/configuration/configuration.service';
+import {take, takeLast} from 'rxjs/operators';
 
 @Component({
   selector: 'sn-branch-info',
@@ -14,12 +17,22 @@ export class SnBranchInfoComponent implements OnInit {
   private _branch: Branch;
   public isBranch = true;
   public todayHours: string;
-  public language = this.translate.getDefaultLang();
+  // public language = this.translate.getDefaultLang();
+  public language: string;
 
   @Input() isNearestMarker: boolean = false;
 
   @Input()
   set branch(value: Branch) {
+
+    if (!this.language) {
+      this.configuration.settings$.pipe(take(1)).subscribe((settings) => {
+        this.language = settings.language.defaultLanguage;
+        this.branch = value;
+      });
+      return;
+    }
+
     this._branch = this.setPOIInformation(value);
     if (this._branch.schedule !== null) {
       this.todayHours = this.getTodayTimeInformation(this._branch.schedule.workingDay);
@@ -43,10 +56,10 @@ export class SnBranchInfoComponent implements OnInit {
 
   @Output() openDirectionsPanel = new EventEmitter<any>();
 
-
   constructor(
-    public translate: TranslateService,
-    private analyticsService: BridgeAnalyticService
+    private analyticsService: BridgeAnalyticService,
+    public labels: LabelPipe,
+    public configuration: ConfigurationService
   ) { }
 
   ngOnInit(): void {
@@ -108,7 +121,8 @@ export class SnBranchInfoComponent implements OnInit {
     if (poiHours) {
       if (poiHours === 'Closed') {
         return {
-          text: this.translate.instant('branchLocator.details.closed'),
+          // text: this.labels.transform('branchLocator.details.closed'),
+          text: this.labels.transform('branchLocator.details.closed'),
           mode: 'CLOSED'
         };
       }
@@ -118,7 +132,7 @@ export class SnBranchInfoComponent implements OnInit {
       const endDate = new Date(0, 0, 0, Number(end[0]), Number(end[1]), 0);
       if (now.getTime() < startDate.getTime() || now.getTime() > endDate.getTime()) {
         return {
-          text: this.translate.instant('branchLocator.details.closed'),
+          text: this.labels.transform('branchLocator.details.closed'),
           mode: 'CLOSED'
         };
       } else {
@@ -128,13 +142,13 @@ export class SnBranchInfoComponent implements OnInit {
         const minutes = Math.floor(diff / 1000 / 60);
         if (hours <= 0) {
           return {
-            text: `${this.translate.instant('branchLocator.details.closing')} ${(minutes <= 9 ? '0' : '')}${minutes} min`,
+            text: `${this.labels.transform('branchLocator.details.closing')} ${(minutes <= 9 ? '0' : '')}${minutes} min`,
             mode: 'CLOSING'
           };
         }
         // return 'Closing in ' + (hours > 0 ? hours + 'h' : '') + (minutes <= 9 ? '0' : '') + minutes;
         return {
-          text: this.translate.instant('branchLocator.details.open'),
+          text: this.labels.transform('branchLocator.details.open'),
           mode: 'OPEN'
         };
       }

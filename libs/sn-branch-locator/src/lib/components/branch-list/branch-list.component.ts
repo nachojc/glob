@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit } from '@angular/core';
-import { Branch } from '../../models/branch.model';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Branch} from '../../models/branch.model';
 
 @Component({
   selector: 'sn-branch-list',

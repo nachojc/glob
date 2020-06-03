@@ -11,8 +11,6 @@ import {
 } from '../../models/env-branch-locator.model';
 import { catchError, first, timeout } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { TranslateService } from '@ngx-translate/core';
-import LiteralsAggregator from './literals.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -23,13 +21,11 @@ export class ConfigurationService {
     return this.settings.asObservable();
   }
 
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private globileSettings: GlobileSettingsService,
     private geoPosition: GeoPositionService,
     private http: HttpClient,
-    private translateService: TranslateService,
     @Inject('ENV_CONFIG') private _enviroment
   ) {
     this.branchLocatorEnv = this._enviroment.branchLocator;
@@ -93,7 +89,8 @@ export class ConfigurationService {
       filters: {
         types: [],
         features: []
-      }
+      },
+      language : response.language
     };
 
     if (response.language.defaultLanguage

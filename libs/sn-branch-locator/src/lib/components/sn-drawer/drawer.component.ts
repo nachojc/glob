@@ -1,21 +1,20 @@
 import {
+  AfterViewInit,
   Component,
-  Input,
   ElementRef,
   EventEmitter,
-  Output,
-  AfterViewInit,
-  OnChanges,
-  SimpleChanges,
-  Renderer2,
   HostListener,
+  Input,
+  OnChanges,
+  Output,
+  Renderer2,
   ViewChild,
 } from '@angular/core';
 
 import * as Hammer from 'hammerjs';
 
-import { DrawerState } from './drawer-state.enum';
-import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import {DrawerState} from './drawer-state.enum';
+import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 
 export class DrawerCustomHammerConfig extends HammerGestureConfig {
   overrides = {

@@ -1,44 +1,31 @@
-import {
-  Component,
-  ViewChild,
-  ViewChildren,
-  QueryList,
-  OnInit,
-  EventEmitter,
-  Output,
-  Input
-} from '@angular/core';
-import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
-import { GeoPositionService } from '../../services/geo-position/geo-position.service';
+import {Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {SnMapDirective} from '../../directives/sn-map/sn-map.directive';
+import {AgmMarker, LatLngBounds, LatLngLiteral} from '@agm/core';
+import {GeoPositionService} from '../../services/geo-position/geo-position.service';
 
-import { from, Observable, of } from 'rxjs';
-import { switchMap, first, map } from 'rxjs/operators';
-import { Branch } from '../../models/branch.model';
-import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
-import { FilterComponent } from '../filter/filter.component';
-import { DrawerState } from 'sn-common-lib';
-import { ClusterStyle } from '@agm/js-marker-clusterer/services/google-clusterer-types';
-import { Platform } from '../../services/platform/platform.service';
-import { OutputMarkerSelected } from '../../models/output-marker-selected';
-import { OutputMapBounds } from '../../models/output-map-bounds';
-import { OutputDirection } from '../../models/output-direction';
-import { MenuComponent } from '../menu/menu.component';
-import { IStartingPosition } from '../../models/starting-position.interface';
+import {from, Observable, of} from 'rxjs';
+import {first, map, switchMap} from 'rxjs/operators';
+import {Branch} from '../../models/branch.model';
+import {SnBranchLocatorService} from '../../services/branch-locator/branch-locator.service';
+import {FilterComponent} from '../filter/filter.component';
+import {DrawerState} from 'sn-common-lib';
+import {ClusterStyle} from '@agm/js-marker-clusterer/services/google-clusterer-types';
+import {Platform} from '../../services/platform/platform.service';
+import {OutputMarkerSelected} from '../../models/output-marker-selected';
+import {OutputMapBounds} from '../../models/output-map-bounds';
+import {OutputDirection} from '../../models/output-direction';
+import {MenuComponent} from '../menu/menu.component';
+import {IStartingPosition} from '../../models/starting-position.interface';
 import {
-  BridgeAnalyticService,
   AnalyticsChannelEnum,
   AnalyticsInitModel,
+  BridgeAnalyticService,
   ComponentParamsModel,
-  NativeAnalyticsInitModel,
   WebAnalyticsInitModel
 } from '@globile/mobile-services';
-import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
-import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
-import { TranslateService, TranslateStore } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { ConfigurationService } from '../../services/configuration/configuration.service';
-import { trigger, transition, animate, style } from '@angular/animations';
+import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
+import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
+import {ConfigurationService} from '../../services/configuration/configuration.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -101,9 +88,7 @@ export class SnBranchLocatorComponent implements OnInit {
     private platform: Platform,
     private analyticsService: BridgeAnalyticService,
     private configuration: ConfigurationService,
-    private translateService: TranslateService
   ) {
-    const translations = this.translateService.translations;
 
     this.geoPosition
       .watchPosition()
@@ -223,7 +208,7 @@ export class SnBranchLocatorComponent implements OnInit {
       const browserLang =
         navigator.language || window.navigator['userLanguage'];
       this.defaultLang = browserLang.substring(0, 2);
-      this.translateService.setDefaultLang(this.defaultLang);
+      // this.translateService.setDefaultLang(this.defaultLang);
 
       if (
         settings.paramView !== 'defaultView' &&
@@ -232,9 +217,9 @@ export class SnBranchLocatorComponent implements OnInit {
           settings.paramView === 'pl' ||
           settings.paramView === 'pt')
       ) {
-        this.translateService.use(settings.paramView);
+        // this.translateService.use(settings.paramView);
       } else {
-        this.translateService.use(this.defaultLang);
+        // this.translateService.use(this.defaultLang);
       }
     });
 
@@ -244,8 +229,6 @@ export class SnBranchLocatorComponent implements OnInit {
     this.analyticsService.sendView(sendView);
 
     this.isMobile = this.platform.isMobile;
-
-
 
     this.branchService.onChange.subscribe(
       res => {

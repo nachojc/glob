@@ -1,12 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SnBranchDirectionComponent } from './sn-branch-direction.component';
-import { SafePipe } from '../../pipes/safe/safe.pipe';
-import { IconModule } from 'sn-common-lib';
-import { TranslateModule } from '@ngx-translate/core';
-import { branchMock } from '../../helpers/branch.mock';
-import { routesMock } from '../../helpers/routes.mock';
-import { durationsMock } from '../../helpers/durations.mock';
+import {SnBranchDirectionComponent} from './sn-branch-direction.component';
+import {SafePipe} from '../../pipes/safe/safe.pipe';
+import {IconModule} from 'sn-common-lib';
+import {branchMock} from '../../helpers/branch.mock';
+import {routesMock} from '../../helpers/routes.mock';
+import {durationsMock} from '../../helpers/durations.mock';
 
 describe('SnBranchDirectionComponent', () => {
   let component: SnBranchDirectionComponent;
@@ -16,7 +15,6 @@ describe('SnBranchDirectionComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         IconModule,
-        TranslateModule.forRoot()
       ],
       declarations: [
         SnBranchDirectionComponent,
