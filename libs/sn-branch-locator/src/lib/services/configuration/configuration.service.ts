@@ -85,7 +85,9 @@ export class ConfigurationService {
 
     // todo remove this mock
 
-    response.literals.en.FILTERSELECT_EMBASSY = 'Embassy of the Great Llama';
+    if (response.literals.en) {
+      response.literals.en.FILTERSELECT_EMBASSY = 'Embassy of the Great Llama';
+    }
 
 
     const settings: LocatorSettings = {
