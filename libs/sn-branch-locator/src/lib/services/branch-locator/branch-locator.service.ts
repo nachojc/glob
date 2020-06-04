@@ -4,10 +4,11 @@ import {Observable, Subject} from 'rxjs';
 import {flatMap, map} from 'rxjs/operators';
 import {LatLngLiteral} from '@agm/core';
 
-import {Branch} from '../../models/branch.model';
-import {EnvBranchLocatorModel} from '../../models/env-branch-locator.model';
-import {FilterService} from '../filter/filter.service';
-import {GeoPositionService} from '../geo-position/geo-position.service';
+import { Branch } from '../../models/branch.model';
+import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
+import { FilterService } from '../filter/filter.service';
+import { GeoPositionService } from '../geo-position/geo-position.service';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +18,25 @@ export class SnBranchLocatorService {
   private _observer$ = new Subject<Branch[]>();
   private _initPosition: LatLngLiteral;
   branchLocator: EnvBranchLocatorModel;
+  private view: string = 'defaultView';
 
   constructor(
     public http: HttpClient,
     private filterservice: FilterService,
     private geoPositionService: GeoPositionService,
+    private configuration: ConfigurationService,
     @Inject('ENV_CONFIG') private _enviroment
   ) {
     this.branchLocator = this._enviroment.branchLocator;
-}
+    this.configuration.settings$
+      .subscribe(
+        (config) => {
+          if (config.paramView === 'es' || config.paramView === 'en' || config.paramView === 'pt') {
+            this.view = config.paramView;
+          }
+        }
+      );
+  }
 
   get onChange(): Observable<Branch[]> {
     return this._observer$.asObservable();
@@ -44,11 +55,8 @@ export class SnBranchLocatorService {
     if (!this._initPosition) {
       this.setApiURL(coords);
     }
-
-    const configVal = encodeURI(
-      `config={"coords":[${coords.lat},${coords.lng}]}`
-    );
-    this.getBranches(`${this.URL}/find/defaultView?${configVal}`).subscribe(
+    const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
+    this.getBranches(`${this.URL}/find/${this.view}?${configVal}`).subscribe(
       resp => this._observer$.next(resp),
       err => this._observer$.error(err)
     );
@@ -69,12 +77,9 @@ export class SnBranchLocatorService {
     const configVal = encodeURI(
       `northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`
     );
-    this.getBranches(
-      `${this.URL}/find/defaultView?${configInit}&${configVal}`,
-      {
-        params
-      }
-    ).subscribe(
+    this.getBranches(`${this.URL}/find/${this.view}?${configInit}&${configVal}`, {
+      params
+    }).subscribe(
       resp => this._observer$.next(resp),
       err => this._observer$.error(err)
     );
@@ -89,7 +94,7 @@ export class SnBranchLocatorService {
         if (!this._initPosition) {
           this.setApiURL({ lat: coords.lat, lng: coords.lng });
         }
-        return this.getBranches(`${this.URL}/find/defaultView?${configVal}`);
+        return this.getBranches(`${this.URL}/find/${this.view}?${configVal}`);
       }),
       map(branches => {
         branches.sort((a, b) =>
