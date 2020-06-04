@@ -19,7 +19,6 @@ import {FormBuilder} from '@angular/forms';
 import {SnTabModule} from '../tabs/sn-tab.module';
 import {SnDirectionModule} from '../../directives/sn-direction/sn-direction.module';
 import {OutputDirection} from '../../models/output-direction';
-import {GlobileSettingsService, WindowRefService} from '@globile/mobile-services';
 import {RouterTestingModule} from '@angular/router/testing';
 
 
@@ -99,10 +98,10 @@ describe('SnBranchLocatorComponent', () => {
         SnBranchInfoComponent,
       ],
       providers: [
-        { provide: WindowRefService, useValue: windowRef },
+        { provide: 'WINDOW', useValue: window },
+        { provide: 'ENV_CONFIG', useValue: environment },
         { provide: GeoPositionService, useValue: GeoPositionServiceMock },
         { provide: MapsAPILoader, useValue: mockMapsAPILoader },
-        { provide: GlobileSettingsService, useValue: environment },
         SnBranchLocatorService,
         FormBuilder,
       ],

@@ -9,7 +9,6 @@ import {
   LoadingModule,
   OptionListModule
 } from 'sn-common-lib';
-import { BridgeAnalyticService } from '@globile/mobile-services';
 import { SnMapDirective } from './directives/sn-map/sn-map.directive';
 import { SnMarkerDirective } from './directives/sn-marker/sn-marker.directive';
 import { SnBranchLocatorComponent } from './components/branch-locator/sn-branch-locator.component';
@@ -57,7 +56,7 @@ import { SharedModule } from './modules/shared/shared.module';
     LoaderModule,
     SnDirectionModule
   ],
-  providers: [BridgeAnalyticService, SnBranchLocatorService, LabelPipe],
+  providers: [SnBranchLocatorService, LabelPipe],
   exports: [SnBranchLocatorComponent]
 })
 export class SnBranchLocatorModule {}

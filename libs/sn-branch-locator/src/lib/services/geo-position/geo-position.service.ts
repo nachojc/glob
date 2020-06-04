@@ -2,8 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable, Subject, of, from } from 'rxjs';
 import { MapsAPILoader, LatLngLiteral } from '@agm/core';
 import { first, map } from 'rxjs/operators';
-import { WindowRef } from '../../models/window-ref';
-import { WindowRefService } from '@globile/mobile-services';
 
 declare const google: any;
 @Injectable({
@@ -16,11 +14,11 @@ export class GeoPositionService {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    private windowRef: WindowRefService
+    @Inject('WINDOW') private windowRef: any
   ) { }
 
   get geolocation(): Geolocation {
-    return this.windowRef.navigator.geolocation;
+    return this.windowRef['navigator'].geolocation;
   }
 
   public getPositionByText(text: string): Observable<LatLngLiteral> {

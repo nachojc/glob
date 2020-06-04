@@ -9,14 +9,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { LatLngLiteral, MapsAPILoader } from '@agm/core';
-import {
-  BridgeAnalyticService,
-  GlobileSettingsService,
-  WindowRefService
-} from '@globile/mobile-services';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
 import { take } from 'rxjs/operators';
+import { AnalyticsService } from '../../services/analytic/analytics.service';
 
 @Component({
   selector: 'sn-branch-search',
@@ -39,9 +35,8 @@ export class BranchSearchInputComponent implements OnInit {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    @Inject(WindowRefService) private windowRef: WindowRefService,
-    private globileSettings: GlobileSettingsService,
-    private analyticsService: BridgeAnalyticService,
+    @Inject('WINDOW') private windowRef,
+    private analyticsService: AnalyticsService,
     private configuration: ConfigurationService
   ) {}
 
