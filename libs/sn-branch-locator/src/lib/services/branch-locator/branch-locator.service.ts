@@ -9,6 +9,7 @@ import { Branch } from '../../models/branch.model';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
 import { FilterService } from '../filter/filter.service';
 import { GeoPositionService } from '../geo-position/geo-position.service';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +19,25 @@ export class SnBranchLocatorService {
   private _observer$ = new Subject<Branch[]>();
   private _initPosition: LatLngLiteral;
   branchLocator: EnvBranchLocatorModel;
+  private view: string = 'defaultView';
 
   constructor(
     globileSettings: GlobileSettingsService,
     public http: HttpClient,
     private filterservice: FilterService,
     @Inject(WindowRefService) windowRef: WindowRefService,
-    private geoPositionService: GeoPositionService
+    private geoPositionService: GeoPositionService,
+    private configuration: ConfigurationService,
   ) {
     this.branchLocator = globileSettings.branchLocator;
+    this.configuration.settings$
+      .subscribe(
+        (config) => {
+          if (config.paramView === 'es' || config.paramView === 'en' || config.paramView === 'pt') {
+            this.view = config.paramView;
+          }
+        }
+      );
   }
 
   get onChange(): Observable<Branch[]> {
@@ -46,9 +57,8 @@ export class SnBranchLocatorService {
     if (!this._initPosition) {
       this.setApiURL(coords);
     }
-
     const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
-    this.getBranches(`${this.URL}/find/defaultView?${configVal}`).subscribe(
+    this.getBranches(`${this.URL}/find/${this.view}?${configVal}`).subscribe(
       resp => this._observer$.next(resp),
       err => this._observer$.error(err)
     );
@@ -69,7 +79,7 @@ export class SnBranchLocatorService {
     const configVal = encodeURI(
       `northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`
     );
-    this.getBranches(`${this.URL}/find/defaultView?${configInit}&${configVal}`, {
+    this.getBranches(`${this.URL}/find/${this.view}?${configInit}&${configVal}`, {
       params
     }).subscribe(
       resp => this._observer$.next(resp),
@@ -84,7 +94,7 @@ export class SnBranchLocatorService {
         if (!this._initPosition) {
           this.setApiURL({ lat: coords.lat, lng: coords.lng });
         }
-        return this.getBranches(`${this.URL}/find/defaultView?${configVal}`);
+        return this.getBranches(`${this.URL}/find/${this.view}?${configVal}`);
       }),
       map(branches => {
         branches.sort((a, b) =>
