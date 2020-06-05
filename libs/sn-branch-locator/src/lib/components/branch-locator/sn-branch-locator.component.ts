@@ -1,19 +1,19 @@
 import {
   Component,
-  ViewChild,
-  ViewChildren,
-  QueryList,
-  OnInit,
   EventEmitter,
+  Input,
+  OnInit,
   Output,
-  Input
+  QueryList,
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
+import { AgmMarker, LatLngBounds, LatLngLiteral } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
 import { from, Observable, of } from 'rxjs';
-import { switchMap, first, map } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { FilterComponent } from '../filter/filter.component';
@@ -25,19 +25,11 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
-import {
-  BridgeAnalyticService,
-  AnalyticsChannelEnum,
-  AnalyticsInitModel,
-  ComponentParamsModel,
-  NativeAnalyticsInitModel,
-  WebAnalyticsInitModel
-} from '@globile/mobile-services';
+
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
-import { TranslateService, TranslateStore } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
+import { AnalyticsService } from '../../services/analytic/analytics.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -45,20 +37,95 @@ import { ConfigurationService } from '../../services/configuration/configuration
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent implements OnInit {
+  @Input()
+  get coordinates(): string {
+    return this._coordinates;
+  }
+  set coordinates(value: string) {
+    if (value) {
+      this._coordinates = value;
+      const coorsArray = value
+        .replace('{', '')
+        .replace('}', '')
+        .split(',');
+      const coors: LatLngLiteral = {
+        lat: Number(coorsArray[0]),
+        lng: Number(coorsArray[1])
+      };
+      this.startingPosition = {
+        coordinates: coors
+      };
+    }
+  }
+  @Input()
+  get defaultLang(): string {
+    return this._defaultLang;
+  }
+  set defaultLang(value: string) {
+    this._defaultLang = value;
+  }
+  @Input()
+  get address(): string {
+    return this._address;
+  }
+  set address(value: string) {
+    if (value) {
+      this._address = value;
+      this.startingPosition = {
+        text: value
+      };
+    }
+  }
 
   @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
   }
   set optionalFullScreenControl(value: boolean) {
-    this._optionalFullScreen = value !== null && value !== undefined && `${value}` !== 'false';
+    this._optionalFullScreen =
+      value !== null && value !== undefined && `${value}` !== 'false';
   }
 
-  @Output() markerSelected: EventEmitter<OutputMarkerSelected> = new EventEmitter<
-    OutputMarkerSelected
-  >();
+  constructor(
+    private geoPosition: GeoPositionService,
+    private branchService: SnBranchLocatorService,
+    private platform: Platform,
+    private analyticsService: AnalyticsService,
+    private configuration: ConfigurationService
+  ) {
+    this.geoPosition
+      .watchPosition()
+      .pipe(first())
+      .subscribe((pos: Position) => {
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+      });
+  }
+  private get position(): Observable<LatLngLiteral> {
+    if (this.userPosition) {
+      return of(this.userPosition);
+    } else {
+      return this.geoPosition.getCurrentPosition().pipe(
+        map((pos: Position) => {
+          this.userPosition = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          return this.userPosition;
+        })
+      );
+    }
+  }
 
-  @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<OutputMapBounds>();
+  @Output() markerSelected: EventEmitter<
+    OutputMarkerSelected
+  > = new EventEmitter<OutputMarkerSelected>();
+
+  @Output() mapBounds: EventEmitter<OutputMapBounds> = new EventEmitter<
+    OutputMapBounds
+  >();
 
   @ViewChild(SnMapDirective, { static: false }) map: SnMapDirective;
   @ViewChildren(AgmMarker) branchMarkerList: QueryList<AgmMarker>;
@@ -70,20 +137,25 @@ export class SnBranchLocatorComponent implements OnInit {
   private _coordinates: string;
   private _address: string;
   private _defaultLang: string;
+  private _selectedBranch: Branch;
+  private _lastZoom: number;
 
   public isLoading: boolean = true;
   public lat: number;
   public lng: number;
+
   public branchIcon = {
     url: 'assets/branchlocator/touchpointIcon.svg',
     scaledSize: { height: 40, width: 40 },
     anchor: { x: 20, y: 20 }
   };
+
   public branchSelectedIcon = {
     url: 'assets/branchlocator/santanderTouchpointSelected.svg',
     scaledSize: { height: 56, width: 56 },
     anchor: { x: 28, y: 28 }
   };
+
   public usericon = {
     url: 'assets/branchlocator/pinVoce.svg',
     scaledSize: { height: 90, width: 90 },
@@ -99,7 +171,6 @@ export class SnBranchLocatorComponent implements OnInit {
       width: 32,
       backgroundPosition: '-4px 2px'
     }
-
   ];
 
   public userPosition: LatLngLiteral;
@@ -129,54 +200,31 @@ export class SnBranchLocatorComponent implements OnInit {
   public addressLng: number;
   public durationsLoaded: boolean;
 
-  public defaultLang: string = '';
-  public address: string = '';
   currentLat: number;
   currentLong: number;
   marker: any;
-
-  constructor(
-    private geoPosition: GeoPositionService,
-    private branchService: SnBranchLocatorService,
-    private platform: Platform,
-    private analyticsService: BridgeAnalyticService,
-    private configuration: ConfigurationService,
-    private translateService: TranslateService,
-  ) {
-
-    const translations = this.translateService.translations;
-
-    this.geoPosition
-      .watchPosition()
-      .pipe(first())
-      .subscribe((pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-      });
-  }
+  displayPanel: string;
 
   ngOnInit(): void {
-    this.configuration.settings$.subscribe((settings) => {
-
+    this.configuration.settings$.subscribe(settings => {
       // To set the languaje
-      const browserLang = navigator.language || window.navigator['userLanguage'];
+      const browserLang =
+        navigator.language || window.navigator['userLanguage'];
       this.defaultLang = browserLang.substring(0, 2);
-      this.translateService.setDefaultLang(this.defaultLang);
+      // this.translateService.setDefaultLang(this.defaultLang);
 
       if (
-        settings.paramView !== 'defaultView'
-        && (settings.paramView === 'en' || settings.paramView === 'es' || settings.paramView === 'pl' || settings.paramView === 'pt')
+        settings.paramView !== 'defaultView' &&
+        (settings.paramView === 'en' ||
+          settings.paramView === 'es' ||
+          settings.paramView === 'pl' ||
+          settings.paramView === 'pt')
       ) {
-        this.translateService.use(settings.paramView);
+        // this.translateService.use(settings.paramView);
       } else {
-        this.translateService.use(this.defaultLang);
+        // this.translateService.use(this.defaultLang);
       }
-
     });
-
-    this.initAnalytics();
 
     const sendView = ViewsAnalyticsVariables.mapScreen;
     this.analyticsService.sendView(sendView);
@@ -185,16 +233,31 @@ export class SnBranchLocatorComponent implements OnInit {
 
     this.branchService.onChange.subscribe(
       res => {
+        console.log(
+          '%c%s',
+          'color: green; background: lightyellow',
+          'branchService on change'
+        );
+
         this.closeDrawer();
         this.clearSelectedMarker();
         this.branchesList = res.sort((a, b) =>
-          a.distanceInKm > b.distanceInKm ? 1 : b.distanceInKm > a.distanceInKm ? -1 : 0
+          a.distanceInKm > b.distanceInKm
+            ? 1
+            : b.distanceInKm > a.distanceInKm
+            ? -1
+            : 0
         );
         this.isLoading = false;
         if (this.openNearest) {
           setTimeout(() => {
             this.selectBranch(this.branchesList[0]);
             this.showNearest = true;
+          });
+        }
+        if (this._selectedBranch) {
+          setTimeout(() => {
+            this.selectBranch(this._selectedBranch, true);
           });
         }
       },
@@ -221,18 +284,45 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-  selectBranch = (branch: Branch) => {
+  selectBranch = (branch: Branch, dontOpenPanel = false) => {
     const sendEvent = EventsAnalyticsVariables.clickBranchDetails;
     this.analyticsService.sendEvent(sendEvent);
 
     const markerFound = this.branchMarkerList['_results'].find(
       marker => marker.label && marker.label.text === branch.id
     );
-    this.markerSelect(markerFound, branch, false);
-    this.selectedTabIndex = 0;
+
+    if (!markerFound) {
+      this.displayPanel = 'list';
+      console.log(
+        '%c%s',
+        'color: green; background: limegreen',
+        'display list'
+      );
+      this._selectedBranch = undefined;
+    } else {
+      this.markerSelect(markerFound, branch, false, false);
+      this.selectedTabIndex = 0;
+
+      if (!dontOpenPanel) {
+        this.displayPanel = 'info';
+        console.log(
+          '%c%s',
+          'color: green; background: lightblue',
+          'display info'
+        );
+      }
+
+      this._selectedBranch = branch;
+    }
   }
 
-  markerSelect(selected: AgmMarker, branch: Branch, sendEvent: boolean) {
+  markerSelect(
+    selected: AgmMarker,
+    branch: Branch,
+    sendEvent: boolean,
+    openInfo = true
+  ) {
     this.showDirectionsPanel = false;
     this.closeDrawer();
     this.clearSelectedMarker();
@@ -240,6 +330,7 @@ export class SnBranchLocatorComponent implements OnInit {
     selected['_markerManager'].updateIcon(selected);
     this.selectedMarker = selected;
     this.selectedBranch = branch;
+    this._selectedBranch = branch;
     this.markerSelected.emit({
       userPosition: this.userPosition,
       marker: this.selectedBranch
@@ -254,72 +345,94 @@ export class SnBranchLocatorComponent implements OnInit {
 
     this.openMenu();
     this.openDrawer();
+
+    if (openInfo) {
+      this.displayPanel = 'info';
+      console.log(
+        '%c%s',
+        'color: green; background: lightblue',
+        'display info'
+      );
+    }
+
+    if (this.filterView.isOpen) {
+      this.filterView.toggle();
+    }
   }
 
   openMenu() {
-    if (this.menuComponent && this.menuComponent.currentState === 'menuClosed') {
+    if (
+      this.menuComponent &&
+      this.menuComponent.currentState === 'menuClosed'
+    ) {
       this.menuComponent.open();
     }
   }
 
   mapReady(): void {
-    this.configuration.settings$.subscribe((settings) => {
-
-      this.geoPosition.getCurrentPosition().subscribe((pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-
-        if (settings.paramCoordinates !== '') {
-          const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
-          const coors: LatLngLiteral = {
-            lat: Number(coorsArray[0]),
-            lng: Number(coorsArray[1])
+    this.configuration.settings$.subscribe(settings => {
+      this.geoPosition.getCurrentPosition().subscribe(
+        (pos: Position) => {
+          this.userPosition = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
           };
-          this.startingPosition = {
-            coordinates: coors
-          };
-        }
 
-        if (settings.paramAddress !== '') {
-          this._address = settings.paramAddress;
-          this.startingPosition = {
-            text: settings.paramAddress
-          };
-        }
+          // if (settings.paramCoordinates !== '') {
+          //   const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
+          //   const coors: LatLngLiteral = {
+          //     lat: Number(coorsArray[0]),
+          //     lng: Number(coorsArray[1])
+          //   };
+          //   this.startingPosition = {
+          //     coordinates: coors
+          //   };
+          // }
 
-        if (this.startingPosition && this.startingPosition.text) {
-          this.geoPosition
-            .getPositionByText(this.startingPosition.text)
-            .subscribe(coords => this.placeChange(coords));
-        } else if (this.startingPosition && this.startingPosition.coordinates) {
-          this.placeChange(this.startingPosition.coordinates);
-        } else {
-          this.startingPosition = {
-            coordinates: this.userPosition
-          };
-          this.goToUserPosition();
-        }
-      },
-        (err) => {
+          // if (settings.paramAddress !== '') {
+          //   this._address = settings.paramAddress;
+          //   this.startingPosition = {
+          //     text: settings.paramAddress
+          //   };
+          // }
+
+          if (this.startingPosition && this.startingPosition.text) {
+            this.geoPosition
+              .getPositionByText(this.startingPosition.text)
+              .subscribe(coords => this.placeChange(coords));
+          } else if (
+            this.startingPosition &&
+            this.startingPosition.coordinates
+          ) {
+            this.placeChange(this.startingPosition.coordinates);
+          } else {
+            this.startingPosition = {
+              coordinates: this.userPosition
+            };
+            this.goToUserPosition();
+          }
+        },
+        err => {
           // tslint:disable-next-line: no-shadowed-variable
-          this.configuration.settings$.subscribe((settings) => {
-            this.userPosition = { lat: settings.defaultCoords[0], lng: settings.defaultCoords[1] };
+          this.configuration.settings$.subscribe(settings => {
+            this.userPosition = {
+              lat: settings.defaultCoords[0],
+              lng: settings.defaultCoords[1]
+            };
             this.goToUserPosition();
           });
         }
       );
-
     });
-
   }
 
   centerChange(mapCenter: LatLngLiteral): void {
     if (this.userPosition && this.userPosition.lng && this.userPosition.lat) {
       this.showReCenter =
-        this.roundCordinates(this.userPosition.lng) !== this.roundCordinates(mapCenter.lng) ||
-        this.roundCordinates(this.userPosition.lat) !== this.roundCordinates(mapCenter.lat);
+        this.roundCordinates(this.userPosition.lng) !==
+          this.roundCordinates(mapCenter.lng) ||
+        this.roundCordinates(this.userPosition.lat) !==
+          this.roundCordinates(mapCenter.lat);
     } else {
       this.showReCenter = false;
     }
@@ -330,7 +443,11 @@ export class SnBranchLocatorComponent implements OnInit {
     this.mapReady();
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
-    } else if (openNearest && this.branchesList && this.branchesList.length > 0) {
+    } else if (
+      openNearest &&
+      this.branchesList &&
+      this.branchesList.length > 0
+    ) {
       this.selectBranch(this.branchesList[0]);
       this.showNearest = true;
     }
@@ -346,22 +463,25 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   closeInfo() {
-    this.isVisibleRoute = false;
-    this.isVisibleMarkers = true;
-    this.clearSelectedMarker();
-    this.getBranchesByBounds();
-    this.showDrawer = !this.showDrawer;
+    this.displayPanel = 'list';
   }
 
   closeDirectionsPanel(): void {
+    if (this._lastZoom) {
+      this.map.api.setZoom(this._lastZoom);
+    }
     this.isVisibleRoute = false;
     this.isVisibleMarkers = true;
-    this.showDirectionsPanel = false;
-    this.openDrawer();
+    this.displayPanel = 'info';
+    // this.openDrawer();
   }
 
   openDirectionsPanel(): void {
+    this.map.api.getZoom().then(zoomLevel => {
+      this._lastZoom = zoomLevel;
+    });
     this.showDirectionsPanel = true;
+    this.displayPanel = 'directions';
   }
 
   onGetDirections(event: any): void {
@@ -402,14 +522,18 @@ export class SnBranchLocatorComponent implements OnInit {
       lat: branchDirection.geoCoords.latitude
     };
     this.origin = this.userPosition;
-
     this.isVisibleRoute = true;
     this.isVisibleMarkers = false;
   }
 
   placeChange(place: LatLngLiteral) {
+    if (this.displayPanel === 'directions') {
+      this.map.api.setZoom(this._lastZoom);
+      this.closeDirectionsPanel();
+    }
+
     this.closeDrawer();
-    this.clearSelectedMarker();
+
     from(this.map.api.panTo(place))
       .pipe(switchMap(() => from(this.map.api.setZoom(this.zoom))))
       .subscribe(() => {
@@ -423,6 +547,13 @@ export class SnBranchLocatorComponent implements OnInit {
     this.closeDirectionsPanel();
     this.closeInfo();
     this.getBranchesByBounds();
+  }
+
+  onFilterDeployed(event) {
+    if (this.displayPanel === 'directions') {
+      this.map.api.setZoom(this._lastZoom);
+      this.closeDirectionsPanel();
+    }
   }
 
   showFilter() {
@@ -444,9 +575,12 @@ export class SnBranchLocatorComponent implements OnInit {
     this.showNearest = false;
     if (this.selectedMarker) {
       this.selectedMarker.iconUrl = this.branchIcon as any;
-      this.selectedMarker['_markerManager'].updateIcon(this.selectedMarker);
+      try {
+        this.selectedMarker['_markerManager'].updateIcon(this.selectedMarker);
+      } catch (err) {
+        console.warn('Couldn\'t update icon');
+      }
       this.selectedMarker = undefined;
-      this.selectedBranch = undefined;
     }
   }
 
@@ -460,7 +594,9 @@ export class SnBranchLocatorComponent implements OnInit {
 
   public goToUserPosition(): void {
     if (this.userPosition) {
-      this.map.api.panTo(this.userPosition).then(() => this.map.api.setZoom(this.zoom));
+      this.map.api
+        .panTo(this.userPosition)
+        .then(() => this.map.api.setZoom(this.zoom));
     }
   }
 
@@ -469,7 +605,7 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   getBranchesByBounds() {
-    if (!this.isVisibleRoute) {
+    if (this.displayPanel !== 'directions') {
       from(this.map.api.getBounds()).subscribe((mapBounds: LatLngBounds) => {
         if (mapBounds) {
           const northEast = {
@@ -490,50 +626,4 @@ export class SnBranchLocatorComponent implements OnInit {
       });
     }
   }
-  private get position(): Observable<LatLngLiteral> {
-    if (this.userPosition) {
-      return of(this.userPosition);
-    } else {
-      return this.geoPosition.getCurrentPosition().pipe(
-        map((pos: Position) => {
-          this.userPosition = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          };
-          return this.userPosition;
-        })
-      );
-    }
-  }
-
-  private initAnalytics() {
-    const analyticsConfig: AnalyticsInitModel = {
-      account: 'santander',
-      profile: 'globile',
-      environment: 'prod'
-    };
-    // TODO: Chnag to native whene have inplementation by core team
-    const channelConfig: WebAnalyticsInitModel = {
-      externalTealium: false
-    };
-    const componentParams: ComponentParamsModel = {
-      tealium_trace_id: 'testbr',
-      Component: 'branch locator',
-      ComponentVersion: '0.0.1',
-      AppType: 'Internal',
-      AppName: 'santander globile internal',
-      AppVersion: '0.0.1',
-      Language: 'spanish',
-      Country: 'ES'
-    };
-
-    this.analyticsService.setInitValues(
-      // TODO: Chnag to native whene have inplementation by core team
-      AnalyticsChannelEnum.WEB,
-      analyticsConfig,
-      channelConfig,
-      componentParams
-    );
-  }
-
 }

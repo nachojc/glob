@@ -1,14 +1,17 @@
 <div class="search-box">
   <div class="search-input-wrapper">
+
     <div class="search-input-button">
       <button (click)="search()" aria-label="Search">
         <sn-icon icon="sn-FUNC071"></sn-icon>
       </button>
     </div>
+
     <div class="search-input-input">
-      <input #in type="search" [placeholder]="'branchLocator.searchInput.placeHolder' | translate"
+      <input #in type="search" [placeholder]="'PLACEHOLDER_SEARCH' | label"
         (click)="searchBarClicked()" autocomplete="off" autocapitalize="off" spellcheck="off" value="{{ address }}" />
     </div>
+
     <div class="search-input-center-button">
       <button *ngIf="showReCenter" (click)="reCenter.emit($event)">
         <sn-icon icon="sn-SYS028"></sn-icon>
@@ -20,7 +23,7 @@
     <button class="filter-button" (click)="callFilter.emit($event)" aria-label="Filter">
       <div class="filter-button-wrapper">
         <div class="filter-button-label">
-          {{ 'branchLocator.searchInput.filterButton' | translate }}
+          {{ 'FILTERS' | label }}
         </div>
         <div class="filter-button-icon">
           <sn-icon icon="sn-FUNC035" *ngIf="!filterCount"></sn-icon>

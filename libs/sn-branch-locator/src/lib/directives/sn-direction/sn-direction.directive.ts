@@ -1,6 +1,17 @@
-import { Directive, Input, Output, OnChanges, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Directive,
+  Input,
+  Output,
+  OnChanges,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-import { InfoWindow, GoogleMap, Marker } from '@agm/core/services/google-maps-types';
+import {
+  InfoWindow,
+  GoogleMap,
+  Marker
+} from '@agm/core/services/google-maps-types';
 
 declare var google: any;
 
@@ -8,7 +19,6 @@ declare var google: any;
   selector: '[snDirection], sn-direction'
 })
 export class SnDirectionDirective implements OnChanges, OnDestroy {
-
   @Input() origin: any;
   @Input() destination: any;
   @Input() travelMode = 'DRIVING'; // DRIVING (default), BICYCLING, TRANSIT, WALKING
@@ -21,7 +31,7 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
   @Input() avoidTolls = false;
   @Input() renderOptions: any;
   @Input() panel: object | undefined;
-  @Input() markerOptions: { origin: any, destination: any, waypoints: any };
+  @Input() markerOptions: { origin: any; destination: any; waypoints: any };
   @Input() infoWindow: InfoWindow;
   @Input() visible = true;
   @Input() renderRoute: any;
@@ -29,7 +39,9 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
   @Output() _onChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() _onLoad: EventEmitter<any> = new EventEmitter<any>();
   @Output() _onResponse: EventEmitter<any> = new EventEmitter<any>();
-  @Output() sendInfoWindow: EventEmitter<InfoWindow> = new EventEmitter<InfoWindow>();
+  @Output() sendInfoWindow: EventEmitter<InfoWindow> = new EventEmitter<
+    InfoWindow
+  >();
   @Output() status: EventEmitter<string> = new EventEmitter<string>();
   @Output() originDrag: EventEmitter<any> = new EventEmitter<any>();
   @Output() destinationDrag: EventEmitter<any> = new EventEmitter<any>();
@@ -46,20 +58,21 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
   private durations: any = {};
   private travelModes = ['DRIVING', 'BICYCLING', 'TRANSIT', 'WALKING'];
 
-  constructor(
-    private gmapsApi: GoogleMapsAPIWrapper,
-  ) { }
+  constructor(private gmapsApi: GoogleMapsAPIWrapper) {}
 
   ngOnChanges(obj: any) {
     if (!this.visible) {
       try {
         this.removeMarkers();
         this.removeDirections();
-      } catch (e) { }
+      } catch (e) {}
     } else {
-
-      if (!obj.destination.previousValue || obj.destination.previousValue.lng !== obj.destination.currentValue.lng
-        || obj.destination.previousValue.lat !== obj.destination.currentValue.lat) {
+      if (
+        !obj.destination.previousValue ||
+        obj.destination.previousValue.lng !==
+          obj.destination.currentValue.lng ||
+        obj.destination.previousValue.lat !== obj.destination.currentValue.lat
+      ) {
         this.directions = {};
         this.getDirections();
         return;
@@ -85,7 +98,9 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
       this.map = map;
 
       if (typeof this.directionsDisplay === 'undefined') {
-        this.directionsDisplay = new google.maps.DirectionsRenderer(this.renderOptions);
+        this.directionsDisplay = new google.maps.DirectionsRenderer(
+          this.renderOptions
+        );
         this.directionsDisplay.setMap(this.map);
         this.directionsDisplay.addListener('directions_changed', () => {
           this._onChange.emit(this.directionsDisplay.getDirections());
@@ -97,7 +112,7 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
       }
 
       this.directionsDisplay.setPanel(
-        (typeof this.panel === 'undefined') ? null : this.panel
+        typeof this.panel === 'undefined' ? null : this.panel
       );
 
       if (typeof this.renderRoute === 'object' && this.renderRoute !== null) {
@@ -107,28 +122,35 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
         let len = this.travelModes.length;
 
         while (len--) {
-          this.directionsService.route({
-            origin: this.origin,
-            destination: this.destination,
-            travelMode: this.travelModes[len],
-            transitOptions: this.transitOptions,
-            drivingOptions: this.drivingOptions,
-            waypoints: this.waypoints,
-            optimizeWaypoints: this.optimizeWaypoints,
-            provideRouteAlternatives: this.provideRouteAlternatives,
-            avoidHighways: this.avoidHighways,
-            avoidTolls: this.avoidTolls,
-          }, (response: any, status: any) => {
-            if (status === 'OK') {
-              this.status.emit(status);
-              this.durations[response.request.travelMode] = response.routes[0].legs[0].duration.text;
-              this.directions[response.request.travelMode] = response;
-              if (Object.keys(this.directions).length === this.travelModes.length) {
-                this._onLoad.emit(this.durations);
-                this.directionDraw();
+          this.directionsService.route(
+            {
+              origin: this.origin,
+              destination: this.destination,
+              travelMode: this.travelModes[len],
+              transitOptions: this.transitOptions,
+              drivingOptions: this.drivingOptions,
+              waypoints: this.waypoints,
+              optimizeWaypoints: this.optimizeWaypoints,
+              provideRouteAlternatives: this.provideRouteAlternatives,
+              avoidHighways: this.avoidHighways,
+              avoidTolls: this.avoidTolls
+            },
+            (response: any, status: any) => {
+              if (status === 'OK') {
+                this.status.emit(status);
+                this.durations[response.request.travelMode] =
+                  response.routes[0].legs[0].duration.text;
+                this.directions[response.request.travelMode] = response;
+                if (
+                  Object.keys(this.directions).length ===
+                  this.travelModes.length
+                ) {
+                  this._onLoad.emit(this.durations);
+                  this.directionDraw();
+                }
               }
             }
-          });
+          );
         }
       }
     });
@@ -150,7 +172,7 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
             this.map,
             this.originMarker,
             this.markerOptions.origin,
-            _route.start_address,
+            _route.start_address
           );
 
           if (this.markerOptions.origin.draggable) {
@@ -169,7 +191,7 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
             this.map,
             this.destinationMarker,
             this.markerOptions.destination,
-            _route.end_address,
+            _route.end_address
           );
           if (this.markerOptions.destination.draggable) {
             this.destinationMarker.addListener('dragend', () => {
@@ -181,27 +203,31 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
         }
 
         if (typeof this.markerOptions.waypoints !== 'undefined') {
-
           this.waypoints.forEach((waypoint: any, index: number) => {
-
             if (!Array.isArray(this.markerOptions.waypoints)) {
               this.markerOptions.waypoints.map = this.map;
-              this.markerOptions.waypoints.position = _route.via_waypoints[index];
-              this.waypointsMarker.push(this.setMarker(
-                this.map,
-                waypoint,
-                this.markerOptions.waypoints,
-                _route.via_waypoints[index],
-              ));
+              this.markerOptions.waypoints.position =
+                _route.via_waypoints[index];
+              this.waypointsMarker.push(
+                this.setMarker(
+                  this.map,
+                  waypoint,
+                  this.markerOptions.waypoints,
+                  _route.via_waypoints[index]
+                )
+              );
             } else {
               this.markerOptions.waypoints[index].map = this.map;
-              this.markerOptions.waypoints[index].position = _route.via_waypoints[index];
-              this.waypointsMarker.push(this.setMarker(
-                this.map,
-                waypoint,
-                this.markerOptions.waypoints[index],
-                _route.via_waypoints[index],
-              ));
+              this.markerOptions.waypoints[index].position =
+                _route.via_waypoints[index];
+              this.waypointsMarker.push(
+                this.setMarker(
+                  this.map,
+                  waypoint,
+                  this.markerOptions.waypoints[index],
+                  _route.via_waypoints[index]
+                )
+              );
             }
           });
         }
@@ -211,7 +237,12 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
     }
   }
 
-  private setMarker(map: GoogleMap, marker: any, markerOpts: any, content: string): Marker {
+  private setMarker(
+    map: GoogleMap,
+    marker: any,
+    markerOpts: any,
+    content: string
+  ): Marker {
     if (typeof this.infoWindow === 'undefined') {
       this.infoWindow = new google.maps.InfoWindow({});
       this.sendInfoWindow.emit(this.infoWindow);
@@ -219,7 +250,10 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
     marker = new google.maps.Marker(markerOpts);
     if (marker.clickable) {
       marker.addListener('click', () => {
-        const infowindoContent: string = typeof markerOpts.infoWindow === 'undefined' ? content : markerOpts.infoWindow;
+        const infowindoContent: string =
+          typeof markerOpts.infoWindow === 'undefined'
+            ? content
+            : markerOpts.infoWindow;
         this.infoWindow.setContent(infowindoContent);
         this.infoWindow.open(map, marker);
       });
@@ -269,7 +303,6 @@ export class SnDirectionDirective implements OnChanges, OnDestroy {
         }
       });
       this.removeMarkers();
-
     } catch (err) {
       console.error('Can not reset custom marker.', err);
     }

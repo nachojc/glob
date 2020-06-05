@@ -1,14 +1,14 @@
-import { Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
-import { map, flatMap } from 'rxjs/operators';
-import { LatLngLiteral } from '@agm/core';
-import { GlobileSettingsService, WindowRefService } from '@globile/mobile-services';
+import {Inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, Subject} from 'rxjs';
+import {flatMap, map} from 'rxjs/operators';
+import {LatLngLiteral} from '@agm/core';
 
 import { Branch } from '../../models/branch.model';
 import { EnvBranchLocatorModel } from '../../models/env-branch-locator.model';
 import { FilterService } from '../filter/filter.service';
 import { GeoPositionService } from '../geo-position/geo-position.service';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +18,24 @@ export class SnBranchLocatorService {
   private _observer$ = new Subject<Branch[]>();
   private _initPosition: LatLngLiteral;
   branchLocator: EnvBranchLocatorModel;
+  private view: string = 'defaultView';
 
   constructor(
-    globileSettings: GlobileSettingsService,
     public http: HttpClient,
     private filterservice: FilterService,
-    @Inject(WindowRefService) windowRef: WindowRefService,
-    private geoPositionService: GeoPositionService
+    private geoPositionService: GeoPositionService,
+    private configuration: ConfigurationService,
+    @Inject('ENV_CONFIG') private _enviroment
   ) {
-    this.branchLocator = globileSettings.branchLocator;
+    this.branchLocator = this._enviroment.branchLocator;
+    this.configuration.settings$
+      .subscribe(
+        (config) => {
+          if (config.paramView === 'es' || config.paramView === 'en' || config.paramView === 'pt') {
+            this.view = config.paramView;
+          }
+        }
+      );
   }
 
   get onChange(): Observable<Branch[]> {
@@ -34,7 +43,7 @@ export class SnBranchLocatorService {
   }
 
   /**
-   * @description Returns a list of points of interest
+   * @description Returns a li st of points of interest
    * @Returns {Observable<Branch[]>}
    * @memberOf SnBranchLocatorService
    */
@@ -46,9 +55,8 @@ export class SnBranchLocatorService {
     if (!this._initPosition) {
       this.setApiURL(coords);
     }
-
     const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
-    this.getBranches(`${this.URL}/find/defaultView?${configVal}`).subscribe(
+    this.getBranches(`${this.URL}/find/${this.view}?${configVal}`).subscribe(
       resp => this._observer$.next(resp),
       err => this._observer$.error(err)
     );
@@ -69,7 +77,7 @@ export class SnBranchLocatorService {
     const configVal = encodeURI(
       `northEast=${northEast.lat},${northEast.lng}&southWest=${southWest.lat},${southWest.lng}`
     );
-    this.getBranches(`${this.URL}/find/defaultView?${configInit}&${configVal}`, {
+    this.getBranches(`${this.URL}/find/${this.view}?${configInit}&${configVal}`, {
       params
     }).subscribe(
       resp => this._observer$.next(resp),
@@ -80,15 +88,21 @@ export class SnBranchLocatorService {
   public getClosestBranchByTextQuery(text: string) {
     return this.geoPositionService.getPositionByText(text).pipe(
       flatMap(coords => {
-        const configVal = encodeURI(`config={"coords":[${coords.lat},${coords.lng}]}`);
+        const configVal = encodeURI(
+          `config={"coords":[${coords.lat},${coords.lng}]}`
+        );
         if (!this._initPosition) {
           this.setApiURL({ lat: coords.lat, lng: coords.lng });
         }
-        return this.getBranches(`${this.URL}/find/defaultView?${configVal}`);
+        return this.getBranches(`${this.URL}/find/${this.view}?${configVal}`);
       }),
       map(branches => {
         branches.sort((a, b) =>
-          a.distanceInKm > b.distanceInKm ? 1 : b.distanceInKm > a.distanceInKm ? -1 : 0
+          a.distanceInKm > b.distanceInKm
+            ? 1
+            : b.distanceInKm > a.distanceInKm
+            ? -1
+            : 0
         );
         return branches[0];
       })
@@ -105,7 +119,8 @@ export class SnBranchLocatorService {
   private groupAtmToBranch(array: Branch[]): Branch[] {
     return array.reduce((poiArray, currentValue) => {
       const index = poiArray.findIndex(
-        el => el.distanceInKm.toFixed(2) === currentValue.distanceInKm.toFixed(2)
+        el =>
+          el.distanceInKm.toFixed(2) === currentValue.distanceInKm.toFixed(2)
       );
       if (index >= 0) {
         if (poiArray[index].objectType.code.toUpperCase() === 'BRANCH') {
@@ -162,7 +177,10 @@ export class SnBranchLocatorService {
     const dLong = rad(p2.lng - p1.lng);
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+      Math.cos(rad(p1.lat)) *
+        Math.cos(rad(p2.lat)) *
+        Math.sin(dLong / 2) *
+        Math.sin(dLong / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d;
@@ -173,6 +191,8 @@ export class SnBranchLocatorService {
     const pos0 = this.getDistance(this.branchLocator.endpoints[0]);
     const pos1 = this.getDistance(this.branchLocator.endpoints[1]);
     this.URL =
-      pos0 < pos1 ? this.branchLocator.endpoints[0].URL : this.branchLocator.endpoints[1].URL;
+      pos0 < pos1
+        ? this.branchLocator.endpoints[0].URL
+        : this.branchLocator.endpoints[1].URL;
   }
 }

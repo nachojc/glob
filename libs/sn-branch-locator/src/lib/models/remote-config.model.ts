@@ -6,6 +6,9 @@ export interface LocatorSettings {
   translations?: [];
   literals?: LocatorLiteral[];
   filters?: LocatorFilters;
+  language?: {
+    defaultLanguage: string
+  };
 }
 
 export interface LocatorFilters {

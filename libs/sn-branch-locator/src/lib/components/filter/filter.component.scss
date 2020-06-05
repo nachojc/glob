@@ -1,5 +1,7 @@
 @import "~sn-common-lib/styles/settings/colors";
 
+form {padding-top:20px;}
+
 @media (min-width: 640px) {
   .sn-filter-wrapper .sn-filter-footer.hide-web,
   .mobile-title {
@@ -7,6 +9,7 @@
   }
 }
 @media (max-width: 640px) {
+
   .hide-mobile {
     display: none;
   }
@@ -91,6 +94,10 @@
     background-color: $color-primary-white;
     box-shadow: 2px 2px 6px 2px rgba(206, 214, 219, 0.4);
     cursor: pointer;
+    overflow:hidden;
+    display: flex;
+    align-items: flex-end;
+
     .turn-off-filter-button {
       width: 100%;
       height: 44px;
@@ -132,6 +139,8 @@
       button.info-close-button {
         transform: rotate(180deg);
         color: red;
+        background-color:white;
+
       }
     }
 
@@ -153,6 +162,8 @@
   .sn-filter-content {
     flex: 1;
     padding: 1.5em 1em;
+    overflow-y:scroll;
+    overflow-x: hidden;
 
     .title {
       font-size: 1.125em;

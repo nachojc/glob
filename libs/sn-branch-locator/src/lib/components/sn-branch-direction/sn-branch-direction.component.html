@@ -11,7 +11,7 @@
         "
       >
         <sn-icon icon="sn-SERV051"> </sn-icon>
-        <span>{{ durations['DRIVING'] }}</span>
+        <span>{{ durations["DRIVING"] }}</span>
       </div>
       <div
         [ngClass]="{ selectedRoute: selectedRoute === 'BICYCLING' }"
@@ -23,7 +23,7 @@
         "
       >
         <sn-icon icon="sn-SERV053"> </sn-icon>
-        <span>{{ durations['BICYCLING'] }}</span>
+        <span>{{ durations["BICYCLING"] }}</span>
       </div>
       <div
         [ngClass]="{ selectedRoute: selectedRoute === 'TRANSIT' }"
@@ -35,7 +35,7 @@
         "
       >
         <sn-icon icon="sn-SERV054"></sn-icon>
-        <span>{{ durations['TRANSIT'] }}</span>
+        <span>{{ durations["TRANSIT"] }}</span>
       </div>
       <div
         [ngClass]="{ selectedRoute: selectedRoute === 'WALKING' }"
@@ -47,10 +47,11 @@
         "
       >
         <sn-icon icon="sn-FUNC059"></sn-icon>
-        <span>{{ durations['WALKING'] }}</span>
+        <span>{{ durations["WALKING"] }}</span>
       </div>
     </div>
   </section>
+
   <section class="branch-routes-wrapper" *ngIf="routes">
     <div class="branch-direction" *ngFor="let route of routes">
       <div class="branch-maneuver {{ route.maneuver }}">
@@ -67,8 +68,11 @@
           icon="sn-SYS020"
         ></sn-icon>
         <sn-icon
-          [ngClass]="{ 'no-visible': route.maneuver.length === 0 || route.maneuver === 'merge' }"
-          *ngIf="route.maneuver.length === 0 || route.maneuver === 'merge'"
+          [ngClass]="{
+            'no-visible':
+              route.maneuver.length === 0 || route.maneuver === 'merge'
+          }"
+          *ngIf="route.maneuver.length === 0 || route.maneuver === 'merge'"
           icon="sn-SYS020"
         ></sn-icon>
       </div>

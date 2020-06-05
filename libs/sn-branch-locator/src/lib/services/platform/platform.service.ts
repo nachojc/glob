@@ -1,15 +1,15 @@
 import { Injectable, Inject } from '@angular/core';
-import { WindowRef } from '../../models/window-ref';
-import { fromEvent, Observable, of } from 'rxjs';
+
+import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { WindowRefService } from '@globile/mobile-services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Platform {
 
-  constructor(private windowRef: WindowRefService) {
+  constructor(
+    @Inject('WINDOW') private windowRef: any) {
   }
 
   get orientation(): ScreenOrientation {
@@ -18,7 +18,6 @@ export class Platform {
   }
 
   get isMobile(): boolean {
-    // tslint:disable-next-line: max-line-length
     // TODO: make it with width size of own component
     return !(this.orientation.angle === 0 &&
       this.orientation.type === 'landscape-primary') &&

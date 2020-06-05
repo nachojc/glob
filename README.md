@@ -31,14 +31,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { environment } from '../environments/environment';
-import { GlobileSettingsService, GlobileModule } from '@globile/mobile-services';
+
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SnBranchLocatorModule } from "sn-branch-locator";
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-export function HttpLoaderFactory(http: HttpClient, globileSettings: GlobileSettingsService) {
-  return new TranslateHttpLoader(http, globileSettings.branchLocator.languages, '.json');
-}
 ```
 ```js
 imports: [
@@ -52,14 +47,10 @@ imports: [
       apiKey: environment.branchLocator.googleApiKey,
       libraries: environment.branchLocator.googleApiLibs || []
     }),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient, GlobileSettingsService]
-      }
-    }),
-    GlobileModule.forRoot({}, environment),
+    ...
+    providers: [
+    { provide: 'WINDOW', useValue: window },
+    { provide: 'ENV_CONFIG', useValue: environment },
     ...
   ],
 ```
@@ -71,19 +62,18 @@ export const environment = {
   branchLocator: {
     endpoints: [
       {
-        URL: 'your url endpoint 1',
+        URL: 'https://back-scus.azurewebsites.net/branch-locator',
         lat: 29.4247,
         lng: -98.4935
       },
       {
-        URL: 'your url endpoint 2',
+        URL: 'https://back-weu.azurewebsites.net/branch-locator',
         lat: 52.35,
         lng: 4.9167
       },
     ],
     googleApiKey: 'Google Api Key here',
-    googleApiLibs: ['weather', 'geometry', 'visualization', 'places'],
-    languages: '/i18n/branchlocator/',
+    googleApiLibs: ['geometry', 'visualization', 'places'],
     hasFilters: true,
   }
   ...
@@ -101,23 +91,8 @@ Add in assets part next code:
       "glob": "**/*",
       "input": "node_modules/@globile/branch-locator/assets",
       "output": "assets/branchlocator/"
-    },
-    {
-      "glob": "**/*",
-      "input": "node_modules/@globile/branch-locator/i18n",
-      "output": "/i18n/branchlocator/"
     }
 ```
-and in style part:
-```json
-"node_modules/sn-common-lib/styles/styles.scss"
-```
-don't forget to initialize the translation default language in your app:
-```typescript
-constructor(private trasnlate: TranslateService) {}
-  ngOnInit() {
-    this.trasnlate.setDefaultLang('es');
-  }
 ```
 ## Getting Started
 How to use branch locator component:

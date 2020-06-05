@@ -1,23 +1,53 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
-import {FilterService} from '../../services/filter/filter.service';
-import {FormGroup, NgForm} from '@angular/forms';
-import {ViewsAnalyticsVariables} from '../../constants/views-analytics-variables';
-import {BridgeAnalyticService} from '@globile/mobile-services';
-import {EventsAnalyticsVariables} from '../../constants/events-analytics-variables';
-import {ConfigurationService} from '../../services/configuration/configuration.service';
-import {LocatorFilters} from '../../models/remote-config.model';
-import {take} from 'rxjs/operators';
-import {CheckboxComponent} from 'sn-common-lib/atoms/checkbox/checkbox.component';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  Renderer2,
+  ViewChildren
+} from '@angular/core';
+import { FilterService } from '../../services/filter/filter.service';
+import { FormGroup } from '@angular/forms';
+import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
+import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
+import { ConfigurationService } from '../../services/configuration/configuration.service';
+import { LocatorFilters } from '../../models/remote-config.model';
+import { take } from 'rxjs/operators';
+import { CheckboxComponent } from 'sn-common-lib/atoms/checkbox/checkbox.component';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Platform } from '../../services/platform/platform.service';
+import { AnalyticsService } from '../../services/analytic/analytics.service';
 
 @Component({
   selector: 'sn-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  styleUrls: ['./filter.component.scss'],
+  animations: [
+    trigger('clearButtonAnimation', [
+      transition(':enter', [
+        style({ height: 0, 'margin-bottom': '0', opacity: 0 }),
+        animate(
+          '200ms',
+          style({ height: 44, 'margin-bottom': '25px', opacity: 1 })
+        )
+      ]),
+      transition(':leave', [
+        style({ height: 44, 'margin-bottom': '25px', opacity: 1 }),
+        animate('120ms', style({ height: 0, 'margin-bottom': '0', opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class FilterComponent implements OnInit {
-  @Input() get isOpen() { return this.isFilterOpen; }
+  @Input() get isOpen() {
+    return this.isFilterOpen;
+  }
   @Output() filterApply = new EventEmitter();
-
+  @Output() filterDeployed = new EventEmitter();
+  @Output() filterCallList = new EventEmitter();
   @ViewChildren('types') typesCheckboxes!: QueryList<CheckboxComponent>;
 
   public form: FormGroup;
@@ -28,38 +58,54 @@ export class FilterComponent implements OnInit {
   filters: LocatorFilters;
 
   constructor(
-    private snFilterService: FilterService,
+    public snFilterService: FilterService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private analyticsService: BridgeAnalyticService,
-    private configuration: ConfigurationService
-  ) { }
+    private analyticsService: AnalyticsService,
+    private configuration: ConfigurationService,
+    private platform: Platform
+  ) {}
 
   ngOnInit(): void {
     this.hide();
-    this.snFilterService.initForm()
+
+    this.snFilterService
+      .initForm()
       .pipe(take(1))
-      .subscribe((form) => {
-      this.form = form;
+      .subscribe(form => {
+        this.form = form;
+      });
+
+    this.configuration.settings$.pipe(take(1)).subscribe(settings => {
+      this.filters = settings.filters;
     });
-    this.configuration.settings$
-      .pipe(take(1))
-      .subscribe(
-      (settings ) => {
-        this.filters = settings.filters;
-      }
-    );
   }
 
   private show(): void {
     this.isFilterOpen = true;
-    this.renderer.removeStyle(this.el.nativeElement, 'display');
-    this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
+    if (this.platform.isMobile) {
+      this.renderer.removeStyle(this.el.nativeElement, 'display');
+      this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
+    }
   }
 
   private hide(): void {
     this.isFilterOpen = false;
-    this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+
+    if (this.platform.isMobile) {
+      this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+    }
+  }
+
+  private clearTypes(): boolean {
+    let applied = false;
+    this.typesCheckboxes.forEach(component => {
+      if (this.selectedFilters.hasOwnProperty(component.id)) {
+        component._inputElement.nativeElement.click();
+        applied = true;
+      }
+    });
+    return applied;
   }
 
   public close(): void {
@@ -81,11 +127,11 @@ export class FilterComponent implements OnInit {
   }
 
   public toggle(): void {
-     if (!this.isFilterOpen) {
-        this.show();
-     } else {
-       this.hide();
-     }
+    if (!this.isFilterOpen) {
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   public open(): void {
@@ -98,14 +144,10 @@ export class FilterComponent implements OnInit {
   public selectFilter(event: any, clearTypes?: boolean): void {
     const eventUniqueId = event.source._uniqueId;
 
+    let cleared;
+
     if (clearTypes) {
-      console.log(this.typesCheckboxes);
-      this.typesCheckboxes.forEach(component => {
-        if (this.selectedFilters.hasOwnProperty(component.id)) {
-          // delete this.selectedFilters[component.id];
-          component._inputElement.nativeElement.click();
-        }
-      });
+      cleared = this.clearTypes();
     }
 
     if (this.selectedFilters.hasOwnProperty(eventUniqueId)) {
@@ -129,12 +171,17 @@ export class FilterComponent implements OnInit {
     return 'sn-BAN005'; // todo : implement
   }
 
-  public switchFilterButton(): void {
+  public clearFilters(event): void {
+    this.clearTypes();
+
     this.selectedFilters = {};
+
     this.isHideTurnOffButton = true;
     const sendEvent = EventsAnalyticsVariables.tapCleanFilters;
     this.analyticsService.sendEvent(sendEvent);
 
-    this.apply(false);
+    setTimeout(() => {
+      this.apply(false);
+    });
   }
 }

@@ -2,7 +2,7 @@ import { TestBed, async, inject } from '@angular/core/testing';
 
 import { GeoPositionService } from './geo-position.service';
 import { MapsAPILoader } from '@agm/core';
-import { WindowRefService } from '@globile/mobile-services';
+
 
 
 const position: Position = {
@@ -42,7 +42,7 @@ const MapsAPILoaderMock = {
 describe('GeoPositionService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
-      { provide: WindowRefService, useValue: windowRefOK },
+      { provide: 'WINDOW', useValue: window },
       { provide: MapsAPILoader, useValue: MapsAPILoaderMock }
     ]
   }));
@@ -87,7 +87,7 @@ describe('GeoPositionService', () => {
 describe('GeoPositionService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
-      { provide: WindowRefService, useValue: windowRefKO },
+      { provide: 'WINDOW', useValue: window },
       { provide: MapsAPILoader, useValue: MapsAPILoaderMock }
     ]
   }));

@@ -1,12 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BranchSearchInputComponent } from './branch-search.component';
-import { IconModule } from 'sn-common-lib';
-import { MapsAPILoader, AgmCoreModule } from '@agm/core';
-import { ElementRef } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
-import { HttpClientModule } from '@angular/common/http';
+import {BranchSearchInputComponent} from './branch-search.component';
+import {IconModule} from 'sn-common-lib';
+import {AgmCoreModule, MapsAPILoader} from '@agm/core';
+import {ElementRef} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 const MapsAPILoaderMock = {
   load: () => new Promise((resolve) => resolve())
@@ -64,13 +63,12 @@ describe('BranchSearchInputComponent', () => {
       imports: [
         IconModule,
         AgmCoreModule.forRoot(),
-        TranslateModule.forRoot(),
         HttpClientModule
       ],
       providers: [
         { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
-        { provide: WindowRefService, useValue: windowRef },
-        { provide: GlobileSettingsService, useValue: env }
+        { provide: 'WINDOW', useValue: window },
+        { provide: 'ENV_CONFIG', useValue: environment },
       ]
     })
       .compileComponents();

@@ -1,18 +1,9 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BranchListComponent } from './branch-list.component';
-import {
-  IconModule,
-  OptionListModule,
-  LoaderModule
-} from 'sn-common-lib';
-import { DebugElement, SimpleChanges, SimpleChange } from '@angular/core';
-import { branchMock } from '../../helpers/branch.mock';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {BranchListComponent} from './branch-list.component';
+import {IconModule, LoaderModule, OptionListModule} from 'sn-common-lib';
+import {DebugElement, SimpleChange, SimpleChanges} from '@angular/core';
+import {branchMock} from '../../helpers/branch.mock';
 
 describe('BranchListComponent', () => {
   let component: BranchListComponent;
@@ -22,7 +13,7 @@ describe('BranchListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BranchListComponent],
-      imports: [IconModule, OptionListModule, LoaderModule, TranslateModule.forRoot()],
+      imports: [IconModule, OptionListModule, LoaderModule],
     })
       .compileComponents();
   }));

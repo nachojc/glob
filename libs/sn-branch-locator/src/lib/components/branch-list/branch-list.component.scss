@@ -34,6 +34,7 @@
       margin-top: 16px;
     }
     .branch-address-container {
+      text-align:left;
       .address {
         font-size: 14px;
         line-height: 1.075;
@@ -77,11 +78,13 @@
       margin: 44px 0px 32px 0px;
     }
   }
+
   .branch-dinamic-icon-container {
     color: $color-primary-santander;
     font-size: 20px;
     max-height: 24px;
     max-width: 24px;
+    min-width: 24px;
     text-align: center;
     margin: 16px 12px 68px;
     ::ng-deep {
@@ -90,4 +93,10 @@
       }
     }
   }
+
+  // reset styles
+
+
+
+
 }

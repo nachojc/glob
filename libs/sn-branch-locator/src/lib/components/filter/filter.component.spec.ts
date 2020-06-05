@@ -1,11 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FilterComponent } from './filter.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IconModule, CheckboxModule } from 'sn-common-lib';
-import { FilterService } from '../../services/filter/filter.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {FilterComponent} from './filter.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CheckboxModule, IconModule} from 'sn-common-lib';
+import {FilterService} from '../../services/filter/filter.service';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 
 describe('SnFilterComponent', () => {
@@ -22,7 +21,6 @@ describe('SnFilterComponent', () => {
         FormsModule,
         IconModule,
         CheckboxModule,
-        TranslateModule.forRoot(),
         HttpClientTestingModule
       ],
       providers: [
@@ -100,7 +98,7 @@ describe('SnFilterComponent', () => {
       }
     };
     component.isHideTurnOffButton = false;
-    component.switchFilterButton();
+    component.clearFilters(new Event(''));
     expect(component.selectedFilters).toEqual({});
     expect(component.isHideTurnOffButton).toBeTruthy();
   });
