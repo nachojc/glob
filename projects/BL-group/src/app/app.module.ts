@@ -8,6 +8,7 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       apiKey: environment.branchLocator.googleApiKey,
       libraries: environment.branchLocator.googleApiLibs || []
     }),
+    RouterModule.forRoot([])
   ],
   providers: [
     { provide: 'WINDOW', useValue: window },
