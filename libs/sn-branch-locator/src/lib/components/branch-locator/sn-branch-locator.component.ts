@@ -1,19 +1,19 @@
 import {
   Component,
-  ViewChild,
-  ViewChildren,
-  QueryList,
-  OnInit,
   EventEmitter,
+  Input,
+  OnInit,
   Output,
-  Input
+  QueryList,
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
 import { SnMapDirective } from '../../directives/sn-map/sn-map.directive';
-import { LatLngLiteral, LatLngBounds, AgmMarker } from '@agm/core';
+import { AgmMarker, LatLngBounds, LatLngLiteral } from '@agm/core';
 import { GeoPositionService } from '../../services/geo-position/geo-position.service';
 
 import { from, Observable, of } from 'rxjs';
-import { switchMap, first, map } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { Branch } from '../../models/branch.model';
 import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
 import { FilterComponent } from '../filter/filter.component';
@@ -25,20 +25,11 @@ import { OutputMapBounds } from '../../models/output-map-bounds';
 import { OutputDirection } from '../../models/output-direction';
 import { MenuComponent } from '../menu/menu.component';
 import { IStartingPosition } from '../../models/starting-position.interface';
-import {
-  BridgeAnalyticService,
-  AnalyticsChannelEnum,
-  AnalyticsInitModel,
-  ComponentParamsModel,
-  NativeAnalyticsInitModel,
-  WebAnalyticsInitModel
-} from '@globile/mobile-services';
+
 import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variables';
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
-import { TranslateService, TranslateStore } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
-import { trigger, transition, animate, style } from '@angular/animations';
+import { AnalyticsService } from '../../services/analytic/analytics.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -99,12 +90,9 @@ export class SnBranchLocatorComponent implements OnInit {
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
     private platform: Platform,
-    private analyticsService: BridgeAnalyticService,
-    private configuration: ConfigurationService,
-    private translateService: TranslateService
+    private analyticsService: AnalyticsService,
+    private configuration: ConfigurationService
   ) {
-    const translations = this.translateService.translations;
-
     this.geoPosition
       .watchPosition()
       .pipe(first())
@@ -223,7 +211,7 @@ export class SnBranchLocatorComponent implements OnInit {
       const browserLang =
         navigator.language || window.navigator['userLanguage'];
       this.defaultLang = browserLang.substring(0, 2);
-      this.translateService.setDefaultLang(this.defaultLang);
+      // this.translateService.setDefaultLang(this.defaultLang);
 
       if (
         settings.paramView !== 'defaultView' &&
@@ -232,20 +220,16 @@ export class SnBranchLocatorComponent implements OnInit {
           settings.paramView === 'pl' ||
           settings.paramView === 'pt')
       ) {
-        this.translateService.use(settings.paramView);
+        // this.translateService.use(settings.paramView);
       } else {
-        this.translateService.use(this.defaultLang);
+        // this.translateService.use(this.defaultLang);
       }
     });
-
-    this.initAnalytics();
 
     const sendView = ViewsAnalyticsVariables.mapScreen;
     this.analyticsService.sendView(sendView);
 
     this.isMobile = this.platform.isMobile;
-
-
 
     this.branchService.onChange.subscribe(
       res => {
@@ -374,7 +358,6 @@ export class SnBranchLocatorComponent implements OnInit {
     if (this.filterView.isOpen) {
       this.filterView.toggle();
     }
-
   }
 
   openMenu() {
@@ -642,35 +625,5 @@ export class SnBranchLocatorComponent implements OnInit {
         }
       });
     }
-  }
-
-  private initAnalytics() {
-    const analyticsConfig: AnalyticsInitModel = {
-      account: 'santander',
-      profile: 'globile',
-      environment: 'prod'
-    };
-    // TODO: Chnag to native whene have inplementation by core team
-    const channelConfig: WebAnalyticsInitModel = {
-      externalTealium: false
-    };
-    const componentParams: ComponentParamsModel = {
-      tealium_trace_id: 'testbr',
-      Component: 'branch locator',
-      ComponentVersion: '0.0.1',
-      AppType: 'Internal',
-      AppName: 'santander globile internal',
-      AppVersion: '0.0.1',
-      Language: 'spanish',
-      Country: 'ES'
-    };
-
-    this.analyticsService.setInitValues(
-      // TODO: Chnag to native whene have inplementation by core team
-      AnalyticsChannelEnum.WEB,
-      analyticsConfig,
-      channelConfig,
-      componentParams
-    );
   }
 }

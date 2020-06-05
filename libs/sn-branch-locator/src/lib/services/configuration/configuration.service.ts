@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LocatorSettings } from '../../models/remote-config.model';
 import { ObservableInput, of, ReplaySubject } from 'rxjs';
 import { LatLngLiteral } from '@agm/core';
-import { GlobileSettingsService } from '@globile/mobile-services';
 import { GeoPositionService } from '../geo-position/geo-position.service';
 import {
   EnvBranchLocatorEndPointModel,
@@ -11,27 +10,22 @@ import {
 } from '../../models/env-branch-locator.model';
 import { catchError, first, timeout } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { TranslateService } from '@ngx-translate/core';
-import LiteralsAggregator from './literals.helper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurationService {
-
   public get settings$() {
     return this.settings.asObservable();
   }
 
-
   constructor(
     private activatedRoute: ActivatedRoute,
-    private globileSettings: GlobileSettingsService,
     private geoPosition: GeoPositionService,
     private http: HttpClient,
-    private translateService: TranslateService
+    @Inject('ENV_CONFIG') private _enviroment
   ) {
-    this.branchLocatorEnv = globileSettings.branchLocator;
+    this.branchLocatorEnv = this._enviroment.branchLocator;
 
     this.activatedRoute.queryParams.pipe(first()).subscribe(params => {
       const viewType = params['view'] || this.paramDefaultView;
@@ -44,18 +38,28 @@ export class ConfigurationService {
         .subscribe(
           (pos: Position) => {
             this.baseEndpoint = this.resolveConfigUrl(pos);
-            this.fetchRemoteConfig(this.baseEndpoint, viewType, coordinates, address);
+            this.fetchRemoteConfig(
+              this.baseEndpoint,
+              viewType,
+              coordinates,
+              address
+            );
           },
           () => {
             this.baseEndpoint = this.resolveConfigUrl();
-            this.fetchRemoteConfig(this.baseEndpoint, viewType, coordinates, address);
+            this.fetchRemoteConfig(
+              this.baseEndpoint,
+              viewType,
+              coordinates,
+              address
+            );
           }
         );
     });
 
-    this.settings$.subscribe((settings) => {
-      LiteralsAggregator.inject(settings.literals).into(this.translateService);
-    });
+    // this.settings$.subscribe((settings) => {
+    //   LiteralsAggregator.inject(settings.literals).into(this.translateService);
+    // });
   }
   private paramDefaultView = 'defaultView';
   private remoteFetchTimeout = 10000;
@@ -76,14 +80,19 @@ export class ConfigurationService {
         )
       )
       .subscribe(response => {
-        const settings = this.buildSettings(response, viewType, coordinates, address);
+        const settings = this.buildSettings(
+          response,
+          viewType,
+          coordinates,
+          address
+        );
         this.settings.next(settings);
       });
   }
 
   private buildSettings(response, viewType, coordinates, address): LocatorSettings {
 
-    // todo remove this mock
+    // TODO remove this mock
 
     if (response.literals.en) {
       response.literals.en.FILTERSELECT_EMBASSY = 'Embassy of the Great Llama';
@@ -99,21 +108,22 @@ export class ConfigurationService {
       filters: {
         types: [],
         features: []
-      }
+      },
+      language: response.language
     };
 
-    if (response.language.defaultLanguage
-      && response.literals.hasOwnProperty(response.language.defaultLanguage)
+    if (
+      response.language.defaultLanguage &&
+      response.literals.hasOwnProperty(response.language.defaultLanguage)
     ) {
       const langLiterals = response.literals[response.language.defaultLanguage];
-      settings.literals = Object.keys(langLiterals).map((code) => {
+      settings.literals = Object.keys(langLiterals).map(code => {
         return {
           code,
           content: langLiterals[code]
         };
       });
     }
-
 
     const types = response.filters.tipoPOI;
     if (types && types !== {}) {
@@ -182,9 +192,9 @@ export class ConfigurationService {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(rad(p1.lat)) *
-      Math.cos(rad(p2.lat)) *
-      Math.sin(dLong / 2) *
-      Math.sin(dLong / 2);
+        Math.cos(rad(p2.lat)) *
+        Math.sin(dLong / 2) *
+        Math.sin(dLong / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d;

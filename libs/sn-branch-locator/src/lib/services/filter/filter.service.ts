@@ -23,18 +23,18 @@ export class FilterService {
    * Initializes filter form and returns the form;
    */
   initForm(): Observable<FormGroup> {
-      return this.config.settings$.pipe(
-        switchMap(settings => {
-          const observable = new Observable<FormGroup>(observer => {
-            if (!this.form) {
-              this.form = this.buildForm(settings.filters, this.fb);
-            }
-            observer.next(this.form);
-            observer.complete();
-          });
-          return observable;
-        })
-      );
+    return this.config.settings$.pipe(
+      switchMap(settings => {
+        const observable = new Observable<FormGroup>(observer => {
+          if (!this.form) {
+            this.form = this.buildForm(settings.filters, this.fb);
+          }
+          observer.next(this.form);
+          observer.complete();
+        });
+        return observable;
+      })
+    );
   }
 
   public get count(): number {
@@ -128,14 +128,16 @@ export class FilterService {
     };
   }
 
-  private buildForm(settingsFilters: LocatorFilters, formBuilder: FormBuilder): FormGroup {
-
+  private buildForm(
+    settingsFilters: LocatorFilters,
+    formBuilder: FormBuilder
+  ): FormGroup {
     const filterReductor = (filtersList, filterSetting, index, array) => {
       filtersList[filterSetting.code] = new FormControl();
       return filtersList;
     };
 
-    const typeControls =  settingsFilters.types.reduce(filterReductor, {});
+    const typeControls = settingsFilters.types.reduce(filterReductor, {});
     const featureControls = settingsFilters.features.reduce(filterReductor, {});
 
     const form = formBuilder.group({

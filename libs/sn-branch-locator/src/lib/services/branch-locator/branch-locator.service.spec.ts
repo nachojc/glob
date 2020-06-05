@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
-import { GlobileSettingsService, WindowRefService } from '@globile/mobile-services';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
@@ -59,8 +58,8 @@ describe('SnBranchLocatorService', () => {
       ReactiveFormsModule
     ],
     providers: [
-      { provide: WindowRefService, useValue: windowRef },
-      { provide: GlobileSettingsService, useValue: environment },
+      { provide: 'WINDOW', useValue: window },
+      { provide: 'ENV_CONFIG', useValue: environment },
       { provide: FilterService, useValue: filterserviceMock },
       { provide: MapsAPILoader, useValue: MapsAPILoaderMock },
       { provide: GeoPositionService, useValue: GeoPositionServiceMock }

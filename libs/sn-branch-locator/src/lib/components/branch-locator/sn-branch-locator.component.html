@@ -7,7 +7,7 @@
     [selectIndex]="selectedTabIndex"
     (selectedTab)="tabsChanged($event)"
   >
-    <sn-tab label="{{ 'branchLocator.title.map' | translate }}">
+    <sn-tab label="{{ 'RESPMENUMAPBUTTON' | label }}">
       <section class="locator-content">
         <agm-map
           [gestureHandling]="'greedy'"
@@ -76,7 +76,7 @@
           (stateChange)="drawerStageChange($event)"
         >
           <sn-branch-info
-            *ngIf="selectedBranch  && !showDirectionsPanel"
+            *ngIf="selectedBranch && !showDirectionsPanel"
             [branch]="selectedBranch"
             (branchInfoClicked)="drawer.changeState()"
             [isNearestMarker]="showNearest"
@@ -96,7 +96,7 @@
     </sn-tab>
     <sn-tab
       class="tab-branches-list"
-      label="{{ 'branchLocator.title.list' | translate }}"
+      label="{{ 'RESPMENURESULTSBUTTON' | label }}"
     >
       <section class="result-list-wrapper">
         <sn-branch-list
@@ -121,11 +121,11 @@
     </div>
   </section>
 
-  <sn-filter modal
-             (filterCallList)="displayPanel='list'"
-             (filterApply)="onFilterApply($event)"
+  <sn-filter
+    modal
+    (filterCallList)="displayPanel = 'list'"
+    (filterApply)="onFilterApply($event)"
   ></sn-filter>
-
 </ng-container>
 <!-- End Mobile and Tablet -->
 
@@ -172,9 +172,9 @@
     ></sn-branch-direction>
 
     <sn-filter
-      (filterCallList)="displayPanel='list'"
-      (filterApply)="onFilterApply($event)"></sn-filter>
-
+      (filterCallList)="displayPanel = 'list'"
+      (filterApply)="onFilterApply($event)"
+    ></sn-filter>
   </sn-menu>
   <!-- End Side Menu -->
 

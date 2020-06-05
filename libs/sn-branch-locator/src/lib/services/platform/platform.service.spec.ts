@@ -1,14 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-
 import { Platform } from './platform.service';
-import { NoopWindowRef } from '../../models/window-ref';
-import { WindowRefService } from '@globile/mobile-services';
-
-
 
 describe('PlatformService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [{ provide: WindowRefService, useClass: NoopWindowRef }]
+    providers: [
+      { provide: 'WINDOW', useValue: window },
+    ]
   }));
 
   it('should be created', () => {

@@ -1,11 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { OptionListModule, IconModule } from 'sn-common-lib';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {IconModule, OptionListModule} from 'sn-common-lib';
 
-import { SnBranchInfoComponent } from './sn-branch-info.component';
-import { branchMock } from '../../helpers/branch.mock';
-import { TranslateModule } from '@ngx-translate/core';
-import { SnTabModule } from '../tabs/sn-tab.module';
-import { HttpClientModule } from '@angular/common/http';
+import {SnBranchInfoComponent} from './sn-branch-info.component';
+import {branchMock} from '../../helpers/branch.mock';
+import {SnTabModule} from '../tabs/sn-tab.module';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('SnBranchInfoComponent', () => {
   let component: SnBranchInfoComponent;
@@ -18,7 +17,6 @@ describe('SnBranchInfoComponent', () => {
         SnTabModule,
         IconModule,
         OptionListModule,
-        TranslateModule.forRoot(),
         HttpClientModule
       ]
     })

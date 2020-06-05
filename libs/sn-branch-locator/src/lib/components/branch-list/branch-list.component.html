@@ -1,15 +1,24 @@
 <sn-option-list [style.display]="isLoading ? 'none' : 'flex'" lines="full">
   <!-- TODO: replace sn-option-item and use button[sn-option-item] for clicable list items -->
   <ng-container *ngFor="let branch of branchesList; let i = index">
-    <button [ngClass]="{ 'delete-line-top' : i== 0}" sn-option-item (click)="selectBranch(branch)"
-      *ngIf="i < maxBranchesToLoad">
+    <button
+      [ngClass]="{ 'delete-line-top': i == 0 }"
+      sn-option-item
+      (click)="selectBranch(branch)"
+      *ngIf="i < maxBranchesToLoad"
+    >
       <div class="branch-dinamic-icon-container">
         <sn-icon [icon]="branchIcons[i]"></sn-icon>
       </div>
       <div class="branch-address-container">
         <div class="Type-5_Regular-Style name">
-          {{ branch && branch?.entityCode ? branch?.entityCode.slice(0, -4)  + " - " : ""
-          }}{{ branch.location?.city ? branch?.location?.city.toLowerCase() : "" }}
+          {{
+            branch && branch?.entityCode
+              ? branch?.entityCode.slice(0, -4) + " - "
+              : ""
+          }}{{
+            branch.location?.city ? branch?.location?.city.toLowerCase() : ""
+          }}
         </div>
         <div class="Type-5_Regular-Style address">
           {{ branch?.location?.address.toLowerCase() }}
@@ -29,10 +38,15 @@
   </ng-container>
 </sn-option-list>
 
-<div class="bl-load-result-container" (click)="loadMoreResults()" [style.display]="isLoading ? 'none' : 'initial'"
-  *ngIf="branchesList && branchesList.length > 0 && isMoreBranchesToLoad">
-  <p class="bl-load-result-container__text">{{ 'branchLocator.list.moreResults' | translate }}</p>
+<div
+  class="bl-load-result-container"
+  (click)="loadMoreResults()"
+  [style.display]="isLoading ? 'none' : 'initial'"
+  *ngIf="branchesList && branchesList.length > 0 && isMoreBranchesToLoad"
+>
+  <p class="bl-load-result-container__text">
+    {{ "MORERESULTS" | label }}
+  </p>
 </div>
-
 
 <sn-loader *ngIf="isLoading"></sn-loader>

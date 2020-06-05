@@ -1,27 +1,25 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { SnBranchLocatorComponent } from './sn-branch-locator.component';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {SnBranchLocatorComponent} from './sn-branch-locator.component';
 
-import { AgmCoreModule, LatLngLiteral, MapsAPILoader } from '@agm/core';
-import { IconModule, OptionListModule, DrawerState, DrawerModule } from 'sn-common-lib';
+import {AgmCoreModule, LatLngLiteral, MapsAPILoader} from '@agm/core';
+import {DrawerModule, DrawerState, IconModule, OptionListModule} from 'sn-common-lib';
 
-import { SnBranchInfoComponent } from '../sn-branch-info/sn-branch-info.component';
+import {SnBranchInfoComponent} from '../sn-branch-info/sn-branch-info.component';
 
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
-import { GeoPositionService } from '../../services/geo-position/geo-position.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { SnBranchLocatorService } from '../../services/branch-locator/branch-locator.service';
-import { branchMock } from '../../helpers/branch.mock';
-import { environment } from 'src/environments/environment';
-import { BranchSearchInputModule } from '../branch-search/branch-search.module';
-import { FormBuilder } from '@angular/forms';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {of, throwError} from 'rxjs';
+import {GeoPositionService} from '../../services/geo-position/geo-position.service';
+import {SnBranchLocatorService} from '../../services/branch-locator/branch-locator.service';
+import {branchMock} from '../../helpers/branch.mock';
+import {environment} from 'src/environments/environment';
+import {BranchSearchInputModule} from '../branch-search/branch-search.module';
+import {FormBuilder} from '@angular/forms';
 
-import { SnTabModule } from '../tabs/sn-tab.module';
-import { SnDirectionModule } from '../../directives/sn-direction/sn-direction.module';
-import { OutputDirection } from '../../models/output-direction';
-import { WindowRefService, GlobileSettingsService } from '@globile/mobile-services';
-import { RouterTestingModule } from '@angular/router/testing';
+import {SnTabModule} from '../tabs/sn-tab.module';
+import {SnDirectionModule} from '../../directives/sn-direction/sn-direction.module';
+import {OutputDirection} from '../../models/output-direction';
+import {RouterTestingModule} from '@angular/router/testing';
 
 
 const mockMapsAPILoader = {
@@ -88,7 +86,6 @@ describe('SnBranchLocatorComponent', () => {
         BranchSearchInputModule,
         OptionListModule,
         HttpClientModule,
-        TranslateModule.forRoot(),
         AgmCoreModule.forRoot({
           apiKey: 'demo',
           libraries: ['places']
@@ -101,10 +98,10 @@ describe('SnBranchLocatorComponent', () => {
         SnBranchInfoComponent,
       ],
       providers: [
-        { provide: WindowRefService, useValue: windowRef },
+        { provide: 'WINDOW', useValue: window },
+        { provide: 'ENV_CONFIG', useValue: environment },
         { provide: GeoPositionService, useValue: GeoPositionServiceMock },
         { provide: MapsAPILoader, useValue: mockMapsAPILoader },
-        { provide: GlobileSettingsService, useValue: environment },
         SnBranchLocatorService,
         FormBuilder,
       ],

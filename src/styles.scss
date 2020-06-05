@@ -1,7 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-
-
 // Google auto complete styles
 .pac-container{
   font-family: inherit !important;
@@ -32,9 +30,6 @@
         // remove google log from auto comlete list
         display: none !important;
     }
-
-
-
 }
 
 *{
@@ -49,3 +44,6 @@
       background-color: gray;
     }
   }
+
+// importing from common
+
