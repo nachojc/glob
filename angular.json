@@ -45,7 +45,9 @@
               "node_modules/prismjs/themes/prism-coy.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["/node_modules"]
+              "includePaths": [
+                "/node_modules"
+              ]
             },
             "scripts": [],
             "es5BrowserSupport": true
@@ -130,8 +132,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -157,7 +164,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -202,8 +211,7 @@
                 "output": "i18n/branchlocator/"
               }
             ],
-            "styles": [
-            ]
+            "styles": []
           }
         },
         "lint": {
@@ -213,7 +221,9 @@
               "libs/sn-branch-locator/tsconfig.lib.json",
               "libs/sn-branch-locator/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -261,7 +271,9 @@
               "projects/BL-group/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["/node_modules"]
+              "includePaths": [
+                "/node_modules"
+              ]
             },
             "scripts": []
           },
@@ -325,7 +337,9 @@
               "projects/BL-group/src/favicon.ico",
               "projects/BL-group/src/assets"
             ],
-            "styles": ["projects/BL-group/src/styles.scss"],
+            "styles": [
+              "projects/BL-group/src/styles.scss"
+            ],
             "scripts": []
           }
         },
@@ -337,7 +351,9 @@
               "projects/BL-group/tsconfig.spec.json",
               "projects/BL-group/e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {
