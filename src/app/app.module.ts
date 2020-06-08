@@ -10,14 +10,16 @@ import {PrismModule} from './components/prism/prism.module';
 import {DocumentationComponent} from './components/documentation/documentation.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-
+import { TestingPostcodeComponent } from './components/testing-postcode/testing-postcode.component';
+import {SnBranchLocatorService} from '@globile/branch-locator';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DocumentationComponent
+    DocumentationComponent,
+    TestingPostcodeComponent
   ],
   entryComponents: [
     DocumentationComponent
@@ -43,6 +45,10 @@ import {RouterModule} from '@angular/router';
         loadChildren: () => import('./modules/branch-locator/branch-locator-wrapper.module').then(m => m.BranchLocatorModule)
       },
       {
+        path: 'search',
+        component: TestingPostcodeComponent
+      },
+      {
         path: '',
         redirectTo: '/documentation',
         pathMatch: 'full'
@@ -50,13 +56,15 @@ import {RouterModule} from '@angular/router';
       {
         path: '**', component: DocumentationComponent
       }
-    ])
+    ]),
+    FormsModule
   ],
 providers: [
     { provide: 'WINDOW', useValue: window },
     { provide: 'ENV_CONFIG', useValue: environment },
     { provide: APP_BASE_HREF, useValue: './' },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+  SnBranchLocatorService
   ],
   bootstrap: [AppComponent]
 })
