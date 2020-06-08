@@ -69,7 +69,7 @@ if (params.OVERRIDE_JOB_PARAMETERS) {
                 SKIP_TAGLATEST: true,
 
             //8. Distribute: Deploy Yaml file in kubernetes cluster
-            SKIP_DISTRIBUTE: true, //Distribute in kubernete cluster
+            SKIP_DISTRIBUTE: false, //Distribute in kubernete cluster
 
               //[OPTIONAL*]
               URLPUBLICDEPLOYMENT: 'branch-locator.develop.blue4sky.com',
