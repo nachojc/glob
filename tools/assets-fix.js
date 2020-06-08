@@ -3,7 +3,7 @@ const PROJECT = require('../package.json');
 const DIST_FOLDER = 'dist/'+ PROJECT['modules-publish'][0] +'/';
 const FILE_TO_COPY=[
     {input:'libs/sn-branch-locator/src/assets/branchlocator',output:'assets'},
-    {input:'libs/sn-branch-locator/i18n/branchlocator',output:'i18n'}
+    // {input:'libs/sn-branch-locator/i18n/branchlocator',output:'i18n'}
 ]
 
 const fs = require('fs-extra');

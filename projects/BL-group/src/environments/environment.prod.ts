@@ -16,7 +16,6 @@ export const environment = {
       ],
       googleApiKey: 'AIzaSyAW6Ayoy5LzilIIwr84WfQFTybSV8P9Ifo',
       googleApiLibs: ['weather', 'geometry', 'visualization', 'places'],
-      languages: '/i18n/branchlocator/',
       hasFilters: true
     }
   }
