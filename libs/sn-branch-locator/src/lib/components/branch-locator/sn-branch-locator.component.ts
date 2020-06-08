@@ -68,6 +68,7 @@ export class SnBranchLocatorComponent implements OnInit {
   get address(): string {
     return this._address;
   }
+
   set address(value: string) {
     if (value) {
       this._address = value;

@@ -21,7 +21,7 @@
     "e2e": "ng e2e",
     "patch-lib": "cd libs/sn-branch-locator && npm version patch",
     "prebuild": "echo ko > .buildstatus",
-    "postbuild-lib": "echo ok > .buildstatus",
+      "postbuild-lib": "echo ok > .buildstatus",
     "globile-update": "npm i @globile/mobile-services@latest sn-common-lib@latest --save"
   },
   "private": true,
