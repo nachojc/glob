@@ -1,0 +1,4 @@
+<input [(ngModel)]="postcode" placeholder="Postcode"/>
+<button (click)="lookup()">find nearest</button>
+
+<pre>{{nearestBranch | json}}</pre>

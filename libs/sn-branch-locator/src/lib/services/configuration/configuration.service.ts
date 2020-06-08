@@ -92,12 +92,6 @@ export class ConfigurationService {
 
   private buildSettings(response, viewType, coordinates, address): LocatorSettings {
 
-    // TODO remove this mock
-
-    if (response.literals.en) {
-      response.literals.en.FILTERSELECT_EMBASSY = 'Embassy of the Great Llama';
-    }
-
 
     const settings: LocatorSettings = {
       paramView: viewType,
