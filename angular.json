@@ -42,7 +42,8 @@
               }
             ],
             "styles": [
-              "node_modules/prismjs/themes/prism-coy.css"
+              "node_modules/prismjs/themes/prism-coy.css",
+              "src/fonts.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
