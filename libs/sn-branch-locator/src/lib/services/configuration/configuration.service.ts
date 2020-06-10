@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LocatorSettings } from '../../models/remote-config.model';
-import { ObservableInput, of, ReplaySubject } from 'rxjs';
+import {Observable, ObservableInput, of, ReplaySubject} from 'rxjs';
 import { LatLngLiteral } from '@agm/core';
 import { GeoPositionService } from '../geo-position/geo-position.service';
 import {
   EnvBranchLocatorEndPointModel,
   EnvBranchLocatorModel
 } from '../../models/env-branch-locator.model';
-import { catchError, first, timeout } from 'rxjs/operators';
+import {catchError, first, map, switchMap, timeout} from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -63,6 +63,7 @@ export class ConfigurationService {
   }
   private paramDefaultView = 'defaultView';
   private remoteFetchTimeout = 10000;
+  private LANG_VAR = '${lang}';
   private branchLocatorEnv: EnvBranchLocatorModel;
   private baseEndpoint: string;
 
@@ -77,21 +78,20 @@ export class ConfigurationService {
           (err, caught): ObservableInput<any> => {
             return of({ coords: null });
           }
-        )
+        ),
       )
       .subscribe(response => {
-        const settings = this.buildSettings(
+        this.buildSettings(
           response,
           viewType,
           coordinates,
           address
-        );
-        this.settings.next(settings);
+        ).subscribe(settings => this.settings.next(settings));
+
       });
   }
 
-  private buildSettings(response, viewType, coordinates, address): LocatorSettings {
-
+  private buildSettings(response, viewType, coordinates, address): Observable<LocatorSettings> {
 
     const settings: LocatorSettings = {
       paramView: viewType,
@@ -105,19 +105,6 @@ export class ConfigurationService {
       },
       language: response.language
     };
-
-    if (
-      response.language.defaultLanguage &&
-      response.literals.hasOwnProperty(response.language.defaultLanguage)
-    ) {
-      const langLiterals = response.literals[response.language.defaultLanguage];
-      settings.literals = Object.keys(langLiterals).map(code => {
-        return {
-          code,
-          content: langLiterals[code]
-        };
-      });
-    }
 
     const types = response.filters.tipoPOI;
     if (types && types !== {}) {
@@ -143,10 +130,44 @@ export class ConfigurationService {
       }
     }
 
-    return settings;
+    if (!response.language.defaultLanguage) {
+      return of(settings);
+    }
+
+    const literalsEndpoint = this.branchLocatorEnv.labelsEndpoint.replace(this.LANG_VAR, response.language.defaultLanguage);
+
+    return this.http.get<any>(literalsEndpoint).pipe(
+      timeout(this.remoteFetchTimeout),
+      catchError(
+        (err, caught): ObservableInput<any> => {
+          return of(settings);
+        }
+      ),
+      switchMap(literalsResponse => {
+        const literalsObj = [];
+        Object.keys(literalsResponse).forEach(labelKey => literalsObj.push({
+          code : labelKey,
+          content : literalsResponse[labelKey]
+        }));
+        settings.literals = literalsObj;
+        return of(settings);
+      })
+    );
+
+   /* settings.literals = Object.keys(langLiterals).map(code => {
+        return {
+          code,
+          content: langLiterals[code]
+        };
+      });
+    }*/
+
+
+
+
   }
 
-  resolveConfigUrl(pos?: Position): string {
+resolveConfigUrl(pos ?: Position)  {
     const endpoints = this.branchLocatorEnv.endpoints;
 
     if (!endpoints || !endpoints.length) {
@@ -174,6 +195,9 @@ export class ConfigurationService {
     return nearestEndpoint.URL;
   }
   // todo - move this out of branch-locator.service.ts
+
+
+
 
   private getDistance(userPos: Position, endpoint: LatLngLiteral): number {
     const p1 = { lat: userPos.coords.latitude, lng: userPos.coords.longitude };

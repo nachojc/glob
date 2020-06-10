@@ -8,7 +8,7 @@
     </div>
 
     <div class="search-input-input">
-      <input #in type="search" [placeholder]="'PLACEHOLDER_SEARCH' | label"
+      <input #in type="search" [placeholder]="labelPipe.transform('PLACEHOLDER_SEARCH')"
         (click)="searchBarClicked()" autocomplete="off" autocapitalize="off" spellcheck="off" value="{{ address }}" />
     </div>
 
@@ -17,6 +17,7 @@
         <sn-icon icon="sn-SYS028"></sn-icon>
       </button>
     </div>
+
   </div>
 
   <div class="filter-button-container" *ngIf="hasFilters">
