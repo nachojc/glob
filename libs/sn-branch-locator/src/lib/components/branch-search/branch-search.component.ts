@@ -13,6 +13,7 @@ import { EventsAnalyticsVariables } from '../../constants/events-analytics-varia
 import { ConfigurationService } from '../../services/configuration/configuration.service';
 import { take } from 'rxjs/operators';
 import { AnalyticsService } from '../../services/analytic/analytics.service';
+import {LabelPipe} from '../../pipes/label/label.pipe';
 
 @Component({
   selector: 'sn-branch-search',
@@ -37,7 +38,8 @@ export class BranchSearchInputComponent implements OnInit {
     private mapsAPILoader: MapsAPILoader,
     @Inject('WINDOW') private windowRef,
     private analyticsService: AnalyticsService,
-    private configuration: ConfigurationService
+    private configuration: ConfigurationService,
+    public labelPipe: LabelPipe
   ) {}
 
   ngOnInit(): void {
