@@ -20,7 +20,6 @@ export const environment = {
     // googleApiKey: 'AIzaSyAW6Ayoy5LzilIIwr84WfQFTybSV8P9Ifo',
     googleApiKey: 'AIzaSyAEa5DdaHqV_b-40ErddBoWfEuopdvPK7I',
     googleApiLibs: ['weather', 'geometry', 'visualization', 'places'],
-    languages: '/i18n/branchlocator/',
     hasFilters: true,
   }
 };
