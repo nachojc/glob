@@ -8,6 +8,7 @@ export interface EnvBranchLocatorEndPointModel {
 }
 export interface EnvBranchLocatorModel {
     endpoints: EnvBranchLocatorEndPointModel[];
+    labelsEndpoint: string;
     googleApiKey?: string;
     googleApiLibs: Array<string>;
     languages: string;

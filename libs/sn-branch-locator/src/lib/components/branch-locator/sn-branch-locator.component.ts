@@ -439,9 +439,16 @@ export class SnBranchLocatorComponent implements OnInit {
     }
   }
 
-  centerMapToUser(callAPI: boolean = true, openNearest: boolean = false) {
+  centerMapToUser(callAPI: boolean = true, openNearest: boolean = false): void {
+
+    if (!this.startingPosition) {
+      return;
+    }
+
     this.placeChange(this.startingPosition.coordinates);
+
     this.mapReady();
+
     if (callAPI) {
       this.getBranchesByCoordinates(this.userPosition, openNearest);
     } else if (
