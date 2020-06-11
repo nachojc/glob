@@ -356,7 +356,8 @@ export class SnBranchLocatorComponent implements OnInit {
     try {
       selected['_markerManager'].updateIcon(selected);
     } catch (e) {
-      // no action needed
+      // TODO: non-blocking sporadic error,  currently under
+      // investigation
     }
 
     this.selectedMarker = selected;
