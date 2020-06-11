@@ -139,11 +139,11 @@ export class ConfigurationService {
     return this.http.get<any>(literalsEndpoint).pipe(
       timeout(this.remoteFetchTimeout),
       catchError(
-        (err, caught): ObservableInput<any> => {
+        (): ObservableInput<any> => {
           return of(settings);
         }
       ),
-      switchMap(literalsResponse => {
+      switchMap<any, Observable<LocatorSettings>>(literalsResponse => {
         const literalsObj = [];
         Object.keys(literalsResponse).forEach(labelKey => literalsObj.push({
           code : labelKey,
@@ -153,16 +153,6 @@ export class ConfigurationService {
         return of(settings);
       })
     );
-
-   /* settings.literals = Object.keys(langLiterals).map(code => {
-        return {
-          code,
-          content: langLiterals[code]
-        };
-      });
-    }*/
-
-
 
 
   }
@@ -195,9 +185,6 @@ resolveConfigUrl(pos ?: Position)  {
     return nearestEndpoint.URL;
   }
   // todo - move this out of branch-locator.service.ts
-
-
-
 
   private getDistance(userPos: Position, endpoint: LatLngLiteral): number {
     const p1 = { lat: userPos.coords.latitude, lng: userPos.coords.longitude };

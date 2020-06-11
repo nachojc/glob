@@ -110,6 +110,11 @@ export class SnBranchLocatorService {
   }
 
   private getBranches(url: string, params = {}): Observable<Branch[]> {
+
+    if (this.filterservice.branchTypes) {
+     params = this.branchTypeFilter(params);
+    }
+
     return this.http.get<Branch[]>(url, params).pipe(
       map(resp => this._changeDistance(resp)),
       map(resp => this.groupAtmToBranch(resp))
@@ -169,6 +174,7 @@ export class SnBranchLocatorService {
       return ele;
     });
   }
+
   private getDistance(p2: LatLngLiteral): number {
     const p1 = this._initPosition;
     const rad = x => (x * Math.PI) / 180;
@@ -194,5 +200,19 @@ export class SnBranchLocatorService {
       pos0 < pos1
         ? this.branchLocator.endpoints[0].URL
         : this.branchLocator.endpoints[1].URL;
+  }
+
+  private branchTypeFilter(paramsObj) {
+
+    const params = paramsObj.params;
+
+    const  branchTypeParams = {
+        filterType : 'BRANCH'
+          + ((params && params.filterType) ? `,${params.filterType}` : ''),
+        filterSubType : this.filterservice.branchTypes
+          +  ((params && params.filterSubType) ? `,${params.filterSubType}` : '')
+    };
+
+    return {params: branchTypeParams};
   }
 }
