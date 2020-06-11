@@ -1,6 +1,8 @@
 @import "~sn-common-lib/styles/settings/colors";
 
-form {padding-top:20px;}
+form {padding-top:20px;
+  .hidden {display: none}
+}
 
 @media (min-width: 640px) {
   .sn-filter-wrapper .sn-filter-footer.hide-web,
