@@ -26,7 +26,7 @@
     </button>
   </div>
   <div class="sn-filter-content">
-    <div formGroupName="BRANCH">
+    <div formGroupName="BRANCH" [hidden]="snFilterService.branchTypes">
       <h2 class="title">
         {{ "FILTERTITLEPOI" | label }}
       </h2>

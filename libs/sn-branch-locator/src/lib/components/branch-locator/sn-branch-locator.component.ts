@@ -30,6 +30,7 @@ import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variabl
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
 import { AnalyticsService } from '../../services/analytic/analytics.service';
+import {FilterService} from '../../services/filter/filter.service';
 
 @Component({
   selector: 'sn-branch-locator',
@@ -37,6 +38,26 @@ import { AnalyticsService } from '../../services/analytic/analytics.service';
   styleUrls: ['sn-branch-locator.component.scss']
 })
 export class SnBranchLocatorComponent implements OnInit {
+
+  constructor(
+    private geoPosition: GeoPositionService,
+    private branchService: SnBranchLocatorService,
+    private platform: Platform,
+    private analyticsService: AnalyticsService,
+    private configuration: ConfigurationService,
+    private filterService: FilterService
+  ) {
+    this.geoPosition
+      .watchPosition()
+      .pipe(first())
+      .subscribe((pos: Position) => {
+        this.userPosition = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+      });
+  }
+
   @Input()
   get coordinates(): string {
     return this._coordinates;
@@ -57,6 +78,7 @@ export class SnBranchLocatorComponent implements OnInit {
       };
     }
   }
+
   @Input()
   get defaultLang(): string {
     return this._defaultLang;
@@ -64,11 +86,11 @@ export class SnBranchLocatorComponent implements OnInit {
   set defaultLang(value: string) {
     this._defaultLang = value;
   }
+
   @Input()
   get address(): string {
     return this._address;
   }
-
   set address(value: string) {
     if (value) {
       this._address = value;
@@ -87,23 +109,14 @@ export class SnBranchLocatorComponent implements OnInit {
       value !== null && value !== undefined && `${value}` !== 'false';
   }
 
-  constructor(
-    private geoPosition: GeoPositionService,
-    private branchService: SnBranchLocatorService,
-    private platform: Platform,
-    private analyticsService: AnalyticsService,
-    private configuration: ConfigurationService
-  ) {
-    this.geoPosition
-      .watchPosition()
-      .pipe(first())
-      .subscribe((pos: Position) => {
-        this.userPosition = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-      });
+  @Input()
+  get branchTypes(): string {
+    return this.filterService.branchTypes;
   }
+  set branchTypes(value: string) {
+    this.filterService.branchTypes = value;
+  }
+
   private get position(): Observable<LatLngLiteral> {
     if (this.userPosition) {
       return of(this.userPosition);

@@ -14,6 +14,7 @@ export class FilterService {
   public _filterCount: number = 0;
   private _previousValues: { [key: string]: any };
   private _filterParams: FilterParams;
+  private _branchTypes: string;
 
   private _observer$ = new Subject<FilterParams>();
   public form: FormGroup;
@@ -54,6 +55,14 @@ export class FilterService {
 
   public startFilter(): void {
     this.resetPreviousValues();
+  }
+
+  set branchTypes(types: string)  {
+    this._branchTypes = types;
+  }
+
+  get branchTypes(): string {
+    return this._branchTypes;
   }
 
   /**
