@@ -75,7 +75,7 @@ npm install js-marker-clusterer -D`;
   mapBounds(event: OutputMapBounds) {
     OutputMapBounds = {
       northEast: LatLngLiteral;
-      southWest: La tLngLiteral;
+      southWest: LatLngLiteral;
   }
   `;
 
