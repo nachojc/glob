@@ -45,7 +45,8 @@ export class SnBranchLocatorComponent implements OnInit {
     private platform: Platform,
     private analyticsService: AnalyticsService,
     private configuration: ConfigurationService,
-    private filterService: FilterService
+    private filterService: FilterService,
+
   ) {
     this.geoPosition
       .watchPosition()
@@ -57,6 +58,33 @@ export class SnBranchLocatorComponent implements OnInit {
         };
       });
   }
+
+
+
+  @Input()
+  get viewRegion(): string {
+    return this._viewRegion;
+  }
+
+  set viewRegion(region: string) {
+      this._viewRegion = region;
+  }
+
+
+
+  @Input()
+  get address(): string {
+    return this._address;
+  }
+  set address(value: string) {
+    if (value) {
+      this._address = value;
+      this.startingPosition = {
+        text: value
+      };
+    }
+  }
+
 
   @Input()
   get coordinates(): string {
@@ -80,27 +108,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   @Input()
-  get defaultLang(): string {
-    return this._defaultLang;
-  }
-  set defaultLang(value: string) {
-    this._defaultLang = value;
-  }
-
-  @Input()
-  get address(): string {
-    return this._address;
-  }
-  set address(value: string) {
-    if (value) {
-      this._address = value;
-      this.startingPosition = {
-        text: value
-      };
-    }
-  }
-
-  @Input()
   get optionalFullScreenControl(): boolean {
     return this._optionalFullScreen;
   }
@@ -111,7 +118,7 @@ export class SnBranchLocatorComponent implements OnInit {
 
   @Input()
   get branchTypes(): string {
-    return this.filterService.branchTypes;
+      return this.filterService.branchTypes;
   }
   set branchTypes(value: string) {
     this.filterService.branchTypes = value;
@@ -153,6 +160,7 @@ export class SnBranchLocatorComponent implements OnInit {
   private _defaultLang: string;
   private _selectedBranch: Branch;
   private _lastZoom: number;
+  private _viewRegion: string;
 
   public isLoading: boolean = true;
   public lat: number;
@@ -220,11 +228,14 @@ export class SnBranchLocatorComponent implements OnInit {
   displayPanel: string;
 
   ngOnInit(): void {
+
+    this.configuration.initConfig(this.viewRegion);
+
     this.configuration.settings$.subscribe(settings => {
       // To set the languaje
       const browserLang =
         navigator.language || window.navigator['userLanguage'];
-      this.defaultLang = browserLang.substring(0, 2);
+      // this.defaultLang = browserLang.substring(0, 2);
       // this.translateService.setDefaultLang(this.defaultLang);
 
       if (
@@ -341,7 +352,14 @@ export class SnBranchLocatorComponent implements OnInit {
     this.closeDrawer();
     this.clearSelectedMarker();
     selected.iconUrl = this.branchSelectedIcon as any;
-    selected['_markerManager'].updateIcon(selected);
+
+    try {
+      selected['_markerManager'].updateIcon(selected);
+    } catch (e) {
+      // TODO: non-blocking sporadic error,  currently under
+      // investigation
+    }
+
     this.selectedMarker = selected;
     this.selectedBranch = branch;
     this._selectedBranch = branch;
@@ -391,24 +409,6 @@ export class SnBranchLocatorComponent implements OnInit {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude
           };
-
-          // if (settings.paramCoordinates !== '') {
-          //   const coorsArray = settings.paramCoordinates.replace('{', '').replace('}', '').split(',');
-          //   const coors: LatLngLiteral = {
-          //     lat: Number(coorsArray[0]),
-          //     lng: Number(coorsArray[1])
-          //   };
-          //   this.startingPosition = {
-          //     coordinates: coors
-          //   };
-          // }
-
-          // if (settings.paramAddress !== '') {
-          //   this._address = settings.paramAddress;
-          //   this.startingPosition = {
-          //     text: settings.paramAddress
-          //   };
-          // }
 
           if (this.startingPosition && this.startingPosition.text) {
             this.geoPosition

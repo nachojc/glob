@@ -23,44 +23,15 @@ export class ConfigurationService {
     private activatedRoute: ActivatedRoute,
     private geoPosition: GeoPositionService,
     private http: HttpClient,
-    @Inject('ENV_CONFIG') private _enviroment
+    @Inject('ENV_CONFIG') private _environment
   ) {
-    this.branchLocatorEnv = this._enviroment.branchLocator;
+    this.branchLocatorEnv = this._environment.branchLocator;
 
     this.activatedRoute.queryParams.pipe(first()).subscribe(params => {
-      const viewType = params['view'] || this.paramDefaultView;
-      const coordinates = params['coordinates'] || '';
-      const address = params['address'] || '';
 
-      this.geoPosition
-        .getCurrentPosition()
-        .pipe(first())
-        .subscribe(
-          (pos: Position) => {
-            this.baseEndpoint = this.resolveConfigUrl(pos);
-            this.fetchRemoteConfig(
-              this.baseEndpoint,
-              viewType,
-              coordinates,
-              address
-            );
-          },
-          () => {
-            this.baseEndpoint = this.resolveConfigUrl();
-            this.fetchRemoteConfig(
-              this.baseEndpoint,
-              viewType,
-              coordinates,
-              address
-            );
-          }
-        );
     });
-
-    // this.settings$.subscribe((settings) => {
-    //   LiteralsAggregator.inject(settings.literals).into(this.translateService);
-    // });
   }
+
   private paramDefaultView = 'defaultView';
   private remoteFetchTimeout = 10000;
   private LANG_VAR = '${lang}';
@@ -68,8 +39,34 @@ export class ConfigurationService {
   private baseEndpoint: string;
 
   private settings = new ReplaySubject<LocatorSettings>();
-  private fetchRemoteConfig(baseEndpoint, viewType, coordinates, address) {
+
+  public initConfig(view?: string) {
+    const viewType = view || this.paramDefaultView;
+
+    this.geoPosition
+      .getCurrentPosition()
+      .pipe(first())
+      .subscribe(
+        (pos: Position) => {
+          this.baseEndpoint = this.resolveConfigUrl(pos);
+          this.fetchRemoteConfig(
+            this.baseEndpoint,
+            viewType,
+          );
+        },
+        () => {
+          this.baseEndpoint = this.resolveConfigUrl();
+          this.fetchRemoteConfig(
+            this.baseEndpoint,
+            viewType,
+          );
+        }
+      );
+  }
+
+  private fetchRemoteConfig(baseEndpoint, viewType) {
     const configEndpoint = baseEndpoint + '/view/' + viewType;
+
     this.http
       .get<any>(configEndpoint)
       .pipe(
@@ -81,22 +78,18 @@ export class ConfigurationService {
         ),
       )
       .subscribe(response => {
+
         this.buildSettings(
           response,
           viewType,
-          coordinates,
-          address
         ).subscribe(settings => this.settings.next(settings));
-
       });
   }
 
-  private buildSettings(response, viewType, coordinates, address): Observable<LocatorSettings> {
+  private buildSettings(response, viewType): Observable<LocatorSettings> {
 
     const settings: LocatorSettings = {
       paramView: viewType,
-      paramCoordinates: coordinates,
-      paramAddress: address,
       defaultCoords: response.coords,
       literals: [],
       filters: {
@@ -153,11 +146,10 @@ export class ConfigurationService {
         return of(settings);
       })
     );
-
-
   }
 
-resolveConfigUrl(pos ?: Position)  {
+  resolveConfigUrl(pos ?: Position)  {
+
     const endpoints = this.branchLocatorEnv.endpoints;
 
     if (!endpoints || !endpoints.length) {
