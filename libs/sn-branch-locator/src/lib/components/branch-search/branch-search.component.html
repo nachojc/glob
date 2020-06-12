@@ -8,7 +8,7 @@
     </div>
 
     <div class="search-input-input">
-      <input #in type="search" [placeholder]="labelPipe.transform('PLACEHOLDER_SEARCH')"
+      <input #in type="search" [placeholder]="labelPipe.transform('PLACEHOLDER_SEARCH')||''"
         (click)="searchBarClicked()" autocomplete="off" autocapitalize="off" spellcheck="off" value="{{ address }}" />
     </div>
 

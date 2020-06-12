@@ -19,8 +19,8 @@ npm install js-marker-clusterer -D`;
     ReactiveFormsModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.api.BranchLocator.googleApiKey,
-      libraries: environment.api.BranchLocator.googleApiLibs || []
+      apiKey: environment.branchLocator.googleApiKey,
+      libraries: environment.branchLocator.googleApiLibs || []
     }),
     ...
   ],
@@ -35,11 +35,22 @@ npm install js-marker-clusterer -D`;
  export const environment = {
     ...
     branchLocator: {
-        apiURL: 'your api service url',
-        googleApiKey: 'Google Api Key here',
-        googleApiLibs: ['places'],
-        languages: './',
-        hasFilters: true,
+      endpoints: [
+        {
+          URL: 'https://back-scus.azurewebsites.net/branch-locator',
+          lat: 29.4247,
+          lng: -98.4935
+        },
+        {
+          URL: 'https://back-weu.azurewebsites.net/branch-locator',
+          lat: 52.35,
+          lng: 4.9167
+        },
+      ],
+      labelsEndpoint : 'https://branchlocator.santander.com/translations/translation-` + '${lang}' + `.json',
+      googleApiKey: 'AIzaSyAEa5DdaHqV_b-40ErddBoWfEuopdvPK7I',
+      googleApiLibs: ['geometry', 'visualization', 'places'],
+      hasFilters: true,
     }
     ...
   };
@@ -83,8 +94,16 @@ npm install js-marker-clusterer -D`;
   `;
 
   inputs = `
-  <sn-branch-locator [startingPosition]="{coordinates: {lat: -22.800861, lng: -47.08319689999996}}"></sn-branch-locator>
-  <sn-branch-locator [startingPosition]="{text: 'address or postal code'}"></sn-branch-locator>
+    <!-- Region code, used to fetch locale params from configuration server -->
+    <sn-branch-locator [viewRegion]="'pl'"></sn-branch-locator>
+
+    <!-- Branch types, if provided, only these will be shown -->
+    <sn-branch-locator [branchTypes]="'BRANCH'"></sn-branch-locator>
+
+     <!-- Initial position -->
+    <sn-branch-locator [coordinates]="{lat: -22.800861, lng: -47.08319689999996}"></sn-branch-locator>
+    <sn-branch-locator [address]="'address or postal code'"></sn-branch-locator>
+
   `;
 
   constructor(
@@ -93,5 +112,4 @@ npm install js-marker-clusterer -D`;
 
   ngOnInit() {
   }
-
 }
