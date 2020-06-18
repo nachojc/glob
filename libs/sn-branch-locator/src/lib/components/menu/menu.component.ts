@@ -36,7 +36,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
         animate('400ms ease', style({ transform: 'translateX(0%)' }))
       ])
     ]),
-    trigger('showFilter', [
+    trigger('showFilter',  [
       transition('* => true', [
         style({ height: '0', display: 'block' }),
         animate('400ms ease', style({ height: '80vh' }))
