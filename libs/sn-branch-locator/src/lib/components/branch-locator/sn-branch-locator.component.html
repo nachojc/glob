@@ -7,7 +7,7 @@
     [selectIndex]="selectedTabIndex"
     (selectedTab)="tabsChanged($event)"
   >
-    <sn-tab label="{{ 'RESPMENUMAPBUTTON' | label }}">
+    <sn-tab [label]="label.transform('RESPMENUMAPBUTTON')">
       <section class="locator-content">
         <agm-map
           [gestureHandling]="'greedy'"
@@ -91,12 +91,13 @@
             [durations]="durations"
             [routes]="routes"
           ></sn-branch-direction>
+
         </sn-drawer>
       </section>
     </sn-tab>
     <sn-tab
       class="tab-branches-list"
-      label="{{ 'RESPMENURESULTSBUTTON' | label }}"
+      [label]="label.transform('RESPMENURESULTSBUTTON')"
     >
       <section class="result-list-wrapper">
         <sn-branch-list
@@ -121,11 +122,20 @@
     </div>
   </section>
 
-  <sn-filter
-    modal
-    (filterCallList)="displayPanel = 'list'"
-    (filterApply)="onFilterApply($event)"
-  ></sn-filter>
+  <div class="filter-container">
+    <div class="filter-panel-wrapper"
+         [@showFilter] = "filterView && filterView.isOpen?true:false"
+         [ngClass]="{ closed: !filterDisplay }"
+         (@showFilter.done)="filterTransitionDone($event)"
+    >
+      <sn-filter
+        modal
+        (filterCallList)="displayPanel = 'list'"
+        (filterApply)="onFilterApply($event)"
+      ></sn-filter>
+    </div>
+  </div>
+
 </ng-container>
 <!-- End Mobile and Tablet -->
 

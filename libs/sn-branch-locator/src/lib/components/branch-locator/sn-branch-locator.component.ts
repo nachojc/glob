@@ -30,15 +30,29 @@ import { ViewsAnalyticsVariables } from '../../constants/views-analytics-variabl
 import { EventsAnalyticsVariables } from '../../constants/events-analytics-variables';
 import { ConfigurationService } from '../../services/configuration/configuration.service';
 import { AnalyticsService } from '../../services/analytic/analytics.service';
-import {FilterService} from '../../services/filter/filter.service';
+import { FilterService } from '../../services/filter/filter.service';
+import { LabelPipe } from '../../pipes/label/label.pipe';
+import {MenuAnimations} from '../menu/menu.animations';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'sn-branch-locator',
   templateUrl: 'sn-branch-locator.component.html',
-  styleUrls: ['sn-branch-locator.component.scss']
+  styleUrls: ['sn-branch-locator.component.scss'],
+  animations: [
+    trigger('showFilter', [
+      transition('* => true', [
+        style({ height: '0', display: 'block' }),
+        animate('400ms ease', style({ height: '80vh' }))
+      ]),
+      transition('true => *', [
+        style({ height: '80vh' }),
+        animate('400ms ease', style({ height: '0' }))
+      ])
+    ])
+  ]
 })
 export class SnBranchLocatorComponent implements OnInit {
-
   constructor(
     private geoPosition: GeoPositionService,
     private branchService: SnBranchLocatorService,
@@ -46,7 +60,7 @@ export class SnBranchLocatorComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private configuration: ConfigurationService,
     private filterService: FilterService,
-
+    public label: LabelPipe
   ) {
     this.geoPosition
       .watchPosition()
@@ -59,18 +73,14 @@ export class SnBranchLocatorComponent implements OnInit {
       });
   }
 
-
-
   @Input()
   get viewRegion(): string {
     return this._viewRegion;
   }
 
   set viewRegion(region: string) {
-      this._viewRegion = region;
+    this._viewRegion = region;
   }
-
-
 
   @Input()
   get address(): string {
@@ -84,7 +94,6 @@ export class SnBranchLocatorComponent implements OnInit {
       };
     }
   }
-
 
   @Input()
   get coordinates(): string {
@@ -118,7 +127,7 @@ export class SnBranchLocatorComponent implements OnInit {
 
   @Input()
   get branchTypes(): string {
-      return this.filterService.branchTypes;
+    return this.filterService.branchTypes;
   }
   set branchTypes(value: string) {
     this.filterService.branchTypes = value;
@@ -153,6 +162,8 @@ export class SnBranchLocatorComponent implements OnInit {
   @ViewChild(FilterComponent, { static: false }) filterView: FilterComponent;
   @ViewChild(MenuComponent, { static: false }) menuComponent: MenuComponent;
 
+  @Output() filterDeployed = new EventEmitter<boolean>();
+
   private selectedMarker: AgmMarker;
   private _optionalFullScreen = false;
   private _coordinates: string;
@@ -171,20 +182,17 @@ export class SnBranchLocatorComponent implements OnInit {
     scaledSize: { height: 40, width: 40 },
     anchor: { x: 20, y: 20 }
   };
-
   public branchSelectedIcon = {
     url: 'assets/branchlocator/santanderTouchpointSelected.svg',
     scaledSize: { height: 56, width: 56 },
     anchor: { x: 28, y: 28 }
   };
-
   public usericon = {
     url: 'assets/branchlocator/pinVoce.svg',
     scaledSize: { height: 90, width: 90 },
     anchor: { x: 45, y: 45 }
   };
   public branchesList: Branch[];
-
   public clusterStyles: ClusterStyle[] = [
     {
       textColor: '#000000',
@@ -194,12 +202,10 @@ export class SnBranchLocatorComponent implements OnInit {
       backgroundPosition: '-4px 2px'
     }
   ];
-
   public userPosition: LatLngLiteral;
   public startingPosition: IStartingPosition;
   public zoom = 13;
   public showReCenter: boolean;
-
   public selectedBranch: Branch;
   public selectedTabIndex: number;
   public filterCounts: number;
@@ -209,7 +215,6 @@ export class SnBranchLocatorComponent implements OnInit {
   public showNearest: boolean = false;
   public isMobile: boolean;
   public openNearest: boolean;
-
   public isVisibleMarkers = true;
   public isVisibleRoute = false;
   public destination: LatLngLiteral;
@@ -217,10 +222,10 @@ export class SnBranchLocatorComponent implements OnInit {
   public travelMode: string;
   public routes = [];
   public durations = [];
-
   public addressLat: number;
   public addressLng: number;
   public durationsLoaded: boolean;
+  public  filterDisplay = false;
 
   currentLat: number;
   currentLong: number;
@@ -228,27 +233,12 @@ export class SnBranchLocatorComponent implements OnInit {
   displayPanel: string;
 
   ngOnInit(): void {
-
     this.configuration.initConfig(this.viewRegion);
 
     this.configuration.settings$.subscribe(settings => {
       // To set the languaje
       const browserLang =
         navigator.language || window.navigator['userLanguage'];
-      // this.defaultLang = browserLang.substring(0, 2);
-      // this.translateService.setDefaultLang(this.defaultLang);
-
-      if (
-        settings.paramView !== 'defaultView' &&
-        (settings.paramView === 'en' ||
-          settings.paramView === 'es' ||
-          settings.paramView === 'pl' ||
-          settings.paramView === 'pt')
-      ) {
-        // this.translateService.use(settings.paramView);
-      } else {
-        // this.translateService.use(this.defaultLang);
-      }
     });
 
     const sendView = ViewsAnalyticsVariables.mapScreen;
@@ -356,8 +346,6 @@ export class SnBranchLocatorComponent implements OnInit {
     try {
       selected['_markerManager'].updateIcon(selected);
     } catch (e) {
-      // TODO: non-blocking sporadic error,  currently under
-      // investigation
     }
 
     this.selectedMarker = selected;
@@ -453,7 +441,6 @@ export class SnBranchLocatorComponent implements OnInit {
   }
 
   centerMapToUser(callAPI: boolean = true, openNearest: boolean = false): void {
-
     if (!this.startingPosition) {
       return;
     }
@@ -645,6 +632,13 @@ export class SnBranchLocatorComponent implements OnInit {
           });
         }
       });
+    }
+  }
+
+  filterTransitionDone(event: AnimationEvent) {
+    this.filterDisplay = this.filterView.isOpen;
+    if (this.filterDisplay) {
+      this.filterDeployed.emit(true);
     }
   }
 }

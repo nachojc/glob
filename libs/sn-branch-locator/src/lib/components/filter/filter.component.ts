@@ -41,6 +41,7 @@ import { AnalyticsService } from '../../services/analytic/analytics.service';
     ])
   ]
 })
+
 export class FilterComponent implements OnInit {
   @Input() get isOpen() {
     return this.isFilterOpen;
@@ -83,18 +84,13 @@ export class FilterComponent implements OnInit {
 
   private show(): void {
     this.isFilterOpen = true;
-    if (this.platform.isMobile) {
-      this.renderer.removeStyle(this.el.nativeElement, 'display');
-      this.renderer.setStyle(this.el.nativeElement, 'overflow-y', 'auto');
-    }
+
   }
 
   private hide(): void {
     this.isFilterOpen = false;
 
-    if (this.platform.isMobile) {
-      this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
-    }
+
   }
 
   private clearTypes(): boolean {
