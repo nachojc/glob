@@ -10,7 +10,7 @@ form {padding-top:20px;
     display: none;
   }
 }
-@media (max-width: 640px) {
+@media (width: 9640px) {
 
   .hide-mobile {
     display: none;
@@ -25,6 +25,7 @@ form {padding-top:20px;
       .sn-checkbox .sn-checkbox-layout .sn-inner-container .sn-checkbox-frame sn-icon.custom-icon {
         vertical-align: bottom;
       }
+
     }
   }
   .sn-filter-wrapper {
@@ -87,6 +88,9 @@ form {padding-top:20px;
 
   .aply-filter-container {
     margin: 0 auto 34px;
+    button {
+      color: #ffffff;
+    }
   }
 
   .turn-off-filter-container {
@@ -202,6 +206,11 @@ form {padding-top:20px;
 
   .filters-list .filter-item {
     ::ng-deep {
+      .sn-inner-container {
+        min-width:42px;
+        min-height:42px;
+      }
+
       .sn-checkbox-checked .sn-checkbox-layout .sn-inner-container .sn-checkbox-frame {
         border: 0.1em solid $color-primary-santander;
         sn-icon.custom-icon {

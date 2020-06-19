@@ -17,7 +17,7 @@ export const environment = {
           lng: 4.9167
         },
       ],
-      labelsEndpoint : 'https://branchlocator.santander.com/translations/translation-${lang}.json',
+      labelsEndpoint : 'assets/labels/translation-${lang}.json',
       googleApiKey: 'AIzaSyAEa5DdaHqV_b-40ErddBoWfEuopdvPK7I',
       googleApiLibs: ['geometry', 'visualization', 'places'],
       hasFilters: true,

@@ -67,18 +67,28 @@
 
     .branch-appointment {
       a {
-        text-decoration: none;
+/*        text-decoration: none;
         width: 44px;
         height: 44px;
         border-radius: 100px;
         box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
         align-items: center;
         justify-content: center;
-        display: flex;
+        display: flex;*/
+
+        text-decoration: none;
+        border-radius: 50%;
+        border: 1px solid var(--color-primary-santander, #ec0000);
+        height: 44px;
+        width: 44px;
+        font-size: 14px;
+        color: var(--color-primary-santander, #ec0000);
 
         ::ng-deep {
           i {
-            color: $color-secondary-darkturquoise;
+            margin: 0.3em;
+            font-size:1.2em;
+
           }
         }
       }
