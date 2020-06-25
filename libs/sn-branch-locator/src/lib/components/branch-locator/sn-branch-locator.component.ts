@@ -168,7 +168,6 @@ export class SnBranchLocatorComponent implements OnInit {
   private _optionalFullScreen = false;
   private _coordinates: string;
   private _address: string;
-  private _defaultLang: string;
   private _selectedBranch: Branch;
   private _lastZoom: number;
   private _viewRegion: string;

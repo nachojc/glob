@@ -19,10 +19,12 @@ export class AppComponent {
     this.defaultLang = browserLang.substring(0, 2);
 
     this.queryParamsService.parametersWatcher.subscribe(param => {
+      const lang = param['view'] || param['defaultLang'];
+
       this.coordinates = param['coordinates'];
       this.address = param['address'];
-      if (param['defaultLang'] && param['defaultLang'] !== this.defaultLang) {
-        this.defaultLang = param['defaultLang'];
+      if (!!lang && lang !== this.defaultLang) {
+        this.defaultLang = lang;
       }
     });
   }
