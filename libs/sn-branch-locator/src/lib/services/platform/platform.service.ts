@@ -19,7 +19,7 @@ export class Platform {
 
   get isMobile(): boolean {
     // TODO: make it with width size of own component
-    return !(this.orientation.angle === 0 &&
+    return !(this.orientation && this.orientation.angle === 0 &&
       this.orientation.type === 'landscape-primary') &&
       this.windowRef.navigator.userAgent.toLowerCase().includes('mobile');
   }
