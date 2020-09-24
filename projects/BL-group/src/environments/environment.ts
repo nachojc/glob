@@ -18,6 +18,7 @@ export const environment = {
       },
     ],
     // googleApiKey: 'AIzaSyAW6Ayoy5LzilIIwr84WfQFTybSV8P9Ifo',
+    labelsEndpoint : 'assets/labels/translation-${lang}.json',
     googleApiKey: 'AIzaSyAEa5DdaHqV_b-40ErddBoWfEuopdvPK7I',
     googleApiLibs: ['weather', 'geometry', 'visualization', 'places'],
     hasFilters: true,

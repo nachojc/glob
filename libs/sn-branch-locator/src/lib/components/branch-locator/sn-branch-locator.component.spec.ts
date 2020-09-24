@@ -19,7 +19,6 @@ import {FormBuilder} from '@angular/forms';
 import {SnTabModule} from '../tabs/sn-tab.module';
 import {SnDirectionModule} from '../../directives/sn-direction/sn-direction.module';
 import {OutputDirection} from '../../models/output-direction';
-import {RouterTestingModule} from '@angular/router/testing';
 
 
 const mockMapsAPILoader = {
@@ -91,7 +90,6 @@ describe('SnBranchLocatorComponent', () => {
           libraries: ['places']
         }),
         SnDirectionModule,
-        RouterTestingModule
       ],
       declarations: [
         SnBranchLocatorComponent,
@@ -231,23 +229,6 @@ describe('SnBranchLocatorComponent', () => {
     (component as any)._coordinates = '';
     component.coordinates = 'lng:12,lat:23';
     expect((component as any).coordinates).toBe('lng:12,lat:23');
-  });
-
-
-  it('should get defaultLang value input', () => {
-    (component as any)._defaultLang = 'en';
-    expect(component.defaultLang).toBe((component as any)._defaultLang);
-  });
-
-  it('should set defaultLang value from property value', () => {
-    (component as any)._defaultLang = '';
-    component.defaultLang = 'en';
-    expect((component as any)._defaultLang).toBe('en');
-  });
-
-  it('should set defaultLang to null value if there is not value provided', () => {
-    component.defaultLang = null;
-    expect((component as any)._defaultLang).toBe(null);
   });
 
   it('should get address value input', () => {

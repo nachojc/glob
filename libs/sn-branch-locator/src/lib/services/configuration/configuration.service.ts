@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { LocatorSettings } from '../../models/remote-config.model';
 import {Observable, ObservableInput, of, ReplaySubject} from 'rxjs';
 import { LatLngLiteral } from '@agm/core';
@@ -20,16 +19,12 @@ export class ConfigurationService {
   }
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private geoPosition: GeoPositionService,
     private http: HttpClient,
     @Inject('ENV_CONFIG') private _environment
   ) {
     this.branchLocatorEnv = this._environment.branchLocator;
 
-    this.activatedRoute.queryParams.pipe(first()).subscribe(params => {
-
-    });
   }
 
   private paramDefaultView = 'defaultView';
